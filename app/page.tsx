@@ -1,0 +1,2 @@
+import Hero from '@/components/Hero'; import ProductCategories from '@/components/ProductCategories'; import Products from '@/components/Products'; import Services from '@/components/Services'; import ContactCTA from '@/components/ContactCTA'; import LogisticsGallery from '@/components/LogisticsGallery';
+export default function Home(){return <><main><Hero/><ProductCategories/><Products/><Services/><ContactCTA/><LogisticsGallery/></main></>}

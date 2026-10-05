@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+:root { --orange:#f97316; --orange-dark:#ea580c; --ink:#111827; --muted:#667085; --cream:#fffaf5; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; background:#fff; color:var(--ink); font-family:Arial, Helvetica, sans-serif; }
+a { color:inherit; text-decoration:none; }
+::selection { background:#fed7aa; color:#7c2d12; }
+.container { width:min(1180px, calc(100% - 40px)); margin:auto; }
+.gradient-text { background:linear-gradient(90deg,#f97316,#fb923c); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.grid-pattern { background-image:linear-gradient(rgba(249,115,22,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(249,115,22,.06) 1px,transparent 1px); background-size:36px 36px; }
+.shadow-soft { box-shadow:0 18px 50px rgba(17,24,39,.08); }
+
+.logistics-gallery { background:#fff9e8; padding:clamp(3.5rem,8vw,7rem) 0; }
+.logistics-gallery__inner { width:min(1440px,calc(100% - 48px)); margin:0 auto; display:grid; grid-template-columns:minmax(210px,.85fr) minmax(0,4fr); align-items:center; gap:clamp(1.5rem,3vw,3rem); }
+.logistics-gallery__intro { max-width:340px; }
+.logistics-gallery__eyebrow { margin:0 0 .8rem; color:#c2410c; font-size:.76rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+.logistics-gallery__intro h2 { margin:0; color:#111827; font-family:Georgia,'Times New Roman',serif; font-size:clamp(1.8rem,2.4vw,2.5rem); line-height:1.12; }
+.logistics-gallery__intro > p:last-child { margin:1rem 0 0; color:#596273; font-size:1rem; line-height:1.65; }
+.logistics-gallery__photos { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:clamp(.6rem,1.5vw,1.25rem); }
+.logistics-gallery__photo { position:relative; aspect-ratio:.68; min-width:0; border-radius:3px; background-image:url('/thermopro-logistique.webp'); background-repeat:no-repeat; background-size:500% 100%; box-shadow:0 8px 24px rgba(53,42,24,.08); transition:transform .35s ease, box-shadow .35s ease, filter .35s ease; }
+@media (hover:hover) and (pointer:fine) {
+  .logistics-gallery__photo:hover { z-index:1; transform:translateY(-6px) scale(1.035); filter:saturate(1.08); box-shadow:0 18px 34px rgba(53,42,24,.2); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .logistics-gallery__photo { transition:none; }
+}
+@media (max-width:900px) {
+  .logistics-gallery__inner { grid-template-columns:1fr; }
+  .logistics-gallery__intro { max-width:560px; }
+}
+@media (max-width:600px) {
+  .logistics-gallery { padding:3.5rem 0; }
+  .logistics-gallery__inner { width:calc(100% - 32px); gap:1.5rem; }
+  .logistics-gallery__photos { grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem; }
+}
+
+.account-page { min-height:calc(100vh - 5rem); padding:clamp(2.5rem,7vw,6rem) 1rem; background:radial-gradient(ellipse at 16% 20%,rgba(249,115,22,.14),transparent 38%),#fffaf5; }
+.account-shell { width:min(1050px,100%); margin:0 auto; display:grid; grid-template-columns:1fr minmax(340px,.94fr); align-items:center; gap:clamp(2rem,7vw,6rem); }
+.account-intro { padding:1rem 0; }
+.account-brand { display:inline-flex; align-items:center; gap:.55rem; font-size:1.08rem; font-weight:900; letter-spacing:-.04em; }
+.account-brand > span:first-child { width:2.5rem; height:2.5rem; display:grid; place-items:center; border-radius:.8rem; background:#f97316; color:#fff; }
+.account-brand__accent { margin-left:-.55rem; color:#f97316; }
+.account-intro .account-eyebrow { margin-top:3.5rem; }
+.account-eyebrow { margin:0 0 .65rem; color:#c2410c; font-size:.74rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+.account-intro h1 { max-width:520px; margin:0; color:#111827; font-family:Georgia,'Times New Roman',serif; font-size:clamp(2.5rem,5vw,4rem); line-height:1.04; }
+.account-intro__copy { max-width:440px; margin:1.25rem 0 0; color:#667085; font-size:1.08rem; line-height:1.7; }
+.account-benefits { display:grid; gap:.9rem; margin-top:2rem; color:#475467; font-size:.94rem; }
+.account-benefits p { display:flex; align-items:center; gap:.65rem; margin:0; }
+.account-benefits svg { color:#16845b; }
+.account-card { padding:clamp(1.5rem,4vw,2.65rem); border:1px solid #eee8df; border-radius:1.3rem; background:#fff; box-shadow:0 24px 75px rgba(60,45,25,.1); }
+.account-card__top { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:2rem; }
+.account-card__icon,.account-success-icon { display:grid; place-items:center; width:2.8rem; height:2.8rem; border-radius:.9rem; background:#fff3e7; color:#ea580c; }
+.account-back,.account-return { display:inline-flex; align-items:center; gap:.45rem; color:#667085; font-size:.82rem; font-weight:600; }
+.account-back:hover,.account-return:hover { color:#ea580c; }
+.account-card h1 { margin:0; color:#111827; font-family:Georgia,'Times New Roman',serif; font-size:clamp(1.8rem,4vw,2.35rem); line-height:1.15; }
+.account-muted { margin:.7rem 0 0; color:#667085; font-size:.94rem; line-height:1.6; overflow-wrap:anywhere; }
+.account-muted strong { color:#344054; }
+.account-form { display:grid; gap:1.15rem; margin-top:1.7rem; }
+.account-form label { display:grid; gap:.5rem; color:#344054; font-size:.87rem; font-weight:700; }
+.account-input-wrap { min-width:0; display:flex; align-items:center; gap:.65rem; height:3.2rem; padding:0 .85rem; border:1px solid #d0d5dd; border-radius:.75rem; background:#fff; color:#98a2b3; transition:border-color .18s,box-shadow .18s; }
+.account-input-wrap:focus-within { border-color:#f97316; box-shadow:0 0 0 3px rgba(249,115,22,.14); }
+.account-input-wrap input { min-width:0; width:100%; height:100%; border:0; outline:0; background:transparent; color:#101828; font:inherit; font-size:.95rem; }
+.account-input-wrap input::placeholder { color:#98a2b3; font-weight:400; }
+.account-password-toggle { display:grid; place-items:center; flex:0 0 auto; padding:.25rem; border:0; background:transparent; color:#667085; cursor:pointer; }
+.account-forgot { justify-self:end; margin-top:-.55rem; padding:0; border:0; background:none; color:#c2410c; font-size:.82rem; font-weight:700; cursor:pointer; }
+.account-submit { min-height:3.15rem; display:flex; align-items:center; justify-content:center; gap:.55rem; width:100%; margin-top:.15rem; padding:.75rem 1rem; border:0; border-radius:.75rem; background:#f97316; color:#fff; font:inherit; font-weight:800; cursor:pointer; transition:background .18s,transform .18s; }
+.account-submit:hover:not(:disabled) { transform:translateY(-1px); background:#ea580c; }
+.account-submit:disabled { cursor:not-allowed; opacity:.55; }
+.account-switch { margin:1.35rem 0 0; text-align:center; color:#667085; font-size:.86rem; }
+.account-switch button { padding:0; border:0; background:transparent; color:#c2410c; font:inherit; font-weight:800; cursor:pointer; }
+.account-privacy,.account-footnote { margin:1.35rem 0 0; padding-top:1.2rem; border-top:1px solid #f0eee9; color:#98a2b3; font-size:.75rem; line-height:1.6; }
+.account-privacy a { color:#c2410c; font-weight:700; text-decoration:underline; text-underline-offset:2px; }
+.account-message { margin:1rem 0 0; padding:.8rem .9rem; border-radius:.7rem; font-size:.84rem; line-height:1.55; overflow-wrap:anywhere; }
+.account-message--success { background:#ecfdf3; color:#067647; }
+.account-message--error { background:#fef3f2; color:#b42318; }
+.account-message--warning { background:#fff7ed; color:#9a3412; }
+.account-message code { font-size:.78rem; font-weight:700; }
+.account-loading { display:flex; align-items:center; gap:.7rem; min-height:12rem; color:#667085; }
+.account-signed-in .account-success-icon { margin-bottom:1.25rem; background:#ecfdf3; color:#16845b; }
+.account-actions { display:grid; gap:.8rem; margin-top:1.5rem; }
+.account-secondary { min-height:2.8rem; border:1px solid #e4e7ec; border-radius:.75rem; background:#fff; color:#475467; font:inherit; font-weight:700; cursor:pointer; }
+.account-secondary:hover { border-color:#f97316; color:#c2410c; }
+.account-return { margin-top:1.4rem; padding:0; border:0; background:transparent; cursor:pointer; }
+@media(max-width:760px) {
+  .account-page { min-height:calc(100vh - 4rem); padding:2.5rem 1rem 3rem; }
+  .account-shell { max-width:520px; grid-template-columns:1fr; gap:1.8rem; }
+  .account-intro { padding:0; }
+  .account-intro .account-eyebrow { margin-top:2rem; }
+  .account-intro h1 { font-size:clamp(2.15rem,10vw,3rem); }
+  .account-intro__copy { margin-top:.75rem; font-size:.97rem; }
+  .account-benefits { display:none; }
+  .account-card { padding:1.35rem; border-radius:1.05rem; }
+  .account-card__top { margin-bottom:1.5rem; }
+}
