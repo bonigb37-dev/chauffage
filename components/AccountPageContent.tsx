@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, ArrowRight, CheckCircle2, Eye, EyeOff, Flame, LoaderCircle, LockKeyhole, Mail, UserRound } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
-import { isSupabaseConfigured, supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 type Mode = 'signin' | 'signup' | 'forgot' | 'update';
 
@@ -17,7 +17,7 @@ function getFrenchAuthError(message: string) {
   if (normalized.includes('password should be at least') || normalized.includes('password is too short')) return 'Choisissez un mot de passe plus long.';
   if (normalized.includes('unable to validate email')) return 'Cette adresse e-mail semble invalide.';
   if (normalized.includes('email rate limit exceeded') || normalized.includes('rate limit')) return 'Trop de demandes ont été envoyées. Veuillez patienter avant de réessayer.';
-  if (normalized.includes('network') || normalized.includes('fetch')) return 'Connexion impossible pour le moment. Vérifiez votre connexion internet et réessayez.';
+  if (normalized.includes('network') || normalized.includes('fetch')) return 'Impossible de joindre Supabase. Vérifiez les variables NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY dans l’environnement Vercel, puis redéployez.';
   return 'Une erreur est survenue lors de la demande. Vérifiez les informations saisies puis réessayez.';
 }
 
@@ -66,7 +66,10 @@ export default function AccountPageContent() {
     event.preventDefault();
     setNotice('');
     setError('');
-    if (!supabase) return;
+    if (!supabase) {
+      setError('Connexion Supabase non configurée sur cette version du site. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY dans Vercel, puis redéployez.');
+      return;
+    }
 
     const form = new FormData(event.currentTarget);
     const email = String(form.get('email') ?? '').trim();
@@ -173,7 +176,7 @@ export default function AccountPageContent() {
                 {mode !== 'update' && <label>Adresse e-mail<span className="account-input-wrap"><Mail size={17} /><input autoComplete="email" name="email" type="email" placeholder="vous@exemple.fr" required /></span></label>}
                 {mode !== 'forgot' && <label>{mode === 'update' ? 'Nouveau mot de passe' : 'Mot de passe'}<span className="account-input-wrap"><LockKeyhole size={17} /><input autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} name="password" type={showPassword ? 'text' : 'password'} placeholder="8 caractères minimum" minLength={8} required /><button className="account-password-toggle" type="button" onClick={() => setShowPassword(!showPassword)} aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}>{showPassword ? <EyeOff size={18} /> : <Eye size={18} />}</button></span></label>}
                 {mode === 'signin' && <button type="button" className="account-forgot" onClick={() => switchMode('forgot')}>Mot de passe oublié ?</button>}
-                <button className="account-submit" type="submit" disabled={busy || !isSupabaseConfigured}>
+                <button className="account-submit" type="submit" disabled={busy}>
                   {busy ? <><LoaderCircle className="animate-spin" size={18} /> Patientez…</> : <>{mode === 'signup' ? 'Créer mon compte' : mode === 'forgot' ? 'Envoyer le lien de réinitialisation' : mode === 'update' ? 'Mettre à jour le mot de passe' : 'Se connecter'} <ArrowRight size={18} /></>}
                 </button>
               </form>
