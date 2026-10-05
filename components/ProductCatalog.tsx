@@ -49,7 +49,7 @@ export default function ProductCatalog() {
         <p className="text-sm font-medium text-gray-500">{visibleProducts.length} produit{visibleProducts.length > 1 ? 's' : ''}</p>
         <p className="hidden text-sm text-gray-500 sm:block">Sélectionnez une photo pour l’agrandir</p>
       </div>
-      <p className="mb-4 rounded-2xl border border-orange-100 bg-orange-50 px-4 py-3 text-sm leading-6 text-orange-950">Prix et disponibilités relevés chez le fournisseur et susceptibles d’évoluer. Les tarifs par volume et délais affichés restent à confirmer avant toute commande. Les avis sont attribués au fournisseur.</p>
+      <p className="mb-4 rounded-2xl border border-orange-100 bg-orange-50 px-4 py-3 text-sm leading-6 text-orange-950">Prix et disponibilités relevés chez le fournisseur et susceptibles d’évoluer. Les tarifs par volume et délais restent à confirmer avant toute commande.</p>
       {visibleProducts.length ? groupedProducts.map(([section, sectionProducts]) => <section key={section} className="mt-8 first:mt-0">
         <div className="mb-5 max-w-3xl border-b border-stone-200 pb-3"><h2 className="text-2xl font-black text-gray-950 sm:text-3xl">{section}</h2><p className="mt-1 text-sm leading-6 text-gray-500">{sectionDescriptions[section]}</p></div>
         <div className={`grid items-stretch gap-4 sm:grid-cols-2 ${sectionProducts.length === 4 || (sectionProducts.length >= 8 && sectionProducts.length % 4 === 0) ? 'lg:grid-cols-3 xl:grid-cols-4' : 'lg:grid-cols-3 xl:grid-cols-3'}`}>{sectionProducts.map((product) => <div id={`produit-${product.id}`} key={product.id} className="h-full"><ProductCard p={product} /></div>)}</div>

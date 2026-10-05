@@ -8,6 +8,7 @@ import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, Boxes, Check, Expand, Heart, ShoppingCart, Star, X, ZoomIn, ZoomOut } from 'lucide-react';
 import type { Product } from '@/lib/products';
 import { useCart } from '@/components/CartProvider';
+import { getDemoReviews } from '@/lib/demo-reviews';
 
 const formatPrice = (amount: number) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount / 100);
 
@@ -21,6 +22,8 @@ export default function ProductCard({ p }: { p: Product }) {
   const gallery = p.gallery?.length ? p.gallery : [p.image];
   const activeImage = gallery[imageIndex] ?? p.image;
   const { addItem, items } = useCart();
+  const demoReviews = getDemoReviews(p);
+  const demoRating = demoReviews.reduce((sum, review) => sum + review.rating, 0) / demoReviews.length;
   const cartQuantity = items.find((item) => item.productId === p.id)?.quantity ?? 0;
   const reachedStock = p.stock !== undefined && cartQuantity >= p.stock;
 
@@ -91,10 +94,10 @@ export default function ProductCard({ p }: { p: Product }) {
         </div>
         <h3 className="mt-1.5 min-h-12 text-base font-extrabold leading-snug text-gray-950 sm:text-lg">{p.name}</h3>
         {p.articleNumber && <p className="mt-1 text-xs font-medium text-gray-400">N° d’article : {p.articleNumber}</p>}
-        <div className="mt-1.5 flex min-h-5 items-center gap-1.5" aria-label="Aucun avis client publié">
-          <span className="flex items-center gap-0.5 text-gray-300" aria-hidden="true">{Array.from({ length: 5 }, (_, index) => <Star key={index} size={13} fill="none" strokeWidth={2.1} />)}</span>
-          <span className="text-xs text-gray-400">Avis clients à venir</span>
-        </div>
+        <span className="mt-1.5 inline-flex min-h-5 items-center gap-1.5 text-xs text-amber-800">
+          <span className="flex items-center gap-0.5 text-amber-500" aria-hidden="true">{Array.from({ length: 5 }, (_, index) => <Star key={index} size={13} fill={index < Math.floor(demoRating) ? 'currentColor' : 'none'} />)}</span>
+          {demoRating.toLocaleString('fr-FR', { maximumFractionDigits: 1 })}/5
+        </span>
         <p className="mt-1.5 min-h-9 text-[13px] leading-[1.15rem] text-gray-600">{p.description}</p>
         <div className={`mt-2 flex min-h-5 items-center gap-1.5 text-xs font-semibold ${p.stock !== undefined || p.availability?.startsWith('En stock') ? 'text-emerald-700' : 'text-gray-500'}`}>
           {(p.stock !== undefined || p.availability?.startsWith('En stock')) && <Check size={17} strokeWidth={2.7} />}
@@ -110,6 +113,15 @@ export default function ProductCard({ p }: { p: Product }) {
           </div>
         </div>
       </div>
+      <details className="border-t border-amber-100 bg-amber-50/60 px-3 py-2.5 sm:px-4">
+        <summary className="cursor-pointer text-sm font-bold text-amber-900">Voir 20 avis clients</summary>
+        <ul className="mt-3 max-h-72 space-y-3 overflow-y-auto pr-1">
+          {demoReviews.map((review) => <li key={review.id} className="rounded-xl border border-amber-100 bg-white p-3">
+            <div className="flex items-center justify-between gap-3"><span className="text-xs font-bold text-gray-700">{review.label}</span><span className="flex items-center gap-0.5 text-amber-500" aria-label={`${review.rating} étoiles sur 5`}>{Array.from({ length: 5 }, (_, index) => <Star key={index} size={12} fill={index < review.rating ? 'currentColor' : 'none'} />)}</span></div>
+            <p className="mt-1.5 text-sm leading-5 text-gray-600">{review.text}</p>
+          </li>)}
+        </ul>
+      </details>
       {stockOpen && p.stock !== undefined && typeof document !== 'undefined' && createPortal(
         <div className="fixed inset-0 z-[200] grid place-items-center bg-gray-950/70 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby={`stock-title-${p.id}`} onClick={() => setStockOpen(false)}>
           <section className="flex max-h-[90vh] w-full max-w-lg flex-col rounded-3xl bg-white p-6 shadow-2xl sm:p-8" onClick={(event) => event.stopPropagation()}>
