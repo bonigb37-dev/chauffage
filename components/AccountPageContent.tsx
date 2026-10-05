@@ -165,7 +165,6 @@ export default function AccountPageContent() {
               <h1 id="account-title">{heading}</h1>
               <p className="account-muted">{mode === 'signup' ? 'Créez un compte pour retrouver facilement votre espace client.' : mode === 'forgot' ? 'Saisissez votre adresse e-mail pour recevoir un lien sécurisé.' : mode === 'update' ? 'Saisissez un nouveau mot de passe pour votre compte.' : 'Connectez-vous ou créez un compte pour accéder à votre espace client.'}</p>
 
-              {!isSupabaseConfigured && <div className="account-message account-message--warning" role="status">L’espace client est prêt, mais il reste à connecter votre projet Supabase. Renseignez les variables indiquées dans le fichier <code>.env.example</code>, puis redémarrez le site.</div>}
               {notice && <p className="account-message account-message--success" role="status">{notice}</p>}
               {error && <p className="account-message account-message--error" role="alert">{error}</p>}
 
