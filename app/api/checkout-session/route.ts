@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   if (!apiKey) return NextResponse.json({ error: 'Le paiement Mollie n’est pas configuré sur le serveur.' }, { status: 503 });
 
   const id = new URL(request.url).searchParams.get('id');
-  if (!id || !/^tr_[A-Za-z0-9]+$/.test(id)) {
+  if (typeof id !== 'string' || id.length === 0 || !/^tr_[A-Za-z0-9]+$/.test(id)) {
     return NextResponse.json({ error: 'Référence de paiement invalide.' }, { status: 400 });
   }
 
