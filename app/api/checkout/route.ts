@@ -29,6 +29,8 @@ function mollieAddress(value: AddressInput) {
 }
 
 export async function POST(request: Request) {
+  return NextResponse.json({ error: 'Le paiement en ligne est désactivé.' }, { status: 410 });
+
   const apiKey = process.env.MOLLIE_API_KEY;
   if (!apiKey) return NextResponse.json({ error: 'Le paiement Mollie n’est pas configuré sur le serveur.' }, { status: 503 });
 
@@ -76,6 +78,7 @@ export async function POST(request: Request) {
   const origin = new URL(request.url).origin;
   const shipping = customer.shipping ?? customer;
   const payload = {
+    method: 'banktransfer',
     amount: { currency: 'EUR', value: (totalCents / 100).toFixed(2) },
     description: `ThermoPro · commande ${orderReference.slice(0, 8)}`,
     redirectUrl: `${origin}/commande/succes?payment_id=pending`,

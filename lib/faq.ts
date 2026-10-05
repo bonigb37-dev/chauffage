@@ -13,7 +13,7 @@ export const faqItems = [
   },
   {
     question: 'Quels moyens de paiement sont proposés ?',
-    answer: 'Vous pourrez régler par carte bancaire ou par virement. Apple Pay et Google Pay peuvent également apparaître selon leur activation sur le compte de paiement, votre appareil et la compatibilité de votre carte.',
+    answer: 'Le règlement s’effectue uniquement par virement bancaire.',
   },
   {
     question: 'Quels sont les délais de livraison ?',

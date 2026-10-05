@@ -86,12 +86,17 @@ export default function AccountPageContent() {
         });
         if (authError) throw authError;
         setNotice(data.session ? 'Votre compte est créé. Bienvenue chez ThermoPro !' : 'Votre demande est enregistrée. Consultez votre boîte e-mail pour confirmer la création de votre compte.');
-        if (data.session) setUser(data.session.user);
+        if (data.session) {
+          setUser(data.session.user);
+          router.replace('/');
+          router.refresh();
+        }
       } else if (mode === 'signin') {
         const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
         if (authError) throw authError;
         setUser(data.user);
-        setNotice('Vous êtes connecté à votre compte.');
+        router.replace('/');
+        router.refresh();
       } else if (mode === 'forgot') {
         const { error: authError } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/compte?mode=recovery`,

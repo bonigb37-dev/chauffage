@@ -7,6 +7,8 @@ type MolliePayment = {
 };
 
 export async function GET(request: Request) {
+  return NextResponse.json({ error: 'La vérification des paiements en ligne est désactivée.' }, { status: 410 });
+
   const apiKey = process.env.MOLLIE_API_KEY;
   if (!apiKey) return NextResponse.json({ error: 'Le paiement Mollie n’est pas configuré sur le serveur.' }, { status: 503 });
 
