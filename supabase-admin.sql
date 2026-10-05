@@ -6,11 +6,11 @@ alter table public.order_requests
 
 do $$
 begin
-  if not exists (select 1 from pg_constraint where conname = 'contact_requests_status_check') then
+  if not exists (select 1 from pg_constraint where conname = 'contact_requests_status_check' and conrelid = 'public.contact_requests'::regclass) then
     alter table public.contact_requests add constraint contact_requests_status_check
       check (status in ('new', 'in_progress', 'done'));
   end if;
-  if not exists (select 1 from pg_constraint where conname = 'order_requests_status_check') then
+  if not exists (select 1 from pg_constraint where conname = 'order_requests_status_check' and conrelid = 'public.order_requests'::regclass) then
     alter table public.order_requests add constraint order_requests_status_check
       check (status in ('new', 'in_progress', 'done'));
   end if;
@@ -29,7 +29,7 @@ returns boolean
 language sql
 stable
 security definer
-set search_path = public
+set search_path = ''
 as $$
   select exists (
     select 1 from public.admin_roles
@@ -42,7 +42,7 @@ returns boolean
 language sql
 stable
 security definer
-set search_path = public
+set search_path = ''
 as $$
   select public.current_user_has_role('admin') or public.current_user_has_role('super_admin');
 $$;
@@ -52,10 +52,10 @@ revoke all on function public.current_user_is_admin() from public, anon;
 grant execute on function public.current_user_has_role(text) to authenticated;
 grant execute on function public.current_user_is_admin() to authenticated;
 
-revoke all on public.admin_roles from anon, authenticated;
+revoke all on public.admin_roles from public, anon, authenticated;
 grant select, insert, update, delete on public.admin_roles to authenticated;
-revoke all on public.contact_requests from anon, authenticated;
-revoke all on public.order_requests from anon, authenticated;
+revoke all on public.contact_requests from public, anon, authenticated;
+revoke all on public.order_requests from public, anon, authenticated;
 grant insert on public.contact_requests to anon, authenticated;
 grant insert on public.order_requests to anon, authenticated;
 grant select, update on public.contact_requests to authenticated;
@@ -73,11 +73,11 @@ create policy "Super admins can add roles" on public.admin_roles
 drop policy if exists "Super admins can change roles" on public.admin_roles;
 create policy "Super admins can change roles" on public.admin_roles
   for update to authenticated using (public.current_user_has_role('super_admin'))
-  with check (public.current_user_has_role('super_admin'));
+  with check (public.current_user_has_role('super_admin') and (user_id <> auth.uid() or role = 'super_admin'));
 
 drop policy if exists "Super admins can remove roles" on public.admin_roles;
 create policy "Super admins can remove roles" on public.admin_roles
-  for delete to authenticated using (public.current_user_has_role('super_admin'));
+  for delete to authenticated using (public.current_user_has_role('super_admin') and user_id <> auth.uid());
 
 drop policy if exists "Admins can read contact requests" on public.contact_requests;
 create policy "Admins can read contact requests" on public.contact_requests

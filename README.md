@@ -43,4 +43,13 @@ La clé publishable est destinée au navigateur et reste protégée par les règ
 
 Dans le SQL Editor du projet Supabase, exécuter le script [`supabase-forms.sql`](./supabase-forms.sql). Il crée les tables `contact_requests` et `order_requests`, avec une politique RLS qui autorise uniquement l’insertion publique. Les demandes peuvent ensuite être consultées depuis le tableau de bord Supabase. L’URL Supabase peut être saisie avec ou sans le préfixe `https://`.
 
+### Administration
+
+1. Exécuter [`supabase-admin.sql`](./supabase-admin.sql) après `supabase-forms.sql`.
+2. Créer ou choisir le compte qui sera super administrateur dans `/compte`.
+3. Dans Supabase **Authentication → Users**, copier son UUID. Dans le SQL Editor, remplacer `PASTE-AUTH-USER-UUID-HERE` dans la dernière instruction commentée de `supabase-admin.sql` par cet UUID et exécuter l’instruction.
+4. Se connecter avec ce compte, puis ouvrir `/super-admin`. Cette page peut attribuer les rôles `admin` et `super_admin` aux UUID présents dans Authentication → Users.
+
+Les administrateurs utilisent `/admin` pour consulter les demandes de contact et de commande, puis changer leur statut. Les règles RLS n’autorisent la lecture et la mise à jour des demandes qu’aux comptes inscrits dans `admin_roles` ; la clé publishable du navigateur ne donne pas ces droits à un visiteur.
+
 Le panier inclut le prix produit de 499 € pour la palette EPH. Les frais de livraison restent hors paiement et sont confirmés séparément. Le sous-total enregistré est indicatif ; l’entreprise doit confirmer le prix, la disponibilité et les frais avant d’accepter la commande. Le stock de 89 palettes est une valeur de catalogue et n’est pas décrémenté automatiquement.
