@@ -2,15 +2,20 @@
 
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, LoaderCircle, RefreshCw, ShieldCheck, Trash2 } from 'lucide-react';
+import { ArrowLeft, LoaderCircle, RefreshCw, Trash2 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { useCart } from '@/components/CartProvider';
+import type { Product } from '@/lib/products';
 
 type Role = 'admin' | 'super_admin';
 type RequestStatus = 'new' | 'in_progress' | 'done';
 type RoleRow = { user_id: string; role: Role; created_at: string };
 type ContactRow = { id: number; created_at: string; name: string; email: string; phone: string | null; postal_code: string | null; subject: string; message: string; status: RequestStatus };
 type OrderRow = { id: number; created_at: string; reference: string; customer: Record<string, unknown>; shipping: Record<string, unknown> | null; items: unknown; total_cents: number; status: RequestStatus };
+type ActivityRow = { user_id: string; email: string | null; first_seen_at: string; last_seen_at: string; sign_in_count: number };
+type ClientAccountRow = { user_id: string; email: string | null; full_name: string | null; created_at: string };
+type AuditRow = { id: number; actor_user_id: string | null; actor_role: string | null; action: string; entity: string; entity_id: string | null; details: Record<string, unknown>; created_at: string };
 
 const statusLabels: Record<RequestStatus, string> = { new: 'Nouvelle', in_progress: 'En cours', done: 'Terminée' };
 const subjectLabels: Record<string, string> = { product: 'Information produit', quote: 'Devis', delivery: 'Livraison', order: 'Commande', claim: 'Réclamation', other: 'Autre' };
@@ -18,6 +23,7 @@ const euros = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR
 
 function text(value: unknown) { return typeof value === 'string' ? value : ''; }
 function date(value: string) { return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)); }
+function emptyProduct(products: Product[]): Product { return { id: Math.max(0, ...products.map((item) => item.id)) + 1, name: '', type: 'Granulés', quantity: '', price: 'Sur devis', priceAmount: 0, description: '', image: '/pellets.webp', stock: -1 }; }
 
 function StatusSelect({ value, onChange, disabled }: { value: RequestStatus; onChange: (status: RequestStatus) => void; disabled: boolean }) {
   return <select value={value} disabled={disabled} onChange={(event) => onChange(event.target.value as RequestStatus)} className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm font-semibold text-gray-800 disabled:opacity-50">
@@ -26,6 +32,7 @@ function StatusSelect({ value, onChange, disabled }: { value: RequestStatus; onC
 }
 
 export default function AdminWorkspace({ superAdminOnly = false }: { superAdminOnly?: boolean }) {
+  const siteData = useCart();
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,6 +45,16 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   const [newRole, setNewRole] = useState<Role>('admin');
   const [workingId, setWorkingId] = useState('');
   const [savingRole, setSavingRole] = useState(false);
+  const [activities, setActivities] = useState<ActivityRow[]>([]);
+  const [accounts, setAccounts] = useState<ClientAccountRow[]>([]);
+  const [audit, setAudit] = useState<AuditRow[]>([]);
+  const [bankForm, setBankForm] = useState('');
+  const [productForm, setProductForm] = useState<Product>(() => emptyProduct(siteData.products));
+  const [editingProduct, setEditingProduct] = useState(false);
+
+  useEffect(() => {
+    if (!editingProduct && !productForm.name) setProductForm(emptyProduct(siteData.products));
+  }, [siteData.products, editingProduct, productForm.name]);
 
   const loadData = useCallback(async (activeUser: User | null) => {
     if (!supabase) { setError('Supabase n’est pas configuré sur cette version du site.'); setLoading(false); return; }
@@ -55,19 +72,33 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     if (!currentRole || (superAdminOnly && currentRole !== 'super_admin')) { setLoading(false); return; }
 
     if (superAdminOnly) {
-      const roleList = await supabase.from('admin_roles').select('user_id, role, created_at').order('created_at', { ascending: true });
+      const [roleList, activityList, accountList, auditList] = await Promise.all([
+        supabase.from('admin_roles').select('user_id, role, created_at').order('created_at', { ascending: true }),
+        supabase.from('user_activity').select('user_id, email, first_seen_at, last_seen_at, sign_in_count').order('last_seen_at', { ascending: false }).limit(200),
+        supabase.from('client_accounts').select('user_id, email, full_name, created_at').order('created_at', { ascending: false }).limit(200),
+        supabase.from('admin_audit_log').select('id, actor_user_id, actor_role, action, entity, entity_id, details, created_at').order('created_at', { ascending: false }).limit(200),
+      ]);
       if (roleList.error) setError('Impossible de charger la liste des rôles.');
       else setRoles((roleList.data ?? []) as RoleRow[]);
+      if (!activityList.error) setActivities((activityList.data ?? []) as ActivityRow[]);
+      if (!accountList.error) setAccounts((accountList.data ?? []) as ClientAccountRow[]);
+      if (!auditList.error) setAudit((auditList.data ?? []) as AuditRow[]);
     } else {
-      const [contactResult, orderResult] = await Promise.all([
+      const [contactResult, orderResult, activityList, accountList, settingsResult] = await Promise.all([
         supabase.from('contact_requests').select('id, created_at, name, email, phone, postal_code, subject, message, status').order('created_at', { ascending: false }).limit(100),
         supabase.from('order_requests').select('id, created_at, reference, customer, shipping, items, total_cents, status').order('created_at', { ascending: false }).limit(100),
+        supabase.from('user_activity').select('user_id, email, first_seen_at, last_seen_at, sign_in_count').order('last_seen_at', { ascending: false }).limit(200),
+        supabase.from('client_accounts').select('user_id, email, full_name, created_at').order('created_at', { ascending: false }).limit(200),
+        supabase.from('site_settings').select('value').eq('key', 'bank_transfer').maybeSingle(),
       ]);
       if (contactResult.error || orderResult.error) setError('Impossible de charger les demandes. Vérifiez les politiques RLS de supabase-admin.sql.');
       else {
         setContacts((contactResult.data ?? []) as ContactRow[]);
         setOrders((orderResult.data ?? []) as OrderRow[]);
       }
+      if (!activityList.error) setActivities((activityList.data ?? []) as ActivityRow[]);
+      if (!accountList.error) setAccounts((accountList.data ?? []) as ClientAccountRow[]);
+      if (!settingsResult.error) setBankForm(String((settingsResult.data?.value as { details?: unknown } | null)?.details ?? ''));
     }
     setLoading(false);
   }, [superAdminOnly]);
@@ -124,6 +155,32 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     setWorkingId('');
   }
 
+  async function saveBankDetails(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); if (!supabase) return;
+    setSavingRole(true); setError(''); setNotice('');
+    const { error: saveError } = await supabase.from('site_settings').update({ value: { details: bankForm }, updated_at: new Date().toISOString() }).eq('key', 'bank_transfer');
+    if (saveError) setError('Les coordonnées bancaires n’ont pas pu être enregistrées.');
+    else window.location.reload();
+    setSavingRole(false);
+  }
+
+  async function saveProduct(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault(); if (!supabase) return;
+    const p = { ...productForm, priceAmount: productForm.priceAmount ? productForm.priceAmount : null, stock: productForm.stock !== undefined && productForm.stock < 0 ? null : productForm.stock };
+    const data = { ...p, price: typeof p.priceAmount === 'number' ? euros.format(p.priceAmount / 100) : 'Sur devis' };
+    setSavingRole(true); setError(''); setNotice('');
+    const { error: saveError } = await supabase.from('product_overrides').upsert({ product_id: p.id, data, is_deleted: false, updated_at: new Date().toISOString() }, { onConflict: 'product_id' });
+    if (saveError) setError('Le produit n’a pas pu être enregistré. Vérifiez le script SQL et votre rôle.');
+    else window.location.reload();
+    setSavingRole(false);
+  }
+
+  async function deleteProduct(productId: number) {
+    if (!supabase || !window.confirm('Supprimer ce produit du catalogue ?')) return;
+    const { error: deleteError } = await supabase.from('product_overrides').upsert({ product_id: productId, data: {}, is_deleted: true, updated_at: new Date().toISOString() }, { onConflict: 'product_id' });
+    if (deleteError) setError('Le produit n’a pas pu être supprimé.'); else window.location.reload();
+  }
+
   const canSeeWorkspace = role === 'admin' || role === 'super_admin';
   const canSeeSuperAdmin = role === 'super_admin';
 
@@ -132,19 +189,18 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-orange-600"><ArrowLeft size={16}/> Retour à la boutique</Link>
       <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
         <div><p className="text-sm font-bold uppercase tracking-[.18em] text-orange-600">ThermoPro · administration</p><h1 className="mt-2 text-3xl font-black text-gray-950 sm:text-4xl">{superAdminOnly ? 'Super administration' : 'Espace administrateur'}</h1></div>
-        {user && <div className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-gray-600">{user.email} · {role === 'super_admin' ? 'Super admin' : role === 'admin' ? 'Admin' : 'Accès standard'}</div>}
+        {user && <div className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-gray-600">{user.email}</div>}
       </div>
 
       {loading ? <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Vérification de l’accès…</div>
         : !user ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Connexion requise</h2><p className="mt-2 text-gray-600">Connectez-vous avec votre compte administrateur pour continuer.</p><Link href="/compte" className="mt-5 inline-flex rounded-xl bg-orange-600 px-5 py-3 font-bold text-white">Se connecter</Link></section>
-          : superAdminOnly && !canSeeSuperAdmin ? <section className="mt-8 rounded-2xl border border-red-200 bg-white p-8"><h2 className="text-xl font-bold text-red-800">Accès super administrateur requis</h2><p className="mt-2 text-gray-600">Votre compte ne possède pas le rôle super_admin.</p><Link href="/admin" className="mt-5 inline-flex rounded-xl bg-gray-950 px-5 py-3 font-bold text-white">Ouvrir l’administration</Link></section>
+          : superAdminOnly && !canSeeSuperAdmin ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Page indisponible</h2><p className="mt-2 text-gray-600">Cette page n’est pas accessible avec ce compte.</p></section>
             : !canSeeWorkspace ? <section className="mt-8 rounded-2xl border border-red-200 bg-white p-8"><h2 className="text-xl font-bold text-red-800">Accès administrateur requis</h2><p className="mt-2 text-gray-600">Ce compte n’a pas de rôle administrateur.</p></section>
-              : superAdminOnly ? <SuperAdminPanel roles={roles} userId={user.id} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} />
-                : <AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} />}
+              : superAdminOnly ? <><Link href="/admin" className="mt-7 inline-flex rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold">Ouvrir l’espace boutique</Link><SuperAdminPanel roles={roles} userId={user.id} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /><AuditPanel audit={audit} /></>
+                : <><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} /><ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /></>}
 
       {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
       {notice && <p role="status" className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">{notice}</p>}
-      {canSeeSuperAdmin && !superAdminOnly && <Link href="/super-admin" className="mt-6 inline-flex items-center gap-2 font-bold text-orange-700 hover:text-orange-900"><ShieldCheck size={18}/> Ouvrir la super administration</Link>}
       <button type="button" onClick={() => void loadData(user)} className="mt-8 flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900"><RefreshCw size={15}/> Actualiser les données</button>
     </div>
   </main>;
@@ -197,5 +253,46 @@ function SuperAdminPanel({ roles, userId, newRole, setNewRole, targetUserId, set
       <h2 className="text-2xl font-black">Rôles attribués</h2>
       {roles.length === 0 ? <p className="mt-4 text-gray-500">Aucun rôle attribué. Le premier super administrateur doit être créé dans le SQL Editor.</p> : <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead><tr className="border-b text-gray-500"><th className="pb-3 pr-4">UUID utilisateur</th><th className="pb-3 pr-4">Rôle</th><th className="pb-3 pr-4">Ajouté le</th><th className="pb-3 text-right">Action</th></tr></thead><tbody>{roles.map((entry) => <tr key={entry.user_id} className="border-b last:border-0"><td className="py-4 pr-4 font-mono text-xs">{entry.user_id}</td><td className="py-4 pr-4 font-bold">{entry.role === 'super_admin' ? 'Super admin' : 'Admin'}</td><td className="py-4 pr-4 text-gray-500">{date(entry.created_at)}</td><td className="py-4 text-right"><button type="button" disabled={entry.user_id === userId || workingId === entry.user_id} onClick={() => void onRemove(entry.user_id)} title={entry.user_id === userId ? 'Vous ne pouvez pas retirer votre propre accès ici.' : 'Retirer les droits'} className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 font-semibold text-red-700 disabled:cursor-not-allowed disabled:opacity-40"><Trash2 size={15}/> Retirer</button></td></tr>)}</tbody></table></div>}
     </section>
+  </>;
+}
+
+function ActivityPanel({ activities }: { activities: ActivityRow[] }) {
+  const onlineCutoff = Date.now() - 2 * 60_000;
+  return <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
+    <h2 className="text-2xl font-black">Activité des comptes</h2>
+    <p className="mt-2 text-sm text-gray-500">Un compte est marqué actif si sa dernière présence remonte à moins de deux minutes.</p>
+    {activities.length === 0 ? <p className="mt-4 text-gray-500">Aucune connexion enregistrée.</p> : <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[680px] text-left text-sm"><thead><tr className="border-b text-gray-500"><th className="pb-3 pr-4">Compte</th><th className="pb-3 pr-4">État</th><th className="pb-3 pr-4">Dernière activité</th><th className="pb-3">Connexions</th></tr></thead><tbody>{activities.map((entry) => <tr key={entry.user_id} className="border-b last:border-0"><td className="py-4 pr-4">{entry.email ?? entry.user_id}</td><td className="py-4 pr-4"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${new Date(entry.last_seen_at).getTime() > onlineCutoff ? 'bg-emerald-50 text-emerald-800' : 'bg-stone-100 text-stone-600'}`}>{new Date(entry.last_seen_at).getTime() > onlineCutoff ? 'En ligne' : 'Hors ligne'}</span></td><td className="py-4 pr-4 text-gray-600">{date(entry.last_seen_at)}</td><td className="py-4">{entry.sign_in_count}</td></tr>)}</tbody></table></div>}
+  </section>;
+}
+
+function AccountRegistrationPanel({ accounts }: { accounts: ClientAccountRow[] }) {
+  return <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
+    <h2 className="text-2xl font-black">Comptes inscrits</h2>
+    <p className="mt-2 text-sm text-gray-500">Les inscriptions effectuées sur le site apparaissent ici, même avant leur première connexion confirmée.</p>
+    {accounts.length === 0 ? <p className="mt-4 text-gray-500">Aucune inscription trouvée. Vérifiez que le script SQL de l’administration a été exécuté dans le projet Supabase utilisé par le site.</p> : <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[560px] text-left text-sm"><thead><tr className="border-b text-gray-500"><th className="pb-3 pr-4">Nom</th><th className="pb-3 pr-4">Adresse e-mail</th><th className="pb-3 pr-4">Inscrit le</th><th className="pb-3">UUID</th></tr></thead><tbody>{accounts.map((account) => <tr key={account.user_id} className="border-b last:border-0"><td className="py-4 pr-4">{account.full_name || '—'}</td><td className="py-4 pr-4">{account.email || '—'}</td><td className="py-4 pr-4 text-gray-600">{date(account.created_at)}</td><td className="py-4 font-mono text-xs">{account.user_id}</td></tr>)}</tbody></table></div>}
+  </section>;
+}
+
+function AuditPanel({ audit }: { audit: AuditRow[] }) {
+  const actionNames: Record<string, string> = { insert: 'Création', update: 'Modification', delete: 'Suppression' };
+  return <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
+    <h2 className="text-2xl font-black">Journal des actions</h2>
+    <p className="mt-2 text-sm text-gray-500">Journal privé des changements faits dans l’administration.</p>
+    {audit.length === 0 ? <p className="mt-4 text-gray-500">Aucune action enregistrée.</p> : <div className="mt-5 space-y-3">{audit.map((entry) => <article key={entry.id} className="rounded-xl border border-stone-200 p-4"><div className="flex flex-wrap justify-between gap-2"><b>{actionNames[entry.action] ?? entry.action} · {entry.entity}</b><time className="text-sm text-gray-500">{date(entry.created_at)}</time></div><p className="mt-1 text-sm text-gray-600">Compte : {entry.actor_user_id ?? 'système'} · identifiant : {entry.entity_id ?? '—'} · rôle : {entry.actor_role ?? 'aucun'}</p><details className="mt-3"><summary className="cursor-pointer text-sm font-semibold text-orange-700">Afficher les valeurs enregistrées</summary><pre className="mt-2 max-h-80 overflow-auto rounded-lg bg-stone-50 p-3 text-xs leading-5">{JSON.stringify(entry.details, null, 2)}</pre></details></article>)}</div>}
+  </section>;
+}
+
+function ProductAdminPanel({ products, product, setProduct, editing, setEditing, saving, onSave, onDelete, onBankSave, bankForm, setBankForm }: {
+  products: Product[]; product: Product; setProduct: (product: Product) => void; editing: boolean; setEditing: (editing: boolean) => void; saving: boolean;
+  onSave: (event: FormEvent<HTMLFormElement>) => void; onDelete: (id: number) => void; onBankSave: (event: FormEvent<HTMLFormElement>) => void; bankForm: string; setBankForm: (value: string) => void;
+}) {
+  const input = 'mt-1 w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm';
+  return <>
+    <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
+      <h2 className="text-2xl font-black">Catalogue et stock</h2>
+      <div className="mt-5 space-y-3">{products.map((item) => <article key={item.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-stone-200 p-4"><div><b>{item.name}</b><p className="mt-1 text-sm text-gray-500">{item.price} · {item.stock === 0 ? 'Rupture de stock' : item.stock !== undefined ? `${item.stock} en stock` : item.availability ?? 'Stock non suivi'}</p></div><div className="flex gap-2"><button type="button" onClick={() => { setProduct({ ...item, priceAmount: item.priceAmount ?? 0, stock: item.stock ?? -1 }); setEditing(true); window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }} className="rounded-lg border px-3 py-2 text-sm font-bold">Modifier</button><button type="button" onClick={() => onDelete(item.id)} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-bold text-red-700">Supprimer</button></div></article>)}</div>
+      <form onSubmit={onSave} className="mt-6 rounded-xl bg-stone-50 p-4 sm:p-5"><h3 className="text-lg font-bold">{editing ? 'Modifier le produit sélectionné' : 'Ajouter un produit'}</h3><div className="mt-4 grid gap-4 sm:grid-cols-2"><label className="text-sm font-semibold">ID produit<input required type="number" min="1" value={product.id} onChange={(e) => setProduct({ ...product, id: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Nom<input required value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Catégorie<input required value={product.type} onChange={(e) => setProduct({ ...product, type: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Conditionnement<input required value={product.quantity} onChange={(e) => setProduct({ ...product, quantity: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Prix en centimes (0 = sur devis)<input type="number" min="0" value={product.priceAmount ?? 0} onChange={(e) => setProduct({ ...product, priceAmount: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Stock (-1 non suivi, 0 rupture)<input required type="number" min="-1" value={product.stock ?? -1} onChange={(e) => { const stock = Number(e.target.value); setProduct({ ...product, stock, availability: stock < 0 ? (product.availability === 'Rupture de stock' ? undefined : product.availability) : stock === 0 ? 'Rupture de stock' : 'En stock' }); }} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Image (chemin dans /public, ex. /pellets.webp)<input required value={product.image} onChange={(e) => setProduct({ ...product, image: e.target.value })} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Description<textarea required rows={3} value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} className={input} /></label></div><div className="mt-4 flex flex-wrap gap-3"><button type="submit" disabled={saving} className="rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement…' : 'Enregistrer le produit'}</button>{editing && <button type="button" onClick={() => { setEditing(false); setProduct(emptyProduct(products)); }} className="rounded-lg border px-5 py-3 font-bold">Nouveau produit</button>}</div></form>
+    </section>
+    <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7"><h2 className="text-2xl font-black">Coordonnées de virement</h2><form onSubmit={onBankSave} className="mt-4"><label className="text-sm font-semibold">Informations bancaires affichées aux clients<textarea rows={5} value={bankForm} onChange={(e) => setBankForm(e.target.value)} placeholder="Bénéficiaire, IBAN, BIC et référence à indiquer…" className={input} /></label><button type="submit" disabled={saving} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">Enregistrer</button></form></section>
   </>;
 }

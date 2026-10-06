@@ -1,7 +1,8 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { products } from '@/lib/products';
+import { products as initialProducts, type Product } from '@/lib/products';
+import { supabase } from '@/lib/supabase';
 
 type CartLine = { productId: number; quantity: number };
 type CartContextValue = {
@@ -12,6 +13,8 @@ type CartContextValue = {
   setQuantity: (productId: number, quantity: number) => void;
   removeItem: (productId: number) => void;
   clearCart: () => void;
+  products: Product[];
+  bankDetails: string;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -20,22 +23,57 @@ const storageKey = 'thermopro-cart-v1';
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartLine[]>([]);
   const [ready, setReady] = useState(false);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [bankDetails, setBankDetails] = useState('');
+  const [catalogReady, setCatalogReady] = useState(!supabase);
 
   useEffect(() => {
+    if (!supabase) return;
+    let active = true;
+    void Promise.all([
+      supabase.from('product_overrides').select('product_id, data, is_deleted'),
+      supabase.from('site_settings').select('value').eq('key', 'bank_transfer').maybeSingle(),
+    ]).then(([productResult, settingsResult]) => {
+      if (!active) return;
+      if (!productResult.error && productResult.data) {
+        const overrideMap = new Map(productResult.data.map((row) => [row.product_id, row] as const));
+        const merged = initialProducts.flatMap((item) => {
+          const row = overrideMap.get(item.id);
+          if (row?.is_deleted) return [];
+          const data = (row?.data ?? {}) as Omit<Partial<Product>, 'stock' | 'priceAmount'> & { stock?: number | null; priceAmount?: number | null };
+          return [{ ...item, ...data, stock: data.stock === null ? undefined : data.stock, priceAmount: data.priceAmount === null ? undefined : data.priceAmount } as Product];
+        });
+        const additions = productResult.data.filter((row) => !row.is_deleted && !initialProducts.some((item) => item.id === row.product_id)).map((row) => {
+          const data = row.data as Omit<Product, 'stock' | 'priceAmount'> & { stock?: number | null; priceAmount?: number | null };
+          return { ...data, stock: data.stock === null ? undefined : data.stock, priceAmount: data.priceAmount === null ? undefined : data.priceAmount } as Product;
+        });
+        setProducts([...merged, ...additions]);
+      }
+      if (!settingsResult.error && settingsResult.data?.value && typeof settingsResult.data.value === 'object') {
+        setBankDetails(String((settingsResult.data.value as { details?: unknown }).details ?? ''));
+      }
+      setCatalogReady(true);
+    }).catch(() => setCatalogReady(true));
+    return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    if (!catalogReady) return;
     try {
       const stored: unknown = JSON.parse(window.localStorage.getItem(storageKey) ?? '[]');
       if (Array.isArray(stored)) {
         setItems(stored.flatMap((line): CartLine[] => {
           const product = products.find((item) => item.id === line?.productId);
           if (!product || !Number.isInteger(line?.quantity) || line.quantity < 1) return [];
-          return [{ productId: product.id, quantity: product.stock ? Math.min(line.quantity, product.stock) : line.quantity }];
+          if (product.stock === 0) return [];
+          return [{ productId: product.id, quantity: product.stock !== undefined ? Math.min(line.quantity, product.stock) : line.quantity }];
         }));
       }
     } catch {
       window.localStorage.removeItem(storageKey);
     }
     setReady(true);
-  }, []);
+  }, [products, catalogReady]);
 
   useEffect(() => {
     if (ready) {
@@ -47,20 +85,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setItems((current) => {
       const existing = current.find((line) => line.productId === productId);
       const stock = products.find((product) => product.id === productId)?.stock;
-      if (existing && stock && existing.quantity >= stock) return current;
+      if (existing && stock !== undefined && existing.quantity >= stock) return current;
       return existing
         ? current.map((line) => line.productId === productId ? { ...line, quantity: line.quantity + 1 } : line)
         : [...current, { productId, quantity: 1 }];
     });
-  }, []);
+  }, [products]);
 
   const setQuantity = useCallback((productId: number, quantity: number) => {
     const stock = products.find((product) => product.id === productId)?.stock;
-    const nextQuantity = stock ? Math.min(quantity, stock) : quantity;
-    setItems((current) => quantity < 1
+    const nextQuantity = stock !== undefined ? Math.min(quantity, stock) : quantity;
+    setItems((current) => quantity < 1 || nextQuantity < 1
       ? current.filter((line) => line.productId !== productId)
       : current.map((line) => line.productId === productId ? { ...line, quantity: nextQuantity } : line));
-  }, []);
+  }, [products]);
 
   const removeItem = useCallback((productId: number) => {
     setItems((current) => current.filter((line) => line.productId !== productId));
@@ -75,7 +113,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setQuantity,
     removeItem,
     clearCart,
-  }), [items, ready, addItem, setQuantity, removeItem, clearCart]);
+    products,
+    bankDetails,
+  }), [items, ready, addItem, setQuantity, removeItem, clearCart, products, bankDetails]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

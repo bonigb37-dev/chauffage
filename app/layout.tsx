@@ -3,6 +3,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { CartProvider } from '@/components/CartProvider';
+import ActivityTracker from '@/components/ActivityTracker';
 
 export const metadata: Metadata = {
   title: 'ThermoPro — Granulés, bois de chauffage & briquettes',
@@ -15,5 +16,5 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fr"><body><CartProvider><Navbar />{children}<Footer /></CartProvider></body></html>;
+  return <html lang="fr"><body><CartProvider><ActivityTracker /><Navbar />{children}<Footer /></CartProvider></body></html>;
 }

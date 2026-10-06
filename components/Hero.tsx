@@ -7,8 +7,18 @@ import { ArrowRight, BadgeCheck, Boxes, Truck } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <section className="grid-pattern overflow-hidden bg-[#fffaf5]">
-      <div className="container grid items-center gap-10 py-12 sm:gap-12 sm:py-16 lg:min-h-[680px] lg:grid-cols-2 lg:py-20">
+    <section className="relative isolate overflow-hidden bg-[#fffaf5]">
+      <Image
+        src="/BD.jpg"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        aria-hidden="true"
+        className="z-0 object-cover object-center"
+      />
+      <div aria-hidden="true" className="absolute inset-0 z-[1] bg-[#fffaf5]/85 lg:bg-gradient-to-r lg:from-[#fffaf5]/95 lg:via-[#fffaf5]/85 lg:to-[#fffaf5]/60" />
+      <div className="container relative z-10 grid items-center gap-10 py-12 sm:gap-12 sm:py-16 lg:min-h-[680px] lg:grid-cols-2 lg:py-20">
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}

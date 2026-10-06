@@ -4,7 +4,6 @@ import { useState, type FormEvent } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Landmark, ShieldCheck } from 'lucide-react';
-import { products } from '@/lib/products';
 import { useCart } from '@/components/CartProvider';
 import PaymentMethods from '@/components/PaymentMethods';
 import { supabase } from '@/lib/supabase';
@@ -14,7 +13,7 @@ const states = ['Bade-Wurtemberg', 'Bavière', 'Berlin', 'Brandebourg', 'Brême'
 const inputClass = 'mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
 export default function CheckoutPageContent() {
-  const { items, ready } = useCart();
+  const { items, ready, products } = useCart();
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState('');
   const [differentShipping, setDifferentShipping] = useState(false);

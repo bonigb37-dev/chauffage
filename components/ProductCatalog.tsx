@@ -2,10 +2,9 @@
 
 import { useMemo, useState } from 'react';
 import { Search, SlidersHorizontal } from 'lucide-react';
-import { products } from '@/lib/products';
+import { useCart } from '@/components/CartProvider';
 import ProductCard from '@/components/ProductCard';
 
-const categories = ['Tous les produits', ...new Set(products.map((product) => product.type))];
 const sectionOrder = ['Granulés de marques', 'Formats compacts', 'Autres granulés', 'Bois de chauffage', 'Briquettes', 'Bois d’allumage'];
 const sectionDescriptions: Record<string, string> = {
   'Granulés de marques': 'Références EPH, TotalEnergies, HEIZFUXX, HELIOS, PROXIMA STAR et FireStixx.',
@@ -17,8 +16,10 @@ const sectionDescriptions: Record<string, string> = {
 };
 
 export default function ProductCatalog() {
+  const { products } = useCart();
   const [category, setCategory] = useState('Tous les produits');
   const [query, setQuery] = useState('');
+  const categories = ['Tous les produits', ...new Set(products.map((product) => product.type))];
   const visibleProducts = useMemo(() => products.filter((product) => {
     const matchesCategory = category === 'Tous les produits' || product.type === category;
     const terms = `${product.name} ${product.type} ${product.quantity} ${product.description}`.toLocaleLowerCase('fr');
@@ -30,7 +31,9 @@ export default function ProductCatalog() {
       const section = product.section ?? product.type;
       grouped.set(section, [...(grouped.get(section) ?? []), product]);
     }
-    return sectionOrder.flatMap((section) => grouped.has(section) ? [[section, grouped.get(section)!] as const] : []);
+    const ordered = sectionOrder.flatMap((section) => grouped.has(section) ? [[section, grouped.get(section)!] as const] : []);
+    const customSections = [...grouped.entries()].filter(([section]) => !sectionOrder.includes(section));
+    return [...ordered, ...customSections];
   }, [visibleProducts]);
 
   return (

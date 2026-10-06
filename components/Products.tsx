@@ -1,10 +1,12 @@
+'use client';
+
 import Link from 'next/link';
-import { products } from '@/lib/products';
+import { useCart } from '@/components/CartProvider';
 import ProductCard from './ProductCard';
 
-const featured = products.filter((product) => [2, 51, 52].includes(product.id));
-
 export default function Products() {
+  const { products } = useCart();
+  const featured = products.filter((product) => [2, 51, 52].includes(product.id));
   return (
     <section className="container py-24">
       <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">

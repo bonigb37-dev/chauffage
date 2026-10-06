@@ -99,9 +99,9 @@ export default function ProductCard({ p }: { p: Product }) {
           {demoRating.toLocaleString('fr-FR', { maximumFractionDigits: 1 })}/5
         </span>
         <p className="mt-1.5 min-h-9 text-[13px] leading-[1.15rem] text-gray-600">{p.description}</p>
-        <div className={`mt-2 flex min-h-5 items-center gap-1.5 text-xs font-semibold ${p.stock !== undefined || p.availability?.startsWith('En stock') ? 'text-emerald-700' : 'text-gray-500'}`}>
-          {(p.stock !== undefined || p.availability?.startsWith('En stock')) && <Check size={17} strokeWidth={2.7} />}
-          <span>{p.stock !== undefined ? `En stock · ${p.stock} palettes` : p.availability ?? 'Disponibilité à confirmer'}</span>
+        <div className={`mt-2 flex min-h-5 items-center gap-1.5 text-xs font-semibold ${p.stock === 0 ? 'text-red-700' : p.stock !== undefined || p.availability?.startsWith('En stock') ? 'text-emerald-700' : 'text-gray-500'}`}>
+          {(p.stock !== undefined && p.stock > 0) || p.availability?.startsWith('En stock') ? <Check size={17} strokeWidth={2.7} /> : null}
+          <span>{p.stock === 0 ? 'Rupture de stock' : p.stock !== undefined ? `En stock · ${p.stock} unités` : p.availability ?? 'Disponibilité à confirmer'}</span>
         </div>
         <div className="mt-auto pt-3">
           <div className="flex min-h-[3.75rem] items-center justify-between gap-2 border-t border-gray-100 pt-2.5">
