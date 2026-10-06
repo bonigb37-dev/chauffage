@@ -218,7 +218,7 @@ const faqs = [
 ];
 
 export default function PelletGuide() {
-  const { addToCart } = useCart();
+  const { addItem } = useCart();
   const [activeTab, setActiveTab] = useState<'all' | 'qualite' | 'conditionnement' | 'livraison' | 'energie'>('all');
   const [openDetailId, setOpenDetailId] = useState<string | null>('certifications');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
@@ -296,15 +296,7 @@ export default function PelletGuide() {
   }
 
   const handleAddRecommendedToCart = () => {
-    addToCart({
-      id: 2,
-      name: 'Granulés EPH Premium DINplus/ENplus A1 – palette',
-      price: '499,00 €',
-      priceAmount: 49900,
-      image: '/eph-premium-palette.webp',
-      quantity: '65 sacs en papier · 975 kg',
-      articleNumber: '10005-975',
-    }, recommendedPalettes);
+    addItem(2, recommendedPalettes);
     setAddedNotice(true);
     setTimeout(() => setAddedNotice(false), 3500);
   };
