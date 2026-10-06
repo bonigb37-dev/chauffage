@@ -93,3 +93,22 @@ a { color:inherit; text-decoration:none; }
   .account-card { padding:1.35rem; border-radius:1.05rem; }
   .account-card__top { margin-bottom:1.5rem; }
 }
+
+/* Fallback & contrast fix for white rounded buttons on colored banners */
+a.bg-white, button.bg-white {
+  color: #ea580c !important;
+}
+a.bg-white *, button.bg-white * {
+  color: #ea580c !important;
+}
+
+/* Fallback & contrast fix for dark rounded buttons */
+a.bg-gray-950, button.bg-gray-950,
+.bg-gray-950 a, .bg-gray-950 button {
+  color: #ffffff !important;
+}
+a.bg-gray-950 *, button.bg-gray-950 * {
+  color: #ffffff !important;
+}
+
+

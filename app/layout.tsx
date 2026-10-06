@@ -6,7 +6,7 @@ import { CartProvider } from '@/components/CartProvider';
 import ActivityTracker from '@/components/ActivityTracker';
 
 export const metadata: Metadata = {
-  title: 'ThermoPro — Granulés, bois de chauffage & briquettes',
+  title: 'Bren-nholz — Granulés, bois de chauffage & briquettes',
   description: 'Découvrez nos granulés de bois, bûches, briquettes et produits d’allumage. Catalogue et demande de devis.',
 };
 

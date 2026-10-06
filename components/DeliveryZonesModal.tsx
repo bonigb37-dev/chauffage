@@ -135,13 +135,13 @@ export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
           <div className="flex items-start justify-between gap-4">
             <div>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-sm">
-                <Truck size={14} /> Livraison gratuite bundesweit
+                <Truck size={14} /> Livraison à domicile · Réductions sur quantité
               </span>
               <h2 id="modal-delivery-title" className="mt-3 text-2xl sm:text-3xl font-black tracking-tight">
                 Zones de livraison à domicile en Allemagne
               </h2>
               <p className="mt-2 text-sm sm:text-base text-orange-100 max-w-2xl leading-relaxed">
-                Nous livrons gratuitement sur l’ensemble du territoire allemand (les 16 Länder, {totalCitiesCount}+ villes et communes).
+                Nous livrons sur l’ensemble du territoire allemand (les 16 Länder, {totalCitiesCount}+ villes et communes). Les frais de transport sont ajustés selon votre adresse et nous offrons des réductions pour les commandes volumineuses.
               </p>
             </div>
             <button
@@ -213,7 +213,7 @@ export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
             <div className="py-12 text-center text-gray-500">
               <p className="text-lg font-bold text-gray-800">Aucune ville trouvée pour « {query} »</p>
               <p className="mt-1 text-sm">
-                Toutes les communes d’Allemagne sont éligibles à la livraison gratuite à domicile. Contactez-nous en cas de doute.
+                Toutes les communes d’Allemagne sont éligibles à la livraison à domicile. Contactez-nous pour connaître le tarif exact ou vos avantages sur quantité.
               </p>
             </div>
           )}

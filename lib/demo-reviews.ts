@@ -110,6 +110,7 @@ const reviewCopy: Record<'pellets' | 'briquettes' | 'logs' | 'kindling', { start
 };
 
 const ratings = [5, 5, 4, 5, 4, 5, 3, 5, 4, 5, 5, 4, 5, 4, 5, 3, 5, 4, 5, 5];
+const reviewCounts = [14, 28, 35, 10, 20, 32, 19];
 
 const germanNames = [
   'Thomas Müller',
@@ -148,14 +149,15 @@ function getReviewGroup(product: Product): keyof typeof reviewCopy {
 
 export function getDemoReviews(product: Product): DemoReview[] {
   const copy = reviewCopy[getReviewGroup(product)];
-  return ratings.map((rating, index) => {
+  const count = reviewCounts[(product.id - 1) % reviewCounts.length];
+  return Array.from({ length: count }, (_, index) => {
     const start = copy.starts[index % copy.starts.length];
     const endIndex = (index + product.id) % copy.ends.length;
     const nameIndex = (index + product.id) % germanNames.length;
     return {
       id: `${product.id}-demo-${index + 1}`,
       label: germanNames[nameIndex],
-      rating,
+      rating: ratings[(index + product.id) % ratings.length],
       text: `${start} ${copy.ends[endIndex]}`,
     };
   });

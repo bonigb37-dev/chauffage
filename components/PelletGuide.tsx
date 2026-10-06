@@ -156,7 +156,7 @@ const guideDetails: GuideDetail[] = [
         'Prise de rendez-vous téléphonique préalable par le transporteur pour convenir du jour de passage.'
       ],
       technicalData: [
-        { label: 'Frais de port', value: 'Gratuits en Allemagne' },
+        { label: 'Frais de port', value: 'Calculés selon adresse (réduction sur volume)' },
         { label: 'Largeur minimale d’accès', value: '1,20 mètre' },
         { label: 'Hauteur minimale d’accès', value: '2,10 mètres' },
         { label: 'Poids total palette', value: 'Env. 1 000 kg avec emballage' }
@@ -342,7 +342,7 @@ export default function PelletGuide() {
               <Sparkles size={16} className="text-orange-400" /> 100 % Résineux pur
             </div>
             <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur">
-              <Truck size={16} className="text-orange-400" /> Livraison avec hayon offerte
+              <Truck size={16} className="text-orange-400" /> Livraison & tarif dégressif
             </div>
           </div>
         </div>
@@ -476,7 +476,7 @@ export default function PelletGuide() {
                     <Zap size={16} /> Énergie : {energyEquiv}
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Truck size={16} /> Livraison offerte en Allemagne
+                    <Truck size={16} /> Livraison à domicile en Allemagne
                   </span>
                 </div>
               </div>
@@ -485,10 +485,11 @@ export default function PelletGuide() {
                 <button
                   type="button"
                   onClick={handleAddRecommendedToCart}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black text-orange-600 transition hover:bg-orange-50 shadow-md"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black transition hover:bg-orange-50 shadow-md"
+                  style={{ color: '#ea580c' }}
                 >
-                  <ShoppingCart size={18} />
-                  Commander la quantité recommandée
+                  <ShoppingCart size={18} style={{ color: '#ea580c' }} />
+                  <span style={{ color: '#ea580c' }}>Commander la quantité recommandée</span>
                 </button>
                 {addedNotice && (
                   <p className="text-center text-xs font-bold text-white bg-green-600/80 px-3 py-1.5 rounded-lg animate-pulse">
@@ -798,15 +799,16 @@ export default function PelletGuide() {
             Prêt à passer votre commande de granulés ?
           </h2>
           <p className="mt-3 text-sm sm:text-base text-orange-100 max-w-2xl mx-auto">
-            Découvrez l’ensemble de nos emballages en sacs et nos palettes de granulés certifiés ENplus A1 / DINplus avec livraison gratuite dans toute l’Allemagne.
+            Découvrez l’ensemble de nos emballages en sacs et nos palettes de granulés certifiés ENplus A1 / DINplus avec livraison à domicile en Allemagne.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/produits"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-black text-orange-600 transition hover:bg-orange-50 shadow-md"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-black transition hover:bg-orange-50 shadow-md"
+              style={{ color: '#ea580c' }}
             >
-              Voir tous les granulés de bois
-              <ArrowRight size={18} />
+              <span style={{ color: '#ea580c' }}>Voir tous les granulés de bois</span>
+              <ArrowRight size={18} style={{ color: '#ea580c' }} />
             </Link>
             <Link
               href="/devis"

@@ -9,7 +9,7 @@ type CartContextValue = {
   items: CartLine[];
   itemCount: number;
   ready: boolean;
-  addItem: (productId: number) => void;
+  addItem: (productId: number, quantityToAdd?: number) => void;
   setQuantity: (productId: number, quantity: number) => void;
   removeItem: (productId: number) => void;
   clearCart: () => void;
@@ -41,11 +41,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           const row = overrideMap.get(item.id);
           if (row?.is_deleted) return [];
           const data = (row?.data ?? {}) as Omit<Partial<Product>, 'stock' | 'priceAmount'> & { stock?: number | null; priceAmount?: number | null };
-          return [{ ...item, ...data, stock: data.stock === null ? undefined : data.stock, priceAmount: data.priceAmount === null ? undefined : data.priceAmount } as Product];
+          const resolvedPriceAmount = (typeof data.priceAmount === 'number' && data.priceAmount > 0) ? data.priceAmount : (item.priceAmount ?? 990);
+          return [{
+            ...item,
+            ...data,
+            stock: data.stock === null ? undefined : data.stock,
+            priceAmount: resolvedPriceAmount,
+          } as Product];
         });
         const additions = productResult.data.filter((row) => !row.is_deleted && !initialProducts.some((item) => item.id === row.product_id)).map((row) => {
           const data = row.data as Omit<Product, 'stock' | 'priceAmount'> & { stock?: number | null; priceAmount?: number | null };
-          return { ...data, stock: data.stock === null ? undefined : data.stock, priceAmount: data.priceAmount === null ? undefined : data.priceAmount } as Product;
+          const resolvedPriceAmount = (typeof data.priceAmount === 'number' && data.priceAmount > 0) ? data.priceAmount : 990;
+          return {
+            ...data,
+            stock: data.stock === null ? undefined : data.stock,
+            priceAmount: resolvedPriceAmount,
+          } as Product;
         });
         setProducts([...merged, ...additions]);
       }
@@ -81,14 +92,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, ready]);
 
-  const addItem = useCallback((productId: number) => {
+  const addItem = useCallback((productId: number, quantityToAdd: number = 1) => {
     setItems((current) => {
       const existing = current.find((line) => line.productId === productId);
       const stock = products.find((product) => product.id === productId)?.stock;
-      if (existing && stock !== undefined && existing.quantity >= stock) return current;
-      return existing
-        ? current.map((line) => line.productId === productId ? { ...line, quantity: line.quantity + 1 } : line)
-        : [...current, { productId, quantity: 1 }];
+      const addCount = Math.max(1, quantityToAdd);
+      if (existing) {
+        const newQty = existing.quantity + addCount;
+        const finalQty = stock !== undefined ? Math.min(newQty, stock) : newQty;
+        return current.map((line) => line.productId === productId ? { ...line, quantity: finalQty } : line);
+      }
+      const finalQty = stock !== undefined ? Math.min(addCount, stock) : addCount;
+      return [...current, { productId, quantity: finalQty }];
     });
   }, [products]);
 

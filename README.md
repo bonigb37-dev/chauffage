@@ -1,4 +1,4 @@
-# ThermoPro — site professionnel de chauffage
+# Bren-nholz — site professionnel de chauffage
 
 ## Installation
 

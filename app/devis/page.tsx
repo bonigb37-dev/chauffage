@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Calculator, CheckCircle2, FileText, PhoneCall, ShieldCheck, Truck } from 'lucide-react';
+import { ArrowRight, Calculator, CheckCircle2, FileText, MapPin, PhoneCall, ShieldCheck, Truck } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
 import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 
@@ -34,18 +34,19 @@ export default function DemandeDevis() {
       const address = String(form.get('address') ?? '').trim();
       const postalCode = String(form.get('postalCode') ?? '').trim();
       const city = String(form.get('city') ?? '').trim();
+      const regionState = String(form.get('regionState') ?? 'Allemagne');
       const productType = String(form.get('productType') ?? '');
       const formatChoice = String(form.get('formatChoice') ?? '');
       const volumeQuantity = String(form.get('volumeQuantity') ?? '');
       const deliveryAccess = String(form.get('deliveryAccess') ?? '');
       const details = String(form.get('details') ?? '').trim();
 
-      const messageContent = `[DEMANDE DE DEVIS ${clientType.toUpperCase()}]
-${companyName ? `Entreprise/Raison sociale: ${companyName}\n` : ''}Type de produit: ${productType}
-Format/Dimension: ${formatChoice}
-Quantité estimée: ${volumeQuantity}
-Adresse de livraison: ${address}, ${postalCode} ${city}
-Accès livraison: ${deliveryAccess}
+      const messageContent = `[DEMANDE DE DEVIS ALLEMAGNE - ${clientType.toUpperCase()}]
+${companyName ? `Firme / Raison sociale: ${companyName}\n` : ''}Produit: ${productType}
+Format: ${formatChoice}
+Quantité: ${volumeQuantity}
+Adresse en Allemagne: ${address}, ${postalCode} ${city} (${regionState})
+Accès camion/Spedition: ${deliveryAccess}
 Précisions: ${details}`;
 
       const { error: insertError } = await supabase.from('contact_requests').insert({
@@ -53,7 +54,7 @@ Précisions: ${details}`;
         email,
         phone: phone || null,
         postal_code: postalCode || null,
-        subject: `Devis - ${productType} (${volumeQuantity})`,
+        subject: `Devis Allemagne - ${productType} (${postalCode})`,
         message: messageContent,
       });
 
@@ -62,7 +63,7 @@ Précisions: ${details}`;
         return;
       }
 
-      setNotice('Votre demande de devis a été transmise à notre service commercial. Vous recevrez une réponse chiffrée sous 24 heures ouvrées.');
+      setNotice('Vielen Dank! Votre demande de devis pour l’Allemagne a été transmise. Notre service commercial vous répondra sous 24 heures ouvrées.');
       formElement.reset();
     } catch {
       setError('Une erreur est survenue lors de l’envoi. Veuillez vérifier votre connexion.');
@@ -76,14 +77,19 @@ Précisions: ${details}`;
       {/* Hero Header */}
       <section className="bg-gradient-to-b from-[#2d221c] to-[#1d1612] py-14 text-white sm:py-20">
         <div className="container">
-          <p className="inline-flex items-center gap-2 rounded-full bg-orange-500/20 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-400 backdrop-blur-sm border border-orange-500/30">
-            <Calculator size={14} /> Service Commercial & Tarification
-          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="inline-flex items-center gap-2 rounded-full bg-orange-500/20 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-400 backdrop-blur-sm border border-orange-500/30">
+              <Calculator size={14} /> Service Commercial & Devis
+            </p>
+            <p className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-bold text-stone-200 backdrop-blur-sm">
+              <MapPin size={13} className="text-orange-400" /> Vente & Livraison sur toute l’Allemagne (Deutschland)
+            </p>
+          </div>
           <h1 className="mt-4 max-w-3xl text-3xl font-black leading-tight sm:text-5xl">
-            Demande de devis gratuit & sur-mesure
+            Demande de devis gratuit pour l’Allemagne
           </h1>
           <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-stone-300">
-            Obtenez un chiffrage exact sous 24h ouvrées pour vos besoins en bois de chauffage, granulés, briquettes et livraisons par volume.
+            Obtenez un chiffrage personnalisé sous 24h ouvrées pour vos livraisons de bois de chauffage, granulés et briquettes partout en Allemagne.
           </p>
         </div>
       </section>
@@ -94,17 +100,17 @@ Précisions: ${details}`;
         <section className="rounded-3xl border border-stone-200 bg-white p-6 shadow-sm sm:p-9">
           <div className="border-b border-stone-100 pb-6">
             <h2 className="text-2xl font-black text-gray-950 flex items-center gap-3">
-              <FileText className="text-orange-600" size={26} /> Formulaire de chiffrage
+              <FileText className="text-orange-600" size={26} /> Chiffrage sur-mesure (Deutschland)
             </h2>
             <p className="mt-1.5 text-sm text-gray-500">
-              Complétez les informations ci-dessous afin que nous puissions calculer vos tarifs dégressifs et frais de transport exacts.
+              Remplissez le formulaire ci-dessous avec votre code postal allemand (PLZ) pour calculer vos tarifs dégressifs et les frais de transport par transporteur spécialisé.
             </p>
           </div>
 
           <form onSubmit={submit} className="mt-7 space-y-6">
             {/* Type de client */}
             <div>
-              <span className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">Vous êtes</span>
+              <span className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">Statut du client</span>
               <div className="grid grid-cols-2 gap-3 sm:w-80">
                 <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-stone-200 p-3 text-sm font-bold text-gray-800 transition has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 has-[:checked]:text-orange-700">
                   <input type="radio" name="clientType" value="Particulier" defaultChecked className="sr-only" />
@@ -112,17 +118,17 @@ Précisions: ${details}`;
                 </label>
                 <label className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-stone-200 p-3 text-sm font-bold text-gray-800 transition has-[:checked]:border-orange-500 has-[:checked]:bg-orange-50 has-[:checked]:text-orange-700">
                   <input type="radio" name="clientType" value="Professionnel" className="sr-only" />
-                  Professionnel
+                  Professionnel / Firme
                 </label>
               </div>
             </div>
 
             {/* Coordonnées */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <label className="text-xs font-bold text-gray-700">Nom & Prénom *<input required name="name" autoComplete="name" className={inputClass} placeholder="Jean Dupont" /></label>
-              <label className="text-xs font-bold text-gray-700">Entreprise / Raison sociale (optionnel)<input name="companyName" className={inputClass} placeholder="Nom de votre société" /></label>
-              <label className="text-xs font-bold text-gray-700">E-mail de contact *<input required name="email" type="email" autoComplete="email" className={inputClass} placeholder="contact@domaine.fr" /></label>
-              <label className="text-xs font-bold text-gray-700">Téléphone *<input required name="phone" type="tel" autoComplete="tel" className={inputClass} placeholder="06 00 00 00 00" /></label>
+              <label className="text-xs font-bold text-gray-700">Nom & Prénom *<input required name="name" autoComplete="name" className={inputClass} placeholder="Ex. Thomas Müller" /></label>
+              <label className="text-xs font-bold text-gray-700">Entreprise / Firmenname (si pro)<input name="companyName" className={inputClass} placeholder="Nom de la société" /></label>
+              <label className="text-xs font-bold text-gray-700">Adresse e-mail *<input required name="email" type="email" autoComplete="email" className={inputClass} placeholder="exemple@domaine.de" /></label>
+              <label className="text-xs font-bold text-gray-700">Téléphone (+49 / FR) *<input required name="phone" type="tel" autoComplete="tel" className={inputClass} placeholder="+49 170 0000000" /></label>
             </div>
 
             <hr className="border-stone-100" />
@@ -132,68 +138,82 @@ Précisions: ${details}`;
               <label className="text-xs font-bold text-gray-700">Type de combustible *
                 <select required name="productType" defaultValue="" className={inputClass}>
                   <option value="" disabled>Sélectionnez un produit</option>
-                  <option value="Bois de chauffage (Bûches)">Bois de chauffage (Bûches de bois)</option>
-                  <option value="Granulés de bois (Pellets)">Granulés de bois (Pellets DIN+ / EN+ A1)</option>
-                  <option value="Briquettes densifiées (RUF / Pini-Kay)">Briquettes densifiées (RUF / Pini-Kay)</option>
-                  <option value="Bois d’allumage & accessoires">Bois d’allumage & allume-feux</option>
-                  <option value="Commande mixte / Plusieurs produits">Commande mixte / Plusieurs produits</option>
+                  <option value="Bois de chauffage (Brennholz)">Bois de chauffage (Brennholz)</option>
+                  <option value="Granulés de bois (Holzpellets ENplus/DIN+)">Granulés de bois (Holzpellets ENplus / DIN+)</option>
+                  <option value="Briquettes densifiées (Holzbriketts RUF/Pini-Kay)">Briquettes densifiées (Holzbriketts RUF / Pini-Kay)</option>
+                  <option value="Bois d’allumage (Anzündholz)">Bois d’allumage & allume-feux (Anzündholz)</option>
+                  <option value="Commande mixte">Commande mixte / Plusieurs références</option>
                 </select>
               </label>
 
-              <label className="text-xs font-bold text-gray-700">Format ou dimension souhaité
+              <label className="text-xs font-bold text-gray-700">Format ou longueur
                 <select name="formatChoice" defaultValue="" className={inputClass}>
                   <option value="" disabled>Choix du format</option>
-                  <option value="Bûches 25 cm">Bûches 25 cm</option>
-                  <option value="Bûches 33 cm">Bûches 33 cm</option>
-                  <option value="Bûches 50 cm">Bûches 50 cm</option>
-                  <option value="Sacs de 15 kg">Sacs de 15 kg</option>
-                  <option value="Palette complète rangée">Palette complète rangée</option>
+                  <option value="Bûches 25 cm (Scheite 25 cm)">Bûches 25 cm</option>
+                  <option value="Bûches 33 cm (Scheite 33 cm)">Bûches 33 cm</option>
+                  <option value="Bûches 50 cm (Scheite 50 cm)">Bûches 50 cm</option>
+                  <option value="Sacs de 15 kg (Sackware 15 kg)">Sacs de 15 kg</option>
+                  <option value="Palette complète (Palette)">Palette complète rangée</option>
                   <option value="Big Bag">Big Bag</option>
-                  <option value="Vrac">Vrac</option>
+                  <option value="Vrac (Schüttgut)">Vrac</option>
                 </select>
               </label>
             </div>
 
             <label className="block text-xs font-bold text-gray-700">Quantité ou volume estimé *
               <select required name="volumeQuantity" defaultValue="" className={inputClass}>
-                <option value="" disabled>Sélectionnez un volume</option>
-                <option value="1 palette / 1 à 2 stères">1 palette / 1 à 2 stères</option>
+                <option value="" disabled>Sélectionnez la quantité</option>
+                <option value="1 palette / 1 à 2 stères">1 palette / 1 à 2 stères (SRM / RM)</option>
                 <option value="2 à 4 palettes / 3 à 6 stères">2 à 4 palettes / 3 à 6 stères</option>
-                <option value="5 à 10 palettes / 8 à 15 stères">5 à 10 palettes (Remise volume)</option>
-                <option value="Camion complet / Plus de 10 palettes">Camion complet / Plus de 10 palettes (Gros volume)</option>
-                <option value="Moins de 1 palette (Sacs / Filets)">Moins de 1 palette (Sacs / Filets)</option>
+                <option value="5 à 10 palettes (Tarif dégressif)">5 à 10 palettes (Tarif dégressif)</option>
+                <option value="Camion complet / Plus de 10 palettes">Camion complet / Gros volume</option>
+                <option value="Sacs / Filets individuels">Moins de 1 palette (Sacs / Filets)</option>
               </select>
             </label>
 
             <hr className="border-stone-100" />
 
-            {/* Adresse et livraison */}
+            {/* Adresse et livraison en Allemagne */}
             <div className="grid gap-4 sm:grid-cols-3">
-              <label className="sm:col-span-2 text-xs font-bold text-gray-700">Adresse de livraison *<input required name="address" autoComplete="street-address" className={inputClass} placeholder="Rue et numéro" /></label>
-              <label className="text-xs font-bold text-gray-700">Code postal *<input required name="postalCode" autoComplete="postal-code" className={inputClass} placeholder="Code postal" /></label>
+              <label className="sm:col-span-2 text-xs font-bold text-gray-700">Adresse de livraison en Allemagne *<input required name="address" autoComplete="street-address" className={inputClass} placeholder="Straße und Hausnummer" /></label>
+              <label className="text-xs font-bold text-gray-700">Code postal (PLZ) *<input required name="postalCode" autoComplete="postal-code" className={inputClass} placeholder="PLZ (Ex. 80331)" /></label>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <label className="text-xs font-bold text-gray-700">Ville *<input required name="city" autoComplete="address-level2" className={inputClass} placeholder="Ville" /></label>
-              <label className="text-xs font-bold text-gray-700">Accessibilité du lieu
-                <select name="deliveryAccess" defaultValue="Accès facile (Camion avec hayon)" className={inputClass}>
-                  <option value="Accès facile (Camion avec hayon)">Accès facile (Camion avec hayon)</option>
-                  <option value="Rue étroite / Passage restreint">Rue étroite / Passage restreint</option>
-                  <option value="Terrain en pente / Gravier">Terrain en pente / Gravier</option>
-                  <option value="Transpalette nécessaire">Transpalette manuel requis</option>
+              <label className="text-xs font-bold text-gray-700">Ville / Ort *<input required name="city" autoComplete="address-level2" className={inputClass} placeholder="Ex. München, Stuttgart, Berlin..." /></label>
+              <label className="text-xs font-bold text-gray-700">Land (Région allemande)
+                <select name="regionState" defaultValue="Baden-Württemberg / Bayern" className={inputClass}>
+                  <option value="Baden-Württemberg">Baden-Württemberg</option>
+                  <option value="Bayern">Bayern</option>
+                  <option value="Nordrhein-Westfalen">Nordrhein-Westfalen</option>
+                  <option value="Hessen">Hessen</option>
+                  <option value="Rheinland-Pfalz">Rheinland-Pfalz</option>
+                  <option value="Niedersachsen">Niedersachsen</option>
+                  <option value="Saarland">Saarland</option>
+                  <option value="Sachsen / Thüringen">Sachsen / Thüringen</option>
+                  <option value="Autre Bundesland">Autre région en Allemagne</option>
                 </select>
               </label>
             </div>
 
-            <label className="block text-xs font-bold text-gray-700">Remarques ou besoins spécifiques
-              <textarea name="details" rows={4} className={inputClass} placeholder="Indiquez toute précision utile concernant vos contraintes de livraison, vos horaires ou vos exigences..." />
+            <label className="block text-xs font-bold text-gray-700">Modalités d'accès pour le camion (Spedition)
+              <select name="deliveryAccess" defaultValue="Camion avec hayon et transpalette (Lkw mit Hebebühne)" className={inputClass}>
+                <option value="Camion avec hayon et transpalette (Lkw mit Hebebühne)">Camion avec hayon et transpalette (Standard)</option>
+                <option value="Rue étroite / Accès restreint">Rue étroite / Accès restreint</option>
+                <option value="Terrain en pente / Gravier">Terrain en pente / Gravier</option>
+                <option value="Livraison dans garage / Abri">Accès garage / Abri disponible</option>
+              </select>
+            </label>
+
+            <label className="block text-xs font-bold text-gray-700">Remarques ou précisions
+              <textarea name="details" rows={4} className={inputClass} placeholder="Précisez tout détail utile sur vos contraintes d'horaires ou de stockage en Allemagne..." />
             </label>
 
             {notice && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">{notice}</p>}
             {error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-900">{error}</p>}
 
             <button type="submit" disabled={sending} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-4 text-base font-extrabold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-60 shadow-lg shadow-orange-600/20">
-              {sending ? 'Calcul du devis en cours…' : 'Recevoir mon devis gratuit'} {!sending && <ArrowRight size={19} />}
+              {sending ? 'Envoi de votre demande…' : 'Demander mon devis gratuit (Deutschland)'} {!sending && <ArrowRight size={19} />}
             </button>
           </form>
         </section>
@@ -202,44 +222,44 @@ Précisions: ${details}`;
         <aside className="space-y-6">
           <div className="rounded-3xl border border-stone-200 bg-white p-6 sm:p-7 shadow-sm">
             <h3 className="text-lg font-black text-gray-950 flex items-center gap-2.5">
-              <ShieldCheck className="text-emerald-600" size={22} /> Nos engagements devis
+              <ShieldCheck className="text-emerald-600" size={22} /> Chiffrage officiel Allemagne
             </h3>
             <ul className="mt-5 space-y-4 text-sm text-gray-600">
               <li className="flex items-start gap-3">
                 <CheckCircle2 size={18} className="shrink-0 text-emerald-600 mt-0.5" />
-                <span><b>Réponse rapide sous 24h</b> : Notre équipe analyse votre localisation pour vous offrir le meilleur tarif.</span>
+                <span><b>Réponse rapide sous 24h</b> : Notre service commercial calcule le tarif de transport au départ du dépôt d'Allemagne selon votre code postal (PLZ).</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 size={18} className="shrink-0 text-emerald-600 mt-0.5" />
-                <span><b>Tarifs dégressifs</b> : Prix préférentiels appliqués dès 2 palettes ou commandes groupées.</span>
+                <span><b>Tarifs dégressifs par volume</b> : Prix dégressifs appliqués dès la 2<sup>ème</sup> palette ou pour commandes groupées.</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 size={18} className="shrink-0 text-emerald-600 mt-0.5" />
-                <span><b>Transparence totale</b> : Prix des combustibles et frais de livraison détaillés sans coût caché.</span>
+                <span><b>Normes & Certifications</b> : Bûches sèches écorcées et granulés certifiés DINplus & ENplus A1.</span>
               </li>
             </ul>
           </div>
 
           <div className="rounded-3xl bg-gray-950 p-6 text-white sm:p-7 shadow-lg">
             <Truck className="text-orange-400" size={28} />
-            <h3 className="mt-4 text-xl font-black">Livraison professionnelle</h3>
+            <h3 className="mt-4 text-xl font-black">Spedition & Livraison à domicile</h3>
             <p className="mt-2.5 text-sm leading-relaxed text-stone-300">
-              Chaque livraison est effectuée par des transporteurs équipés de camions avec hayon et transpalette pour déposer vos palettes au plus près de votre zone de stockage.
+              Toutes nos livraisons en Allemagne sont assurées par transporteurs spécialisés équipés de camions avec hayon elevateur et transpalette (Lkw mit Hebebühne) pour déposer vos palettes en toute sécurité.
             </p>
             <Link href="/services" className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-orange-400 hover:text-white">
-              Découvrir la logistique <ArrowRight size={15} />
+              Détails de la livraison en Allemagne <ArrowRight size={15} />
             </Link>
           </div>
 
           <div className="rounded-3xl border border-orange-200 bg-orange-50/80 p-6 text-orange-950">
             <PhoneCall className="text-orange-600" size={26} />
-            <h3 className="mt-3 font-black text-base">Besoin d’aide immédiate ?</h3>
+            <h3 className="mt-3 font-black text-base">Des questions sur nos produits ?</h3>
             <p className="mt-2 text-sm text-orange-900 leading-relaxed">
-              Consultez notre catalogue ou notre foire aux questions pour en savoir plus sur nos produits et bois certifiés.
+              Consultez notre catalogue complet de combustibles bois pour l'Allemagne ou contactez directement notre support client.
             </p>
             <div className="mt-4 flex flex-col gap-2">
               <Link href="/produits" className="inline-flex items-center justify-center rounded-xl bg-orange-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-orange-700">
-                Parcourir le catalogue
+                Consulter le catalogue
               </Link>
             </div>
           </div>

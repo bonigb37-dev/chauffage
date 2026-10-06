@@ -188,7 +188,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     <div className="container max-w-6xl">
       <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-orange-600"><ArrowLeft size={16}/> Retour à la boutique</Link>
       <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
-        <div><p className="text-sm font-bold uppercase tracking-[.18em] text-orange-600">ThermoPro · administration</p><h1 className="mt-2 text-3xl font-black text-gray-950 sm:text-4xl">{superAdminOnly ? 'Super administration' : 'Espace administrateur'}</h1></div>
+        <div><p className="text-sm font-bold uppercase tracking-[.18em] text-orange-600">Bren-nholz · administration</p><h1 className="mt-2 text-3xl font-black text-gray-950 sm:text-4xl">{superAdminOnly ? 'Super administration' : 'Espace administrateur'}</h1></div>
         {user && <div className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-gray-600">{user.email}</div>}
       </div>
 

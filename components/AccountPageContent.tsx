@@ -88,7 +88,7 @@ export default function AccountPageContent() {
           },
         });
         if (authError) throw authError;
-        setNotice(data.session ? 'Votre compte est créé. Bienvenue chez ThermoPro !' : 'Votre demande est enregistrée. Consultez votre boîte e-mail pour confirmer la création de votre compte.');
+        setNotice(data.session ? 'Votre compte est créé. Bienvenue chez Bren-nholz !' : 'Votre demande est enregistrée. Consultez votre boîte e-mail pour confirmer la création de votre compte.');
         if (data.session) {
           setUser(data.session.user);
           router.replace('/');
@@ -138,10 +138,10 @@ export default function AccountPageContent() {
     <main className="account-page">
       <div className="account-shell">
         <section className="account-intro">
-          <Link href="/" className="account-brand"><span><Flame size={22} /></span> THERMO<span className="account-brand__accent">PRO</span></Link>
+          <Link href="/" aria-label="Bren-nholz, accueil" className="account-brand"><span><Logs size={23} strokeWidth={2.2} /></span> Bren-nholz</Link>
           <p className="account-eyebrow">Espace client</p>
           <h1>Votre chauffage, en toute simplicité.</h1>
-          <p className="account-intro__copy">Retrouvez votre espace personnel ThermoPro et gérez vos accès en toute sécurité.</p>
+          <p className="account-intro__copy">Retrouvez votre espace personnel Bren-nholz et gérez vos accès en toute sécurité.</p>
           <div className="account-benefits">
             <p><CheckCircle2 size={18} /> Un espace personnel protégé</p>
             <p><CheckCircle2 size={18} /> Une inscription rapide et gratuite</p>
@@ -164,7 +164,7 @@ export default function AccountPageContent() {
             </div>
           ) : (
             <>
-              <p className="account-eyebrow">{mode === 'signup' ? 'Nouveau chez ThermoPro ?' : mode === 'forgot' || mode === 'update' ? 'Récupération du compte' : 'Votre espace ThermoPro'}</p>
+              <p className="account-eyebrow">{mode === 'signup' ? 'Nouveau chez Bren-nholz ?' : mode === 'forgot' || mode === 'update' ? 'Récupération du compte' : 'Votre espace Bren-nholz'}</p>
               <h1 id="account-title">{heading}</h1>
               <p className="account-muted">{mode === 'signup' ? 'Créez un compte pour retrouver facilement votre espace client.' : mode === 'forgot' ? 'Saisissez votre adresse e-mail pour recevoir un lien sécurisé.' : mode === 'update' ? 'Saisissez un nouveau mot de passe pour votre compte.' : 'Connectez-vous ou créez un compte pour accéder à votre espace client.'}</p>
 

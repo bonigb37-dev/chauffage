@@ -17,7 +17,10 @@ export default function FaqPage() {
       <section className="container py-16 text-center sm:py-20">
         <h2 className="font-serif text-3xl font-bold">Vous ne trouvez pas votre réponse ?</h2>
         <p className="mx-auto mt-3 max-w-xl leading-7 text-gray-600">Décrivez votre besoin et indiquez votre code postal ; nous pourrons préciser les modalités de votre demande.</p>
-        <Link href="/contact" className="mt-6 inline-flex rounded-full bg-gray-950 px-6 py-3 font-bold text-white transition hover:bg-orange-600">Contacter notre équipe</Link>
+        <Link href="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-gray-950 px-6 py-3 font-bold text-white transition hover:bg-orange-600" style={{ color: '#ffffff' }}>
+          <span style={{ color: '#ffffff' }}>Contacter notre équipe</span>
+          <ArrowRight size={18} style={{ color: '#ffffff' }} />
+        </Link>
       </section>
     </main>
   );

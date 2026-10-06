@@ -1,7 +1,5 @@
 const fs = require('fs');
 const html = fs.readFileSync('scripts/guide-raw.html', 'utf8');
-
-// Strip HTML tags to see the text structure
 const textBlocks = html
   .replace(/<style[\s\S]*?<\/style>/gi, '')
   .replace(/<script[\s\S]*?<\/script>/gi, '')
@@ -13,8 +11,7 @@ const textBlocks = html
   .replace(/[ \t]+/g, ' ')
   .split('\n')
   .map(l => l.trim())
-  .filter(l => l.length > 25);
+  .filter(l => l.length > 20);
 
-console.log('Total text blocks:', textBlocks.length);
-console.log('\n--- FIRST 30 BLOCKS ---');
-textBlocks.slice(0, 35).forEach((b, i) => console.log(`${i+1}. ${b}`));
+fs.writeFileSync('scripts/guide-extracted.txt', textBlocks.join('\n\n'));
+console.log('Saved extracted guide text to scripts/guide-extracted.txt');
