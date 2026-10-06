@@ -7,7 +7,6 @@ export default function ActivityTracker() {
   useEffect(() => {
     if (!supabase) return;
     let isSignedIn = false;
-    let interval: ReturnType<typeof setInterval> | undefined;
     const ping = async (signedIn = false) => {
       if (isSignedIn) await supabase!.rpc('record_user_activity', { is_sign_in: signedIn });
     };
@@ -19,8 +18,8 @@ export default function ActivityTracker() {
       isSignedIn = Boolean(session?.user);
       if (event === 'SIGNED_IN') setTimeout(() => void ping(true), 0);
     });
-    interval = setInterval(() => void ping(), 60_000);
-    return () => { if (interval) clearInterval(interval); listener.subscription.unsubscribe(); };
+    const interval = setInterval(() => void ping(), 60_000);
+    return () => { clearInterval(interval); listener.subscription.unsubscribe(); };
   }, []);
   return null;
 }

@@ -26,6 +26,7 @@ import {
   Box,
   ShoppingCart
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 
 interface GuideDetail {
@@ -34,7 +35,7 @@ interface GuideDetail {
   title: string;
   summary: string;
   badge: string;
-  icon: any;
+  icon: LucideIcon;
   content: {
     subtitle: string;
     points: string[];
@@ -385,7 +386,7 @@ export default function PelletGuide() {
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() => setAppliance(item.id as any)}
+                    onClick={() => setAppliance(item.id as typeof appliance)}
                     className={`w-full text-left px-4 py-3 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-between ${
                       appliance === item.id
                         ? 'border-orange-500 bg-orange-50 text-orange-950 shadow-sm'
@@ -414,7 +415,7 @@ export default function PelletGuide() {
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() => setSurface(item.id as any)}
+                    onClick={() => setSurface(item.id as typeof surface)}
                     className={`w-full text-left px-4 py-3 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-between ${
                       surface === item.id
                         ? 'border-orange-500 bg-orange-50 text-orange-950 shadow-sm'
@@ -443,7 +444,7 @@ export default function PelletGuide() {
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() => setStorage(item.id as any)}
+                    onClick={() => setStorage(item.id as typeof storage)}
                     className={`w-full text-left px-4 py-3 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center justify-between ${
                       storage === item.id
                         ? 'border-orange-500 bg-orange-50 text-orange-950 shadow-sm'
@@ -554,7 +555,7 @@ export default function PelletGuide() {
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold transition ${
                   activeTab === tab.id
                     ? 'bg-gray-950 text-white shadow-md'
@@ -709,7 +710,7 @@ export default function PelletGuide() {
               </thead>
               <tbody className="divide-y divide-gray-800 text-gray-200">
                 <tr>
-                  <td className="py-3.5 px-4 font-semibold text-gray-400">Source d'énergie</td>
+                  <td className="py-3.5 px-4 font-semibold text-gray-400">Source d&apos;énergie</td>
                   <td className="py-3.5 px-4 font-bold text-white">100 % Renouvelable (Bois)</td>
                   <td className="py-3.5 px-4">Fossile non renouvelable</td>
                   <td className="py-3.5 px-4">Fossile non renouvelable</td>

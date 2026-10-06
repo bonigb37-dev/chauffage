@@ -8,7 +8,7 @@ export default function ContactCTA() {
         <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10" />
         <div className="relative flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
-            <p className="font-bold uppercase tracking-[.2em] text-orange-100">Un projet d'approvisionnement ?</p>
+            <p className="font-bold uppercase tracking-[.2em] text-orange-100">Un projet d&apos;approvisionnement ?</p>
             <h2 className="mt-3 max-w-2xl text-3xl font-black sm:text-5xl">Obtenez un devis gratuit & personnalisé.</h2>
             <p className="mt-4 max-w-xl text-orange-50">Calculez rapidement le tarif sur-mesure pour vos palettes, volumes et frais de livraison à domicile.</p>
           </div>

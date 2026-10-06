@@ -196,7 +196,7 @@ Précisions: ${details}`;
               </label>
             </div>
 
-            <label className="block text-xs font-bold text-gray-700">Modalités d'accès pour le camion (Spedition)
+            <label className="block text-xs font-bold text-gray-700">Modalités d&apos;accès pour le camion (Spedition)
               <select name="deliveryAccess" defaultValue="Camion avec hayon et transpalette (Lkw mit Hebebühne)" className={inputClass}>
                 <option value="Camion avec hayon et transpalette (Lkw mit Hebebühne)">Camion avec hayon et transpalette (Standard)</option>
                 <option value="Rue étroite / Accès restreint">Rue étroite / Accès restreint</option>
@@ -227,7 +227,7 @@ Précisions: ${details}`;
             <ul className="mt-5 space-y-4 text-sm text-gray-600">
               <li className="flex items-start gap-3">
                 <CheckCircle2 size={18} className="shrink-0 text-emerald-600 mt-0.5" />
-                <span><b>Réponse rapide sous 24h</b> : Notre service commercial calcule le tarif de transport au départ du dépôt d'Allemagne selon votre code postal (PLZ).</span>
+                <span><b>Réponse rapide sous 24h</b> : Notre service commercial calcule le tarif de transport au départ du dépôt d&apos;Allemagne selon votre code postal (PLZ).</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 size={18} className="shrink-0 text-emerald-600 mt-0.5" />
@@ -255,7 +255,7 @@ Précisions: ${details}`;
             <PhoneCall className="text-orange-600" size={26} />
             <h3 className="mt-3 font-black text-base">Des questions sur nos produits ?</h3>
             <p className="mt-2 text-sm text-orange-900 leading-relaxed">
-              Consultez notre catalogue complet de combustibles bois pour l'Allemagne ou contactez directement notre support client.
+              Consultez notre catalogue complet de combustibles bois pour l&apos;Allemagne ou contactez directement notre support client.
             </p>
             <div className="mt-4 flex flex-col gap-2">
               <Link href="/produits" className="inline-flex items-center justify-center rounded-xl bg-orange-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-orange-700">
