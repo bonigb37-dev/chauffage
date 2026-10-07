@@ -187,12 +187,23 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   }
 
   async function saveBankDetails(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); if (!supabase) return;
+    event.preventDefault(); if (!supabase || savingRole) return false;
     setSavingRole(true); setError(''); setNotice('');
-    const { error: saveError } = await supabase.from('site_settings').update({ value: { details: bankForm }, updated_at: new Date().toISOString() }).eq('key', 'bank_transfer');
-    if (saveError) setError('Les coordonnées bancaires n’ont pas pu être enregistrées.');
-    else window.location.reload();
-    setSavingRole(false);
+    try {
+      const { data, error: saveError } = await supabase.from('site_settings')
+        .update({ value: { details: bankForm }, updated_at: new Date().toISOString() })
+        .eq('key', 'bank_transfer').select('key').single();
+      if (saveError || !data) {
+        setError('Les coordonnées bancaires n’ont pas pu être enregistrées.');
+        return false;
+      }
+      return true;
+    } catch {
+      setError('Les coordonnées bancaires n’ont pas pu être enregistrées. Veuillez réessayer.');
+      return false;
+    } finally {
+      setSavingRole(false);
+    }
   }
 
   async function saveProduct(event: FormEvent<HTMLFormElement>) {
@@ -206,10 +217,24 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     setSavingRole(false);
   }
 
-  async function deleteProduct(productId: number) {
-    if (!supabase || !window.confirm('Supprimer ce produit du catalogue ?')) return;
-    const { error: deleteError } = await supabase.from('product_overrides').upsert({ product_id: productId, data: {}, is_deleted: true, updated_at: new Date().toISOString() }, { onConflict: 'product_id' });
-    if (deleteError) setError('Le produit n’a pas pu être supprimé.'); else window.location.reload();
+  async function deleteProduct(productId: number | number[]) {
+    const ids = [...new Set(Array.isArray(productId) ? productId : [productId])];
+    if (!supabase || savingRole || ids.length === 0 || !window.confirm(ids.length === 1
+      ? 'Supprimer ce produit du catalogue ?'
+      : `Supprimer les ${ids.length} produits sélectionnés du catalogue ?`)) return;
+    setSavingRole(true); setError(''); setNotice('');
+    try {
+      const updatedAt = new Date().toISOString();
+      const { error: deleteError } = await supabase.from('product_overrides').upsert(
+        ids.map((id) => ({ product_id: id, data: {}, is_deleted: true, updated_at: updatedAt })),
+        { onConflict: 'product_id' },
+      );
+      if (deleteError) setError('Les produits n’ont pas pu être supprimés.'); else window.location.reload();
+    } catch {
+      setError('La suppression a échoué. Veuillez réessayer.');
+    } finally {
+      setSavingRole(false);
+    }
   }
 
   async function handleSignOut() {
@@ -336,15 +361,24 @@ function AuditPanel({ audit }: { audit: AuditRow[] }) {
 
 function ProductAdminPanel({ products, product, setProduct, editing, setEditing, saving, onSave, onDelete, onBankSave, bankForm, setBankForm }: {
   products: Product[]; product: Product; setProduct: (product: Product) => void; editing: boolean; setEditing: (editing: boolean) => void; saving: boolean;
-  onSave: (event: FormEvent<HTMLFormElement>) => void; onDelete: (id: number) => void; onBankSave: (event: FormEvent<HTMLFormElement>) => void; bankForm: string; setBankForm: (value: string) => void;
+  onSave: (event: FormEvent<HTMLFormElement>) => void; onDelete: (id: number | number[]) => void; onBankSave: (event: FormEvent<HTMLFormElement>) => Promise<boolean>; bankForm: string; setBankForm: (value: string) => void;
 }) {
+  const [bankSaved, setBankSaved] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const selectedProducts = products.filter((item) => selectedIds.includes(item.id));
+  const allSelected = products.length > 0 && selectedProducts.length === products.length;
   const input = 'mt-1 w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm';
   return <>
     <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
       <h2 className="text-2xl font-black">Catalogue et stock</h2>
-      <div className="mt-5 space-y-3">{products.map((item) => <article key={item.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-stone-200 p-4"><div><b>{item.name}</b><p className="mt-1 text-sm text-gray-500">{item.price} · {item.stock === 0 ? 'Rupture de stock' : item.stock !== undefined ? `${item.stock} en stock` : item.availability ?? 'Stock non suivi'}</p></div><div className="flex gap-2"><button type="button" onClick={() => { setProduct({ ...item, priceAmount: item.priceAmount ?? 0, stock: item.stock ?? -1 }); setEditing(true); window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }} className="rounded-lg border px-3 py-2 text-sm font-bold">Modifier</button><button type="button" onClick={() => onDelete(item.id)} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-bold text-red-700">Supprimer</button></div></article>)}</div>
+      <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-stone-50 p-4">
+        <label className="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" checked={allSelected} disabled={saving || products.length === 0} ref={(element) => { if (element) element.indeterminate = selectedProducts.length > 0 && !allSelected; }} onChange={(event) => setSelectedIds(event.target.checked ? products.map((item) => item.id) : [])} className="h-5 w-5 accent-orange-600" />Tout sélectionner</label>
+        <span className="text-sm text-gray-600">{selectedProducts.length} produit(s) sélectionné(s)</span>
+        <button type="button" disabled={saving || selectedProducts.length === 0} onClick={() => onDelete(selectedProducts.map((item) => item.id))} className="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white disabled:opacity-50">{saving ? 'Veuillez patienter…' : 'Supprimer la sélection'}</button>
+      </div>
+      <div className="mt-5 space-y-3">{products.map((item) => <article key={item.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-stone-200 p-4"><div className="flex items-center gap-3"><input type="checkbox" aria-label={`Sélectionner ${item.name}`} checked={selectedIds.includes(item.id)} disabled={saving} onChange={(event) => setSelectedIds((current) => event.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))} className="h-5 w-5 shrink-0 accent-orange-600" /><div><b>{item.name}</b><p className="mt-1 text-sm text-gray-500">{item.price} · {item.stock === 0 ? 'Rupture de stock' : item.stock !== undefined ? `${item.stock} en stock` : item.availability ?? 'Stock non suivi'}</p></div></div><div className="flex gap-2"><button type="button" disabled={saving} onClick={() => { setProduct({ ...item, priceAmount: item.priceAmount ?? 0, stock: item.stock ?? -1 }); setEditing(true); window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }} className="rounded-lg border px-3 py-2 text-sm font-bold disabled:opacity-50">Modifier</button><button type="button" disabled={saving} onClick={() => onDelete(item.id)} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-bold text-red-700 disabled:opacity-50">Supprimer</button></div></article>)}</div>
       <form onSubmit={onSave} className="mt-6 rounded-xl bg-stone-50 p-4 sm:p-5"><h3 className="text-lg font-bold">{editing ? 'Modifier le produit sélectionné' : 'Ajouter un produit'}</h3><div className="mt-4 grid gap-4 sm:grid-cols-2"><label className="text-sm font-semibold">ID produit<input required type="number" min="1" value={product.id} onChange={(e) => setProduct({ ...product, id: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Nom<input required value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Catégorie<input required value={product.type} onChange={(e) => setProduct({ ...product, type: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Conditionnement<input required value={product.quantity} onChange={(e) => setProduct({ ...product, quantity: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Prix en centimes (0 = sur devis)<input type="number" min="0" value={product.priceAmount ?? 0} onChange={(e) => setProduct({ ...product, priceAmount: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Stock (-1 non suivi, 0 rupture)<input required type="number" min="-1" value={product.stock ?? -1} onChange={(e) => { const stock = Number(e.target.value); setProduct({ ...product, stock, availability: stock < 0 ? (product.availability === 'Rupture de stock' ? undefined : product.availability) : stock === 0 ? 'Rupture de stock' : 'En stock' }); }} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Image (chemin dans /public, ex. /pellets.webp)<input required value={product.image} onChange={(e) => setProduct({ ...product, image: e.target.value })} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Description<textarea required rows={3} value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} className={input} /></label></div><div className="mt-4 flex flex-wrap gap-3"><button type="submit" disabled={saving} className="rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement…' : 'Enregistrer le produit'}</button>{editing && <button type="button" onClick={() => { setEditing(false); setProduct(emptyProduct(products)); }} className="rounded-lg border px-5 py-3 font-bold">Nouveau produit</button>}</div></form>
     </section>
-    <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7"><h2 className="text-2xl font-black">Coordonnées de virement</h2><form onSubmit={onBankSave} className="mt-4"><label className="text-sm font-semibold">Informations bancaires affichées aux clients<textarea rows={5} value={bankForm} onChange={(e) => setBankForm(e.target.value)} placeholder="Bénéficiaire, IBAN, BIC et référence à indiquer…" className={input} /></label><button type="submit" disabled={saving} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">Enregistrer</button></form></section>
+    <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7"><h2 className="text-2xl font-black">Coordonnées de virement</h2><form onSubmit={async (event) => { setBankSaved(false); setBankSaved(await onBankSave(event)); }} className="mt-4"><label className="text-sm font-semibold">Informations bancaires affichées aux clients<textarea rows={5} value={bankForm} disabled={saving} onChange={(e) => { setBankSaved(false); setBankForm(e.target.value); }} placeholder="Bénéficiaire, IBAN, BIC et référence à indiquer…" className={input} /></label><button type="submit" disabled={saving} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement…' : 'Enregistrer'}</button>{bankSaved && <p role="status" className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">Les coordonnées bancaires ont été sauvegardées avec succès.</p>}</form></section>
   </>;
 }
