@@ -13,7 +13,7 @@ const states = ['Bade-Wurtemberg', 'Bavière', 'Berlin', 'Brandebourg', 'Brême'
 const inputClass = 'mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
 export default function CheckoutPageContent() {
-  const { items, ready, products } = useCart();
+  const { items, ready, products, bankDetails } = useCart();
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState('');
   const [differentShipping, setDifferentShipping] = useState(false);
@@ -28,7 +28,6 @@ export default function CheckoutPageContent() {
     event.preventDefault();
     if (!lines.length || starting) return;
     if (hasUnpricedProduct) { setError('Le prix d’un produit doit être confirmé avant la commande. Contactez-nous pour obtenir un devis.'); return; }
-    if (!supabase) { setError('Supabase n’est pas configuré correctement. Vérifiez les variables Vercel puis réessayez.'); return; }
     const formData = new FormData(event.currentTarget);
     const details = Object.fromEntries(formData.entries()) as Record<string, string>;
     if (!formData.has('terms')) { setError('Veuillez accepter les conditions de vente avant de continuer.'); return; }
@@ -47,8 +46,13 @@ export default function CheckoutPageContent() {
       addressLine2: details.shippingAddressLine2, postalCode: details.shippingPostalCode, city: details.shippingCity, state: details.shippingState,
     } : null;
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const token = sessionData.session?.access_token;
+      const sessionResult = supabase ? await supabase.auth.getSession() : null;
+      const token = sessionResult?.data.session?.access_token;
+      if (sessionResult?.error) {
+        setError('Votre session ne peut pas être vérifiée. Reconnectez-vous puis réessayez.');
+        setStarting(false);
+        return;
+      }
       const response = await fetch('/api/checkout', {
         method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ items: lines.map(({ product, quantity }) => ({ productId: product.id, quantity })), customer, shipping, acceptedTerms: true }),
@@ -110,6 +114,7 @@ export default function CheckoutPageContent() {
           <section className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-8">
             <div className="flex items-start gap-3"><Landmark className="mt-1 shrink-0 text-orange-600" size={20}/><div><h2 className="text-xl font-black">Paiement par virement</h2><p className="mt-1 leading-6 text-gray-600">Après validation de la commande, l’entreprise vous communiquera ses coordonnées bancaires et le montant définitif, livraison comprise.</p></div></div>
             <PaymentMethods />
+            {bankDetails.trim() && <div className="mt-5 rounded-xl border border-stone-200 bg-stone-50 p-4"><h3 className="font-bold text-gray-950">Coordonnées de virement</h3><p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-gray-700">{bankDetails}</p></div>}
             <div className="mt-5 rounded-xl bg-stone-50 p-4 text-sm leading-6 text-gray-600">Ne faites pas le virement avant d’avoir reçu la confirmation et les coordonnées bancaires de l’entreprise.</div>
           </section>
         </div>
