@@ -69,26 +69,42 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!catalogReady) return;
+    let raw: string | null = null;
     try {
-      const stored: unknown = JSON.parse(window.localStorage.getItem(storageKey) ?? '[]');
+      raw = window.localStorage.getItem(storageKey);
+    } catch { /* Some mobile browsers block local storage. */ }
+    if (raw === null) {
+      try { raw = window.sessionStorage.getItem(storageKey); } catch { /* Keep the in-memory cart. */ }
+    }
+    try {
+      const stored: unknown = JSON.parse(raw ?? '[]');
       if (Array.isArray(stored)) {
         setItems(stored.flatMap((line): CartLine[] => {
-          const product = products.find((item) => item.id === line?.productId);
-          if (!product || !Number.isInteger(line?.quantity) || line.quantity < 1) return [];
-          if (product.stock === 0) return [];
-          return [{ productId: product.id, quantity: product.stock !== undefined ? Math.min(line.quantity, product.stock) : line.quantity }];
+          if (!Number.isInteger(line?.productId) || line.productId < 1 || !Number.isInteger(line?.quantity) || line.quantity < 1) return [];
+          return [{ productId: line.productId, quantity: line.quantity }];
         }));
       }
-    } catch {
-      window.localStorage.removeItem(storageKey);
-    }
+    } catch { /* Ignore malformed saved carts without accessing blocked storage. */ }
     setReady(true);
-  }, [products, catalogReady]);
+  }, []);
+
+  useEffect(() => {
+    if (!catalogReady || !ready) return;
+    // Reconcile the current cart, rather than restoring an older saved cart
+    // over products added while the catalogue was loading.
+    setItems((current) => current.flatMap((line): CartLine[] => {
+      const product = products.find((item) => item.id === line.productId);
+      if (!product || product.stock === 0) return [];
+      const quantity = product.stock !== undefined ? Math.min(line.quantity, product.stock) : line.quantity;
+      return quantity > 0 ? [{ productId: product.id, quantity }] : [];
+    }));
+  }, [products, catalogReady, ready]);
 
   useEffect(() => {
     if (ready) {
-      try { window.localStorage.setItem(storageKey, JSON.stringify(items)); } catch { /* Keep the in-memory cart available for this visit. */ }
+      const saved = JSON.stringify(items);
+      try { window.localStorage.setItem(storageKey, saved); } catch { /* Use session storage or memory. */ }
+      try { window.sessionStorage.setItem(storageKey, saved); } catch { /* Keep the in-memory cart available for this visit. */ }
     }
   }, [items, ready]);
 
@@ -123,14 +139,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const value = useMemo(() => ({
     items,
     itemCount: items.reduce((sum, line) => sum + line.quantity, 0),
-    ready,
+    ready: ready && catalogReady,
     addItem,
     setQuantity,
     removeItem,
     clearCart,
     products,
     bankDetails,
-  }), [items, ready, addItem, setQuantity, removeItem, clearCart, products, bankDetails]);
+  }), [items, ready, catalogReady, addItem, setQuantity, removeItem, clearCart, products, bankDetails]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
