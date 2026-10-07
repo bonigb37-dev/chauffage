@@ -22,11 +22,13 @@ export default function CheckoutPageContent() {
     return product ? [{ ...line, product }] : [];
   });
   const total = lines.reduce((sum, line) => sum + (line.product.priceAmount ?? 0) * line.quantity, 0);
+  const hasUnpricedProduct = lines.some((line) => line.product.priceAmount === undefined);
 
   async function placeOrder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!lines.length || starting) return;
-    if (!supabase) { setError('Supabase n’est pas configuré correctement. Vérifiez l’URL du projet puis réessayez.'); return; }
+    if (hasUnpricedProduct) { setError('Le prix d’un produit doit être confirmé avant la commande. Contactez-nous pour obtenir un devis.'); return; }
+    if (!supabase) { setError('Supabase n’est pas configuré correctement. Vérifiez les variables Vercel puis réessayez.'); return; }
     const formData = new FormData(event.currentTarget);
     const details = Object.fromEntries(formData.entries()) as Record<string, string>;
     if (!formData.has('terms')) { setError('Veuillez accepter les conditions de vente avant de continuer.'); return; }
@@ -36,7 +38,6 @@ export default function CheckoutPageContent() {
     }
     setStarting(true);
     setError('');
-    const reference = `TP-${Date.now().toString(36).toUpperCase()}`;
     const customer = {
       firstName: details.firstName, lastName: details.lastName, street: details.street, addressLine2: details.addressLine2,
       postalCode: details.postalCode, city: details.city, state: details.state, phone: details.phone, email: details.email,
@@ -46,29 +47,29 @@ export default function CheckoutPageContent() {
       addressLine2: details.shippingAddressLine2, postalCode: details.shippingPostalCode, city: details.shippingCity, state: details.shippingState,
     } : null;
     try {
-      const { error: insertError } = await supabase.from('order_requests').insert({
-        reference,
-        customer,
-        shipping,
-        items: lines.map(({ product, quantity }) => ({ product_id: product.id, name: product.name, quantity, unit_price_cents: product.priceAmount })),
-        total_cents: total,
-        accepted_terms: true,
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      const response = await fetch('/api/checkout', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+        body: JSON.stringify({ items: lines.map(({ product, quantity }) => ({ productId: product.id, quantity })), customer, shipping, acceptedTerms: true }),
       });
-      if (insertError) {
-        setError('La demande n’a pas pu être enregistrée. Vérifiez que le script SQL supabase-forms.sql a été exécuté, puis réessayez.');
+      const result = await response.json() as { reference?: string; totalCents?: number; error?: string };
+      if (!response.ok || !result.reference || typeof result.totalCents !== 'number') {
+        setError(result.error ?? 'La demande n’a pas pu être enregistrée. Réessayez plus tard.');
         setStarting(false);
         return;
       }
+      const reference = result.reference;
+      const confirmedTotal = result.totalCents;
+      sessionStorage.setItem('thermopro-pending-order', JSON.stringify({
+        reference, total: confirmedTotal, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
+        customer: { firstName: details.firstName, lastName: details.lastName, email: details.email },
+      }));
+      window.location.assign(`/commande/succes?reference=${encodeURIComponent(reference)}`);
     } catch {
-      setError('La demande n’a pas pu être enregistrée. Vérifiez que le script SQL supabase-forms.sql a été exécuté, puis réessayez.');
+      setError('La demande n’a pas pu être enregistrée. Vérifiez votre connexion puis réessayez.');
       setStarting(false);
-      return;
     }
-    sessionStorage.setItem('thermopro-pending-order', JSON.stringify({
-      reference, total, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
-      customer: { firstName: details.firstName, lastName: details.lastName, email: details.email },
-    }));
-    window.location.assign(`/commande/succes?reference=${encodeURIComponent(reference)}`);
   }
 
   if (!ready) return <main className="container min-h-[60vh] py-16"><div className="h-64 animate-pulse rounded-3xl bg-gray-100"/></main>;
@@ -112,7 +113,7 @@ export default function CheckoutPageContent() {
             <div className="mt-5 rounded-xl bg-stone-50 p-4 text-sm leading-6 text-gray-600">Ne faites pas le virement avant d’avoir reçu la confirmation et les coordonnées bancaires de l’entreprise.</div>
           </section>
         </div>
-        <aside className="h-fit rounded-2xl border-2 border-stone-200 bg-white p-5 sm:p-7 lg:sticky lg:top-6"><div className="flex items-center gap-2"><ShieldCheck className="text-orange-600" size={19}/><h2 className="font-serif text-2xl font-bold">Votre commande</h2></div><div className="mt-6 flex justify-between border-b border-stone-200 pb-3 font-semibold text-gray-600"><span>Produit</span><span>Sous-total</span></div><div className="divide-y divide-stone-200">{lines.map(({ product, quantity }) => <div key={product.id} className="flex gap-3 py-4"><div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-100"><Image src={product.image} alt="" fill sizes="64px" className="object-cover"/></div><div className="min-w-0 flex-1"><p className="text-sm font-semibold">{product.name}</p><p className="mt-1 text-xs text-gray-500">× {quantity}</p></div><b className="shrink-0 text-sm">{euro.format((product.priceAmount ?? 0) * quantity / 100)}</b></div>)}</div><div className="space-y-4 border-y border-stone-200 py-4 text-sm"><div className="flex justify-between text-gray-600"><span>Sous-total</span><span>{euro.format(total / 100)}</span></div><div className="flex justify-between gap-5 text-gray-600"><span>Livraison</span><span className="max-w-[190px] text-right">Frais confirmés selon l’adresse de livraison en Allemagne</span></div><div className="flex justify-between gap-4 pt-1 text-base font-black"><span>Total provisoire</span><span>{euro.format(total / 100)}</span></div></div>
+        <aside className="h-fit rounded-2xl border-2 border-stone-200 bg-white p-5 sm:p-7 lg:sticky lg:top-6"><div className="flex items-center gap-2"><ShieldCheck className="text-orange-600" size={19}/><h2 className="font-serif text-2xl font-bold">Votre commande</h2></div><div className="mt-6 flex justify-between border-b border-stone-200 pb-3 font-semibold text-gray-600"><span>Produit</span><span>Sous-total</span></div><div className="divide-y divide-stone-200">{lines.map(({ product, quantity }) => <div key={product.id} className="flex gap-3 py-4"><div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-100"><Image src={product.image} alt="" fill sizes="64px" className="object-cover"/></div><div className="min-w-0 flex-1"><p className="text-sm font-semibold">{product.name}</p><p className="mt-1 text-xs text-gray-500">× {quantity}</p></div><b className="shrink-0 text-sm">{product.priceAmount === undefined ? 'À confirmer' : euro.format(product.priceAmount * quantity / 100)}</b></div>)}</div><div className="space-y-4 border-y border-stone-200 py-4 text-sm"><div className="flex justify-between text-gray-600"><span>Sous-total produits</span><span>{hasUnpricedProduct ? 'Prix à confirmer' : euro.format(total / 100)}</span></div><div className="flex justify-between gap-5 text-gray-600"><span>Livraison</span><span className="max-w-[190px] text-right">Frais selon la zone, confirmés après vérification du code postal</span></div><div className="flex justify-between gap-4 pt-1 text-base font-black"><span>Total final</span><span className="text-right text-sm text-orange-700">À confirmer avec la livraison</span></div></div>
           {error && <p role="alert" className="mt-4 rounded-xl bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
           <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-gray-600"><input required name="terms" type="checkbox" className="mt-1 h-4 w-4 accent-orange-600"/><span>Je confirme l’exactitude de mes informations et j’accepte les <a href="/agb" className="font-semibold text-orange-600 underline">conditions de vente</a> ainsi que la <a href="/datenschutz" className="font-semibold text-orange-600 underline">politique de confidentialité</a>. *</span></label>
           <button type="submit" disabled={starting} className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 py-4 font-bold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-gray-300">{starting ? 'Validation…' : 'Envoyer ma demande de commande'}</button>

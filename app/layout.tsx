@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { CartProvider } from '@/components/CartProvider';
 import ActivityTracker from '@/components/ActivityTracker';
+import RoleAccessGuard from '@/components/RoleAccessGuard';
 
 export const metadata: Metadata = {
   title: 'Bren-nholz — Granulés, bois de chauffage & briquettes',
@@ -16,5 +17,5 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fr"><body><CartProvider><ActivityTracker /><Navbar />{children}<Footer /></CartProvider></body></html>;
+  return <html lang="fr"><body><CartProvider><ActivityTracker /><RoleAccessGuard><Navbar />{children}<Footer /></RoleAccessGuard></CartProvider></body></html>;
 }

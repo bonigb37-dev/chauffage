@@ -2,7 +2,8 @@
 
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, LoaderCircle, RefreshCw, Trash2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { LoaderCircle, RefreshCw, Trash2 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useCart } from '@/components/CartProvider';
@@ -12,7 +13,7 @@ type Role = 'admin' | 'super_admin';
 type RequestStatus = 'new' | 'in_progress' | 'done';
 type RoleRow = { user_id: string; role: Role; created_at: string };
 type ContactRow = { id: number; created_at: string; name: string; email: string; phone: string | null; postal_code: string | null; subject: string; message: string; status: RequestStatus };
-type OrderRow = { id: number; created_at: string; reference: string; customer: Record<string, unknown>; shipping: Record<string, unknown> | null; items: unknown; total_cents: number; status: RequestStatus };
+type OrderRow = { id: number; created_at: string; reference: string; customer: Record<string, unknown>; shipping: Record<string, unknown> | null; items: unknown; total_cents: number; status: RequestStatus; payment_status: string };
 type ActivityRow = { user_id: string; email: string | null; first_seen_at: string; last_seen_at: string; sign_in_count: number };
 type ClientAccountRow = { user_id: string; email: string | null; full_name: string | null; created_at: string };
 type AuditRow = { id: number; actor_user_id: string | null; actor_role: string | null; action: string; entity: string; entity_id: string | null; details: Record<string, unknown>; created_at: string };
@@ -32,6 +33,8 @@ function StatusSelect({ value, onChange, disabled }: { value: RequestStatus; onC
 }
 
 export default function AdminWorkspace({ superAdminOnly = false }: { superAdminOnly?: boolean }) {
+  const router = useRouter();
+  const [signingOut, setSigningOut] = useState(false);
   const siteData = useCart();
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<Role | null>(null);
@@ -86,7 +89,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     } else {
       const [contactResult, orderResult, activityList, accountList, settingsResult] = await Promise.all([
         supabase.from('contact_requests').select('id, created_at, name, email, phone, postal_code, subject, message, status').order('created_at', { ascending: false }).limit(100),
-        supabase.from('order_requests').select('id, created_at, reference, customer, shipping, items, total_cents, status').order('created_at', { ascending: false }).limit(100),
+        supabase.from('order_requests').select('id, created_at, reference, customer, shipping, items, total_cents, status, payment_status').order('created_at', { ascending: false }).limit(100),
         supabase.from('user_activity').select('user_id, email, first_seen_at, last_seen_at, sign_in_count').order('last_seen_at', { ascending: false }).limit(200),
         supabase.from('client_accounts').select('user_id, email, full_name, created_at').order('created_at', { ascending: false }).limit(200),
         supabase.from('site_settings').select('value').eq('key', 'bank_transfer').maybeSingle(),
@@ -131,19 +134,47 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     setWorkingId('');
   }
 
+  async function confirmTransfer(orderId: number) {
+    if (!supabase || !window.confirm('Confirmer que le virement a bien été reçu sur le compte bancaire ?')) return;
+    const key = `payment-${orderId}`;
+    setWorkingId(key); setError(''); setNotice('');
+    const { data, error: confirmationError } = await supabase.rpc('confirm_bank_transfer', { p_order_request_id: orderId, p_note: 'Vérifié manuellement par l’administrateur' });
+    if (confirmationError) setError('Le virement n’a pas pu être confirmé. Vérifiez la migration supabase-commerce.sql et les droits administrateur.');
+    else {
+      setOrders((items) => items.map((item) => item.id === orderId ? { ...item, payment_status: String(data ?? 'confirmed') } : item));
+      setNotice('Virement confirmé. L’action est inscrite dans l’historique des paiements.');
+    }
+    setWorkingId('');
+  }
+
   async function saveRole(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!supabase || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(userId.trim())) {
-      setError('Saisissez un UUID utilisateur valide depuis Authentication → Users.'); return;
-    }
-    if (userId.trim() === user?.id && newRole !== 'super_admin') {
-      setError('Pour éviter de perdre le dernier accès, vous ne pouvez pas réduire votre propre rôle ici.'); return;
+    if (!supabase) return;
+    const email = userId.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Saisissez une adresse e-mail valide.'); return;
     }
     setSavingRole(true); setError(''); setNotice('');
-    const { error: saveError } = await supabase.from('admin_roles').upsert({ user_id: userId.trim(), role: newRole }, { onConflict: 'user_id' });
-    if (saveError) setError('Le rôle n’a pas pu être enregistré. Seul un super administrateur peut gérer les rôles.');
-    else { setUserId(''); setNotice('Rôle enregistré.'); await loadData(user); }
-    setSavingRole(false);
+    try {
+      const { data: account, error: lookupError } = await supabase.from('client_accounts')
+        .select('user_id').ilike('email', email.replace(/[\\%_]/g, '\\$&')).maybeSingle();
+      if (lookupError) {
+        setError('Impossible de rechercher ce compte. Vérifiez vos droits et la configuration Supabase.'); return;
+      }
+      if (!account) {
+        setError('Aucun compte trouvé avec cette adresse e-mail. L’utilisateur doit d’abord créer son compte.'); return;
+      }
+      if (account.user_id === user?.id && newRole !== 'super_admin') {
+        setError('Pour éviter de perdre le dernier accès, vous ne pouvez pas réduire votre propre rôle ici.'); return;
+      }
+      const { error: saveError } = await supabase.from('admin_roles').upsert({ user_id: account.user_id, role: newRole }, { onConflict: 'user_id' });
+      if (saveError) setError('Le rôle n’a pas pu être enregistré. Seul un super administrateur peut gérer les rôles.');
+      else { setUserId(''); setNotice(`Rôle enregistré pour ${email}.`); await loadData(user); }
+    } catch {
+      setError('Le rôle n’a pas pu être enregistré. Veuillez réessayer.');
+    } finally {
+      setSavingRole(false);
+    }
   }
 
   async function removeRole(targetId: string) {
@@ -181,15 +212,35 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     if (deleteError) setError('Le produit n’a pas pu être supprimé.'); else window.location.reload();
   }
 
+  async function handleSignOut() {
+    if (!supabase || signingOut) return;
+    setSigningOut(true);
+    setError('');
+    try {
+      const { error: signOutError } = await supabase.auth.signOut();
+      if (signOutError) {
+        setError('La déconnexion a échoué. Veuillez réessayer.');
+        return;
+      }
+      setUser(null);
+      setRole(null);
+      router.replace('/compte');
+      router.refresh();
+    } catch {
+      setError('La déconnexion a échoué. Veuillez réessayer.');
+    } finally {
+      setSigningOut(false);
+    }
+  }
+
   const canSeeWorkspace = role === 'admin' || role === 'super_admin';
   const canSeeSuperAdmin = role === 'super_admin';
 
   return <main className="min-h-[70vh] bg-[#fffaf5] py-10 sm:py-14">
     <div className="container max-w-6xl">
-      <Link href="/" className="inline-flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-orange-600"><ArrowLeft size={16}/> Retour à la boutique</Link>
       <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
         <div><p className="text-sm font-bold uppercase tracking-[.18em] text-orange-600">Bren-nholz · administration</p><h1 className="mt-2 text-3xl font-black text-gray-950 sm:text-4xl">{superAdminOnly ? 'Super administration' : 'Espace administrateur'}</h1></div>
-        {user && <div className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-gray-600">{user.email}</div>}
+        {user && <div className="flex flex-wrap items-center gap-3"><div className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-gray-600">{user.email}</div><button type="button" onClick={() => void handleSignOut()} disabled={signingOut} className="rounded-lg bg-gray-950 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50">{signingOut ? 'Déconnexion…' : 'Se déconnecter'}</button></div>}
       </div>
 
       {loading ? <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Vérification de l’accès…</div>
@@ -197,7 +248,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
           : superAdminOnly && !canSeeSuperAdmin ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Page indisponible</h2><p className="mt-2 text-gray-600">Cette page n’est pas accessible avec ce compte.</p></section>
             : !canSeeWorkspace ? <section className="mt-8 rounded-2xl border border-red-200 bg-white p-8"><h2 className="text-xl font-bold text-red-800">Accès administrateur requis</h2><p className="mt-2 text-gray-600">Ce compte n’a pas de rôle administrateur.</p></section>
               : superAdminOnly ? <><Link href="/admin" className="mt-7 inline-flex rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold">Ouvrir l’espace boutique</Link><SuperAdminPanel roles={roles} userId={user.id} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /><AuditPanel audit={audit} /></>
-                : <><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} /><ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /></>}
+                : <><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} /><ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /></>}
 
       {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
       {notice && <p role="status" className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">{notice}</p>}
@@ -206,7 +257,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   </main>;
 }
 
-function AdminPanel({ contacts, orders, workingId, onStatusChange }: { contacts: ContactRow[]; orders: OrderRow[]; workingId: string; onStatusChange: (table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) => void }) {
+function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTransfer }: { contacts: ContactRow[]; orders: OrderRow[]; workingId: string; onStatusChange: (table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) => void; onConfirmTransfer: (id: number) => void }) {
   return <>
     <div className="mt-8 grid gap-4 sm:grid-cols-3">
       {[['Demandes de contact', contacts.length], ['Demandes de commande', orders.length], ['À traiter', contacts.filter((item) => item.status !== 'done').length + orders.filter((item) => item.status !== 'done').length]].map(([label, count]) => <article key={label} className="rounded-2xl border border-stone-200 bg-white p-5"><p className="text-sm font-semibold text-gray-500">{label}</p><p className="mt-2 text-3xl font-black text-gray-950">{count}</p></article>)}
@@ -221,7 +272,8 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange }: { contacts:
           <p className="mt-3 font-semibold">{text(customer.firstName)} {text(customer.lastName)} · <a href={`mailto:${text(customer.email)}`} className="text-orange-700 underline">{text(customer.email)}</a></p>
           <div className="mt-3 grid gap-4 text-sm text-gray-600 sm:grid-cols-2"><p><b className="text-gray-800">Facturation :</b><br/>{text(customer.street)} {text(customer.addressLine2)}<br/>{text(customer.postalCode)} {text(customer.city)} {text(customer.state)}</p>{order.shipping && <p><b className="text-gray-800">Livraison :</b><br/>{text(order.shipping.street)} {text(order.shipping.addressLine2)}<br/>{text(order.shipping.postalCode)} {text(order.shipping.city)} {text(order.shipping.state)}</p>}</div>
           <ul className="mt-3 space-y-1 text-sm text-gray-600">{items.map((item, index) => <li key={`${order.id}-${index}`}>{text(item.name)} × {Number(item.quantity) || 0}</li>)}</ul>
-          <p className="mt-3 text-sm font-bold text-gray-900">Sous-total indicatif : {euros.format(order.total_cents / 100)} · livraison à confirmer</p>
+          <p className="mt-3 text-sm font-bold text-gray-900">Sous-total produits : {euros.format(order.total_cents / 100)} · frais de livraison à confirmer selon la zone</p>
+          <div className="mt-3 flex flex-wrap items-center gap-3"><span className={`rounded-full px-3 py-1 text-xs font-bold ${order.payment_status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>Virement : {order.payment_status === 'confirmed' ? 'confirmé' : 'en attente'}</span>{order.payment_status !== 'confirmed' && <button type="button" disabled={workingId === `payment-${order.id}`} onClick={() => onConfirmTransfer(order.id)} className="rounded-lg bg-gray-950 px-3 py-2 text-xs font-bold text-white disabled:opacity-50">{workingId === `payment-${order.id}` ? 'Vérification…' : 'Confirmer le virement reçu'}</button>}</div>
         </article>;
       })}</div>}
     </section>
@@ -242,9 +294,9 @@ function SuperAdminPanel({ roles, userId, newRole, setNewRole, targetUserId, set
   return <>
     <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
       <h2 className="text-2xl font-black">Attribuer un rôle</h2>
-      <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-600">Copiez l’UUID du compte depuis Authentication → Users. Aucun mot de passe ni clé secrète n’est demandé ici.</p>
+      <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-600">Saisissez l’adresse e-mail d’un utilisateur ayant déjà créé son compte sur le site.</p>
       <form onSubmit={onSubmit} className="mt-5 grid gap-4 sm:grid-cols-[1fr_190px_auto]">
-        <label className="text-sm font-semibold text-gray-700">UUID utilisateur<input required value={targetUserId} onChange={(event) => setTargetUserId(event.target.value)} placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" className="mt-2 w-full rounded-lg border border-stone-300 px-4 py-3 font-mono text-sm" /></label>
+        <label className="text-sm font-semibold text-gray-700">Adresse e-mail utilisateur<input required type="email" value={targetUserId} onChange={(event) => setTargetUserId(event.target.value)} placeholder="utilisateur@exemple.com" className="mt-2 w-full rounded-lg border border-stone-300 px-4 py-3 text-sm" /></label>
         <label className="text-sm font-semibold text-gray-700">Rôle<select value={newRole} onChange={(event) => setNewRole(event.target.value as Role)} className="mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3"><option value="admin">Administrateur</option><option value="super_admin">Super administrateur</option></select></label>
         <button type="submit" disabled={saving} className="self-end rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-60">{saving ? 'Enregistrement…' : 'Enregistrer'}</button>
       </form>

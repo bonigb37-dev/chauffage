@@ -41,7 +41,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           const row = overrideMap.get(item.id);
           if (row?.is_deleted) return [];
           const data = (row?.data ?? {}) as Omit<Partial<Product>, 'stock' | 'priceAmount'> & { stock?: number | null; priceAmount?: number | null };
-          const resolvedPriceAmount = (typeof data.priceAmount === 'number' && data.priceAmount > 0) ? data.priceAmount : (item.priceAmount ?? 990);
+          const resolvedPriceAmount = (typeof data.priceAmount === 'number' && data.priceAmount > 0) ? data.priceAmount : item.priceAmount;
           return [{
             ...item,
             ...data,
@@ -51,7 +51,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         });
         const additions = productResult.data.filter((row) => !row.is_deleted && !initialProducts.some((item) => item.id === row.product_id)).map((row) => {
           const data = row.data as Omit<Product, 'stock' | 'priceAmount'> & { stock?: number | null; priceAmount?: number | null };
-          const resolvedPriceAmount = (typeof data.priceAmount === 'number' && data.priceAmount > 0) ? data.priceAmount : 990;
+          const resolvedPriceAmount = typeof data.priceAmount === 'number' && data.priceAmount > 0 ? data.priceAmount : undefined;
           return {
             ...data,
             stock: data.stock === null ? undefined : data.stock,
