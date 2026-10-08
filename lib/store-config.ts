@@ -5,8 +5,7 @@ export const storeConfig = {
   phoneHref: '+4915213058561',
   address: 'Brauerstraße 3, 66663 Merzig, Allemagne',
   vatNumber: 'DE334074243',
-  // À renseigner uniquement après confirmation de l’entreprise.
-  returnAddress: '',
+  returnAddress: 'Brauerstraße 3, 66663 Merzig, Allemagne',
   returnCosts: 'Les frais de retour sont pris en charge par Bren-nholz, y compris pour les palettes.',
   bankHolderRelationship: 'Ce compte est utilisé par la comptable pour encaisser les commandes de Bren-nholz.',
 };
