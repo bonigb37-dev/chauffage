@@ -97,12 +97,22 @@ export function parseAuthError(raw: string, options?: { onSwitchToSignin?: () =>
     };
   }
 
+  if (norm.includes('email rate limit') || norm.includes('over_email_send_rate_limit')) {
+    return {
+      kind: 'rate_limit',
+      badge: 'Envoi temporairement limité',
+      title: 'Limite d’envoi des e-mails atteinte',
+      description: 'Le service ne peut pas envoyer de nouveau lien pour le moment. Réessayez plus tard : l’attente peut aller jusqu’à une heure. Si un lien précédent vous a déjà connecté, ouvrez la page de nouveau mot de passe.',
+      icon: 'rate_limit',
+    };
+  }
+
   if (norm.includes('rate limit') || norm.includes('too many requests')) {
     return {
       kind: 'rate_limit',
       badge: 'Tentatives limitées',
       title: 'Trop de tentatives effectuées',
-      description: 'Par mesure de sécurité, l’accès est temporairement bloqué. Veuillez patienter quelques minutes avant de réessayer.',
+      description: 'Les demandes sont temporairement limitées. Réessayez plus tard. Cela ne signifie pas que votre compte est bloqué ou supprimé.',
       icon: 'rate_limit',
     };
   }
