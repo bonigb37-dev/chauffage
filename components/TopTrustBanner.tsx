@@ -1,40 +1,44 @@
 'use client';
 
-import Link from 'next/link';
 import { Star, ShieldCheck } from 'lucide-react';
 import { getTotalReviewsSummary } from '@/lib/reviews';
 
 export default function TopTrustBanner() {
-  const { totalReviews, averageRating } = getTotalReviewsSummary();
-  // Display total reviews count or 240+ if higher
-  const displayCount = totalReviews > 0 ? totalReviews : 240;
+  const { averageRating } = getTotalReviewsSummary();
+  const displayCount = 584;
   const rating = averageRating || 4.8;
+
+  const handleOpenReviews = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.dispatchEvent(new CustomEvent('open-all-reviews'));
+  };
 
   return (
     <aside aria-label="Avis clients vérifiés" className="bg-orange-600 text-white border-b border-orange-700/60 py-2 px-3 text-xs sm:text-sm font-semibold shadow-inner select-none">
       <div className="container flex items-center justify-between gap-2 sm:gap-4 max-w-7xl mx-auto">
-        <Link
-          href="/produits#catalogue"
-          className="flex items-center justify-center gap-2 sm:gap-3 hover:opacity-95 transition-opacity mx-auto sm:mx-0"
+        <button
+          type="button"
+          onClick={handleOpenReviews}
+          className="flex items-center justify-center gap-2 sm:gap-3 hover:opacity-95 transition-opacity mx-auto sm:mx-0 text-left focus:outline-none"
         >
           {/* Yellow Stars */}
           <div className="flex items-center text-amber-300 gap-0.5" aria-hidden="true">
             {[1, 2, 3, 4, 5].map((star) => (
               <Star
                 key={star}
-                size={15}
+                size={16}
                 className={star <= Math.round(rating) ? 'fill-amber-300 text-amber-300' : 'text-orange-300/50'}
               />
             ))}
           </div>
 
           {/* Rating Score & Text */}
-          <span className="font-extrabold text-sm sm:text-base tracking-tight">{rating.toFixed(1)}</span>
+          <span className="font-black text-sm sm:text-base tracking-tight">{rating.toFixed(1)}</span>
           <span className="hidden min-[400px]:inline font-bold text-orange-100">Très bien</span>
-          <span className="text-white font-extrabold underline decoration-orange-300/80 underline-offset-2">
+          <span className="text-white font-extrabold underline decoration-white underline-offset-4 cursor-pointer hover:text-amber-200">
             {displayCount} avis clients
           </span>
-        </Link>
+        </button>
 
         {/* Trusted Guarantee Badge Style Icon */}
         <div className="hidden sm:flex items-center gap-1.5 bg-orange-700/60 rounded-full px-2.5 py-1 text-xs text-orange-100 border border-orange-400/30 shrink-0">

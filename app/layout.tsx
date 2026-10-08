@@ -2,6 +2,7 @@
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import TopTrustBanner from '@/components/TopTrustBanner';
+import AllReviewsModal from '@/components/AllReviewsModal';
 import Footer from '@/components/Footer';
 import { CartProvider } from '@/components/CartProvider';
 import ActivityTracker from '@/components/ActivityTracker';
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <Navbar />
               {children}
               <Footer />
+              <AllReviewsModal />
             </RoleAccessGuard>
           </ActionLoadingProvider>
         </CartProvider>
