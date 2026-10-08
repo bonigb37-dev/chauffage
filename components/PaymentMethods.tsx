@@ -16,9 +16,9 @@ export default function PaymentMethods({ compact = false }: { compact?: boolean 
         </li>
       </ul>
       <div className="mt-3 space-y-3 text-sm leading-6 text-gray-600">
-        <p>Après avoir ajouté vos articles au panier, renseignez vos informations et validez votre commande. Vous recevrez alors une référence de commande.</p>
-        <p>La livraison en Allemagne est incluse dans le prix des produits. Aucun frais supplémentaire ne sera demandé par le transporteur. L’entreprise vous confirmera le montant total à régler. Une fois ce montant confirmé, veuillez effectuer votre virement {hasBankDetails ? 'en utilisant les coordonnées bancaires ci-dessous' : 'aux coordonnées bancaires que l’entreprise vous communiquera'}. Le montant de votre commande comprend la livraison.</p>
-        <p>Indiquez votre référence de commande dans le libellé du virement, puis transmettez votre justificatif depuis la page de confirmation. Votre commande sera préparée après vérification de la réception des fonds.</p>
+        <p><strong>Livraison incluse.</strong> Aucun paiement au transporteur.</p>
+        <p>Validez votre commande, puis réglez le montant confirmé {hasBankDetails ? 'aux coordonnées ci-dessous' : 'aux coordonnées communiquées par Bren-nholz'}. Indiquez votre <strong>référence de commande dans le libellé du virement</strong>.</p>
+        <p>Envoyez ensuite votre justificatif depuis la page de confirmation. Votre commande sera préparée après réception des fonds.</p>
       </div>
       {hasBankDetails && <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4"><h3 className="text-sm font-bold text-gray-950">Coordonnées bancaires</h3><p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-gray-700">{bankDetails}</p></div>}
     </div>
