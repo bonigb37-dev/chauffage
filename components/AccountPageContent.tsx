@@ -44,6 +44,16 @@ export type ParsedError = {
 export function parseAuthError(raw: string, options?: { onSwitchToSignin?: () => void }): ParsedError {
   const norm = raw.toLowerCase();
 
+  if (norm.includes('auth session missing') || norm.includes('session de réinitialisation')) {
+    return {
+      kind: 'generic',
+      badge: 'Lien de réinitialisation',
+      title: 'Session de réinitialisation absente ou expirée',
+      description: 'Ouvrez le lien reçu par e-mail dans ce navigateur. Si ce lien a déjà été utilisé ou a expiré, demandez un nouveau lien. Ouvrir cette page directement ne suffit pas.',
+      icon: 'generic',
+    };
+  }
+
   if (norm.includes('supabase non configurée') || norm.includes('next_public_supabase')) {
     return {
       kind: 'config',
@@ -586,6 +596,12 @@ export default function AccountPageContent() {
         if (authError) throw authError;
         setNotice('Si cette adresse est associée à un compte, un lien de réinitialisation vient de lui être envoyé.');
       } else {
+        const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+        if (sessionError) throw sessionError;
+        if (!sessionData.session) {
+          setError('Session de réinitialisation absente ou expirée.');
+          return;
+        }
         const { error: authError } = await supabase.auth.updateUser({ password });
         if (authError) throw authError;
         setNotice('Votre mot de passe a été mis à jour.');
@@ -905,10 +921,11 @@ export default function AccountPageContent() {
                   </div>
                 )}
 
+                {mode === 'update' && !user && <div role="alert" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm leading-6 text-amber-200">Ouvrez le lien de réinitialisation reçu par e-mail pour choisir un nouveau mot de passe.<button type="button" onClick={() => switchMode('forgot')} className="mt-2 block font-bold underline underline-offset-4">Demander un nouveau lien</button></div>}
                 <button
                   className="w-full mt-2 bg-gradient-to-r from-orange-500 via-amber-600 to-orange-600 hover:from-orange-400 hover:to-amber-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-orange-950/40 hover:shadow-orange-900/60 transition-all duration-200 transform active:scale-[0.99] flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#121215]"
                   type="submit"
-                  disabled={busy}
+                  disabled={busy || (mode === 'update' && !user)}
                 >
                   {busy ? (
                     <>
