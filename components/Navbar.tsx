@@ -173,7 +173,7 @@ export default function Navbar() {
           if (e.key === 'Enter' || e.key === ' ') setDeliveryModalOpen(true);
         }}
       >
-        <span>Livraison incluse en Allemagne · Aucun frais supplémentaire à régler au transporteur · Cliquez ici pour voir les détails</span>
+        <span>Livraison incluse en Allemagne · Aucun frais supplémentaire à régler au transporteur · Consultez nos différentes zones de livraison à domicile en cliquant ici</span>
         <MapPin size={15} className="shrink-0" />
       </div>
 

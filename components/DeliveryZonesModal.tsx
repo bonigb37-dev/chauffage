@@ -8,6 +8,25 @@ type Props = {
   onClose: () => void;
 };
 
+const deliveryRegions = [
+  { name: 'Bade-Wurtemberg (Baden-Württemberg)', cities: 'Stuttgart, Mannheim, Karlsruhe, Freiburg im Breisgau, Heidelberg, Ulm' },
+  { name: 'Bavière (Bayern)', cities: 'München, Nürnberg, Augsburg, Regensburg, Würzburg, Ingolstadt' },
+  { name: 'Berlin', cities: 'Berlin et tous ses quartiers' },
+  { name: 'Brandebourg (Brandenburg)', cities: 'Potsdam, Cottbus, Brandenburg an der Havel, Frankfurt (Oder)' },
+  { name: 'Brême (Bremen)', cities: 'Bremen, Bremerhaven' },
+  { name: 'Hambourg (Hamburg)', cities: 'Hamburg et tous ses quartiers' },
+  { name: 'Hesse (Hessen)', cities: 'Frankfurt am Main, Wiesbaden, Kassel, Darmstadt, Offenbach am Main' },
+  { name: 'Mecklembourg-Poméranie-Occidentale (Mecklenburg-Vorpommern)', cities: 'Rostock, Schwerin, Neubrandenburg, Stralsund, Greifswald' },
+  { name: 'Basse-Saxe (Niedersachsen)', cities: 'Hannover, Braunschweig, Oldenburg, Osnabrück, Wolfsburg, Göttingen' },
+  { name: 'Rhénanie-du-Nord-Westphalie (Nordrhein-Westfalen)', cities: 'Köln, Düsseldorf, Dortmund, Essen, Münster, Bielefeld, Aachen, Gronau' },
+  { name: 'Rhénanie-Palatinat (Rheinland-Pfalz)', cities: 'Mainz, Ludwigshafen am Rhein, Koblenz, Trier, Kaiserslautern' },
+  { name: 'Sarre (Saarland)', cities: 'Saarbrücken, Neunkirchen, Homburg, Saarlouis, Merzig' },
+  { name: 'Saxe (Sachsen)', cities: 'Leipzig, Dresden, Chemnitz, Zwickau, Görlitz' },
+  { name: 'Saxe-Anhalt (Sachsen-Anhalt)', cities: 'Magdeburg, Halle (Saale), Dessau-Roßlau, Wittenberg' },
+  { name: 'Schleswig-Holstein', cities: 'Kiel, Lübeck, Flensburg, Neumünster, Norderstedt' },
+  { name: 'Thuringe (Thüringen)', cities: 'Erfurt, Jena, Gera, Weimar, Eisenach' },
+];
+
 export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
   if (!isOpen) return null;
 
@@ -24,6 +43,18 @@ export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
         </div>
       </div>
       <div className="space-y-5 p-6 sm:p-8">
+        <div>
+          <h3 className="text-lg font-bold">Nos zones de livraison à domicile</h3>
+          <p className="mt-2 text-sm leading-6 text-gray-600">Nous livrons dans les 16 Länder d’Allemagne, dans toutes les villes et communes. Les villes ci-dessous sont des exemples : votre commune est également couverte même si elle ne figure pas dans cette liste. Les conditions d’accès à votre adresse restent à vérifier avant la commande.</p>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2" aria-label="Les 16 Länder desservis">
+            {deliveryRegions.map((region) => (
+              <li key={region.name} className="rounded-xl border border-stone-200 bg-stone-50 p-3">
+                <h4 className="text-sm font-bold text-gray-900">{region.name}</h4>
+                <p className="mt-1 text-sm leading-6 text-gray-600">{region.cities}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
         <div className="flex items-start gap-3 rounded-2xl border border-orange-100 bg-orange-50 p-4 text-sm leading-6 text-orange-950">
           <MapPin size={19} className="mt-0.5 shrink-0 text-orange-700" />
           <p>La livraison est prévue sous 2 à 4 jours ouvrables après réception effective du paiement. Signalez les restrictions d’accès avant de commander ; aucun supplément de transport ne sera imposé après validation.</p>
