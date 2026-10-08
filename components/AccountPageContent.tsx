@@ -865,7 +865,7 @@ export default function AccountPageContent() {
                         <input
                           autoComplete="given-name"
                           name="firstName"
-                          placeholder="Jean"
+                          placeholder="Max"
                           required
                           className="account-input-field"
                         />
@@ -880,7 +880,7 @@ export default function AccountPageContent() {
                         <input
                           autoComplete="family-name"
                           name="lastName"
-                          placeholder="Dupont"
+                          placeholder="Müller"
                           required
                           className="account-input-field"
                         />
