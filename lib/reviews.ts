@@ -313,3 +313,15 @@ export function getAverageRating(productId: number): { average: number; count: n
   const average = Math.round((sum / reviews.length) * 10) / 10;
   return { average, count: reviews.length };
 }
+
+export function getTotalReviewsSummary(): { totalReviews: number; averageRating: number } {
+  let totalCount = 0;
+  let totalSum = 0;
+  for (const id of allProductIds) {
+    const revs = getReviewsForProduct(id);
+    totalCount += revs.length;
+    totalSum += revs.reduce((acc, r) => acc + r.rating, 0);
+  }
+  const averageRating = totalCount > 0 ? Math.round((totalSum / totalCount) * 10) / 10 : 4.8;
+  return { totalReviews: totalCount, averageRating };
+}

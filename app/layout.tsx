@@ -1,6 +1,7 @@
 ﻿import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
+import TopTrustBanner from '@/components/TopTrustBanner';
 import Footer from '@/components/Footer';
 import { CartProvider } from '@/components/CartProvider';
 import ActivityTracker from '@/components/ActivityTracker';
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <ActionLoadingProvider>
             <ActivityTracker />
             <RoleAccessGuard>
+              <TopTrustBanner />
               <Navbar />
               {children}
               <Footer />
