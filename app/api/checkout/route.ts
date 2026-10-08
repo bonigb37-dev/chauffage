@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { products as catalog } from '@/lib/products';
+import { paymentProofToken } from '@/lib/payment-proof-token';
 
 export const runtime = 'nodejs';
 
@@ -148,5 +149,5 @@ export async function POST(request: Request) {
     return error('La commande n’a pas pu être enregistrée. Vérifiez que la migration Supabase commerce a été appliquée.', 503);
   }
 
-  return NextResponse.json({ reference, orderId, totalCents, lines: orderLines }, { status: 201 });
+  return NextResponse.json({ reference, orderId, totalCents, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey) }, { status: 201 });
 }

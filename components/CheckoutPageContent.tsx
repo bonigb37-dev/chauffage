@@ -57,7 +57,7 @@ export default function CheckoutPageContent() {
         method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ items: lines.map(({ product, quantity }) => ({ productId: product.id, quantity })), customer, shipping, acceptedTerms: true }),
       });
-      const result = await response.json() as { reference?: string; totalCents?: number; error?: string };
+      const result = await response.json() as { reference?: string; totalCents?: number; proofToken?: string; error?: string };
       if (!response.ok || !result.reference || typeof result.totalCents !== 'number') {
         setError(result.error ?? 'La demande n’a pas pu être enregistrée. Réessayez plus tard.');
         setStarting(false);
@@ -66,7 +66,7 @@ export default function CheckoutPageContent() {
       const reference = result.reference;
       const confirmedTotal = result.totalCents;
       sessionStorage.setItem('thermopro-pending-order', JSON.stringify({
-        reference, total: confirmedTotal, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
+        reference, proofToken: result.proofToken, total: confirmedTotal, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
         customer: { firstName: details.firstName, lastName: details.lastName, email: details.email },
       }));
       window.location.assign(`/commande/succes?reference=${encodeURIComponent(reference)}`);
@@ -113,7 +113,7 @@ export default function CheckoutPageContent() {
           </section>
           <section className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-8">
             <div className="flex items-start gap-3"><Landmark className="mt-1 shrink-0 text-orange-600" size={20}/><div><h2 className="text-xl font-black">Paiement par virement</h2><p className="mt-1 leading-6 text-gray-600">Après validation de la commande, l’entreprise vous communiquera ses coordonnées bancaires et le montant définitif, livraison comprise.</p></div></div>
-            <PaymentMethods />
+            <PaymentMethods showBankDetails={false} />
             {bankDetails.trim() && <div className="mt-5 rounded-xl border border-stone-200 bg-stone-50 p-4"><h3 className="font-bold text-gray-950">Coordonnées de virement</h3><p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-gray-700">{bankDetails}</p></div>}
             <div className="mt-5 rounded-xl bg-stone-50 p-4 text-sm leading-6 text-gray-600">Ne faites pas le virement avant d’avoir reçu la confirmation et les coordonnées bancaires de l’entreprise.</div>
           </section>

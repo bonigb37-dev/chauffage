@@ -2,7 +2,7 @@
 
 import { useCart } from '@/components/CartProvider';
 
-export default function PaymentMethods({ compact = false }: { compact?: boolean }) {
+export default function PaymentMethods({ compact = false, showBankDetails = true }: { compact?: boolean; showBankDetails?: boolean }) {
   const { bankDetails } = useCart();
   return (
     <div className={compact ? '' : 'mt-5 border-t border-stone-200 pt-5'}>
@@ -17,7 +17,7 @@ export default function PaymentMethods({ compact = false }: { compact?: boolean 
       <p className="mt-2 text-xs leading-5 text-gray-500">
         Le virement sera effectué après confirmation de la commande et réception des coordonnées bancaires.
       </p>
-      {bankDetails && <p className="mt-3 whitespace-pre-wrap rounded-lg bg-stone-50 p-3 text-sm leading-6 text-gray-700">{bankDetails}</p>}
+      {showBankDetails && bankDetails && <p className="mt-3 whitespace-pre-wrap rounded-lg bg-stone-50 p-3 text-sm leading-6 text-gray-700">{bankDetails}</p>}
     </div>
   );
 }
