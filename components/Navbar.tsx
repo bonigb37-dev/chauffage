@@ -552,6 +552,7 @@ export default function Navbar() {
 
                 {/* Account Links */}
                 <div className="py-2 space-y-1 text-sm text-[#172033]">
+                  <Link href="/panier" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-orange-50 hover:text-[#FF6B00] font-medium transition"><ShoppingCart size={16} /><span>Mon panier ({itemCount})</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
                   <Link
                     href="/compte"
                     onClick={() => setAccountOpen(false)}

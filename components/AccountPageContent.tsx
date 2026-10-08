@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { isPasswordRecoveryRedirect, supabase } from '@/lib/supabase';
+import { useCart } from '@/components/CartProvider';
 
 type Mode = 'signin' | 'signup' | 'forgot' | 'update';
 type OwnOrder = { id: number; reference: string; created_at: string; total_cents: number; status: string; payment_status: string; items: unknown };
@@ -406,6 +407,7 @@ function BackgroundHearthLoop() {
 }
 
 export default function AccountPageContent() {
+  const { items: cartItems, products: cartProducts, itemCount, ready: cartReady } = useCart();
   const router = useRouter();
   const [mode, setMode] = useState<Mode>(isPasswordRecoveryRedirect ? 'update' : 'signin');
   const [user, setUser] = useState<User | null>(null);
@@ -586,7 +588,7 @@ export default function AccountPageContent() {
         }
         const destination = roleData?.role === 'owner' || roleData?.role === 'super_admin'
           ? '/super-admin'
-          : roleData?.role === 'admin' ? '/admin' : '/';
+          : roleData?.role === 'admin' ? '/admin' : '/compte';
         router.replace(destination);
         router.refresh();
       } else if (mode === 'forgot') {
@@ -689,6 +691,14 @@ export default function AccountPageContent() {
               <DarkFormAlert notice={notice} error={error} onDismiss={() => { setNotice(''); setError(''); }} />
 
               <div className="space-y-5 text-left">
+                <section className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+                  <h3 className="text-sm font-bold text-white">Mon panier{cartReady ? ` (${itemCount})` : ''}</h3>
+                  {!cartReady ? <p role="status" className="mt-2 text-xs text-zinc-400">Chargement du panier…</p> : cartItems.length ? <ul className="mt-3 space-y-2 text-sm text-zinc-300">{cartItems.map((item) => <li key={item.productId} className="flex justify-between gap-3"><span>{cartProducts.find((product) => product.id === item.productId)?.name ?? 'Produit'}</span><span className="shrink-0">× {item.quantity}</span></li>)}</ul> : <p className="mt-2 text-sm text-zinc-400">Votre panier est vide. Découvrez nos produits pour préparer votre prochaine commande.</p>}
+                  <div className="mt-4 flex flex-wrap gap-3">
+                    <Link href="/panier" className="rounded-xl bg-orange-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-orange-700">Voir mon panier</Link>
+                    <Link href="/produits" className="rounded-xl border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Continuer mes achats</Link>
+                  </div>
+                </section>
                 <section className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
                   <h3 className="text-sm font-bold text-white">Mes commandes</h3>
                   {ordersError ? (
