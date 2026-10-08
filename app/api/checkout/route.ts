@@ -6,13 +6,6 @@ import { paymentProofToken } from '@/lib/payment-proof-token';
 
 export const runtime = 'nodejs';
 
-type CheckoutInput = {
-  items?: unknown;
-  customer?: unknown;
-  shipping?: unknown;
-  acceptedTerms?: unknown;
-};
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
@@ -33,14 +26,14 @@ export async function POST(request: Request) {
     return error('Le service de commande n’est pas configuré. Contactez l’entreprise.', 503);
   }
 
-  let input: CheckoutInput;
+  let input: unknown;
   try {
-    input = await request.json() as CheckoutInput;
+    input = await request.json();
   } catch {
     return error('La demande de commande est invalide.', 400);
   }
 
-  if (input.acceptedTerms !== true || !Array.isArray(input.items) || input.items.length < 1 || input.items.length > 50 || !isRecord(input.customer)) {
+  if (!isRecord(input) || input.acceptedTerms !== true || !Array.isArray(input.items) || input.items.length < 1 || input.items.length > 50 || !isRecord(input.customer)) {
     return error('Vérifiez les produits, les coordonnées et l’acceptation des conditions.', 400);
   }
 

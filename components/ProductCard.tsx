@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
-import { ArrowLeft, ArrowRight, Boxes, Check, Expand, Heart, ShoppingCart, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Expand, Heart, ShoppingCart, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { productPathSegment, type Product } from '@/lib/products';
 import { useCart } from '@/components/CartProvider';
 

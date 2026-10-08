@@ -17,13 +17,11 @@ import {
   Phone,
   MessageSquare,
   ArrowRight,
-  ShieldCheck,
   Scale,
   Thermometer,
   Calculator,
   Info,
   Layers,
-  Box,
   ShoppingCart
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -232,23 +230,17 @@ export default function PelletGuide() {
   // Recommendation Calculation
   let recommendedQuantityText = '';
   let recommendedPalettes = 1;
-  let recommendedBags = 65;
-  let recommendedWeight = '975 kg';
   let estimatedMonths = '';
   let energyEquiv = '';
 
   if (appliance === 'poele-appoint') {
     if (surface === 'small') {
       recommendedPalettes = 1;
-      recommendedBags = 35;
-      recommendedWeight = '525 kg (Demi-palette)';
       recommendedQuantityText = '1 Demi-palette (35 sacs de 15 kg)';
       estimatedMonths = '6 à 8 mois d’appoint';
       energyEquiv = '≈ 2 520 kWh d’énergie';
     } else {
       recommendedPalettes = 1;
-      recommendedBags = 65;
-      recommendedWeight = '975 kg (1 Palette)';
       recommendedQuantityText = '1 Palette complète (65 sacs de 15 kg)';
       estimatedMonths = '1 saison complète d’appoint';
       energyEquiv = '≈ 4 680 kWh (~480 Litres de fioul)';
@@ -256,22 +248,16 @@ export default function PelletGuide() {
   } else if (appliance === 'poele-principal') {
     if (surface === 'small') {
       recommendedPalettes = 1;
-      recommendedBags = 65;
-      recommendedWeight = '975 kg (1 Palette)';
       recommendedQuantityText = '1 Palette complète (65 sacs de 15 kg)';
       estimatedMonths = '4 à 5 mois d’hiver';
       energyEquiv = '≈ 4 680 kWh (~480 Litres de fioul)';
     } else if (surface === 'medium') {
       recommendedPalettes = 2;
-      recommendedBags = 130;
-      recommendedWeight = '1 950 kg (2 Palettes)';
       recommendedQuantityText = '2 Palettes complètes (130 sacs de 15 kg)';
       estimatedMonths='Toute la saison hivernale (6 mois)';
       energyEquiv = '≈ 9 360 kWh (~960 Litres de fioul)';
     } else {
       recommendedPalettes = 3;
-      recommendedBags = 195;
-      recommendedWeight = '2 925 kg (3 Palettes)';
       recommendedQuantityText = '3 Palettes complètes (195 sacs de 15 kg)';
       estimatedMonths = '1 saison entière grand confort';
       energyEquiv = '≈ 14 040 kWh (~1 440 Litres de fioul)';
@@ -280,15 +266,11 @@ export default function PelletGuide() {
     // Chaudière
     if (surface === 'small' || surface === 'medium') {
       recommendedPalettes = 3;
-      recommendedBags = 195;
-      recommendedWeight = '2 925 kg (3 Palettes)';
       recommendedQuantityText = '3 Palettes complètes (195 sacs de 15 kg)';
       estimatedMonths = 'Saison de chauffage complète';
       energyEquiv = '≈ 14 040 kWh (~1 440 Litres de fioul)';
     } else {
       recommendedPalettes = 4;
-      recommendedBags = 260;
-      recommendedWeight = '3 900 kg (4 Palettes)';
       recommendedQuantityText = '4 Palettes complètes (260 sacs de 15 kg)';
       estimatedMonths = 'Saison complète avec eau chaude sanitaire';
       energyEquiv = '≈ 18 720 kWh (~1 920 Litres de fioul)';

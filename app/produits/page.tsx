@@ -1,5 +1,4 @@
-import Image from 'next/image';
-import { ArrowDown, ArrowRight, BadgeCheck, Boxes, Search, ZoomIn } from 'lucide-react';
+import { ArrowDown, ArrowRight, BadgeCheck, Boxes, Search } from 'lucide-react';
 import ProductCatalog from '@/components/ProductCatalog';
 import ProductHeroShowcase from '@/components/ProductHeroShowcase';
 import { products } from '@/lib/products';

@@ -4,7 +4,7 @@ import { FormEvent, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Calculator, CheckCircle2, FileText, MapPin, PhoneCall, ShieldCheck, Truck } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
-import { isSupabaseConfigured, supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 const inputClass = 'mt-1.5 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
