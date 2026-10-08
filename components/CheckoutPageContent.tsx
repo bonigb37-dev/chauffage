@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Landmark, ShieldCheck } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import PaymentMethods from '@/components/PaymentMethods';
+import AddressAutocomplete from '@/components/AddressAutocomplete';
 import { useActionLoading } from '@/components/ActionLoadingProvider';
 import { supabase } from '@/lib/supabase';
 
@@ -95,7 +96,7 @@ export default function CheckoutPageContent() {
               <label className="text-sm font-semibold text-gray-700">Prénom *<input required name="firstName" autoComplete="given-name" className={inputClass}/></label>
               <label className="text-sm font-semibold text-gray-700">Nom de famille *<input required name="lastName" autoComplete="family-name" className={inputClass}/></label>
               <label className="text-sm font-semibold text-gray-700 sm:col-span-2">Pays / Région *<select name="country" defaultValue="DE" className={inputClass}><option value="DE">Allemagne</option></select></label>
-              <label className="text-sm font-semibold text-gray-700 sm:col-span-2">Rue et numéro *<input required name="street" autoComplete="address-line1" className={inputClass} placeholder="Nom de la rue et numéro de la maison"/></label>
+              <AddressAutocomplete name="street" postalCodeName="postalCode" cityName="city" inputClass={inputClass} />
               <label className="text-sm font-semibold text-gray-700 sm:col-span-2">Complément d’adresse (facultatif)<input name="addressLine2" autoComplete="address-line2" className={inputClass} placeholder="Appartement, étage, etc."/></label>
               <label className="text-sm font-semibold text-gray-700">Code postal *<input required name="postalCode" autoComplete="postal-code" className={inputClass}/></label>
               <label className="text-sm font-semibold text-gray-700">Ville *<input required name="city" autoComplete="address-level2" className={inputClass}/></label>
@@ -106,7 +107,7 @@ export default function CheckoutPageContent() {
             {differentShipping && <div className="mt-5 grid gap-5 sm:grid-cols-2">
               <label className="text-sm font-semibold text-gray-700">Prénom *<input required name="shippingFirstName" autoComplete="shipping given-name" className={inputClass}/></label>
               <label className="text-sm font-semibold text-gray-700">Nom de famille *<input required name="shippingLastName" autoComplete="shipping family-name" className={inputClass}/></label>
-              <label className="text-sm font-semibold text-gray-700 sm:col-span-2">Rue et numéro *<input required name="shippingStreet" autoComplete="shipping address-line1" className={inputClass}/></label>
+              <AddressAutocomplete name="shippingStreet" postalCodeName="shippingPostalCode" cityName="shippingCity" inputClass={inputClass} />
               <label className="text-sm font-semibold text-gray-700 sm:col-span-2">Complément d’adresse<input name="shippingAddressLine2" autoComplete="shipping address-line2" className={inputClass}/></label>
               <label className="text-sm font-semibold text-gray-700">Code postal *<input required name="shippingPostalCode" autoComplete="shipping postal-code" className={inputClass}/></label>
               <label className="text-sm font-semibold text-gray-700">Ville *<input required name="shippingCity" autoComplete="shipping address-level2" className={inputClass}/></label>
