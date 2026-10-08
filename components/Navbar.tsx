@@ -164,17 +164,17 @@ export default function Navbar() {
     <>
       {/* Top Banner for Delivery Zones */}
       <div
-        onClick={() => setDeliveryModalOpen(true)}
-        className="cursor-pointer bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 py-2 px-4 text-center text-xs sm:text-sm font-bold text-white transition hover:brightness-105 flex items-center justify-center gap-2 shadow-inner z-50 relative"
-        role="button"
-        tabIndex={0}
-        aria-label="Consultez nos différentes zones de livraison à domicile"
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') setDeliveryModalOpen(true);
-        }}
+        className="bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 py-2 px-4 text-center text-xs sm:text-sm font-bold text-white shadow-inner z-50 relative"
       >
-        <span>Livraison incluse en Allemagne · Aucun frais supplémentaire à régler au transporteur · Consultez nos différentes zones de livraison à domicile en cliquant ici</span>
-        <MapPin size={15} className="shrink-0" />
+        <span>Livraison incluse en Allemagne · Aucun frais supplémentaire à régler au transporteur · </span>
+        <button
+          type="button"
+          onClick={() => setDeliveryModalOpen(true)}
+          className="inline-flex items-center justify-center gap-2 rounded-sm font-bold transition hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          Consultez nos différentes zones de livraison à domicile en cliquant ici
+          <MapPin size={15} className="shrink-0" aria-hidden="true" />
+        </button>
       </div>
 
       {/* Main Sticky Navbar */}
