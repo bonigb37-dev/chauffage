@@ -1,4 +1,4 @@
-﻿-- Run after supabase-forms.sql and supabase-admin.sql.
+-- Run after supabase-forms.sql and supabase-admin.sql.
 -- Public order creation is routed through the server; the service-role key must never be exposed to the browser.
 
 alter table public.order_requests

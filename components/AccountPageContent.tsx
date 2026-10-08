@@ -411,9 +411,9 @@ export default function AccountPageContent() {
       setReady(true);
       return;
     }
+    const supabaseClient = supabase;
 
     let mounted = true;
-    const supabaseClient = supabase;
     const loadOwnData = async (userId: string) => {
       const { data: orderData, error: orderError } = await supabaseClient.from('order_requests')
         .select('id, reference, created_at, total_cents, status, payment_status, items')
@@ -436,7 +436,6 @@ export default function AccountPageContent() {
       if (!mounted) return;
       if (!addressQueryError) setAddresses((addressData ?? []) as OwnAddress[]);
     };
-
     supabaseClient.auth.getSession().then(({ data }) => {
       if (mounted) {
         setUser(data.session?.user ?? null);
@@ -538,8 +537,8 @@ export default function AccountPageContent() {
         if (authError) throw authError;
         if (data.session) {
           await supabase.auth.signOut();
-          setError('La confirmation par e-mail nest pas activee sur le projet Supabase. Activez Confirm email pour exiger la validation avant la connexion.');
-        } else setNotice('Inscription enregistree. Consultez votre boite e-mail et cliquez sur le lien de confirmation pour activer votre compte.');
+          setError('La confirmation par e-mail n’est pas activée sur le projet Supabase. Activez « Confirm email » dans Authentication → Sign In / Providers → Email pour exiger la validation avant la connexion.');
+        } else setNotice('Inscription enregistrée. Consultez votre boîte e-mail et cliquez sur le lien de confirmation pour activer votre compte.');
       } else if (mode === 'signin') {
         const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
         if (authError) throw authError;
@@ -550,7 +549,7 @@ export default function AccountPageContent() {
           .eq('user_id', data.user.id)
           .maybeSingle();
         if (roleError) {
-          setError('Vous etes connecte, mais votre role na pas pu etre verifie. Reessayez de vous connecter pour acceder a votre tableau de bord.');
+          setError('Vous êtes connecté, mais votre rôle n’a pas pu être vérifié. Réessayez de vous connecter pour accéder à votre tableau de bord.');
           return;
         }
         const destination = roleData?.role === 'owner' || roleData?.role === 'super_admin'
@@ -715,9 +714,6 @@ export default function AccountPageContent() {
                   Se déconnecter
                 </button>
               </div>
-              <p className="text-xs text-zinc-500 leading-relaxed pt-2">
-                L’historique de vos commandes sera synchronisé avec votre espace client.
-              </p>
             </div>
           ) : (
             <>

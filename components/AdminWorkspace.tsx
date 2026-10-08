@@ -165,13 +165,13 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
         setError('Aucun compte trouvé avec cette adresse e-mail. L’utilisateur doit d’abord créer son compte.'); return;
       }
       if (account.user_id === user?.id && newRole !== role) {
-        setError('Pour eviter de perdre vos acces, vous ne pouvez pas modifier votre propre role ici.'); return;
+        setError('Pour éviter de perdre vos accès, vous ne pouvez pas modifier votre propre rôle ici.'); return;
       }
       if (newRole === 'owner' && role !== 'owner') {
-        setError('Seul un owner peut attribuer le role owner.'); return;
+        setError('Seul un owner peut attribuer le rôle owner.'); return;
       }
       const { error: saveError } = await supabase.from('admin_roles').upsert({ user_id: account.user_id, role: newRole }, { onConflict: 'user_id' });
-      if (saveError) setError('Le role n’a pas pu etre enregistre. Seul un administrateur autorise peut gerer ce role.');
+      if (saveError) setError('Le rôle n’a pas pu être enregistré. Seul un administrateur autorisé peut gérer ce rôle.');
       else { setUserId(''); setNotice(`Rôle enregistré pour ${email}.`); await loadData(user); }
     } catch {
       setError('Le rôle n’a pas pu être enregistré. Veuillez réessayer.');

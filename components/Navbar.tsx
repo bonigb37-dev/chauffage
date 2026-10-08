@@ -23,7 +23,7 @@ import {
   X,
 } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
-import DeliveryZonesModal from './DeliveryZonesModal';
+import DeliveryZonesModal from '@/components/DeliveryZonesModal';
 
 const links = [
   { label: 'Accueil', href: '/' },
