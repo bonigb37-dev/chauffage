@@ -4,8 +4,8 @@ import { Star, ShieldCheck, Truck } from 'lucide-react';
 import { getTotalReviewsSummary } from '@/lib/reviews';
 
 export default function TopTrustBanner() {
-  const { averageRating } = getTotalReviewsSummary();
-  const displayCount = 584;
+  const { totalReviews, averageRating } = getTotalReviewsSummary();
+  const displayCount = totalReviews;
   const rating = averageRating || 4.8;
 
   const handleOpenReviews = (e: React.MouseEvent) => {

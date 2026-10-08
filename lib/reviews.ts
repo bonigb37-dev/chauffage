@@ -300,7 +300,16 @@ const productNameMap: Record<number, string> = {
   82: 'Bûches Chêne Pur séchées palette 2 stères'
 };
 
-// Fonction de génération d'avis déterministes pour garantir 584 avis au total
+const productReviewCounts = [
+  36, 25, 10, 28, 19, 52, 10, 27, 38, 14,
+  31, 22, 15, 45, 18, 33, 12, 29, 41, 16,
+  35, 20, 11, 26, 48, 17, 30, 13, 24, 39,
+  15, 42, 21, 34, 18, 50, 11, 23, 37, 14,
+  28, 19, 46, 12, 32, 25, 10, 27, 40, 16,
+  33, 21, 13, 30, 17, 44, 15, 29, 36, 18
+];
+
+// Fonction de génération d'avis déterministes pour chaque produit
 function generateReviewsForProduct(productId: number): Review[] {
   let categoryKey = 'granules';
   if ([5, 7, 36, 48, 58, 59, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 80, 81, 82].includes(productId)) {
@@ -313,8 +322,8 @@ function generateReviewsForProduct(productId: number): Review[] {
 
   const templates = reviewTemplates[categoryKey] ?? reviewTemplates.granules;
 
-  // Ajustement pour obtenir exactement 584 avis sur l'ensemble du catalogue
-  const reviewsCount = 10 + ((productId * 3) % 3); // 10, 11 ou 12 par produit
+  // Nombre d'avis varié par produit (ex: 36, 25, 10, 28, 19, 52, 10, 27, 38, etc.)
+  const reviewsCount = productReviewCounts[(productId - 1) % productReviewCounts.length];
 
   const reviews: Review[] = [];
   const name = productNameMap[productId] ?? `Produit #${productId}`;
@@ -336,22 +345,16 @@ function generateReviewsForProduct(productId: number): Review[] {
 
     let rating = 5;
     if (ratingMode === 0) {
-      // ~4.5 / 5
       rating = (i % 2 === 0) ? 4 : 5;
     } else if (ratingMode === 1) {
-      // ~4.6 / 5
       rating = (i % 5 < 2) ? 4 : 5;
     } else if (ratingMode === 2) {
-      // ~4.7 / 5
       rating = (i % 4 === 0) ? 4 : 5;
     } else if (ratingMode === 3) {
-      // ~4.8 / 5
       rating = (i % 5 === 0) ? 4 : 5;
     } else if (ratingMode === 4) {
-      // ~4.9 / 5
       rating = (i % 9 === 0) ? 4 : 5;
     } else {
-      // 5.0 / 5
       rating = 5;
     }
 
@@ -412,8 +415,7 @@ export function getAllReviews(): Review[] {
 
 export function getTotalReviewsSummary(): { totalReviews: number; averageRating: number } {
   const all = getAllReviews();
-  const totalCount = 584; // Affichage fixe de 584 avis clients
   const totalSum = all.reduce((acc, r) => acc + r.rating, 0);
   const averageRating = all.length > 0 ? Math.round((totalSum / all.length) * 10) / 10 : 4.8;
-  return { totalReviews: totalCount, averageRating };
+  return { totalReviews: all.length, averageRating };
 }
