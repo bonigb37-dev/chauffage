@@ -1,6 +1,6 @@
 'use client';
 
-import { Star, ShieldCheck } from 'lucide-react';
+import { Star, ShieldCheck, Truck } from 'lucide-react';
 import { getTotalReviewsSummary } from '@/lib/reviews';
 
 export default function TopTrustBanner() {
@@ -14,12 +14,13 @@ export default function TopTrustBanner() {
   };
 
   return (
-    <aside aria-label="Avis clients vérifiés" className="bg-orange-600 text-white border-b border-orange-700/60 py-2 px-3 text-xs sm:text-sm font-semibold shadow-inner select-none">
-      <div className="container flex items-center justify-between gap-2 sm:gap-4 max-w-7xl mx-auto">
+    <aside aria-label="Avis clients et livraison" className="bg-orange-600 text-white border-b border-orange-700/60 py-2 px-3 text-xs sm:text-sm font-semibold shadow-inner select-none">
+      <div className="container flex flex-wrap items-center justify-center sm:justify-between gap-2 sm:gap-4 max-w-7xl mx-auto">
+        <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
         <button
           type="button"
           onClick={handleOpenReviews}
-          className="flex items-center justify-center gap-2 sm:gap-3 hover:opacity-95 transition-opacity mx-auto sm:mx-0 text-left focus:outline-none"
+          className="flex items-center justify-center gap-2 sm:gap-3 hover:opacity-95 transition-opacity text-left focus:outline-none"
         >
           {/* Yellow Stars */}
           <div className="flex items-center text-amber-300 gap-0.5" aria-hidden="true">
@@ -39,6 +40,11 @@ export default function TopTrustBanner() {
             {displayCount} avis clients
           </span>
         </button>
+        <span className="flex items-center gap-2 whitespace-nowrap">
+          <Truck size={18} aria-hidden="true" className="shrink-0" />
+          Livraison : 2 à 4 jours ouvrables
+        </span>
+        </div>
 
         {/* Trusted Guarantee Badge Style Icon */}
         <div className="hidden sm:flex items-center gap-1.5 bg-orange-700/60 rounded-full px-2.5 py-1 text-xs text-orange-100 border border-orange-400/30 shrink-0">
