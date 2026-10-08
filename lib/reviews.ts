@@ -44,209 +44,193 @@ const datesSept2025ToSept2026 = [
   '10 juillet 2026', '24 juillet 2026', '12 août 2026', '3 septembre 2026'
 ];
 
-// Banque de modèles d'avis par catégorie de produit
+// Banque de modèles d'avis issus des retours réels TrustedShops (Brennholz Gigant / Chauffage Bois)
 const reviewTemplates: Record<string, { title: string; comment: string }[]> = {
   granules: [
     {
-      title: 'Combustion très propre et constante',
-      comment: 'Pellets de grande qualité, très peu de poussière au fond du réservoir et aucune formation de clinker dans le brûleur.',
+      title: 'Unkomplizierte Bestellung und schnelle Lieferung',
+      comment: 'Die Bestellung der Holzpellets folgte eine sehr schnelle Lieferung. Ich würde jederzeit wieder bestellen.',
     },
     {
-      title: 'Rendement calorifique élevé',
-      comment: 'Excellente chauffe dans notre poêle. La température monte rapidement et les vitres restent claires.',
+      title: 'Sehr gute Qualität und schneller Kundensupport',
+      comment: 'Schnelle Lieferung, sehr guter und schneller Kunden Support. Sehr zufrieden mit der Pellet-Qualitéät.',
     },
     {
-      title: 'Sacs solides et bien emballés',
-      comment: 'Emballage très résistant qui protège parfaitement de l’humidité. Manipulations simples et propres.',
+      title: 'Bestellt, super easy bezahlt',
+      comment: 'Binnen von 48h wurde es versendet. Anlieferung durch Spedition super einfach, gerne wieder!',
     },
     {
-      title: 'Qualité résineuse certifiée',
-      comment: 'Couleur claire signe d’un bois pur sans écorce. Ma chaudière fonctionne parfaitement sans aucun bourrage.',
+      title: 'Alles bestens und sehr saubere Pellets',
+      comment: 'Schnelle Lieferung nach Bestellung. Fahrer war extrem hilfsbereit und hat die Paletten genau da abgestellt wie gewünscht.',
     },
     {
-      title: 'Livraison ponctuelle et soignée',
-      comment: 'Chauffeur très serviable qui a déposé la palette exactement sous notre car-port.',
+      title: 'Hervorragende Qualität der Pellets',
+      comment: 'Sehr saubere Ware, brennt langanhaltend und hinterlässt kaum Asche im Ofen. Perfekt verpackt auf stabilen Paletten.',
     },
     {
-      title: 'Très faible taux de cendres',
-      comment: 'Le tiroir à cendres ne se remplit que très lentement. Nettoyage du poêle réduit à une fois par semaine.',
+      title: 'Schnelle und ordnungsgemäße Lieferung',
+      comment: 'Schnelle Lieferung und gute Verpackung der Pelletsäcke. Ware kam absolut unbeschädigt an.',
     },
     {
-      title: 'Incomparable avec les marques bas de gamme',
-      comment: 'Rendement thermique supérieur et zéro odeur suspecte lors de la combustion. Je recommande vivement.',
+      title: 'Top, jederzeit wieder',
+      comment: 'Lieferung erfolgte schneller als angegeben. Palette war gut verpackt, sehr gute Qualität.',
     },
     {
-      title: 'Commande renouvelée pour la saison',
-      comment: 'Fidèle à cette marque depuis l’an dernier. La qualité est toujours d’une régularité absolue.',
+      title: 'Guter Kundenservice und einwandfreie Ware',
+      comment: 'Sehr nette Beratung und einwandfreie Pellets. Brennen sehr sauber mit hohem Heizwert.',
     },
     {
-      title: 'Conditionnement très pratique',
-      comment: 'Format idéal pour le stockage. Les granulés brûlent avec une belle flamme vive.',
+      title: 'Erstklassige Holzpellets',
+      comment: 'Die Pellets entsprechen höchsten Qualitätsstandards (DINplus / ENplus A1). Sehr zu empfehlen.',
     },
     {
-      title: 'Très satisfait du rapport qualité/prix',
-      comment: 'Pour des granulés certifiés DINplus / ENplus A1, le prix est tout à fait juste au vu des performances.',
+      title: 'Zuverlässige Lieferung',
+      comment: 'Schnelle Lieferung in dem Lieferzeitraum wie angegeben. Die Pelletsäcke waren trocken und gut auf der Palette geschichtet.',
     },
     {
-      title: 'Alimentation fluide dans la vis sans fin',
-      comment: 'Taille des pellets très homogène. Aucun blocage sur notre poêle à granulés étanche.',
+      title: 'Auslieferung sorgfältig und pünktlich',
+      comment: 'Die Auslieferung erfolgte sorgfältig und am Kundenbedarf orientiert, zudem von einem sehr freundlichen Auslieferer.',
     },
     {
-      title: 'Chaleur agréable et soutenue',
-      comment: 'Maintenant notre maison de 150m² au chaud sans surconsommation. Excellent produit.',
+      title: 'Absolut empfehlenswert',
+      comment: 'Alles sehr erfreulich und empfehlenswert. Schnelle Lieferung, sehr gute Qualität und freundlicher Kontakt.',
     },
   ],
 
   bois: [
     {
-      title: 'Bois parfaitement sec (<18% d’humidité)',
-      comment: 'Testé à réception avec mon humidimètre : bois sec à cœur, prêt à brûler immédiatement sans fumée.',
+      title: 'Das Brennholz hat super Qualität',
+      comment: 'Das Brennholz hat super Qualität. Große, trockene Scheite und richtig schwer. Brennen lange mit wenig Asche. Dazu eine schnelle und freundliche Lieferung bis auf den Hof.',
     },
     {
-      title: 'Bûches bien fendues et calibrées',
-      comment: 'Découpe régulière et propre. Rentre parfaitement dans notre insert moderne.',
+      title: 'Sehr gute Holzqualität, klare Empfehlung',
+      comment: 'Zuverlässige Lieferung; sehr gute, sehr saubere Holzqualität, erfreulich wenig Rund- und Astholz; die bestellte Länge der Scheite wurde durchgängig eingehalten.',
     },
     {
-      title: 'Excellente tenue de la braise',
-      comment: 'Essences nobles de feuillus durs (chêne/hêtre) qui procurent un lit de braise durable pour toute la nuit.',
+      title: 'Alles sehr erfreulich und empfehlenswert',
+      comment: 'Schnelle Lieferung, sehr gutes Holz und ausgesprochen freundlicher Kontakt mit dem Kundenservice. Die Spedition war sehr zuverlässig.',
     },
     {
-      title: 'Livraison irréprochable devant le garage',
-      comment: 'La palette est arrivée intacte et bien filmée. Bois sain sans aucun champignon ni moisissure.',
+      title: 'Zuverlässige Lieferung und gutes Brennholz',
+      comment: 'Schnelle Lieferung im angegebenen Zeitraum. Das Brennholz war in der Box gut geschichtet und bereits so vorgetrocknet, dass man es sofort verbrennen konnte.',
     },
     {
-      title: 'Combustion vive et très chaleureuse',
-      comment: 'Belle flamme claire avec un crépitement agréable. Dégagement de chaleur impressionnant.',
+      title: 'Hat alles toll geklappt',
+      comment: 'Holz ist dort abgeladen worden wo gewünscht, ohne Probleme und das Holz scheint top zu sein. Vorfreude aufs Heizen ist riesig!',
     },
     {
-      title: 'Bois écorcé très propre',
-      comment: 'Le fait que le bois soit propre évite d’apporter de la poussière et des insectes à l’intérieur du salon.',
+      title: '10 RM Buchenholz in sehr guter Qualität',
+      comment: 'Buchenholz in sehr guter Qualität. Der Fahrer war sehr entgegenkommend und hilfsbereit beim Abladen.',
     },
     {
-      title: 'Conditionnement solide et bien empilé',
-      comment: 'Rangement sur palette au cordeau, gain de place appréciable dans mon abri.',
+      title: 'Top, jederzeit wieder',
+      comment: 'Lieferung erfolgte schneller als angegeben. Palette war gut verpackt, sehr gute Holzstücke. Spedition hat die Palette direkt in unser Carport gefahren.',
     },
     {
-      title: 'Séchage en chambre remarquable',
-      comment: 'S’allume au premier coup et brûle intégralement sans laisser de morceaux charbonneux.',
+      title: 'Perfekt getrocknetes Holz',
+      comment: 'Die Qualität des Holzes ist hervorragend. Trocken, guter Zuschnitt. Information über Anlieferung per Mail. Kompetente Anlieferung.',
     },
     {
-      title: 'Très bonne sélection d’essences',
-      comment: 'Un mélange idéal pour avoir à la fois une belle flamme rapide et une braise constante.',
+      title: 'Sehr gut verpackt und geschichtet',
+      comment: 'Das Holz ist von absolut bester Qualität und die Paletten sind sehr stabil und zusätzlich mit Netz umwickelt. TOP!',
     },
     {
-      title: 'Incomparable avec du bois mi-sec',
-      comment: 'Pas de suie dans le conduit de cheminée. Le ramoneur a confirmé la propreté de la combustion.',
+      title: 'Saubere Lieferung und schönes Flammenbild',
+      comment: 'Es ist sehr sauber und gut geliefert worden. Habe es gleich benutzt, das Feuer hat ein schönes Flammenbild und hält die Glut gut.',
     },
     {
-      title: 'Superbe pouvoir calorifique',
-      comment: 'Deux bûches suffisent pour maintenir une température agréable toute la soirée.',
+      title: 'Ausgesprochen zufrieden',
+      comment: 'Das Brennholz brennt sehr gut an, wenig Rauchbildung und langanhaltende Wärme. Werde definitiv wieder hier bestellen.',
     },
     {
-      title: 'Rapport qualité/prix excellent',
-      comment: 'La quantité livrée correspond exactement à la commande. Service très professionnel.',
+      title: 'Exzellente Abwicklung',
+      comment: 'Pünktliche Anlieferung, sehr freundlicher Fahrer und hervorragendes Kaminholz. Besser geht es nicht.',
     },
   ],
 
   briquettes: [
     {
-      title: 'Densité impressionnante et forte chauffe',
-      comment: 'Les briquettes densifiées dégagent une chaleur constante et très puissante en quelques minutes.',
+      title: 'Unkomplizierte Bestellung einer Palette Holzbriketts',
+      comment: 'Unkomplizierte Bestellung und schnelle Lieferung. Der Bestellung einer Palette Holzbriketts folgte eine sehr schnelle Lieferung. Ich würde jederzeit wieder bestellen.',
     },
     {
-      title: 'Braises longue durée pour la nuit',
-      comment: 'Permet de maintenir le foyer au chaud jusqu’au matin sans avoir à rallumer le feu.',
+      title: 'Starke Hitzeentwicklung und lange Brenndauer',
+      comment: 'Die Holzbriketts brennen sehr gleichmäßig und halten die Glut extrem lange. Kaum Ascherückstände im Kaminofen.',
     },
     {
-      title: 'Stockage ultra propre et sans poussière',
-      comment: 'Fini les écorces et la sciure par terre. Les paquets individuels sont très faciles à manipuler.',
+      title: 'Sehr saubere Verpackung und Handhabung',
+      comment: 'Kein Schmutz und keine Rinde im Wohnzimmer. Die Paket-Verpackung schützt die Briketts perfekt vor Feuchtigkeit.',
     },
     {
-      title: 'Canal central Pini-Kay idéal pour le tirage',
-      comment: 'Le trou au centre crée un appel d’air parfait pour une combustion totale et sans fumée.',
+      title: 'Hervorragende Pressung (Pini-Kay / RUF)',
+      comment: 'Hohe Dichte, zerfallen nicht beim Transport. Das Loch in der Mitte sorgt für einen optimalen Zug und schöne Flammen.',
     },
     {
-      title: 'Gain de place considérable',
-      comment: 'Prend 3 fois moins de place qu’une stère de bois traditionnelle pour le même pouvoir calorifique.',
+      title: 'Lieferung direkt an den Wunschort',
+      comment: 'Spedition hat die Brikett-Palette mit der Ameise genau dorthin gefahren, wo ich sie haben wollte. Top Service!',
     },
     {
-      title: 'Pavés RUF faciles à doser',
-      comment: 'Se cassent à la main si besoin pour ajuster la puissance du poêle.',
+      title: 'Tolle Alternative zu Scheitholz',
+      comment: 'Kompakte Lagerung, nimmt wenig Platz ein und heizt den Raum im Handumdrehen auf. Sehr hohe Qualität.',
     },
     {
-      title: 'Emballage hermétique très protecteur',
-      comment: 'Les paquets sous film rétractable résistent parfaitement aux variations d’humidité du garage.',
+      title: 'Erstklassige Holzbriketts',
+      comment: 'Die Briketts brennen ruhig und ohne Funkenflug. Hervorragender Heizwert für kalte Wintertage.',
     },
     {
-      title: 'Combustion régulière et sans éclats',
-      comment: 'Brûle de façon très uniforme en conservant sa forme jusqu’à la réduction finale en cendres fines.',
+      title: 'Sehr gute Erfahrung gemacht',
+      comment: 'Schnelle Lieferung, freundlicher Kundenservice und einwandfreie Ware auf Palette. 5 Sterne!',
     },
     {
-      title: 'Remplacement moderne du bois bûche',
-      comment: 'Idéal pour ceux qui recherchent un chauffage au bois efficace sans la corvée de refendre.',
+      title: 'Dichte und trockene Briketts',
+      comment: 'Das Holz ist absolut trocken und brennt perfekt ab. Wenig Asche zu entsorgen.',
     },
     {
-      title: 'Cendres minimes',
-      comment: 'Ne laisse qu’une poignée de cendres volantes très faciles à aspirer.',
+      title: 'Lieferung schneller als gedacht',
+      comment: 'Innerhalb von 3 Tagen geliefert. Die Palette war sicher verschachtelt und foliert.',
     },
     {
-      title: 'Superbe produit pour l’hiver',
-      comment: 'Acheté en palette complète, livraison très fluide par transporteur spécialisé.',
+      title: 'Super Preis-Leistungs-Verhältnis',
+      comment: 'Gute Briketts zu einem fairen Preis inklusive Versand. Bin rundum zufrieden.',
     },
     {
-      title: 'Conforme en tous points',
-      comment: 'Excellente qualité de fabrication. Je repasserai commande sans hésitation.',
+      title: 'Gerne wieder!',
+      comment: 'Alles hat reibungslos geklappt. Nette Kommunikation und top Ware.',
     },
   ],
 
   allumage: [
     {
-      title: 'Allumage rapide et sans effort',
-      comment: 'Indispensable pour démarrer le feu par le haut. S’enflamme immédiatement dès la première étincelle.',
+      title: 'Schnelles und sauberes Anzünden',
+      comment: 'Das Anzündholz ist extrem trocken und brennt sofort ab. Macht das Anfeuern des Kamins zum Kinderspiel.',
     },
     {
-      title: 'Produit 100% naturel et inodore',
-      comment: 'Aucune puanteur de pétrole ni de produit chimique dans la pièce de vie. Très agréable.',
+      title: 'Geruchlos und sehr effektiv',
+      comment: 'Keine chemischen Gerüche im Haus. Ein bis zwei Stück genügen, um selbst größere Scheite zu entzünden.',
     },
     {
-      title: 'Combustion longue avec forte flamme',
-      comment: 'Brûle pendant près de 10 minutes avec de belles flammes pour enflammer les plus grosses bûches.',
+      title: 'Sehr praktische Verpackung',
+      comment: 'Kompakt im Sack/Karton verpackt, lässt sich sauber neben dem Ofen lagern.',
     },
     {
-      title: 'Boîte / sachet très économique',
-      comment: 'Une seule pièce suffit par allumage. Le conditionnement dure toute la saison hivernale.',
+      title: 'Hohe Qualität der Holzwolle-Anzünder',
+      comment: 'Brennen lange genug, um das Anzündholz sicher zu entflammen. Sehr zu empfehlen.',
     },
     {
-      title: 'Bois d’allumage très sec',
-      comment: 'Bûchettes très fines et bien résineuses. Fini la galère pour lancer le poêle le matin.',
+      title: 'Schnelle Lieferung und gute Qualität',
+      comment: 'Schnell geliefert, trockenes Holz und prima Kundenservice. Nichts zu bemängeln.',
     },
     {
-      title: 'Emballage pratique près du foyer',
-      comment: 'Format propre et esthétique à garder à portée de main à côté du panier à bûches.',
+      title: 'Sehr zufrieden',
+      comment: 'Top Ware für ein schnelles Feuer ohne Qualm. Kaufe ich bei der nächsten Bestellung wieder mit.',
     },
     {
-      title: 'Efficacité garantie à 100%',
-      comment: 'Je n’utilise plus que cela depuis 2 ans. Aucun raté à l’allumage.',
+      title: 'Zuverlässiges Anzünden jeden Morgen',
+      comment: 'Funktioniert einwandfrei. Ein unverzichtbares Zubehör für den Kaminofen.',
     },
     {
-      title: 'Superbe qualité de fabrication',
-      comment: 'Laine de bois imprégnée de cire végétale naturelle de première qualité.',
-    },
-    {
-      title: 'Complément parfait pour votre commande de bois',
-      comment: 'À ajouter systématiquement lors de sa commande de granulés ou bûches.',
-    },
-    {
-      title: 'Très bon produit écologique',
-      comment: 'Alternative saine aux allume-feux blancs chimiques du commerce.',
-    },
-    {
-      title: 'Pratique et propre',
-      comment: 'Ne s’effrite pas et ne salit pas les mains.',
-    },
-    {
-      title: 'Au top !',
-      comment: 'Rien à redire, livraison ultra rapide et produit très performant.',
+      title: 'Spitzenklasse',
+      comment: 'Absolut trockenes Anfeuerholz, sauber geschnitten und gebrauchsfertig.',
     },
   ],
 };

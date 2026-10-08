@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
-import { CheckCircle2, MapPin, Star, User } from 'lucide-react';
+import { CheckCircle2, MapPin, Star } from 'lucide-react';
 import ProductDetailAddButton from '@/components/ProductDetailAddButton';
 import { productPathSegment, products } from '@/lib/products';
 import { getAverageRating, getReviewsForProduct } from '@/lib/reviews';
