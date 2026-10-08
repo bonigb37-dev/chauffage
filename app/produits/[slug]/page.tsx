@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
-import { CheckCircle2, MapPin, Star } from 'lucide-react';
+import { Check, CheckCircle2, MapPin, Star } from 'lucide-react';
 import ProductDetailAddButton from '@/components/ProductDetailAddButton';
 import { productPathSegment } from '@/lib/products';
 import { getAverageRating, getReviewsForProduct } from '@/lib/reviews';
@@ -109,7 +109,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
             <dl className="mt-6 grid gap-3 border-y border-stone-200 py-5 sm:grid-cols-2">
               <div><dt className="text-xs font-bold uppercase tracking-wide text-gray-500">Conditionnement</dt><dd className="mt-1 font-semibold">{product.quantity}</dd></div>
-              <div><dt className="text-xs font-bold uppercase tracking-wide text-gray-500">Disponibilité</dt><dd className="mt-1 font-semibold">{product.stock === 0 ? 'Rupture de stock' : 'En stock — Disponible à la commande'}</dd></div>
+              <div><dt className="text-xs font-bold uppercase tracking-wide text-gray-500">Disponibilité</dt><dd className={`mt-1 flex items-center gap-2 ${product.stock === 0 ? 'text-red-700' : 'text-green-600'}`}>{product.stock !== 0 && <Check size={24} strokeWidth={3} aria-hidden="true" />}{product.stock === 0 ? 'Rupture de stock' : 'En stock'}</dd></div>
             </dl>
             <p className="mt-6 text-3xl font-black text-gray-950">{product.price}</p>
             <DeliveryInformation />

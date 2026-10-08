@@ -160,9 +160,9 @@ export default function ProductCard({ p }: { p: Product }) {
           </Link>
         </div>
 
-        <div className={`mt-1.5 flex min-h-[1.25rem] items-center gap-1 text-[11px] font-semibold ${p.stock === 0 ? 'text-red-700' : p.stock !== undefined ? 'text-emerald-700' : 'text-gray-500'}`}>
-          {p.stock !== undefined && <Check size={13} strokeWidth={2.7} />}
-          <span>{p.stock === 0 ? 'Rupture' : p.stock !== undefined ? `${p.stock} en stock` : 'En stock — Disponible à la commande'}</span>
+        <div className={`mt-1.5 flex min-h-[1.25rem] items-center gap-2 text-sm ${p.stock === 0 ? 'text-red-700' : 'text-green-600'}`}>
+          {p.stock !== 0 && <Check size={22} strokeWidth={3} aria-hidden="true" />}
+          <span>{p.stock === 0 ? 'Rupture de stock' : 'En stock'}</span>
         </div>
 
         <p className="mt-1 line-clamp-2 min-h-[2.25rem] text-xs leading-snug text-gray-500">{p.description}</p>
