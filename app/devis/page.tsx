@@ -4,11 +4,13 @@ import { FormEvent, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Calculator, CheckCircle2, FileText, MapPin, PhoneCall, ShieldCheck, Truck } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
-import { isSupabaseConfigured, supabase } from '@/lib/supabase';
+import { useActionLoading } from '@/components/ActionLoadingProvider';
+import { supabase } from '@/lib/supabase';
 
 const inputClass = 'mt-1.5 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
 export default function DemandeDevis() {
+  const { stopLoading } = useActionLoading();
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
   const [sending, setSending] = useState(false);
@@ -18,6 +20,7 @@ export default function DemandeDevis() {
     setNotice('');
     setError('');
     if (!supabase) {
+      stopLoading();
       setError('Impossible de joindre le serveur. Veuillez réessayer plus tard.');
       return;
     }
@@ -59,6 +62,7 @@ Précisions: ${details}`;
       });
 
       if (insertError) {
+        stopLoading();
         setError('Une erreur est survenue lors de l’enregistrement de votre demande de devis.');
         return;
       }
@@ -66,6 +70,7 @@ Précisions: ${details}`;
       setNotice('Vielen Dank! Votre demande de devis pour l’Allemagne a été transmise. Notre service commercial vous répondra sous 24 heures ouvrées.');
       formElement.reset();
     } catch {
+      stopLoading();
       setError('Une erreur est survenue lors de l’envoi. Veuillez vérifier votre connexion.');
     } finally {
       setSending(false);

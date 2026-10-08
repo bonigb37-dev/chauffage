@@ -1,10 +1,12 @@
 import { FlatCompat } from '@eslint/eslintrc';
 const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
-const eslintConfig = [
-  {
-    ignores: ['.next/**', 'next-env.d.ts', 'scripts/**'],
-  },
+const config = [
+  { ignores: ['.next/**', 'out/**', 'build/**', 'next-env.d.ts', 'scripts/**'] },
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  {
+    files: ['scripts/**/*.js'],
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
+  },
 ];
 
-export default eslintConfig;
+export default config;

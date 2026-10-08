@@ -8,6 +8,7 @@ import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useCart } from '@/components/CartProvider';
 import type { Product } from '@/lib/products';
+import AdminPaymentProof from '@/components/AdminPaymentProof';
 
 type Role = 'admin' | 'super_admin' | 'owner';
 type RequestStatus = 'new' | 'in_progress' | 'done';
@@ -222,6 +223,10 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
 
   async function deleteProduct(productId: number | number[]) {
     const ids = [...new Set(Array.isArray(productId) ? productId : [productId])];
+    if (ids.length > 0 && ids.length === siteData.products.length) {
+      const confirmation = window.prompt(`Cette action supprimera les ${ids.length} produits et rendra le catalogue vide sur tous les appareils. Pour confirmer, saisissez SUPPRIMER TOUT.`);
+      if (confirmation !== 'SUPPRIMER TOUT') return;
+    }
     if (!supabase || savingRole || ids.length === 0 || !window.confirm(ids.length === 1
       ? 'Supprimer ce produit du catalogue ?'
       : `Supprimer les ${ids.length} produits sélectionnés du catalogue ?`)) return;
@@ -301,7 +306,8 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
           <div className="mt-3 grid gap-4 text-sm text-gray-600 sm:grid-cols-2"><p><b className="text-gray-800">Facturation :</b><br/>{text(customer.street)} {text(customer.addressLine2)}<br/>{text(customer.postalCode)} {text(customer.city)} {text(customer.state)}</p>{order.shipping && <p><b className="text-gray-800">Livraison :</b><br/>{text(order.shipping.street)} {text(order.shipping.addressLine2)}<br/>{text(order.shipping.postalCode)} {text(order.shipping.city)} {text(order.shipping.state)}</p>}</div>
           <ul className="mt-3 space-y-1 text-sm text-gray-600">{items.map((item, index) => <li key={`${order.id}-${index}`}>{text(item.name)} × {Number(item.quantity) || 0}</li>)}</ul>
           <p className="mt-3 text-sm font-bold text-gray-900">Sous-total produits : {euros.format(order.total_cents / 100)} · frais de livraison à confirmer selon la zone</p>
-          <div className="mt-3 flex flex-wrap items-center gap-3"><span className={`rounded-full px-3 py-1 text-xs font-bold ${order.payment_status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>Virement : {order.payment_status === 'confirmed' ? 'confirmé' : 'en attente'}</span>{order.payment_status !== 'confirmed' && <button type="button" disabled={workingId === `payment-${order.id}`} onClick={() => onConfirmTransfer(order.id)} className="rounded-lg bg-gray-950 px-3 py-2 text-xs font-bold text-white disabled:opacity-50">{workingId === `payment-${order.id}` ? 'Vérification...' : 'Confirmer le virement reçu'}</button>}</div>
+          <AdminPaymentProof reference={order.reference} />
+          <div className="mt-3 flex flex-wrap items-center gap-3"><span className={`rounded-full px-3 py-1 text-xs font-bold ${order.payment_status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>Virement : {order.payment_status === 'confirmed' ? 'confirmé' : 'en attente'}</span>{order.payment_status !== 'confirmed' && <button type="button" disabled={workingId === `payment-${order.id}`} onClick={() => onConfirmTransfer(order.id)} className="rounded-lg bg-gray-950 px-3 py-2 text-xs font-bold text-white disabled:opacity-50">{workingId === `payment-${order.id}` ? 'Vérification…' : 'Confirmer le virement reçu'}</button>}</div>
         </article>;
       })}</div>}
     </section>

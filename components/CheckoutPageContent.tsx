@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, type FormEvent } from 'react';
 import Image from 'next/image';
@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Landmark, ShieldCheck } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import PaymentMethods from '@/components/PaymentMethods';
+import { useActionLoading } from '@/components/ActionLoadingProvider';
 import { supabase } from '@/lib/supabase';
 
 const euro = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
@@ -14,6 +15,7 @@ const inputClass = 'mt-2 w-full rounded-lg border border-stone-300 bg-white px-4
 
 export default function CheckoutPageContent() {
   const { items, ready, products, bankDetails } = useCart();
+  const { stopLoading } = useActionLoading();
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState('');
   const [differentShipping, setDifferentShipping] = useState(false);
@@ -27,11 +29,12 @@ export default function CheckoutPageContent() {
   async function placeOrder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!lines.length || starting) return;
-    if (hasUnpricedProduct) { setError('Le prix d’un produit doit être confirmé avant la commande. Contactez-nous pour obtenir un devis.'); return; }
+    if (hasUnpricedProduct) { stopLoading(); setError('Le prix d’un produit doit être confirmé avant la commande. Contactez-nous pour obtenir un devis.'); return; }
     const formData = new FormData(event.currentTarget);
     const details = Object.fromEntries(formData.entries()) as Record<string, string>;
-    if (!formData.has('terms')) { setError('Veuillez accepter les conditions de vente avant de continuer.'); return; }
+    if (!formData.has('terms')) { stopLoading(); setError('Veuillez accepter les conditions de vente avant de continuer.'); return; }
     if (differentShipping && ['shippingFirstName', 'shippingLastName', 'shippingStreet', 'shippingPostalCode', 'shippingCity'].some((key) => !details[key]?.trim())) {
+      stopLoading();
       setError('Complétez les champs obligatoires de l’adresse de livraison.');
       return;
     }
@@ -49,6 +52,7 @@ export default function CheckoutPageContent() {
       const sessionResult = supabase ? await supabase.auth.getSession() : null;
       const token = sessionResult?.data.session?.access_token;
       if (sessionResult?.error) {
+        stopLoading();
         setError('Votre session ne peut pas être vérifiée. Reconnectez-vous puis réessayez.');
         setStarting(false);
         return;
@@ -57,8 +61,9 @@ export default function CheckoutPageContent() {
         method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ items: lines.map(({ product, quantity }) => ({ productId: product.id, quantity })), customer, shipping, acceptedTerms: true }),
       });
-      const result = await response.json() as { reference?: string; totalCents?: number; error?: string };
+      const result = await response.json() as { reference?: string; totalCents?: number; proofToken?: string; error?: string };
       if (!response.ok || !result.reference || typeof result.totalCents !== 'number') {
+        stopLoading();
         setError(result.error ?? 'La demande n’a pas pu être enregistrée. Réessayez plus tard.');
         setStarting(false);
         return;
@@ -66,11 +71,12 @@ export default function CheckoutPageContent() {
       const reference = result.reference;
       const confirmedTotal = result.totalCents;
       sessionStorage.setItem('thermopro-pending-order', JSON.stringify({
-        reference, total: confirmedTotal, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
+        reference, proofToken: result.proofToken, total: confirmedTotal, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
         customer: { firstName: details.firstName, lastName: details.lastName, email: details.email },
       }));
       window.location.assign(`/commande/succes?reference=${encodeURIComponent(reference)}`);
     } catch {
+      stopLoading();
       setError('La demande n’a pas pu être enregistrée. Vérifiez votre connexion puis réessayez.');
       setStarting(false);
     }
@@ -113,7 +119,7 @@ export default function CheckoutPageContent() {
           </section>
           <section className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-8">
             <div className="flex items-start gap-3"><Landmark className="mt-1 shrink-0 text-orange-600" size={20}/><div><h2 className="text-xl font-black">Paiement par virement</h2><p className="mt-1 leading-6 text-gray-600">Après validation de la commande, l’entreprise vous communiquera ses coordonnées bancaires et le montant définitif, livraison comprise.</p></div></div>
-            <PaymentMethods />
+            <PaymentMethods showBankDetails={false} />
             {bankDetails.trim() && <div className="mt-5 rounded-xl border border-stone-200 bg-stone-50 p-4"><h3 className="font-bold text-gray-950">Coordonnées de virement</h3><p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-gray-700">{bankDetails}</p></div>}
             <div className="mt-5 rounded-xl bg-stone-50 p-4 text-sm leading-6 text-gray-600">Ne faites pas le virement avant d’avoir reçu la confirmation et les coordonnées bancaires de l’entreprise.</div>
           </section>

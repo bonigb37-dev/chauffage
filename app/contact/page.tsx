@@ -2,9 +2,9 @@
 
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Boxes, CircleHelp, Mail, MapPin, MessageCircle, Phone, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Boxes, CircleHelp, MapPin, MessageCircle, ShieldCheck } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
-import { isSupabaseConfigured, supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 
 const inputClass = 'mt-2 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
@@ -50,7 +50,7 @@ export default function Contact() {
     <main>
       {/* Header */}
       <section className="bg-[#fffaf5] py-14 sm:py-20 border-b border-orange-100/60">
-        <div className="container grid items-end gap-8 lg:grid-cols-[1fr_.65fr]">
+        <div className="container">
           <div>
             <p className="font-bold uppercase tracking-[.2em] text-orange-600">Contact & Support Client</p>
             <h1 className="mt-3 max-w-3xl text-4xl font-black leading-tight text-gray-950 sm:text-5xl">Besoin d’aide ou d’informations ?</h1>
