@@ -1,16 +1,10 @@
-'use client';
-
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 export default function LegalNotice() {
-  const pathname = usePathname();
-  if (pathname === '/compte' || pathname.startsWith('/admin') || pathname.startsWith('/super-admin')) return null;
-
   return (
     <section aria-labelledby="legal-notice-title" className="border-t border-stone-200 bg-stone-50 py-10 sm:py-14">
       <div className="container">
-        <h2 id="legal-notice-title" className="text-2xl font-black text-gray-950">Avis juridique</h2>
+        <h1 id="legal-notice-title" className="text-3xl font-black text-gray-950">Avis juridique</h1>
         <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_2fr]">
           <div className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-6">
             <h3 className="text-lg font-bold text-gray-950">Bren-nholz</h3>

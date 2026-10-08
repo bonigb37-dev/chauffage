@@ -2,7 +2,6 @@
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import LegalNotice from '@/components/LegalNotice';
 import { CartProvider } from '@/components/CartProvider';
 import ActivityTracker from '@/components/ActivityTracker';
 import RoleAccessGuard from '@/components/RoleAccessGuard';
@@ -28,7 +27,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <RoleAccessGuard>
               <Navbar />
               {children}
-              <LegalNotice />
               <Footer />
             </RoleAccessGuard>
           </ActionLoadingProvider>
