@@ -23,15 +23,16 @@ export default function Contact() {
     }
     const formElement = event.currentTarget;
     const form = new FormData(formElement);
+    const deliveryAddress = String(form.get('deliveryAddress') ?? '').trim();
+    const message = String(form.get('message') ?? '').trim();
     setSending(true);
     try {
       const { error: insertError } = await supabase.from('contact_requests').insert({
         name: String(form.get('name') ?? '').trim(),
         email: String(form.get('email') ?? '').trim(),
         phone: String(form.get('phone') ?? '').trim() || null,
-        postal_code: String(form.get('postalCode') ?? '').trim() || null,
         subject: String(form.get('subject') ?? ''),
-        message: String(form.get('message') ?? '').trim(),
+        message: deliveryAddress ? `${message}\n\nAdresse de livraison :\n${deliveryAddress}` : message,
       });
       if (insertError) {
         setError('Votre message n’a pas pu être envoyé. Veuillez vérifier les informations saisies.');
@@ -91,20 +92,20 @@ export default function Contact() {
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="text-sm font-semibold text-gray-700">Nom complet *<input required name="name" autoComplete="name" className={inputClass} placeholder="Votre nom et prénom"/></label>
               <label className="text-sm font-semibold text-gray-700">Adresse e-mail *<input required name="email" type="email" autoComplete="email" className={inputClass} placeholder="vous@exemple.com"/></label>
-              <label className="text-sm font-semibold text-gray-700">Téléphone (facultatif)<input name="phone" type="tel" autoComplete="tel" className={inputClass} placeholder="06 00 00 00 00"/></label>
-              <label className="text-sm font-semibold text-gray-700">Code postal de livraison<input name="postalCode" autoComplete="postal-code" className={inputClass} placeholder="Code postal"/></label>
+              <label className="text-sm font-semibold text-gray-700">Téléphone (facultatif)<input name="phone" type="tel" autoComplete="tel" maxLength={50} className={inputClass} placeholder="Ex. : +49 151 23456789"/></label>
+              <label className="text-sm font-semibold text-gray-700">Adresse complète de livraison (facultatif)<textarea name="deliveryAddress" autoComplete="street-address" maxLength={300} rows={3} className={inputClass} placeholder="Rue et numéro, code postal, ville, Allemagne"/></label>
             </div>
             <label className="mt-5 block text-sm font-semibold text-gray-700">Sujet de votre message *
               <select required name="subject" defaultValue="" className={inputClass}>
                 <option value="" disabled>Choisissez un motif</option>
-                <option value="Information produit">Information sur un produit ou stock</option>
-                <option value="Suivi de commande">Suivi d’une commande en cours</option>
-                <option value="Question livraison">Question sur les modalités de livraison</option>
-                <option value="SAV & Reclamation">Service après-vente / Réclamation</option>
-                <option value="Autre demande">Autre question générale</option>
+                <option value="product">Information sur un produit ou stock</option>
+                <option value="order">Suivi d’une commande en cours</option>
+                <option value="delivery">Question sur les modalités de livraison</option>
+                <option value="claim">Service après-vente / Réclamation</option>
+                <option value="other">Autre question générale</option>
               </select>
             </label>
-            <label className="mt-5 block text-sm font-semibold text-gray-700">Votre message *<textarea required name="message" rows={6} className={inputClass} placeholder="Expliquez-nous votre demande en détail…"/></label>
+            <label className="mt-5 block text-sm font-semibold text-gray-700">Votre message *<textarea required name="message" maxLength={4500} rows={6} className={inputClass} placeholder="Expliquez-nous votre demande en détail…"/></label>
 
             {notice && <p role="status" className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">{notice}</p>}
             {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-900">{error}</p>}
