@@ -60,9 +60,9 @@ export default function Contact() {
             <div className="flex items-start gap-4">
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-orange-50 text-orange-700"><MapPin size={21}/></span>
               <div>
-                <h2 className="font-bold text-gray-950">Zone de livraison & conseils</h2>
+                <h2 className="font-bold text-gray-950">Adresse de l’entreprise</h2>
                 <address className="mt-2 not-italic text-sm font-medium leading-relaxed text-gray-700">Brauerstraße 3<br />66663 Merzig, Allemagne</address>
-                <p className="mt-1 text-sm leading-relaxed text-gray-600">Nous livrons vos palettes et sacs à domicile. Pour un chiffrage personnalisé, utilisez notre page dédiée aux devis.</p>
+                <p className="mt-1 text-sm leading-relaxed text-gray-600">Pour toute question ou demande de devis, contactez-nous via le formulaire.</p>
                 <Link href="/devis" className="mt-2.5 inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700">Demander un devis sur-mesure <ArrowRight size={14}/></Link>
               </div>
             </div>
