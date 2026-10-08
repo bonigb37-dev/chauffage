@@ -122,7 +122,7 @@ export default function CheckoutPageContent() {
           {error && <p role="alert" className="mt-4 rounded-xl bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
           <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-gray-600"><input required name="terms" type="checkbox" className="mt-1 h-4 w-4 accent-orange-600"/><span>Je confirme l’exactitude de mes informations et j’accepte les <a href="/agb" className="font-semibold text-orange-600 underline">conditions de vente</a> ainsi que la <a href="/datenschutz" className="font-semibold text-orange-600 underline">politique de confidentialité</a>. *</span></label>
           <button type="submit" disabled={starting} className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 py-4 font-bold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-gray-300">{starting ? 'Validation…' : 'Envoyer ma demande de commande'}</button>
-          <p className="mt-3 text-center text-xs text-gray-500">Le virement sera effectué après confirmation de l’entreprise.</p>
+          <p className="mt-3 text-center text-xs text-gray-500">Après validation de votre commande et confirmation du montant final, veuillez effectuer votre virement aux coordonnées bancaires indiquées sur cette page.</p>
         </aside>
       </form>
     </main>

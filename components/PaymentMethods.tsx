@@ -15,7 +15,7 @@ export default function PaymentMethods({ compact = false, showBankDetails = true
         </li>
       </ul>
       <p className="mt-2 text-xs leading-5 text-gray-500">
-        Le virement sera effectué après confirmation de la commande et réception des coordonnées bancaires.
+        Une fois vos articles ajoutés au panier et votre commande validée, vous devrez effectuer le virement du montant final confirmé par l’entreprise en utilisant les coordonnées bancaires {showBankDetails ? 'ci-dessous' : 'indiquées sur cette page'}. Merci de préciser votre référence de commande dans le libellé du virement.
       </p>
       {showBankDetails && bankDetails && <p className="mt-3 whitespace-pre-wrap rounded-lg bg-stone-50 p-3 text-sm leading-6 text-gray-700">{bankDetails}</p>}
     </div>
