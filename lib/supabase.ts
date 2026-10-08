@@ -45,6 +45,11 @@ function normalizeSupabaseUrl(value: string | undefined): string | null {
 }
 
 const supabaseUrl = normalizeSupabaseUrl(configuredSupabaseUrl);
+// Capture recovery intent before the auth client consumes the URL fragment.
+export const isPasswordRecoveryRedirect = typeof window !== 'undefined' && (
+  new URLSearchParams(window.location.search).get('mode') === 'recovery'
+  || new URLSearchParams(window.location.hash.slice(1)).get('type') === 'recovery'
+);
 function makeSupabaseClient() {
   if (!supabaseUrl || !supabasePublishableKey) return null;
   try {

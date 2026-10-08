@@ -3,7 +3,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import type { User } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import { isPasswordRecoveryRedirect, supabase } from '@/lib/supabase';
 
 type Role = 'admin' | 'super_admin' | null;
 
@@ -15,14 +15,14 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   const [access, setAccess] = useState<{ userId: string; role: Role } | null>(null);
   const [error, setError] = useState('');
   const [retry, setRetry] = useState(0);
-  const [recoveringPassword, setRecoveringPassword] = useState(false);
+  const [recoveringPassword, setRecoveringPassword] = useState(isPasswordRecoveryRedirect);
   const userId = user?.id;
 
   useEffect(() => {
-    setRecoveringPassword(pathname === '/compte' && (
+    if (pathname === '/compte' && (
       new URLSearchParams(window.location.search).get('mode') === 'recovery'
       || new URLSearchParams(window.location.hash.slice(1)).get('type') === 'recovery'
-    ));
+    )) setRecoveringPassword(true);
   }, [pathname]);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
     const { data: listener } = client.auth.onAuthStateChange((event, session) => {
       if (!active) return;
       if (event === 'PASSWORD_RECOVERY') setRecoveringPassword(true);
-      if (event === 'SIGNED_OUT') setRecoveringPassword(false);
+      if (event === 'SIGNED_OUT' || event === 'USER_UPDATED') setRecoveringPassword(false);
       setUser(session?.user ?? null);
       setSessionReady(true);
     });
@@ -63,7 +63,7 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   const role = user && access?.userId === user.id ? access.role : null;
   const isAdminPage = pathname === '/admin' || pathname.startsWith('/admin/');
   const isSuperAdminPage = pathname === '/super-admin' || pathname.startsWith('/super-admin/');
-  const destination = pathname === '/compte' && recoveringPassword ? null : role === 'super_admin'
+  const destination = recoveringPassword ? (pathname === '/compte' ? null : '/compte?mode=recovery') : role === 'super_admin'
     ? (isAdminPage || isSuperAdminPage ? null : '/super-admin')
     : role === 'admin' ? (isAdminPage ? null : '/admin') : null;
 

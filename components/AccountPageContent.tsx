@@ -24,7 +24,7 @@ import {
   X,
 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabase';
+import { isPasswordRecoveryRedirect, supabase } from '@/lib/supabase';
 
 type Mode = 'signin' | 'signup' | 'forgot' | 'update';
 type OwnOrder = { id: number; reference: string; created_at: string; total_cents: number; status: string; payment_status: string; items: unknown };
@@ -387,7 +387,7 @@ function BackgroundHearthLoop() {
 
 export default function AccountPageContent() {
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>('signin');
+  const [mode, setMode] = useState<Mode>(isPasswordRecoveryRedirect ? 'update' : 'signin');
   const [user, setUser] = useState<User | null>(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
