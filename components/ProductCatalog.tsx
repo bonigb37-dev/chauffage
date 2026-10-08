@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { ArrowRight, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import ProductCard from '@/components/ProductCard';
@@ -18,15 +19,16 @@ const sectionDescriptions: Record<string, string> = {
 
 export default function ProductCatalog() {
   const { products } = useCart();
+  const searchParams = useSearchParams();
+  const requestedSearch = searchParams.get('search') ?? '';
+  const requestedCategory = searchParams.get('categorie');
   const [category, setCategory] = useState('Tous les produits');
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(requestedSearch);
   const categories = ['Tous les produits', ...new Set(products.map((product) => product.type))];
   useEffect(() => {
-    const requestedCategory = new URLSearchParams(window.location.search).get('categorie');
-    if (requestedCategory && products.some((product) => product.type === requestedCategory)) {
-      setCategory(requestedCategory);
-    }
-  }, [products]);
+    setQuery(requestedSearch);
+    setCategory(requestedCategory && products.some((product) => product.type === requestedCategory) ? requestedCategory : 'Tous les produits');
+  }, [products, requestedSearch, requestedCategory]);
   const visibleProducts = useMemo(() => products.filter((product) => {
     const matchesCategory = category === 'Tous les produits' || product.type === category || (category === 'Granulés' && product.type.startsWith('Granulés'));
     const terms = `${product.name} ${product.type} ${product.quantity} ${product.description}`.toLocaleLowerCase('fr');

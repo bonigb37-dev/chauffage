@@ -81,7 +81,7 @@ export default function Navbar() {
   function handleSearchSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!searchQuery.trim()) return;
-    router.push(`/produits?search=${encodeURIComponent(searchQuery.trim())}`);
+    router.push(`/produits?search=${encodeURIComponent(searchQuery.trim())}#catalogue`);
     setSearchOpen(false);
   }
 
@@ -120,10 +120,11 @@ export default function Navbar() {
   // Hotkey listener (Cmd+K / Ctrl+K for search)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setSearchOpen((prev) => !prev);
       }
+      if (e.key === 'Escape') setSearchOpen(false);
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -254,6 +255,8 @@ export default function Navbar() {
                 onClick={() => setSearchOpen(!searchOpen)}
                 className="p-2.5 rounded-xl text-[#172033] hover:text-[#FF6B00] hover:bg-orange-50/80 transition flex items-center justify-center relative"
                 aria-label="Rechercher des produits"
+                aria-expanded={searchOpen}
+                aria-controls="product-search-panel"
               >
                 <Search size={20} />
                 <span className="absolute top-1 right-1 text-[9px] font-extrabold text-gray-400 bg-gray-100 px-1 rounded border border-gray-200 pointer-events-none">
@@ -351,6 +354,8 @@ export default function Navbar() {
               onClick={() => setSearchOpen(!searchOpen)}
               className="p-2 rounded-xl text-[#172033] hover:bg-gray-100 transition"
               aria-label="Recherche"
+              aria-expanded={searchOpen}
+              aria-controls="product-search-panel"
             >
               <Search size={20} />
             </button>
@@ -692,7 +697,7 @@ export default function Navbar() {
         {/* SEARCH BAR OVERLAY */}
         {/* ================================================== */}
         {searchOpen && (
-          <div className="absolute top-full left-0 right-0 bg-white border-b border-gray-100 shadow-xl p-4 z-50 animate-in fade-in slide-in-from-top-1">
+          <div id="product-search-panel" className="absolute top-full left-0 right-0 bg-white border-b border-gray-100 shadow-xl p-4 z-50 animate-in fade-in slide-in-from-top-1">
             <form onSubmit={handleSearchSubmit} className="max-w-3xl mx-auto flex items-center gap-3">
               <Search size={20} className="text-gray-400 shrink-0" />
               <input
@@ -700,6 +705,7 @@ export default function Navbar() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Rechercher des produits (ex: bûches de chêne, granulés, allume-feu...)"
+                aria-label="Nom du produit à rechercher"
                 autoFocus
                 className="w-full text-sm font-medium text-[#172033] bg-transparent border-0 focus:outline-none focus:ring-0"
               />
@@ -712,6 +718,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setSearchOpen(false)}
+                aria-label="Fermer la recherche"
                 className="p-1 text-gray-400 hover:text-gray-600 rounded-lg shrink-0"
               >
                 <X size={20} />

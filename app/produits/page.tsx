@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowRight, BadgeCheck, Boxes, Search } from 'lucide-react';
 import ProductCatalog from '@/components/ProductCatalog';
+import { Suspense } from 'react';
 import ProductHeroShowcase from '@/components/ProductHeroShowcase';
 import { products } from '@/lib/products';
 const productFamilyCount = new Set(products.map((product) => product.type)).size;
@@ -27,7 +28,7 @@ export default function ProductsPage() {
       <section className="border-b border-stone-100 bg-white">
         <div className="container grid gap-6 py-8 md:grid-cols-3">{benefits.map(({ icon: Icon, title, text }) => <div key={title} className="flex items-start gap-4"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-orange-50 text-orange-600"><Icon size={21} /></span><div><h2 className="font-bold text-gray-900">{title}</h2><p className="mt-1 text-sm leading-6 text-gray-500">{text}</p></div></div>)}</div>
       </section>
-      <div id="catalogue" className="scroll-mt-24"><ProductCatalog /></div>
+      <div id="catalogue" className="scroll-mt-24"><Suspense fallback={<p className="container py-8" role="status">Chargement des produits…</p>}><ProductCatalog /></Suspense></div>
     </main>
   );
 }
