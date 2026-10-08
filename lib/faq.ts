@@ -9,7 +9,7 @@ export const faqItems = [
   },
   {
     question: 'Combien coûtent les frais de livraison ?',
-    answer: 'Les frais de livraison sont à la charge du client et sont calculés en fonction de votre adresse (code postal) et du poids total de la commande. Cependant, si vous achetez en grande quantité (plusieurs palettes), vous bénéficiez de réductions dégressives très avantageuses sur les frais de transport.',
+    answer: 'La livraison en Allemagne est incluse dans le prix de nos produits. Aucun frais de transport ne s’ajoute au montant de votre commande et aucun paiement n’est à remettre au transporteur lors de la livraison.',
   },
   {
     question: 'Quels sont les délais de livraison et jours de passage ?',

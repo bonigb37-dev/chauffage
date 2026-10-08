@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -172,7 +172,7 @@ export default function Navbar() {
           if (e.key === 'Enter' || e.key === ' ') setDeliveryModalOpen(true);
         }}
       >
-        <span>Consultez nos différentes zones de livraison à domicile en Allemagne en cliquant ici</span>
+        <span>Livraison incluse en Allemagne · Aucun frais supplémentaire à régler au transporteur · Cliquez ici pour voir les détails</span>
         <MapPin size={15} className="shrink-0" />
       </div>
 

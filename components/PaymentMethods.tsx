@@ -2,8 +2,9 @@
 
 import { useCart } from '@/components/CartProvider';
 
-export default function PaymentMethods({ compact = false, showBankDetails = true }: { compact?: boolean; showBankDetails?: boolean }) {
+export default function PaymentMethods({ compact = false }: { compact?: boolean }) {
   const { bankDetails } = useCart();
+  const hasBankDetails = Boolean(bankDetails.trim());
   return (
     <div className={compact ? '' : 'mt-5 border-t border-stone-200 pt-5'}>
       <p className="text-xs font-bold uppercase tracking-[.12em] text-gray-500">
@@ -14,10 +15,12 @@ export default function PaymentMethods({ compact = false, showBankDetails = true
           Virement bancaire
         </li>
       </ul>
-      <p className="mt-2 text-xs leading-5 text-gray-500">
-        Le virement sera effectué après confirmation de la commande et réception des coordonnées bancaires.
-      </p>
-      {showBankDetails && bankDetails && <p className="mt-3 whitespace-pre-wrap rounded-lg bg-stone-50 p-3 text-sm leading-6 text-gray-700">{bankDetails}</p>}
+      <div className="mt-3 space-y-3 text-sm leading-6 text-gray-600">
+        <p><strong>Livraison incluse.</strong> Aucun paiement au transporteur.</p>
+        <p>Validez votre commande, puis réglez le montant confirmé {hasBankDetails ? 'aux coordonnées ci-dessous' : 'aux coordonnées communiquées par Bren-nholz'}. Indiquez votre <strong>référence de commande dans le libellé du virement</strong>.</p>
+        <p>Envoyez ensuite votre justificatif depuis la page de confirmation. Votre commande sera préparée après réception des fonds.</p>
+      </div>
+      {hasBankDetails && <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4"><h3 className="text-sm font-bold text-gray-950">Coordonnées bancaires</h3><p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-gray-700">{bankDetails}</p></div>}
     </div>
   );
 }

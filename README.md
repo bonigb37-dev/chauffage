@@ -26,7 +26,7 @@ npm start
 
 ## Paiement par virement
 
-Le client envoie une demande de commande qui est enregistrée dans Supabase. L’entreprise doit ensuite confirmer la disponibilité, les frais de livraison et ses coordonnées bancaires avant que le client effectue le virement. Le formulaire ne prélève aucun paiement.
+Le client envoie une demande de commande qui est enregistrée dans Supabase. La livraison en Allemagne est incluse dans les prix des produits. L’entreprise confirme la disponibilité et le montant de la commande avant le virement ; aucun paiement n’est demandé par le transporteur. Le formulaire ne prélève aucun paiement.
 
 ## Comptes clients Supabase
 
@@ -57,4 +57,4 @@ Trois niveaux de rôles sont disponibles (`admin`, `super_admin`, `owner`) avec 
 
 Les produits restent chargés depuis `lib/products.ts` comme catalogue initial; les créations, modifications et suppressions faites dans l’administration sont conservées dans Supabase et fusionnées dans la boutique. Les changements de coordonnées de virement sont affichés dans le panier et la commande.
 
-Le panier inclut le prix produit de 499 € pour la palette EPH. Les frais de livraison restent hors paiement et sont confirmés séparément. Le sous-total enregistré est indicatif ; l’entreprise doit confirmer le prix, la disponibilité et les frais avant d’accepter la commande. Le stock de 89 palettes est une valeur de catalogue et n’est pas décrémenté automatiquement.
+Le panier inclut le prix produit de 499 € pour la palette EPH. La livraison est incluse dans le prix des produits, sans supplément de transport. Les produits sur devis nécessitent une confirmation du prix, livraison incluse. Le stock de 89 palettes est une valeur de catalogue et n’est pas décrémenté automatiquement.

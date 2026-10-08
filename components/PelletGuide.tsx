@@ -155,7 +155,7 @@ const guideDetails: GuideDetail[] = [
         'Prise de rendez-vous téléphonique préalable par le transporteur pour convenir du jour de passage.'
       ],
       technicalData: [
-        { label: 'Frais de port', value: 'Calculés selon adresse (réduction sur volume)' },
+        { label: 'Frais de port', value: 'Inclus dans le prix des produits' },
         { label: 'Largeur minimale d’accès', value: '1,20 mètre' },
         { label: 'Hauteur minimale d’accès', value: '2,10 mètres' },
         { label: 'Poids total palette', value: 'Env. 1 000 kg avec emballage' }
