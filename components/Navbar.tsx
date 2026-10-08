@@ -132,36 +132,32 @@ export default function Navbar() {
   // Hide Navbar completely on dedicated fullscreen pages like /compte
   if (pathname === '/compte' || isAdminPage) return null;
 
-  // Sample or active cart calculation
-  const totalCartItemsCount = itemCount > 0 ? itemCount : 3;
+  const totalCartItemsCount = itemCount;
 
-  // Mock sample cart items for dropdown display matching design requirements
-  const displayCartItems =
-    items.length > 0
-      ? items.slice(0, 3).map((line) => {
-          const product = products.find((p) => p.id === line.productId);
-          return {
-            title: product?.name ?? 'Produit',
-            quantity: line.quantity,
-            price: product?.price ? product.price : '45,00 €',
-          };
-        })
-      : [
-          { title: 'Bûches de chêne', quantity: 1, price: '45,00 €' },
-          { title: 'Granulés premium', quantity: 2, price: '25,00 €' },
-          { title: 'Allume-feu naturel', quantity: 1, price: '8,90 €' },
-        ];
+  const displayCartItems = items.slice(0, 3).map((line) => {
+    const product = products.find((p) => p.id === line.productId);
+    return {
+      title: product?.name ?? 'Produit',
+      quantity: line.quantity,
+      price: product?.price ?? 'Sur devis',
+    };
+  });
 
-  const totalCartPrice =
-    items.length > 0
-      ? items
-          .reduce((sum, line) => {
-            const p = products.find((prod) => prod.id === line.productId);
-            return sum + (p?.priceAmount ? p.priceAmount / 100 : 45) * line.quantity;
-          }, 0)
-          .toFixed(2)
-          .replace('.', ',')
-      : '78,90';
+  const totalCartPrice = items
+    .reduce((sum, line) => {
+      const product = products.find((p) => p.id === line.productId);
+      return sum + (product?.priceAmount ? product.priceAmount / 100 : 0) * line.quantity;
+    }, 0)
+    .toFixed(2)
+    .replace('.', ',');
+
+  const cartTooltip =
+    totalCartItemsCount > 0
+      ? `Mon panier (${totalCartItemsCount}) · ${totalCartPrice} €`
+      : 'Mon panier';
+  const accountTooltip = user
+    ? `Compte client · ${user.user_metadata?.full_name || user.email?.split('@')[0] || 'Connecté'}`
+    : 'Espace client';
 
   return (
     <>
@@ -270,7 +266,7 @@ export default function Navbar() {
               </span>
             </div>
 
-            {/* 2. Favorites/Wishlist Icon with Count Badge Index & Tooltip */}
+            {/* 2. Favorites/Wishlist Icon & Tooltip */}
             <div className="relative group">
               <Link
                 href="/produits"
@@ -278,13 +274,10 @@ export default function Navbar() {
                 aria-label="Mes favoris"
               >
                 <Heart size={20} />
-                <span className="absolute -top-1 -right-1 grid h-4 min-w-4 place-items-center rounded-full bg-[#FF6B00] px-1 text-[10px] font-black text-white ring-2 ring-white shadow-sm">
-                  1
-                </span>
               </Link>
               {/* Tooltip Index */}
               <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#172033] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
-                Favoris (1)
+                Favoris
               </span>
             </div>
 
@@ -298,16 +291,22 @@ export default function Navbar() {
                   setMegaMenuOpen(false);
                 }}
                 className="relative p-2.5 rounded-xl text-[#172033] hover:text-[#FF6B00] hover:bg-orange-50/80 transition flex items-center justify-center"
-                aria-label={`Panier, ${totalCartItemsCount} articles`}
+                aria-label={
+                  totalCartItemsCount > 0
+                    ? `Panier, ${totalCartItemsCount} article${totalCartItemsCount > 1 ? 's' : ''}`
+                    : 'Panier vide'
+                }
               >
                 <ShoppingCart size={20} />
-                <span className="absolute -top-1 -right-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#FF6B00] px-1 text-[11px] font-black text-white ring-2 ring-white shadow-sm">
-                  {totalCartItemsCount}
-                </span>
+                {totalCartItemsCount > 0 && (
+                  <span className="absolute -top-1 -right-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#FF6B00] px-1 text-[11px] font-black text-white ring-2 ring-white shadow-sm">
+                    {totalCartItemsCount}
+                  </span>
+                )}
               </button>
               {/* Tooltip Index */}
               <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#172033] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
-                Mon panier ({totalCartItemsCount}) · {totalCartPrice} €
+                {cartTooltip}
               </span>
             </div>
 
@@ -324,12 +323,13 @@ export default function Navbar() {
                 aria-label="Espace compte client"
               >
                 <CircleUserRound size={21} />
-                {/* Connected Green Dot Index */}
-                <span className="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+                {user && (
+                  <span className="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+                )}
               </button>
               {/* Tooltip Index */}
               <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#172033] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
-                Compte client · Anselme
+                {accountTooltip}
               </span>
             </div>
 
@@ -362,9 +362,6 @@ export default function Navbar() {
               aria-label="Mes favoris"
             >
               <Heart size={20} />
-              <span className="absolute top-1 right-1 grid h-3.5 w-3.5 place-items-center rounded-full bg-[#FF6B00] text-[9px] font-bold text-white">
-                1
-              </span>
             </Link>
 
             {/* Cart Icon Mobile */}
@@ -378,9 +375,11 @@ export default function Navbar() {
               aria-label="Voir le panier"
             >
               <ShoppingCart size={20} />
-              <span className="absolute -top-0.5 -right-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#FF6B00] px-1 text-[10px] font-black text-white shadow-sm">
-                {totalCartItemsCount}
-              </span>
+              {totalCartItemsCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#FF6B00] px-1 text-[10px] font-black text-white shadow-sm">
+                  {totalCartItemsCount}
+                </span>
+              )}
             </button>
 
             {/* Account Icon Mobile */}
@@ -390,7 +389,9 @@ export default function Navbar() {
               aria-label="Mon compte"
             >
               <CircleUserRound size={21} />
-              <span className="absolute bottom-1 right-1 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white" />
+              {user && (
+                <span className="absolute bottom-1 right-1 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white" />
+              )}
             </Link>
 
             {/* Hamburger Button Mobile */}
@@ -538,7 +539,7 @@ export default function Navbar() {
                   </div>
                   <div className="overflow-hidden">
                     <p className="font-bold text-[#172033] text-sm truncate">
-                      {user.user_metadata?.full_name || user.email?.split('@')[0] || 'Anselme'}
+                      {user.user_metadata?.full_name || user.email?.split('@')[0] || 'Client'}
                     </p>
                     <p className="text-xs text-gray-500 truncate">{user.email}</p>
                   </div>
@@ -646,27 +647,35 @@ export default function Navbar() {
 
             {/* Cart Product List */}
             <div className="py-3 space-y-3 max-h-60 overflow-y-auto">
-              {displayCartItems.map((item, index) => (
-                <div key={index} className="flex items-center justify-between text-sm py-1 border-b border-gray-50 last:border-0">
-                  <div className="flex items-center gap-3">
-                    <span className="w-8 h-8 rounded-lg bg-orange-50 text-[#FF6B00] flex items-center justify-center font-bold text-xs shrink-0">
-                      {item.quantity}×
+              {displayCartItems.length > 0 ? (
+                displayCartItems.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between text-sm py-1 border-b border-gray-50 last:border-0">
+                    <div className="flex items-center gap-3">
+                      <span className="w-8 h-8 rounded-lg bg-orange-50 text-[#FF6B00] flex items-center justify-center font-bold text-xs shrink-0">
+                        {item.quantity}×
+                      </span>
+                      <span className="font-semibold text-[#172033] line-clamp-1">{item.title}</span>
+                    </div>
+                    <span className="font-bold text-[#172033] shrink-0">
+                      {item.price.includes('€') ? item.price : item.price === 'Sur devis' ? item.price : `${item.price} €`}
                     </span>
-                    <span className="font-semibold text-[#172033] line-clamp-1">{item.title}</span>
                   </div>
-                  <span className="font-bold text-[#172033] shrink-0">
-                    {item.price.includes('€') ? item.price : `${item.price} €`}
-                  </span>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="py-6 text-center text-sm font-medium text-gray-500">
+                  Votre panier est vide.
+                </p>
+              )}
             </div>
 
             {/* Total Footer */}
             <div className="pt-3 border-t border-gray-100 space-y-3">
-              <div className="flex items-center justify-between font-bold text-base text-[#172033]">
-                <span>Total</span>
-                <span className="text-[#FF6B00] text-lg">{totalCartPrice} €</span>
-              </div>
+              {displayCartItems.length > 0 && (
+                <div className="flex items-center justify-between font-bold text-base text-[#172033]">
+                  <span>Total</span>
+                  <span className="text-[#FF6B00] text-lg">{totalCartPrice} €</span>
+                </div>
+              )}
 
               <Link
                 href="/panier"
