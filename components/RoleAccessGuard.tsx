@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import type { User } from '@supabase/supabase-js';
 import { isPasswordRecoveryRedirect, supabase } from '@/lib/supabase';
+import { incomingAuthLink, verifyIncomingAuthLink, clearEmailConfirmation } from '@/lib/auth-link';
 
 type Role = 'admin' | 'super_admin' | null;
 
@@ -17,6 +18,23 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   const [retry, setRetry] = useState(0);
   const [recoveringPassword, setRecoveringPassword] = useState(isPasswordRecoveryRedirect);
   const userId = user?.id;
+  const [authLinkReady, setAuthLinkReady] = useState(!incomingAuthLink?.kind);
+  const [authLinkFailure, setAuthLinkFailure] = useState(false);
+
+  useEffect(() => {
+    if (!incomingAuthLink?.kind) return;
+    let active = true;
+    const verification = supabase ? verifyIncomingAuthLink(supabase) : null;
+    void Promise.resolve(verification).then((result) => {
+      if (!active) return;
+      const recovery = result?.recovery ?? isPasswordRecoveryRedirect;
+      setRecoveringPassword(recovery);
+      setAuthLinkFailure(!result?.success);
+      router.replace(result?.success ? recovery ? '/compte?mode=recovery' : '/compte?confirmed=1' : `/compte?mode=${recovery ? 'recovery' : 'confirm'}&linkError=${result?.expired ? 'expired' : 'invalid'}`);
+      setAuthLinkReady(true);
+    });
+    return () => { active = false; };
+  }, [router]);
 
   useEffect(() => {
     if (pathname === '/compte' && (
@@ -33,6 +51,11 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
       if (!active) return;
       if (event === 'PASSWORD_RECOVERY') setRecoveringPassword(true);
       if (event === 'SIGNED_OUT' || event === 'USER_UPDATED') setRecoveringPassword(false);
+      if (event === 'SIGNED_OUT') clearEmailConfirmation();
+      if (event === 'SIGNED_OUT' || (event === 'SIGNED_IN' && new URLSearchParams(window.location.search).get('mode') === 'signin')) {
+        setAuthLinkFailure(false);
+        setRecoveringPassword(false);
+      }
       setUser(session?.user ?? null);
       setSessionReady(true);
     });
@@ -63,19 +86,19 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   const role = user && access?.userId === user.id ? access.role : null;
   const isAdminPage = pathname === '/admin' || pathname.startsWith('/admin/');
   const isSuperAdminPage = pathname === '/super-admin' || pathname.startsWith('/super-admin/');
-  const destination = recoveringPassword ? (pathname === '/compte' ? null : '/compte?mode=recovery') : role === 'super_admin'
+  const destination = authLinkFailure ? null : recoveringPassword ? (pathname === '/compte' ? null : '/compte?mode=recovery') : role === 'super_admin'
     ? (isAdminPage || isSuperAdminPage ? null : '/super-admin')
     : role === 'admin' ? (isAdminPage ? null : '/admin') : null;
 
   useEffect(() => {
-    if (verified && destination) router.replace(destination);
-  }, [verified, destination, router]);
+    if (authLinkReady && verified && destination) router.replace(destination);
+  }, [authLinkReady, verified, destination, router]);
 
   if (error) return <main className="min-h-[70vh] p-8 text-center">
     <p role="alert">{error}</p>
     <button type="button" onClick={() => { setError(''); setRetry((value) => value + 1); }} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white">Réessayer</button>
     <button type="button" onClick={() => void supabase?.auth.signOut()} className="ml-4 underline">Se déconnecter</button>
   </main>;
-  if (!verified || destination) return <main className="min-h-[70vh] p-8 text-center" role="status">Vérification de votre accès…</main>;
+  if (!authLinkReady || !verified || destination) return <main className="min-h-[70vh] p-8 text-center" role="status">Vérification de votre accès…</main>;
   return children;
 }

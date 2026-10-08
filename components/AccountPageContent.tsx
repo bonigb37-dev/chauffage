@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { isPasswordRecoveryRedirect, supabase } from '@/lib/supabase';
+import { confirmationMessage, wasEmailConfirmed } from '@/lib/auth-link';
 import { useCart } from '@/components/CartProvider';
 
 type Mode = 'signin' | 'signup' | 'forgot' | 'update';
@@ -422,10 +423,18 @@ export default function AccountPageContent() {
   const [addresses, setAddresses] = useState<OwnAddress[]>([]);
   const [addressError, setAddressError] = useState('');
   const [savingAddress, setSavingAddress] = useState(false);
+  const [needsConfirmationLink, setNeedsConfirmationLink] = useState(false);
+  const [recoveryLinkInvalid, setRecoveryLinkInvalid] = useState(false);
 
   useEffect(() => {
     const urlMode = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('mode') : null;
     const recoveryLink = new URLSearchParams(window.location.hash.slice(1)).get('type') === 'recovery';
+    const linkError = new URLSearchParams(window.location.search).get('linkError');
+    if (linkError) {
+      setError(linkError === 'expired' ? 'Ce lien a expiré. Demandez un nouveau lien pour continuer.' : 'Ce lien est invalide ou a déjà été utilisé. Demandez un nouveau lien pour continuer.');
+      if (urlMode !== 'recovery') setNeedsConfirmationLink(true);
+      else setRecoveryLinkInvalid(true);
+    }
     if (urlMode === 'recovery' || recoveryLink) setMode('update');
     else if (urlMode === 'signup') setMode('signup');
     else if (urlMode === 'signin') setMode('signin');
@@ -468,6 +477,7 @@ export default function AccountPageContent() {
     const { data: listener } = supabaseClient.auth.onAuthStateChange((event, session) => {
       if (!mounted) return;
       if (event === 'PASSWORD_RECOVERY') setMode('update');
+      if (session?.user && wasEmailConfirmed(session.user.id)) setNotice(confirmationMessage);
       setUser(session?.user ?? null);
       setReady(true);
       const nextUserId = session?.user.id ?? null;
@@ -497,6 +507,22 @@ export default function AccountPageContent() {
     setMode(nextMode);
     setNotice('');
     setError('');
+    setNeedsConfirmationLink(false);
+    setRecoveryLinkInvalid(false);
+    window.history.replaceState({}, '', `/compte?mode=${nextMode === 'update' ? 'recovery' : nextMode}`);
+  }
+
+  async function resendConfirmation(event: React.MouseEvent<HTMLButtonElement>) {
+    if (!supabase || busy) return;
+    const field = event.currentTarget.form?.elements.namedItem('email');
+    if (!(field instanceof HTMLInputElement) || !field.reportValidity() || !field.value.trim()) return;
+    setBusy(true); setError(''); setNotice('');
+    try {
+      const { error: resendError } = await supabase.auth.resend({ type: 'signup', email: field.value.trim(), options: { emailRedirectTo: `${window.location.origin}/compte?mode=confirm` } });
+      if (resendError) throw resendError;
+      setNotice('Si cette adresse attend une confirmation, un nouveau lien sécurisé lui a été envoyé. Consultez aussi vos courriers indésirables.');
+    } catch (failure) { setError(failure instanceof Error ? failure.message : 'L’envoi a échoué. Réessayez dans quelques minutes.'); }
+    finally { setBusy(false); }
   }
 
   async function saveAddress(event: FormEvent<HTMLFormElement>) {
@@ -566,7 +592,7 @@ export default function AccountPageContent() {
           password,
           options: {
             data: { first_name: firstName, last_name: lastName, full_name: fullName },
-            emailRedirectTo: `${window.location.origin}/compte`,
+            emailRedirectTo: `${window.location.origin}/compte?mode=confirm`,
           },
         });
         if (authError) throw authError;
@@ -578,6 +604,12 @@ export default function AccountPageContent() {
         const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
         if (authError) throw authError;
         setUser(data.user);
+        if (!data.user.email_confirmed_at) {
+          await supabase.auth.signOut();
+          setNeedsConfirmationLink(true);
+          setError('Votre adresse e-mail n’est pas encore confirmée. Ouvrez le lien reçu par e-mail ou demandez un nouveau lien.');
+          return;
+        }
         const { data: roleData, error: roleError } = await supabase
           .from('admin_roles')
           .select('role')
@@ -599,6 +631,7 @@ export default function AccountPageContent() {
         if (authError) throw authError;
         setNotice('Si cette adresse est associée à un compte, un lien de réinitialisation vient de lui être envoyé.');
       } else {
+        if (recoveryLinkInvalid) { setError('Ce lien de réinitialisation est invalide ou expiré. Demandez un nouveau lien.'); return; }
         const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
         if (sessionError) throw sessionError;
         if (!sessionData.session) {
@@ -610,9 +643,10 @@ export default function AccountPageContent() {
         setNotice('Votre mot de passe a été mis à jour.');
         window.history.replaceState({}, '', '/compte');
         setMode('signin');
-        router.replace('/');
+        router.replace('/compte');
       }
     } catch (submitError) {
+      if (submitError && typeof submitError === 'object' && 'code' in submitError && submitError.code === 'email_not_confirmed') setNeedsConfirmationLink(true);
       setError(submitError instanceof Error ? submitError.message : 'Une erreur est survenue. Réessayez dans quelques instants.');
     } finally {
       setBusy(false);
@@ -628,6 +662,7 @@ export default function AccountPageContent() {
     if (authError) setError(authError.message);
     else {
       setUser(null);
+      setMode('signin');
       setNotice('Vous êtes déconnecté.');
       router.refresh();
     }
@@ -676,7 +711,7 @@ export default function AccountPageContent() {
               <LoaderCircle className="animate-spin text-orange-500" size={28} />
               <span className="text-sm font-medium text-zinc-400">Chargement de votre espace...</span>
             </div>
-          ) : user && mode !== 'update' ? (
+          ) : user && mode !== 'update' && !needsConfirmationLink ? (
             <div className="text-center space-y-5 py-2">
               <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto shadow-lg">
                 <CheckCircle2 size={32} />
@@ -932,11 +967,12 @@ export default function AccountPageContent() {
                   </div>
                 )}
 
-                {mode === 'update' && !user && <div role="alert" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm leading-6 text-amber-200">Ouvrez le lien de réinitialisation reçu par e-mail pour choisir un nouveau mot de passe.<button type="button" onClick={() => switchMode('forgot')} className="mt-2 block font-bold underline underline-offset-4">Demander un nouveau lien</button></div>}
+                {(needsConfirmationLink || mode === 'signup') && <button type="button" disabled={busy} onClick={resendConfirmation} className="text-sm font-bold text-orange-400 underline underline-offset-4 disabled:opacity-50">Demander un nouveau lien de confirmation</button>}
+                {mode === 'update' && (!user || recoveryLinkInvalid) && <div role="alert" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm leading-6 text-amber-200">Ouvrez le lien de réinitialisation reçu par e-mail pour choisir un nouveau mot de passe.<button type="button" onClick={() => switchMode('forgot')} className="mt-2 block font-bold underline underline-offset-4">Demander un nouveau lien</button></div>}
                 <button
                   className="w-full mt-2 bg-gradient-to-r from-orange-500 via-amber-600 to-orange-600 hover:from-orange-400 hover:to-amber-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-orange-950/40 hover:shadow-orange-900/60 transition-all duration-200 transform active:scale-[0.99] flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#121215]"
                   type="submit"
-                  disabled={busy || (mode === 'update' && !user)}
+                  disabled={busy || (mode === 'update' && (!user || recoveryLinkInvalid))}
                 >
                   {busy ? (
                     <>

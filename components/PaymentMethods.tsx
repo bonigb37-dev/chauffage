@@ -1,10 +1,10 @@
 'use client';
 
 import { useCart } from '@/components/CartProvider';
-import { paymentInstructions, storeConfig } from '@/lib/store-config';
+import { paymentInstructions, beforeOrderPaymentInstructions, storeConfig } from '@/lib/store-config';
 import { Landmark } from 'lucide-react';
 
-export default function PaymentMethods({ compact = false }: { compact?: boolean }) {
+export default function PaymentMethods({ compact = false, recorded = false }: { compact?: boolean; recorded?: boolean }) {
   const { bankDetails } = useCart();
   const hasBankDetails = Boolean(bankDetails.trim());
   return (
@@ -19,10 +19,10 @@ export default function PaymentMethods({ compact = false }: { compact?: boolean 
         </li>
       </ul>
       <div className="mt-3 space-y-3 text-sm leading-6 text-gray-600">
-        <p>{paymentInstructions}</p>
+        <p>{recorded ? paymentInstructions : beforeOrderPaymentInstructions}</p>
         <p>Vous pouvez transmettre un justificatif depuis la page de confirmation. Son envoi ne confirme pas le paiement.</p>
       </div>
-      {hasBankDetails && <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4"><h3 className="text-sm font-bold text-gray-950">Coordonnées bancaires</h3><p className="mt-2 text-sm leading-6 text-gray-600">{storeConfig.bankHolderRelationship} Effectuez le virement au nom exact du titulaire indiqué ci-dessous.</p><p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-gray-700">{bankDetails}</p></div>}
+      {recorded && hasBankDetails && <div className="mt-4 rounded-lg border border-stone-200 bg-stone-50 p-4"><h3 className="text-sm font-bold text-gray-950">Coordonnées bancaires</h3><p className="mt-2 text-sm leading-6 text-gray-600">{storeConfig.bankHolderRelationship} Effectuez le virement au nom exact du titulaire indiqué ci-dessous.</p><p className="mt-2 whitespace-pre-wrap break-words text-sm leading-6 text-gray-700">{bankDetails}</p></div>}
     </div>
   );
 }

@@ -1,5 +1,7 @@
 ﻿import { createClient } from '@supabase/supabase-js';
 
+import { incomingAuthLink } from '@/lib/auth-link';
+
 const configuredSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
 // Only expose Supabase's low-privilege publishable key to browser code.
 const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim();
@@ -46,10 +48,7 @@ function normalizeSupabaseUrl(value: string | undefined): string | null {
 
 const supabaseUrl = normalizeSupabaseUrl(configuredSupabaseUrl);
 // Capture recovery intent before the auth client consumes the URL fragment.
-export const isPasswordRecoveryRedirect = typeof window !== 'undefined' && (
-  new URLSearchParams(window.location.search).get('mode') === 'recovery'
-  || new URLSearchParams(window.location.hash.slice(1)).get('type') === 'recovery'
-);
+export const isPasswordRecoveryRedirect = incomingAuthLink?.kind === 'recovery';
 function makeSupabaseClient() {
   if (!supabaseUrl || !supabasePublishableKey) return null;
   try {
