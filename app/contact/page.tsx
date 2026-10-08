@@ -71,7 +71,7 @@ export default function Contact() {
           <div className="rounded-2xl bg-gray-950 p-6 text-white sm:p-7">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/10 text-orange-300"><Boxes size={21}/></span>
             <h2 className="mt-5 text-xl font-black">Besoin d’un devis tarifaire ?</h2>
-            <p className="mt-3 text-sm leading-relaxed text-stone-300">Calculez précisément les coûts de vos palettes et frais de livraison grâce à notre formulaire de chiffrage dédié.</p>
+            <p className="mt-3 text-sm leading-relaxed text-stone-300">Obtenez un devis personnalisé pour vos palettes grâce à notre formulaire dédié. La livraison est incluse dans le prix des produits.</p>
             <Link href="/devis" className="mt-5 inline-flex items-center gap-2 font-bold text-orange-400 hover:text-white">Accéder à la demande de devis <ArrowRight size={17}/></Link>
           </div>
 

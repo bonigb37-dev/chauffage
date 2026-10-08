@@ -36,7 +36,7 @@ export default function Navbar() {
             if (e.key === 'Enter' || e.key === ' ') setDeliveryModalOpen(true);
           }}
         >
-          <span>Frais de livraison selon la zone : demandez un tarif avec votre code postal</span>
+          <span>Livraison incluse en Allemagne · Aucun frais à régler au transporteur</span>
           <MapPin size={16} className="shrink-0" />
         </div>
 

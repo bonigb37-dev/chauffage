@@ -10,7 +10,7 @@ export default function ContactCTA() {
           <div>
             <p className="font-bold uppercase tracking-[.2em] text-orange-100">Un projet d&apos;approvisionnement ?</p>
             <h2 className="mt-3 max-w-2xl text-3xl font-black sm:text-5xl">Obtenez un devis gratuit & personnalisé.</h2>
-            <p className="mt-4 max-w-xl text-orange-50">Calculez rapidement le tarif sur-mesure pour vos palettes, volumes et frais de livraison à domicile.</p>
+            <p className="mt-4 max-w-xl text-orange-50">Obtenez un devis personnalisé pour vos palettes et volumes. La livraison à domicile est incluse dans le prix des produits.</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link

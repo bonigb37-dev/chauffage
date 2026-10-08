@@ -103,7 +103,7 @@ Précisions: ${details}`;
               <FileText className="text-orange-600" size={26} /> Chiffrage sur-mesure (Deutschland)
             </h2>
             <p className="mt-1.5 text-sm text-gray-500">
-              Remplissez le formulaire ci-dessous avec votre code postal allemand (PLZ) pour calculer vos tarifs dégressifs et les frais de transport par transporteur spécialisé.
+              Remplissez le formulaire ci-dessous pour obtenir un devis adapté à vos quantités et à votre adresse en Allemagne. La livraison par transporteur spécialisé est incluse dans le prix des produits, sans supplément à régler au chauffeur.
             </p>
           </div>
 
@@ -227,7 +227,7 @@ Précisions: ${details}`;
             <ul className="mt-5 space-y-4 text-sm text-gray-600">
               <li className="flex items-start gap-3">
                 <CheckCircle2 size={18} className="shrink-0 text-emerald-600 mt-0.5" />
-                <span><b>Réponse rapide sous 24h</b> : Notre service commercial calcule le tarif de transport au départ du dépôt d&apos;Allemagne selon votre code postal (PLZ).</span>
+                <span><b>Réponse rapide sous 24h</b> : Notre service commercial prépare votre devis, livraison incluse, et vérifie les modalités de livraison à votre code postal (PLZ).</span>
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 size={18} className="shrink-0 text-emerald-600 mt-0.5" />

@@ -26,28 +26,28 @@ const articles = [
   ] },
   { title: 'Prix', paragraphs: [
     'Les prix s’entendent en euros, toutes taxes comprises et éco-participation comprise si applicable. Le montant de l’éco-participation figure dans la description du produit.',
-    'À chaque commande viennent s’ajouter les frais de port définis à l’article 6. Un simulateur de frais de port vous est proposé dans le panier avant inscription sur le Site.',
+    'Les prix des produits incluent la livraison en Allemagne. Aucun frais de port supplémentaire ne s’ajoute au montant de la commande et aucun paiement n’est demandé par le transporteur lors de la livraison.',
     'Les soldes : certains produits peuvent être en solde durant les périodes légales. Le tarif soldé apparaît dans la fiche produit en dessous du prix d’origine barré.',
     'Les promotions : certains produits peuvent être en promotion sur une période donnée. Le tarif promotionnel est indiqué dans la fiche produit en dessous de l’ancien prix barré. La période de promotion est indiquée en dessous du prix.',
   ] },
   { title: 'Modalités de paiement et sécurisation', paragraphs: [
-    'Le paiement des commandes s’effectue exclusivement par virement bancaire. Les coordonnées bancaires et le montant définitif, frais de livraison compris, vous sont communiqués par la Société après vérification de votre demande de commande.',
+    'Le paiement des commandes s’effectue exclusivement par virement bancaire. Les coordonnées bancaires sont indiquées sur la page de commande. La Société confirme le montant définitif après vérification de votre commande ; la livraison est incluse dans le prix des produits.',
     '5.1 — Paiement par virement bancaire',
-    'Le Client effectue le virement depuis sa banque vers le compte indiqué par la Société, en précisant la référence de commande. Aucun paiement n’est prélevé directement sur le Site. Le Client doit attendre la confirmation du montant définitif et des coordonnées bancaires avant d’effectuer le virement. Le paiement est confirmé après vérification de la réception des fonds par la Société.',
+    'Le Client effectue le virement depuis sa banque vers le compte indiqué par la Société, en précisant la référence de commande. Aucun paiement n’est prélevé directement sur le Site. Le Client effectue le virement après confirmation du montant définitif, aux coordonnées bancaires indiquées sur le Site ou communiquées par la Société. Le paiement est confirmé après vérification de la réception des fonds par la Société.',
     'Clause de réserve de propriété : les produits demeurent la propriété de la Société jusqu’à encaissement complet du montant de la commande.',
   ] },
   { title: 'Click and Collect et livraison', paragraphs: [
     '6.1 — La livraison',
     'La Société livre ses produits dans tous les pays listés sur le Site. La livraison se fait à l’adresse spécifiée par le Client lors du passage de sa commande.',
-    'Dans le cas où l’adresse de livraison indiquée serait incorrecte ou incomplète, la Société sera en droit de réclamer le paiement de nouveaux frais de livraison.',
+    'Le Client doit fournir une adresse de livraison exacte et complète. En cas d’erreur, il contacte la Société afin de corriger l’adresse et de convenir des modalités de livraison.',
     '6.2 — Le suivi de commande',
     'Vous recevrez un e-mail vous indiquant le départ de votre colis depuis notre Site. Certains transporteurs peuvent également vous envoyer un e-mail indiquant le numéro de suivi de livraison et, éventuellement, une date prévisionnelle de livraison.',
     'Attention : en raison de la politique anti-spam de certains fournisseurs d’accès à Internet, ces e-mails peuvent arriver dans vos courriers indésirables.',
     'Vous pouvez à tout moment consulter l’avancement de la livraison depuis votre espace client.',
     '6.3 — Les frais de port',
-    'La Société se réserve le droit de modifier les frais de port à tout moment en fonction des modifications tarifaires de ses transporteurs, mais s’engage à appliquer les tarifs en vigueur qui vous auront été indiqués au moment de votre commande.',
-    'Les frais de port du produit consulté sont disponibles dans sa fiche et présentés par transporteur. Un estimatif global des frais de port en cas d’achat de plusieurs produits est disponible dans le panier, avant inscription sur le Site.',
-    'Les frais de port peuvent être estimés avant toute création de compte client en ajoutant les produits au panier.',
+    'Les frais de transport sont inclus dans le prix des produits pour les livraisons en Allemagne. Aucun supplément de livraison ne sera ajouté après validation de la commande.',
+    'Le montant présenté dans le panier comprend la livraison. Les produits dont le prix est sur devis font l’objet d’une confirmation de prix incluant également la livraison.',
+    'Le transporteur assure uniquement la livraison et ne demande aucun paiement au Client à la réception des produits.',
     'Le Client peut alors refuser le colis contre remise d’un « relevé d’anomalie ou de spoliation » par le transporteur. Il informe la Société de tout incident (réserves, refus de colis) par téléphone ou par écrit dans les meilleurs délais.',
     'Cette procédure est indépendante de celle relative à la garantie légale de conformité mentionnée aux articles L217-3 à L217-14 du Code de la consommation et de celle relative aux défauts de la chose vendue dans les conditions prévues aux articles 1641 à 1648 et 2232 du Code civil.',
   ] },
@@ -58,7 +58,7 @@ export default function SalesTermsPage() {
     <section className="container max-w-3xl rounded-2xl border border-stone-200 bg-white p-6 sm:p-10">
       <p className="text-sm font-bold uppercase tracking-widest text-orange-600">Bren-nholz</p>
       <h1 className="mt-3 text-3xl font-black leading-tight text-gray-950 sm:text-4xl">Conditions générales de vente</h1>
-      <p className="mt-4 text-sm text-gray-500">Date de dernière modification : <time dateTime="2022-06-22">22 juin 2022</time></p>
+      <p className="mt-4 text-sm text-gray-500">Date de dernière modification : <time dateTime="2026-10-08">8 octobre 2026</time></p>
       <nav aria-label="Sommaire des conditions de vente" className="mt-8 rounded-xl bg-stone-50 p-5"><h2 className="font-bold text-gray-950">Sommaire</h2><ol className="mt-3 space-y-2">{articles.map((article, index) => <li key={article.title}><a href={`#article-${index + 1}`} className="text-sm text-orange-700 underline-offset-4 hover:underline">Article {index + 1} — {article.title}</a></li>)}</ol></nav>
       <div className="mt-10 space-y-10">{articles.map((article, index) => <section id={`article-${index + 1}`} key={article.title} className="scroll-mt-40 border-t border-stone-200 pt-8"><h2 className="text-xl font-bold leading-snug text-gray-950 sm:text-2xl">Article {index + 1} — {article.title}</h2><div className="mt-5 space-y-4 leading-7 text-gray-700">{article.paragraphs.map((paragraph) => /^\d\.\d —/.test(paragraph) ? <h3 key={paragraph} className="pt-3 text-lg font-bold text-gray-950">{paragraph}</h3> : paragraph.startsWith('1. ') ? <ol key={paragraph} className="list-decimal space-y-2 pl-6">{paragraph.split('\n').map((step) => <li key={step}>{step.replace(/^\d\. /, '')}</li>)}</ol> : <p key={paragraph}>{paragraph}</p>)}</div></section>)}</div>
       <div className="mt-8 flex flex-wrap gap-4">

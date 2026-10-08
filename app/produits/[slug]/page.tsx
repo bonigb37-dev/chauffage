@@ -59,7 +59,7 @@ export default async function ProductDetailPage({ params }: Props) {
             <div><dt className="text-xs font-bold uppercase tracking-wide text-gray-500">Disponibilité</dt><dd className="mt-1 font-semibold">{product.stock === undefined ? 'À confirmer avant commande' : product.stock === 0 ? 'Rupture de stock' : `${product.stock} en stock`}</dd></div>
           </dl>
           <p className="mt-6 text-3xl font-black text-gray-950">{product.price}</p>
-          <p className="mt-2 text-sm leading-6 text-gray-600">Frais de livraison calculés selon la zone. Disponibilité et frais confirmés avant validation de la commande.</p>
+          <p className="mt-2 text-sm leading-6 text-gray-600">Livraison incluse dans le prix du produit en Allemagne. Aucun frais supplémentaire à régler au transporteur.</p>
           <div className="mt-6 flex flex-wrap gap-3"><ProductDetailAddButton product={product} /><Link href="/devis" className="inline-flex items-center rounded-full border border-stone-300 px-6 py-3 font-bold text-gray-800 hover:border-orange-500 hover:text-orange-700">Demander un devis</Link></div>
         </div>
       </article>

@@ -17,8 +17,8 @@ export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
         <div className="flex items-start justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3.5 py-1 text-xs font-bold uppercase tracking-wider"><Truck size={14} /> Livraison en Allemagne</span>
-            <h2 id="modal-delivery-title" className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">Vérifier les frais de livraison</h2>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-orange-100 sm:text-base">Les frais dépendent de la zone de livraison. Envoyez votre code postal allemand pour vérifier la desserte et recevoir un tarif avant de confirmer la commande.</p>
+            <h2 id="modal-delivery-title" className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">Livraison incluse en Allemagne</h2>
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-orange-100 sm:text-base">La livraison est incluse dans le prix de nos produits. Aucun frais supplémentaire n’est à régler au transporteur. Communiquez votre code postal allemand pour vérifier les conditions d’accès à votre adresse.</p>
           </div>
           <button type="button" onClick={onClose} aria-label="Fermer la fenêtre" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/20 transition hover:bg-white/30"><X size={20} /></button>
         </div>
@@ -26,10 +26,10 @@ export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
       <div className="space-y-5 p-6 sm:p-8">
         <div className="flex items-start gap-3 rounded-2xl border border-orange-100 bg-orange-50 p-4 text-sm leading-6 text-orange-950">
           <MapPin size={19} className="mt-0.5 shrink-0 text-orange-700" />
-          <p>La disponibilité, la zone desservie, le montant des frais et le délai sont confirmés par l’entreprise après vérification de votre adresse.</p>
+          <p>L’entreprise vérifie votre adresse et les conditions d’accès pour organiser la livraison et vous confirmer les délais, sans supplément de transport.</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Link href="/devis" onClick={onClose} className="inline-flex items-center justify-center rounded-full bg-orange-600 px-6 py-3 font-bold text-white transition hover:bg-orange-700">Demander un tarif avec mon code postal</Link>
+          <Link href="/devis" onClick={onClose} className="inline-flex items-center justify-center rounded-full bg-orange-600 px-6 py-3 font-bold text-white transition hover:bg-orange-700">Vérifier les modalités de livraison</Link>
           <button type="button" onClick={onClose} className="rounded-full border border-stone-300 px-6 py-3 font-bold text-gray-800 hover:border-orange-500">Fermer</button>
         </div>
       </div>
