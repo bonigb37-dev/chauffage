@@ -10,7 +10,6 @@ import { useActionLoading } from '@/components/ActionLoadingProvider';
 import { supabase } from '@/lib/supabase';
 
 const euro = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
-const states = ['Bade-Wurtemberg', 'Bavière', 'Berlin', 'Brandebourg', 'Brême', 'Hambourg', 'Hesse', 'Mecklembourg-Poméranie-Occidentale', 'Basse-Saxe', 'Rhénanie-du-Nord-Westphalie', 'Rhénanie-Palatinat', 'Sarre', 'Saxe', 'Saxe-Anhalt', 'Schleswig-Holstein', 'Thuringe'];
 const inputClass = 'mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
 export default function CheckoutPageContent() {
@@ -42,11 +41,11 @@ export default function CheckoutPageContent() {
     setError('');
     const customer = {
       firstName: details.firstName, lastName: details.lastName, street: details.street, addressLine2: details.addressLine2,
-      postalCode: details.postalCode, city: details.city, state: details.state, phone: details.phone, email: details.email,
+      postalCode: details.postalCode, city: details.city, phone: details.phone, email: details.email,
     };
     const shipping = differentShipping ? {
       firstName: details.shippingFirstName, lastName: details.shippingLastName, street: details.shippingStreet,
-      addressLine2: details.shippingAddressLine2, postalCode: details.shippingPostalCode, city: details.shippingCity, state: details.shippingState,
+      addressLine2: details.shippingAddressLine2, postalCode: details.shippingPostalCode, city: details.shippingCity,
     } : null;
     try {
       const sessionResult = supabase ? await supabase.auth.getSession() : null;
@@ -100,7 +99,6 @@ export default function CheckoutPageContent() {
               <label className="text-sm font-semibold text-gray-700 sm:col-span-2">Complément d’adresse (facultatif)<input name="addressLine2" autoComplete="address-line2" className={inputClass} placeholder="Appartement, étage, etc."/></label>
               <label className="text-sm font-semibold text-gray-700">Code postal *<input required name="postalCode" autoComplete="postal-code" className={inputClass}/></label>
               <label className="text-sm font-semibold text-gray-700">Ville *<input required name="city" autoComplete="address-level2" className={inputClass}/></label>
-              <label className="text-sm font-semibold text-gray-700 sm:col-span-2">État / Land (facultatif)<select name="state" defaultValue="" className={inputClass}><option value="">Sélectionner</option>{states.map((state) => <option key={state}>{state}</option>)}</select></label>
               <label className="text-sm font-semibold text-gray-700">Téléphone (facultatif)<input name="phone" type="tel" autoComplete="tel" className={inputClass}/></label>
               <label className="text-sm font-semibold text-gray-700">Adresse e-mail *<input required name="email" type="email" autoComplete="email" className={inputClass}/></label>
             </div>
@@ -112,7 +110,6 @@ export default function CheckoutPageContent() {
               <label className="text-sm font-semibold text-gray-700 sm:col-span-2">Complément d’adresse<input name="shippingAddressLine2" autoComplete="shipping address-line2" className={inputClass}/></label>
               <label className="text-sm font-semibold text-gray-700">Code postal *<input required name="shippingPostalCode" autoComplete="shipping postal-code" className={inputClass}/></label>
               <label className="text-sm font-semibold text-gray-700">Ville *<input required name="shippingCity" autoComplete="shipping address-level2" className={inputClass}/></label>
-              <label className="text-sm font-semibold text-gray-700 sm:col-span-2">État / Land (facultatif)<select name="shippingState" defaultValue="" className={inputClass}><option value="">Sélectionner</option>{states.map((state) => <option key={state}>{state}</option>)}</select></label>
             </div>}
             <p className="mt-5 text-sm text-gray-500">Livraison uniquement en Allemagne.</p>
             <p className="mt-6 text-sm text-gray-600">Les modalités de livraison seront confirmées après réception de votre commande.</p>
