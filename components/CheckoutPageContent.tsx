@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Landmark, ShieldCheck } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import PaymentMethods from '@/components/PaymentMethods';
+import { useActionLoading } from '@/components/ActionLoadingProvider';
 import { supabase } from '@/lib/supabase';
 
 const euro = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
@@ -13,7 +14,8 @@ const states = ['Bade-Wurtemberg', 'Bavière', 'Berlin', 'Brandebourg', 'Brême'
 const inputClass = 'mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
 export default function CheckoutPageContent() {
-  const { items, ready, products } = useCart();
+  const { items, ready, products, bankDetails } = useCart();
+  const { stopLoading } = useActionLoading();
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState('');
   const [differentShipping, setDifferentShipping] = useState(false);
@@ -27,11 +29,12 @@ export default function CheckoutPageContent() {
   async function placeOrder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!lines.length || starting) return;
-    if (hasUnpricedProduct) { setError('Le prix d’un produit doit être confirmé avant la commande. Contactez-nous pour obtenir un devis.'); return; }
+    if (hasUnpricedProduct) { stopLoading(); setError('Le prix d’un produit doit être confirmé avant la commande. Contactez-nous pour obtenir un devis.'); return; }
     const formData = new FormData(event.currentTarget);
     const details = Object.fromEntries(formData.entries()) as Record<string, string>;
-    if (!formData.has('terms')) { setError('Veuillez accepter les conditions de vente avant de continuer.'); return; }
+    if (!formData.has('terms')) { stopLoading(); setError('Veuillez accepter les conditions de vente avant de continuer.'); return; }
     if (differentShipping && ['shippingFirstName', 'shippingLastName', 'shippingStreet', 'shippingPostalCode', 'shippingCity'].some((key) => !details[key]?.trim())) {
+      stopLoading();
       setError('Complétez les champs obligatoires de l’adresse de livraison.');
       return;
     }
@@ -49,6 +52,7 @@ export default function CheckoutPageContent() {
       const sessionResult = supabase ? await supabase.auth.getSession() : null;
       const token = sessionResult?.data.session?.access_token;
       if (sessionResult?.error) {
+        stopLoading();
         setError('Votre session ne peut pas être vérifiée. Reconnectez-vous puis réessayez.');
         setStarting(false);
         return;
@@ -59,6 +63,7 @@ export default function CheckoutPageContent() {
       });
       const result = await response.json() as { reference?: string; totalCents?: number; proofToken?: string; error?: string };
       if (!response.ok || !result.reference || typeof result.totalCents !== 'number') {
+        stopLoading();
         setError(result.error ?? 'La demande n’a pas pu être enregistrée. Réessayez plus tard.');
         setStarting(false);
         return;
@@ -71,6 +76,7 @@ export default function CheckoutPageContent() {
       }));
       window.location.assign(`/commande/succes?reference=${encodeURIComponent(reference)}`);
     } catch {
+      stopLoading();
       setError('La demande n’a pas pu être enregistrée. Vérifiez votre connexion puis réessayez.');
       setStarting(false);
     }

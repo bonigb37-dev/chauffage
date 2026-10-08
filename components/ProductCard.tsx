@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { createPortal } from 'react-dom';
-import { ArrowLeft, ArrowRight, Check, Expand, Heart, ShoppingCart, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Expand, Heart, Loader2, ShoppingCart, Star, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { productPathSegment, type Product } from '@/lib/products';
+import { getAverageRating } from '@/lib/reviews';
 import { useCart } from '@/components/CartProvider';
 
 const formatPrice = (amount: number) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount / 100);
@@ -24,11 +25,14 @@ export default function ProductCard({ p }: { p: Product }) {
   const cartQuantity = items.find((item) => item.productId === p.id)?.quantity ?? 0;
   const reachedStock = p.stock !== undefined && cartQuantity >= p.stock;
 
+  const { average, count } = getAverageRating(p.id);
+  const productUrl = `/produits/${productPathSegment(p)}`;
+
   const handleAddToCart = () => {
     if (p.stock === 0 || reachedStock) return;
     addItem(p.id, quantityToAdd);
     setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 2500);
+    setTimeout(() => setJustAdded(false), 2000);
   };
 
   useEffect(() => {
@@ -59,7 +63,7 @@ export default function ProductCard({ p }: { p: Product }) {
 
   return (
     <article className="group flex h-full flex-col rounded-2xl border border-stone-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
-      {/* Product Image Section - Enlarged image filling the container */}
+      {/* Product Image Section */}
       <div className="relative h-48 sm:h-52 w-full overflow-hidden rounded-t-2xl border-b border-stone-100 bg-stone-50/50">
         <button type="button" onClick={() => { setImageIndex(0); setZoomed(false); setOpen(true); }} className="absolute inset-0 block h-full w-full" aria-label={`Agrandir la photo : ${p.name}`}>
           <Image src={p.image} alt={p.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" className="object-contain p-1 sm:p-2 transition-transform duration-500 group-hover:scale-105" />
@@ -67,7 +71,24 @@ export default function ProductCard({ p }: { p: Product }) {
             <Expand size={12} /> Agrandir
           </span>
         </button>
-        {p.badge && <span className={`pointer-events-none absolute left-2.5 top-2.5 z-10 rounded-full px-2 py-0.5 text-[10px] font-extrabold text-white shadow-sm ${p.badge.includes('%') ? 'bg-orange-600' : 'bg-gray-900'}`}>{p.badge}</span>}
+
+        {/* Floating Rating Badge on top left of image */}
+        <div className="pointer-events-none absolute left-2.5 top-2.5 z-10 flex flex-col gap-1 items-start">
+          <Link
+            href={`${productUrl}#avis-clients`}
+            className="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[11px] font-black text-gray-900 shadow-sm backdrop-blur-sm hover:bg-orange-50 hover:text-orange-600 transition"
+          >
+            <Star size={12} className="fill-amber-400 text-amber-400" />
+            <span>{average.toFixed(1)}</span>
+            <span className="text-[10px] font-semibold text-gray-500">({count})</span>
+          </Link>
+          {p.badge && (
+            <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold text-white shadow-sm ${p.badge.includes('%') ? 'bg-orange-600' : 'bg-gray-900'}`}>
+              {p.badge}
+            </span>
+          )}
+        </div>
+
         <button type="button" aria-label={favorite ? `Retirer ${p.name} des favoris` : `Ajouter ${p.name} aux favoris`} aria-pressed={favorite} onClick={() => setFavorite(!favorite)} className={`absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/90 shadow-sm transition hover:scale-110 ${favorite ? 'text-orange-600' : 'text-gray-400 hover:text-orange-600'}`}><Heart size={16} fill={favorite ? 'currentColor' : 'none'} strokeWidth={2.2} /></button>
       </div>
 
@@ -76,7 +97,23 @@ export default function ProductCard({ p }: { p: Product }) {
         <div className="fixed inset-0 z-[150] grid place-items-center bg-gray-950/90 p-4" role="dialog" aria-modal="true" aria-label={`Photo du produit : ${p.name}`} onClick={() => setOpen(false)}>
           <div className="relative flex h-[min(90dvh,900px)] max-h-[90dvh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl bg-white" onClick={(event) => event.stopPropagation()}>
             <div className="flex flex-col gap-2 border-b px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-              <div className="min-w-0"><p className="truncate text-xs font-bold uppercase tracking-widest text-orange-600">{p.type} · {p.quantity}</p><h2 className="mt-0.5 line-clamp-1 text-base font-black sm:text-lg">{p.name}</h2>{p.articleNumber && <p className="text-xs text-gray-500">N° : {p.articleNumber}</p>}</div>
+              <div className="min-w-0">
+                <p className="truncate text-xs font-bold uppercase tracking-widest text-orange-600">{p.type} · {p.quantity}</p>
+                <h2 className="mt-0.5 line-clamp-1 text-base font-black sm:text-lg">{p.name}</h2>
+                <div className="flex items-center gap-2 mt-1">
+                  <div className="flex items-center text-amber-400">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        size={14}
+                        className={star <= Math.round(average) ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-xs font-bold text-gray-900">{average.toFixed(1)} / 5</span>
+                  <span className="text-xs text-gray-500">({count} avis vérifiés)</span>
+                </div>
+              </div>
               <div className="flex shrink-0 items-center justify-end gap-1.5">
                 {gallery.length > 1 && <span className="mr-1 text-xs font-semibold text-gray-500">{imageIndex + 1} / {gallery.length}</span>}
                 {gallery.length > 1 && <button type="button" onClick={() => { setImageIndex((imageIndex + gallery.length - 1) % gallery.length); setZoomed(false); }} className="grid h-9 w-9 place-items-center rounded-full bg-gray-100 hover:bg-orange-100" aria-label="Photo précédente"><ArrowLeft size={16} /></button>}
@@ -101,11 +138,33 @@ export default function ProductCard({ p }: { p: Product }) {
           <span className="truncate">{p.type}</span>
           <span className="shrink-0 text-right font-medium text-gray-400">{p.quantity}</span>
         </div>
-        <h3 className="mt-1 line-clamp-2 min-h-[2.5rem] text-sm font-extrabold leading-snug text-gray-950 sm:text-[15px] flex items-center"><Link href={`/produits/${productPathSegment(p)}`} className="hover:text-orange-700">{p.name}</Link></h3>
-        <div className={`mt-1 flex min-h-[1.25rem] items-center gap-1 text-[11px] font-semibold ${p.stock === 0 ? 'text-red-700' : p.stock !== undefined ? 'text-emerald-700' : 'text-gray-500'}`}>
+
+        <h3 className="mt-1 line-clamp-2 min-h-[2.5rem] text-sm font-extrabold leading-snug text-gray-950 sm:text-[15px] flex items-center">
+          <Link href={productUrl} className="hover:text-orange-700">{p.name}</Link>
+        </h3>
+
+        {/* Rating Stars Row directly on the product card */}
+        <div className="mt-1 flex items-center gap-1.5 text-xs">
+          <Link href={`${productUrl}#avis-clients`} className="flex items-center gap-1.5 group/stars hover:text-orange-600">
+            <div className="flex items-center text-amber-400">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  size={14}
+                  className={star <= Math.round(average) ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}
+                />
+              ))}
+            </div>
+            <span className="font-extrabold text-gray-900 text-xs group-hover/stars:text-orange-600">{average.toFixed(1)}</span>
+            <span className="text-xs text-gray-500 font-semibold group-hover/stars:underline">({count} avis)</span>
+          </Link>
+        </div>
+
+        <div className={`mt-1.5 flex min-h-[1.25rem] items-center gap-1 text-[11px] font-semibold ${p.stock === 0 ? 'text-red-700' : p.stock !== undefined ? 'text-emerald-700' : 'text-gray-500'}`}>
           {p.stock !== undefined && <Check size={13} strokeWidth={2.7} />}
           <span>{p.stock === 0 ? 'Rupture' : p.stock !== undefined ? `${p.stock} en stock` : 'Disponibilité à confirmer'}</span>
         </div>
+
         <p className="mt-1 line-clamp-2 min-h-[2.25rem] text-xs leading-snug text-gray-500">{p.description}</p>
 
         <div className="mt-auto pt-2.5 space-y-2 border-t border-gray-100">
@@ -195,7 +254,6 @@ export default function ProductCard({ p }: { p: Product }) {
           </div>
         </div>
       </div>
-
     </article>
   );
 }

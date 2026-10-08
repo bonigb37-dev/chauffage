@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -10,7 +10,7 @@ import { useCart } from '@/components/CartProvider';
 import type { Product } from '@/lib/products';
 import AdminPaymentProof from '@/components/AdminPaymentProof';
 
-type Role = 'admin' | 'super_admin';
+type Role = 'admin' | 'super_admin' | 'owner';
 type RequestStatus = 'new' | 'in_progress' | 'done';
 type RoleRow = { user_id: string; role: Role; created_at: string };
 type ContactRow = { id: number; created_at: string; name: string; email: string; phone: string | null; postal_code: string | null; subject: string; message: string; status: RequestStatus };
@@ -73,7 +73,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     }
     const currentRole = roleResult.data?.role as Role | undefined;
     setRole(currentRole ?? null);
-    if (!currentRole || (superAdminOnly && currentRole !== 'super_admin')) { setLoading(false); return; }
+    if (!currentRole || (superAdminOnly && currentRole !== 'super_admin' && currentRole !== 'owner')) { setLoading(false); return; }
 
     if (superAdminOnly) {
       const [roleList, activityList, accountList, auditList] = await Promise.all([
@@ -165,11 +165,14 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       if (!account) {
         setError('Aucun compte trouvé avec cette adresse e-mail. L’utilisateur doit d’abord créer son compte.'); return;
       }
-      if (account.user_id === user?.id && newRole !== 'super_admin') {
-        setError('Pour éviter de perdre le dernier accès, vous ne pouvez pas réduire votre propre rôle ici.'); return;
+      if (account.user_id === user?.id && newRole !== role) {
+        setError('Pour éviter de perdre vos accès, vous ne pouvez pas modifier votre propre rôle ici.'); return;
+      }
+      if (newRole === 'owner' && role !== 'owner') {
+        setError('Seul un owner peut attribuer le rôle owner.'); return;
       }
       const { error: saveError } = await supabase.from('admin_roles').upsert({ user_id: account.user_id, role: newRole }, { onConflict: 'user_id' });
-      if (saveError) setError('Le rôle n’a pas pu être enregistré. Seul un super administrateur peut gérer les rôles.');
+      if (saveError) setError('Le rôle n’a pas pu être enregistré. Seul un administrateur autorisé peut gérer ce rôle.');
       else { setUserId(''); setNotice(`Rôle enregistré pour ${email}.`); await loadData(user); }
     } catch {
       setError('Le rôle n’a pas pu être enregistré. Veuillez réessayer.');
@@ -263,21 +266,21 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     }
   }
 
-  const canSeeWorkspace = role === 'admin' || role === 'super_admin';
-  const canSeeSuperAdmin = role === 'super_admin';
+  const canSeeWorkspace = role === 'admin' || role === 'super_admin' || role === 'owner';
+  const canSeeSuperAdmin = role === 'super_admin' || role === 'owner';
 
   return <main className="min-h-[70vh] bg-[#fffaf5] py-10 sm:py-14">
     <div className="container max-w-6xl">
       <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
-        <div><p className="text-sm font-bold uppercase tracking-[.18em] text-orange-600">Bren-nholz · administration</p><h1 className="mt-2 text-3xl font-black text-gray-950 sm:text-4xl">{superAdminOnly ? 'Super administration' : 'Espace administrateur'}</h1></div>
-        {user && <div className="flex flex-wrap items-center gap-3"><div className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-gray-600">{user.email}</div><button type="button" onClick={() => void handleSignOut()} disabled={signingOut} className="rounded-lg bg-gray-950 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50">{signingOut ? 'Déconnexion…' : 'Se déconnecter'}</button></div>}
+        <div><p className="text-sm font-bold uppercase tracking-[.18em] text-orange-600">Bren-nholz · administration</p><h1 className="mt-2 text-3xl font-black text-gray-950 sm:text-4xl">{superAdminOnly ? (role === 'owner' ? 'Administration Owner' : 'Super administration') : 'Espace administrateur'}</h1></div>
+        {user && <div className="flex flex-wrap items-center gap-3"><div className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-gray-600">{user.email}</div><button type="button" onClick={() => void handleSignOut()} disabled={signingOut} className="rounded-lg bg-gray-950 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50">{signingOut ? 'Déconnexion...' : 'Se déconnecter'}</button></div>}
       </div>
 
-      {loading ? <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Vérification de l’accès…</div>
+      {loading ? <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Vérification de l’accès...</div>
         : !user ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Connexion requise</h2><p className="mt-2 text-gray-600">Connectez-vous avec votre compte administrateur pour continuer.</p><Link href="/compte" className="mt-5 inline-flex rounded-xl bg-orange-600 px-5 py-3 font-bold text-white">Se connecter</Link></section>
           : superAdminOnly && !canSeeSuperAdmin ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Page indisponible</h2><p className="mt-2 text-gray-600">Cette page n’est pas accessible avec ce compte.</p></section>
             : !canSeeWorkspace ? <section className="mt-8 rounded-2xl border border-red-200 bg-white p-8"><h2 className="text-xl font-bold text-red-800">Accès administrateur requis</h2><p className="mt-2 text-gray-600">Ce compte n’a pas de rôle administrateur.</p></section>
-              : superAdminOnly ? <><Link href="/admin" className="mt-7 inline-flex rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold">Ouvrir l’espace boutique</Link><SuperAdminPanel roles={roles} userId={user.id} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /><AuditPanel audit={audit} /></>
+              : superAdminOnly ? <><Link href="/admin" className="mt-7 inline-flex rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold">Ouvrir l’espace boutique</Link><SuperAdminPanel roles={roles} userId={user.id} currentRole={role} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /><AuditPanel audit={audit} /></>
                 : <><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} /><ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /></>}
 
       {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
@@ -318,23 +321,24 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
   </>;
 }
 
-function SuperAdminPanel({ roles, userId, newRole, setNewRole, targetUserId, setTargetUserId, onSubmit, onRemove, saving, workingId }: {
-  roles: RoleRow[]; userId: string; newRole: Role; setNewRole: (role: Role) => void; targetUserId: string; setTargetUserId: (value: string) => void;
+function SuperAdminPanel({ roles, userId, currentRole, newRole, setNewRole, targetUserId, setTargetUserId, onSubmit, onRemove, saving, workingId }: {
+  roles: RoleRow[]; userId: string; currentRole: Role | null; newRole: Role; setNewRole: (role: Role) => void; targetUserId: string; setTargetUserId: (value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void; onRemove: (userId: string) => void; saving: boolean; workingId: string;
 }) {
+  const visibleRoles = roles.filter((entry) => currentRole === 'owner' || entry.role !== 'owner');
   return <>
     <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
       <h2 className="text-2xl font-black">Attribuer un rôle</h2>
       <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-600">Saisissez l’adresse e-mail d’un utilisateur ayant déjà créé son compte sur le site.</p>
       <form onSubmit={onSubmit} className="mt-5 grid gap-4 sm:grid-cols-[1fr_190px_auto]">
         <label className="text-sm font-semibold text-gray-700">Adresse e-mail utilisateur<input required type="email" value={targetUserId} onChange={(event) => setTargetUserId(event.target.value)} placeholder="utilisateur@exemple.com" className="mt-2 w-full rounded-lg border border-stone-300 px-4 py-3 text-sm" /></label>
-        <label className="text-sm font-semibold text-gray-700">Rôle<select value={newRole} onChange={(event) => setNewRole(event.target.value as Role)} className="mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3"><option value="admin">Administrateur</option><option value="super_admin">Super administrateur</option></select></label>
-        <button type="submit" disabled={saving} className="self-end rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-60">{saving ? 'Enregistrement…' : 'Enregistrer'}</button>
+        <label className="text-sm font-semibold text-gray-700">Rôle<select value={newRole} onChange={(event) => setNewRole(event.target.value as Role)} className="mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3"><option value="admin">Administrateur</option><option value="super_admin">Super administrateur</option>{currentRole === 'owner' && <option value="owner">Owner</option>}</select></label>
+        <button type="submit" disabled={saving} className="self-end rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-60">{saving ? 'Enregistrement...' : 'Enregistrer'}</button>
       </form>
     </section>
     <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
       <h2 className="text-2xl font-black">Rôles attribués</h2>
-      {roles.length === 0 ? <p className="mt-4 text-gray-500">Aucun rôle attribué. Le premier super administrateur doit être créé dans le SQL Editor.</p> : <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead><tr className="border-b text-gray-500"><th className="pb-3 pr-4">UUID utilisateur</th><th className="pb-3 pr-4">Rôle</th><th className="pb-3 pr-4">Ajouté le</th><th className="pb-3 text-right">Action</th></tr></thead><tbody>{roles.map((entry) => <tr key={entry.user_id} className="border-b last:border-0"><td className="py-4 pr-4 font-mono text-xs">{entry.user_id}</td><td className="py-4 pr-4 font-bold">{entry.role === 'super_admin' ? 'Super admin' : 'Admin'}</td><td className="py-4 pr-4 text-gray-500">{date(entry.created_at)}</td><td className="py-4 text-right"><button type="button" disabled={entry.user_id === userId || workingId === entry.user_id} onClick={() => void onRemove(entry.user_id)} title={entry.user_id === userId ? 'Vous ne pouvez pas retirer votre propre accès ici.' : 'Retirer les droits'} className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 font-semibold text-red-700 disabled:cursor-not-allowed disabled:opacity-40"><Trash2 size={15}/> Retirer</button></td></tr>)}</tbody></table></div>}
+      {visibleRoles.length === 0 ? <p className="mt-4 text-gray-500">Aucun rôle attribué. Le premier super administrateur doit être créé dans le SQL Editor.</p> : <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead><tr className="border-b text-gray-500"><th className="pb-3 pr-4">UUID utilisateur</th><th className="pb-3 pr-4">Rôle</th><th className="pb-3 pr-4">Ajouté le</th><th className="pb-3 text-right">Action</th></tr></thead><tbody>{visibleRoles.map((entry) => <tr key={entry.user_id} className="border-b last:border-0"><td className="py-4 pr-4 font-mono text-xs">{entry.user_id}</td><td className="py-4 pr-4 font-bold">{entry.role === 'owner' ? 'Owner' : entry.role === 'super_admin' ? 'Super admin' : 'Admin'}</td><td className="py-4 pr-4 text-gray-500">{date(entry.created_at)}</td><td className="py-4 text-right"><button type="button" disabled={entry.user_id === userId || workingId === entry.user_id} onClick={() => void onRemove(entry.user_id)} title={entry.user_id === userId ? 'Vous ne pouvez pas retirer votre propre accès ici.' : 'Retirer les droits'} className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 font-semibold text-red-700 disabled:cursor-not-allowed disabled:opacity-40"><Trash2 size={15}/> Retirer</button></td></tr>)}</tbody></table></div>}
     </section>
   </>;
 }
@@ -380,11 +384,13 @@ function ProductAdminPanel({ products, product, setProduct, editing, setEditing,
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-stone-50 p-4">
         <label className="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" checked={allSelected} disabled={saving || products.length === 0} ref={(element) => { if (element) element.indeterminate = selectedProducts.length > 0 && !allSelected; }} onChange={(event) => setSelectedIds(event.target.checked ? products.map((item) => item.id) : [])} className="h-5 w-5 accent-orange-600" />Tout sélectionner</label>
         <span className="text-sm text-gray-600">{selectedProducts.length} produit(s) sélectionné(s)</span>
-        <button type="button" disabled={saving || selectedProducts.length === 0} onClick={() => onDelete(selectedProducts.map((item) => item.id))} className="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white disabled:opacity-50">{saving ? 'Veuillez patienter…' : 'Supprimer la sélection'}</button>
+        <button type="button" disabled={saving || selectedProducts.length === 0} onClick={() => onDelete(selectedProducts.map((item) => item.id))} className="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white disabled:opacity-50">{saving ? 'Veuillez patienter...' : 'Supprimer la sélection'}</button>
       </div>
       <div className="mt-5 space-y-3">{products.map((item) => <article key={item.id} className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-stone-200 p-4"><div className="flex items-center gap-3"><input type="checkbox" aria-label={`Sélectionner ${item.name}`} checked={selectedIds.includes(item.id)} disabled={saving} onChange={(event) => setSelectedIds((current) => event.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))} className="h-5 w-5 shrink-0 accent-orange-600" /><div><b>{item.name}</b><p className="mt-1 text-sm text-gray-500">{item.price} · {item.stock === 0 ? 'Rupture de stock' : item.stock !== undefined ? `${item.stock} en stock` : item.availability ?? 'Stock non suivi'}</p></div></div><div className="flex gap-2"><button type="button" disabled={saving} onClick={() => { setProduct({ ...item, priceAmount: item.priceAmount ?? 0, stock: item.stock ?? -1 }); setEditing(true); window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }} className="rounded-lg border px-3 py-2 text-sm font-bold disabled:opacity-50">Modifier</button><button type="button" disabled={saving} onClick={() => onDelete(item.id)} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-bold text-red-700 disabled:opacity-50">Supprimer</button></div></article>)}</div>
-      <form onSubmit={onSave} className="mt-6 rounded-xl bg-stone-50 p-4 sm:p-5"><h3 className="text-lg font-bold">{editing ? 'Modifier le produit sélectionné' : 'Ajouter un produit'}</h3><div className="mt-4 grid gap-4 sm:grid-cols-2"><label className="text-sm font-semibold">ID produit<input required type="number" min="1" value={product.id} onChange={(e) => setProduct({ ...product, id: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Nom<input required value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Catégorie<input required value={product.type} onChange={(e) => setProduct({ ...product, type: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Conditionnement<input required value={product.quantity} onChange={(e) => setProduct({ ...product, quantity: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Prix en centimes (0 = sur devis)<input type="number" min="0" value={product.priceAmount ?? 0} onChange={(e) => setProduct({ ...product, priceAmount: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Stock (-1 non suivi, 0 rupture)<input required type="number" min="-1" value={product.stock ?? -1} onChange={(e) => { const stock = Number(e.target.value); setProduct({ ...product, stock, availability: stock < 0 ? (product.availability === 'Rupture de stock' ? undefined : product.availability) : stock === 0 ? 'Rupture de stock' : 'En stock' }); }} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Image (chemin dans /public, ex. /pellets.webp)<input required value={product.image} onChange={(e) => setProduct({ ...product, image: e.target.value })} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Description<textarea required rows={3} value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} className={input} /></label></div><div className="mt-4 flex flex-wrap gap-3"><button type="submit" disabled={saving} className="rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement…' : 'Enregistrer le produit'}</button>{editing && <button type="button" onClick={() => { setEditing(false); setProduct(emptyProduct(products)); }} className="rounded-lg border px-5 py-3 font-bold">Nouveau produit</button>}</div></form>
+      <form onSubmit={onSave} className="mt-6 rounded-xl bg-stone-50 p-4 sm:p-5"><h3 className="text-lg font-bold">{editing ? 'Modifier le produit sélectionné' : 'Ajouter un produit'}</h3><div className="mt-4 grid gap-4 sm:grid-cols-2"><label className="text-sm font-semibold">ID produit<input required type="number" min="1" value={product.id} onChange={(e) => setProduct({ ...product, id: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Nom<input required value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Catégorie<input required value={product.type} onChange={(e) => setProduct({ ...product, type: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Conditionnement<input required value={product.quantity} onChange={(e) => setProduct({ ...product, quantity: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Prix en centimes (0 = sur devis)<input type="number" min="0" value={product.priceAmount ?? 0} onChange={(e) => setProduct({ ...product, priceAmount: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Stock (-1 non suivi, 0 rupture)<input required type="number" min="-1" value={product.stock ?? -1} onChange={(e) => { const stock = Number(e.target.value); setProduct({ ...product, stock, availability: stock < 0 ? (product.availability === 'Rupture de stock' ? undefined : product.availability) : stock === 0 ? 'Rupture de stock' : 'En stock' }); }} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Image (chemin dans /public, ex. /pellets.webp)<input required value={product.image} onChange={(e) => setProduct({ ...product, image: e.target.value })} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Description<textarea required rows={3} value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} className={input} /></label></div><div className="mt-4 flex flex-wrap gap-3"><button type="submit" disabled={saving} className="rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement...' : 'Enregistrer le produit'}</button>{editing && <button type="button" onClick={() => { setEditing(false); setProduct(emptyProduct(products)); }} className="rounded-lg border px-5 py-3 font-bold">Nouveau produit</button>}</div></form>
     </section>
-    <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7"><h2 className="text-2xl font-black">Coordonnées de virement</h2><form onSubmit={async (event) => { setBankSaved(false); setBankSaved(await onBankSave(event)); }} className="mt-4"><label className="text-sm font-semibold">Informations bancaires affichées aux clients<textarea rows={5} value={bankForm} disabled={saving} onChange={(e) => { setBankSaved(false); setBankForm(e.target.value); }} placeholder="Bénéficiaire, IBAN, BIC et référence à indiquer…" className={input} /></label><button type="submit" disabled={saving} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement…' : 'Enregistrer'}</button>{bankSaved && <p role="status" className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">Les coordonnées bancaires ont été sauvegardées avec succès.</p>}</form></section>
+    <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7"><h2 className="text-2xl font-black">Coordonnées de virement</h2><form onSubmit={async (event) => { setBankSaved(false); setBankSaved(await onBankSave(event)); }} className="mt-4"><label className="text-sm font-semibold">Informations bancaires affichées aux clients<textarea rows={5} value={bankForm} disabled={saving} onChange={(e) => { setBankSaved(false); setBankForm(e.target.value); }} placeholder="Bénéficiaire, IBAN, BIC et référence à indiquer..." className={input} /></label><button type="submit" disabled={saving} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement...' : 'Enregistrer'}</button>{bankSaved && <p role="status" className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">Les coordonnées bancaires ont été sauvegardées avec succès.</p>}</form></section>
   </>;
 }
+
+

@@ -1,8 +1,8 @@
-'use client';
+﻿'use client';
 
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Boxes, CircleHelp, MessageCircle, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Boxes, CircleHelp, MapPin, MessageCircle, ShieldCheck } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
 import { supabase } from '@/lib/supabase';
 
@@ -55,6 +55,17 @@ export default function Contact() {
             <p className="font-bold uppercase tracking-[.2em] text-orange-600">Contact & Support Client</p>
             <h1 className="mt-3 max-w-3xl text-4xl font-black leading-tight text-gray-950 sm:text-5xl">Besoin d’aide ou d’informations ?</h1>
             <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-gray-600">Notre équipe est à votre disposition pour toute question sur nos combustibles, un suivi de commande ou une assistance livraison.</p>
+          </div>
+          <div className="rounded-2xl border border-orange-200 bg-white p-5 shadow-sm sm:p-6">
+            <div className="flex items-start gap-4">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-orange-50 text-orange-700"><MapPin size={21}/></span>
+              <div>
+                <h2 className="font-bold text-gray-950">Zone de livraison & conseils</h2>
+                <address className="mt-2 not-italic text-sm font-medium leading-relaxed text-gray-700">Brauerstraße 3<br />66663 Merzig, Allemagne</address>
+                <p className="mt-1 text-sm leading-relaxed text-gray-600">Nous livrons vos palettes et sacs à domicile. Pour un chiffrage personnalisé, utilisez notre page dédiée aux devis.</p>
+                <Link href="/devis" className="mt-2.5 inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700">Demander un devis sur-mesure <ArrowRight size={14}/></Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>

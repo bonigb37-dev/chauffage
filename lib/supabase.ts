@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+﻿import { createClient } from '@supabase/supabase-js';
 
 const configuredSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
 // Only expose Supabase's low-privilege publishable key to browser code.
