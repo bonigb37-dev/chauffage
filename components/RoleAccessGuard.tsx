@@ -15,14 +15,24 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   const [access, setAccess] = useState<{ userId: string; role: Role } | null>(null);
   const [error, setError] = useState('');
   const [retry, setRetry] = useState(0);
+  const [recoveringPassword, setRecoveringPassword] = useState(false);
   const userId = user?.id;
+
+  useEffect(() => {
+    setRecoveringPassword(pathname === '/compte' && (
+      new URLSearchParams(window.location.search).get('mode') === 'recovery'
+      || new URLSearchParams(window.location.hash.slice(1)).get('type') === 'recovery'
+    ));
+  }, [pathname]);
 
   useEffect(() => {
     if (!supabase) { setSessionReady(true); return; }
     let active = true;
     const client = supabase;
-    const { data: listener } = client.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = client.auth.onAuthStateChange((event, session) => {
       if (!active) return;
+      if (event === 'PASSWORD_RECOVERY') setRecoveringPassword(true);
+      if (event === 'SIGNED_OUT') setRecoveringPassword(false);
       setUser(session?.user ?? null);
       setSessionReady(true);
     });
@@ -53,7 +63,7 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   const role = user && access?.userId === user.id ? access.role : null;
   const isAdminPage = pathname === '/admin' || pathname.startsWith('/admin/');
   const isSuperAdminPage = pathname === '/super-admin' || pathname.startsWith('/super-admin/');
-  const destination = role === 'super_admin'
+  const destination = pathname === '/compte' && recoveringPassword ? null : role === 'super_admin'
     ? (isAdminPage || isSuperAdminPage ? null : '/super-admin')
     : role === 'admin' ? (isAdminPage ? null : '/admin') : null;
 

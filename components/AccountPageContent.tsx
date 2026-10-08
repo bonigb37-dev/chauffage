@@ -402,7 +402,8 @@ export default function AccountPageContent() {
 
   useEffect(() => {
     const urlMode = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('mode') : null;
-    if (urlMode === 'recovery') setMode('update');
+    const recoveryLink = new URLSearchParams(window.location.hash.slice(1)).get('type') === 'recovery';
+    if (urlMode === 'recovery' || recoveryLink) setMode('update');
     else if (urlMode === 'signup') setMode('signup');
     else if (urlMode === 'signin') setMode('signin');
     else if (urlMode === 'forgot') setMode('forgot');
@@ -441,8 +442,9 @@ export default function AccountPageContent() {
       const { data: addressData, error: addressQueryError } = addressResult;
       if (!addressQueryError) setAddresses((addressData ?? []) as OwnAddress[]);
     };
-    const { data: listener } = supabaseClient.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = supabaseClient.auth.onAuthStateChange((event, session) => {
       if (!mounted) return;
+      if (event === 'PASSWORD_RECOVERY') setMode('update');
       setUser(session?.user ?? null);
       setReady(true);
       const nextUserId = session?.user.id ?? null;
@@ -579,6 +581,7 @@ export default function AccountPageContent() {
         setNotice('Votre mot de passe a été mis à jour.');
         window.history.replaceState({}, '', '/compte');
         setMode('signin');
+        router.replace('/');
       }
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Une erreur est survenue. Réessayez dans quelques instants.');
@@ -644,7 +647,7 @@ export default function AccountPageContent() {
               <LoaderCircle className="animate-spin text-orange-500" size={28} />
               <span className="text-sm font-medium text-zinc-400">Chargement de votre espace...</span>
             </div>
-          ) : user ? (
+          ) : user && mode !== 'update' ? (
             <div className="text-center space-y-5 py-2">
               <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto shadow-lg">
                 <CheckCircle2 size={32} />
@@ -852,7 +855,7 @@ export default function AccountPageContent() {
                     <div className="relative flex items-center">
                       <LockKeyhole size={17} className="absolute left-3 text-zinc-500 pointer-events-none" />
                       <input
-                        autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
+                        autoComplete={mode === 'signup' || mode === 'update' ? 'new-password' : 'current-password'}
                         name="password"
                         type={showPassword ? 'text' : 'password'}
                         placeholder={mode === 'signup' ? '8 caractères minimum' : 'Votre mot de passe'}
