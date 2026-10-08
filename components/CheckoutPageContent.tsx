@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, Landmark, ShieldCheck } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
+import DeliveryInformation from '@/components/DeliveryInformation';
 import PaymentMethods from '@/components/PaymentMethods';
 import AddressAutocomplete from '@/components/AddressAutocomplete';
 import { useActionLoading } from '@/components/ActionLoadingProvider';
@@ -14,7 +15,7 @@ const euro = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR'
 const inputClass = 'mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
 export default function CheckoutPageContent() {
-  const { items, ready, products, bankDetails } = useCart();
+  const { items, ready, products } = useCart();
   const { stopLoading } = useActionLoading();
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState('');
@@ -29,7 +30,7 @@ export default function CheckoutPageContent() {
   async function placeOrder(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!lines.length || starting) return;
-    if (hasUnpricedProduct) { stopLoading(); setError('Le prix d’un produit doit être confirmé avant la commande. Contactez-nous pour obtenir un devis.'); return; }
+    if (hasUnpricedProduct) { stopLoading(); setError('Un produit ne peut plus être commandé. Actualisez votre panier.'); return; }
     const formData = new FormData(event.currentTarget);
     const details = Object.fromEntries(formData.entries()) as Record<string, string>;
     if (!formData.has('terms')) { stopLoading(); setError('Veuillez accepter les conditions de vente avant de continuer.'); return; }
@@ -59,7 +60,7 @@ export default function CheckoutPageContent() {
       }
       const response = await fetch('/api/checkout', {
         method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-        body: JSON.stringify({ items: lines.map(({ product, quantity }) => ({ productId: product.id, quantity })), customer, shipping, acceptedTerms: true }),
+        body: JSON.stringify({ items: lines.map(({ product, quantity }) => ({ productId: product.id, quantity, unitPriceCents: product.priceAmount })), customer, shipping, acceptedTerms: true }),
       });
       const result = await response.json() as { reference?: string; totalCents?: number; proofToken?: string; error?: string };
       if (!response.ok || !result.reference || typeof result.totalCents !== 'number') {
@@ -113,17 +114,17 @@ export default function CheckoutPageContent() {
               <label className="text-sm font-semibold text-gray-700">Ville *<input required name="shippingCity" autoComplete="shipping address-level2" className={inputClass}/></label>
             </div>}
             <p className="mt-5 text-sm text-gray-500">Livraison uniquement en Allemagne.</p>
-            <p className="mt-6 text-sm text-gray-600">Les modalités de livraison seront confirmées après réception de votre commande.</p>
+            <DeliveryInformation />
           </section>
           <section className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-8">
             <div className="flex items-center gap-3"><Landmark className="shrink-0 text-orange-600" size={20}/><h2 className="text-xl font-black">Paiement par virement</h2></div>
             <PaymentMethods compact />
           </section>
         </div>
-        <aside className="h-fit rounded-2xl border-2 border-stone-200 bg-white p-5 sm:p-7 lg:sticky lg:top-6"><div className="flex items-center gap-2"><ShieldCheck className="text-orange-600" size={19}/><h2 className="font-serif text-2xl font-bold">Votre commande</h2></div><div className="mt-6 flex justify-between border-b border-stone-200 pb-3 font-semibold text-gray-600"><span>Produit</span><span>Sous-total</span></div><div className="divide-y divide-stone-200">{lines.map(({ product, quantity }) => <div key={product.id} className="flex gap-3 py-4"><div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-100"><Image src={product.image} alt="" fill sizes="64px" className="object-cover"/></div><div className="min-w-0 flex-1"><p className="text-sm font-semibold">{product.name}</p><p className="mt-1 text-xs text-gray-500">× {quantity}</p></div><b className="shrink-0 text-sm">{product.priceAmount === undefined ? 'À confirmer' : euro.format(product.priceAmount * quantity / 100)}</b></div>)}</div><div className="space-y-4 border-y border-stone-200 py-4 text-sm"><div className="flex justify-between text-gray-600"><span>Montant des produits</span><span>{hasUnpricedProduct ? 'Prix à confirmer' : euro.format(total / 100)}</span></div><div className="flex justify-between gap-5 text-gray-600"><span>Livraison</span><span className="max-w-[190px] text-right">Incluse dans le prix des produits</span></div><div className="flex justify-between gap-4 pt-1 text-base font-black"><span>Total, livraison incluse</span><span className="text-right text-sm text-orange-700">{hasUnpricedProduct ? 'Prix à confirmer' : euro.format(total / 100)}</span></div></div>
+        <aside className="h-fit rounded-2xl border-2 border-stone-200 bg-white p-5 sm:p-7 lg:sticky lg:top-6"><div className="flex items-center gap-2"><ShieldCheck className="text-orange-600" size={19}/><h2 className="font-serif text-2xl font-bold">Votre commande</h2></div><div className="mt-6 flex justify-between border-b border-stone-200 pb-3 font-semibold text-gray-600"><span>Produit</span><span>Sous-total</span></div><div className="divide-y divide-stone-200">{lines.map(({ product, quantity }) => <div key={product.id} className="flex gap-3 py-4"><div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-100"><Image src={product.image} alt="" fill sizes="64px" className="object-cover"/></div><div className="min-w-0 flex-1"><p className="text-sm font-semibold">{product.name}</p><p className="mt-1 text-xs text-gray-500">× {quantity}</p></div><b className="shrink-0 text-sm">{product.priceAmount === undefined ? 'Indisponible' : euro.format(product.priceAmount * quantity / 100)}</b></div>)}</div><div className="space-y-4 border-y border-stone-200 py-4 text-sm"><div className="flex justify-between text-gray-600"><span>Montant des produits</span><span>{hasUnpricedProduct ? 'Indisponible' : euro.format(total / 100)}</span></div><div className="flex justify-between gap-5 text-gray-600"><span>Livraison</span><span className="max-w-[190px] text-right">Incluse dans le prix des produits</span></div><div className="flex justify-between gap-4 pt-1 text-base font-black"><span>Total, livraison incluse</span><span className="text-right text-sm text-orange-700">{hasUnpricedProduct ? 'Indisponible' : euro.format(total / 100)}</span></div></div>
           {error && <p role="alert" className="mt-4 rounded-xl bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
-          <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-gray-600"><input required name="terms" type="checkbox" className="mt-1 h-4 w-4 accent-orange-600"/><span>Je confirme l’exactitude de mes informations et j’accepte les <a href="/agb" className="font-semibold text-orange-600 underline">conditions de vente</a> ainsi que la <a href="/datenschutz" className="font-semibold text-orange-600 underline">politique de confidentialité</a>. *</span></label>
-          <button type="submit" disabled={starting} className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 py-4 font-bold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-gray-300">{starting ? 'Validation…' : 'Envoyer ma demande de commande'}</button>
+          <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-gray-600"><input required name="terms" type="checkbox" className="mt-1 h-4 w-4 accent-orange-600"/><span>Je confirme l’exactitude de mes informations et j’accepte les <a href="/agb" className="font-semibold text-orange-600 underline">conditions de vente</a> et j’ai pris connaissance du <a href="/retractation" className="font-semibold text-orange-600 underline">droit de rétractation</a> et de la <a href="/datenschutz" className="font-semibold text-orange-600 underline">politique de confidentialité</a>. *</span></label>
+          <button type="submit" disabled={starting || hasUnpricedProduct} className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 py-4 font-bold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-gray-300">{starting ? 'Validation…' : 'Commander avec obligation de paiement'}</button>
         </aside>
       </form>
     </main>

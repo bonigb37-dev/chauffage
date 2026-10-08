@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { products as initialProducts, type Product } from '@/lib/products';
 import { supabase } from '@/lib/supabase';
+import { mergeCatalog } from '@/lib/catalog';
 
 type CartLine = { productId: number; quantity: number };
 type CartContextValue = {
@@ -36,29 +37,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     ]).then(([productResult, settingsResult]) => {
       if (!active) return;
       if (!productResult.error && productResult.data) {
-        const overrideMap = new Map(productResult.data.map((row) => [row.product_id, row] as const));
-        const merged = initialProducts.flatMap((item) => {
-          const row = overrideMap.get(item.id);
-          if (row?.is_deleted) return [];
-          const data = (row?.data ?? {}) as Omit<Partial<Product>, 'stock' | 'priceAmount'> & { stock?: number | null; priceAmount?: number | null };
-          const resolvedPriceAmount = (typeof data.priceAmount === 'number' && data.priceAmount > 0) ? data.priceAmount : item.priceAmount;
-          return [{
-            ...item,
-            ...data,
-            stock: data.stock === null ? undefined : data.stock,
-            priceAmount: resolvedPriceAmount,
-          } as Product];
-        });
-        const additions = productResult.data.filter((row) => !row.is_deleted && !initialProducts.some((item) => item.id === row.product_id)).map((row) => {
-          const data = row.data as Omit<Product, 'stock' | 'priceAmount'> & { stock?: number | null; priceAmount?: number | null };
-          const resolvedPriceAmount = typeof data.priceAmount === 'number' && data.priceAmount > 0 ? data.priceAmount : undefined;
-          return {
-            ...data,
-            stock: data.stock === null ? undefined : data.stock,
-            priceAmount: resolvedPriceAmount,
-          } as Product;
-        });
-        setProducts([...merged, ...additions]);
+        setProducts(mergeCatalog(productResult.data));
       }
       if (!settingsResult.error && settingsResult.data?.value && typeof settingsResult.data.value === 'object') {
         setBankDetails(String((settingsResult.data.value as { details?: unknown }).details ?? ''));

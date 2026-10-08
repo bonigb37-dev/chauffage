@@ -5,7 +5,7 @@ export const faqItems = [
   },
   {
     question: 'Quand la livraison est-elle déclenchée après mon paiement ?',
-    answer: 'Dès la réception de votre virement bancaire, votre commande est préparée et transmise à notre transporteur partenaire dans un délai de 48 heures ouvrées. Vous recevez une confirmation par e-mail dès la prise en charge de votre palette.',
+    answer: 'Dès la réception de votre virement bancaire, votre commande est préparée et transmise à notre transporteur partenaire pour une livraison sous 2 à 4 jours ouvrables après réception effective du paiement. Vous recevez une confirmation par e-mail dès la prise en charge de votre palette.',
   },
   {
     question: 'Combien coûtent les frais de livraison ?',
@@ -13,7 +13,7 @@ export const faqItems = [
   },
   {
     question: 'Quels sont les délais de livraison et jours de passage ?',
-    answer: 'Le délai de livraison standard est de 2 à 4 jours ouvrés après validation du paiement. Les livraisons s’effectuent du lundi au vendredi sur les heures ouvrables (hors week-ends et jours fériés).',
+    answer: 'Le délai de livraison standard est de 2 à 4 jours ouvrés après réception effective du paiement. Les livraisons s’effectuent du lundi au vendredi sur les heures ouvrables (hors week-ends et jours fériés).',
   },
   {
     question: 'Comment s’organise la prise de rendez-vous pour la livraison ?',

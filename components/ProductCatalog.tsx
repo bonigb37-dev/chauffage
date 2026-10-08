@@ -21,7 +21,8 @@ export default function ProductCatalog() {
   const { products } = useCart();
   const searchParams = useSearchParams();
   const requestedSearch = searchParams.get('search') ?? '';
-  const requestedCategory = searchParams.get('categorie');
+  const categoryAliases: Record<string, string> = { buches: 'Bois de chauffage', granules: 'Granulés', 'bois-compresse': 'Briquettes', 'allume-feu': 'Bois d’allumage' };
+  const requestedCategory = searchParams.get('categorie') ?? categoryAliases[searchParams.get('category') ?? ''];
   const [category, setCategory] = useState('Tous les produits');
   const [query, setQuery] = useState(requestedSearch);
   const categories = ['Tous les produits', ...new Set(products.map((product) => product.type))];
@@ -87,7 +88,7 @@ export default function ProductCatalog() {
         <p className="text-sm font-medium text-gray-500">{visibleProducts.length} produit{visibleProducts.length > 1 ? 's' : ''}</p>
         <p className="hidden text-sm text-gray-500 sm:block">Sélectionnez une photo pour l’agrandir</p>
       </div>
-      <p className="mb-4 rounded-2xl border border-orange-100 bg-orange-50 px-4 py-3 text-sm leading-6 text-orange-950">Prix et disponibilités susceptibles d’évoluer. Les tarifs par volume et délais restent à confirmer avant toute commande.</p>
+      <p className="mb-4 rounded-2xl border border-orange-100 bg-orange-50 px-4 py-3 text-sm leading-6 text-orange-950">Les prix affichés incluent la livraison en Allemagne. Le montant total est indiqué avant la validation de votre commande.</p>
       {visibleProducts.length ? groupedProducts.map(([section, sectionProducts]) => <section key={section} className="mt-8 first:mt-0">
         <div className="mb-5 max-w-3xl border-b border-stone-200 pb-3"><h2 className="text-2xl font-black text-gray-950 sm:text-3xl">{section}</h2><p className="mt-1 text-sm leading-6 text-gray-500">{sectionDescriptions[section]}</p></div>
         <div className="grid items-stretch gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">{sectionProducts.map((product) => <div id={`produit-${product.id}`} key={product.id} className="h-full"><ProductCard p={product} /></div>)}</div>

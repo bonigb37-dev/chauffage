@@ -26,7 +26,7 @@ export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
       <div className="space-y-5 p-6 sm:p-8">
         <div className="flex items-start gap-3 rounded-2xl border border-orange-100 bg-orange-50 p-4 text-sm leading-6 text-orange-950">
           <MapPin size={19} className="mt-0.5 shrink-0 text-orange-700" />
-          <p>L’entreprise vérifie votre adresse et les conditions d’accès pour organiser la livraison et vous confirmer les délais, sans supplément de transport.</p>
+          <p>La livraison est prévue sous 2 à 4 jours ouvrables après réception effective du paiement. Signalez les restrictions d’accès avant de commander ; aucun supplément de transport ne sera imposé après validation.</p>
         </div>
         <div className="flex flex-wrap gap-3">
           <Link href="/devis" onClick={onClose} className="inline-flex items-center justify-center rounded-full bg-orange-600 px-6 py-3 font-bold text-white transition hover:bg-orange-700">Vérifier les modalités de livraison</Link>

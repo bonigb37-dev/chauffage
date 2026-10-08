@@ -1,70 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-
-export const metadata: Metadata = {
-  title: 'Conditions de vente — Bren-nholz',
-};
-
-const articles = [
-  { title: 'Champ d’application et modification des conditions générales de vente', paragraphs: [
-    'Les présentes conditions générales de vente s’appliquent à toutes les commandes passées sur le Site.',
-    'La Société se réserve la possibilité d’adapter ou de modifier à tout moment les présentes conditions. En cas de modification, les conditions générales de vente en vigueur au jour de la commande seront appliquées à celle-ci et jointes au format PDF à la confirmation de commande du Client.',
-  ] },
-  { title: 'Disponibilité des produits', paragraphs: [
-    'Nos offres sont valables tant qu’elles sont visibles sur le Site durant toute l’année en cours, dans la limite des stocks disponibles.',
-    'Dans l’hypothèse où, postérieurement à votre commande, un produit ou une prestation deviendrait totalement ou partiellement indisponible, la Société vous informera par e-mail et/ou téléphone et vous donnera la possibilité d’obtenir un produit similaire à un prix similaire ou de bénéficier d’un remboursement.',
-    'Il vous est possible de commander un article qui n’est plus en stock, les délais de réapprovisionnement étant indiqués sur la fiche du produit. Dans le cas où le réapprovisionnement dépasserait 29 jours à compter de la validation de la commande, nous nous engageons à vous proposer un produit similaire à un prix similaire ou à vous rembourser.',
-    'Si vous avez choisi d’être remboursé, le remboursement s’effectuera via le mode de paiement sélectionné à la commande, dans un délai maximal de 14 jours à compter de la demande.',
-  ] },
-  { title: 'Validation des commandes', paragraphs: [
-    'Pour passer commande, le Client suit les différentes étapes proposées sur le Site :',
-    '1. Sélectionner le ou les articles choisis en cliquant sur « Ajouter au panier ».\n2. S’identifier dans la rubrique « Coordonnées » et, pour la première fois, créer un compte.\n3. Choisir les modalités et conditions de Click and Collect ou de livraison.\n4. Confirmer avoir pris connaissance des délais de livraison en cochant la case correspondante pour passer à l’étape suivante.',
-    'Le récapitulatif de votre commande apparaît à l’écran. Avant de valider votre commande, vous devez vérifier ses éléments, y compris son prix total, et, le cas échéant, identifier et corriger les erreurs. Vous devez ensuite confirmer avoir lu les conditions générales de vente et les accepter sans réserve en cochant la case correspondante.',
-    'Vous êtes informé de votre droit de rétractation, puis vous devez valider votre commande en cliquant sur « Je confirme ma commande et reconnais que cette dernière nécessite une obligation de paiement ». Cette confirmation de commande vous engage et constitue une acceptation irrévocable et sans réserve de votre commande avec obligation de paiement.',
-    'Le règlement de votre commande s’effectue par virement bancaire, selon les modalités communiquées par la Société.',
-    'Nous vous adressons un e-mail de confirmation de réception de votre commande dans les plus brefs délais.',
-  ] },
-  { title: 'Prix', paragraphs: [
-    'Les prix s’entendent en euros, toutes taxes comprises et éco-participation comprise si applicable. Le montant de l’éco-participation figure dans la description du produit.',
-    'Les prix des produits incluent la livraison en Allemagne. Aucun frais de port supplémentaire ne s’ajoute au montant de la commande et aucun paiement n’est demandé par le transporteur lors de la livraison.',
-    'Les soldes : certains produits peuvent être en solde durant les périodes légales. Le tarif soldé apparaît dans la fiche produit en dessous du prix d’origine barré.',
-    'Les promotions : certains produits peuvent être en promotion sur une période donnée. Le tarif promotionnel est indiqué dans la fiche produit en dessous de l’ancien prix barré. La période de promotion est indiquée en dessous du prix.',
-  ] },
-  { title: 'Modalités de paiement et sécurisation', paragraphs: [
-    'Le paiement des commandes s’effectue exclusivement par virement bancaire. Les coordonnées bancaires sont indiquées sur la page de commande. La Société confirme le montant définitif après vérification de votre commande ; la livraison est incluse dans le prix des produits.',
-    '5.1 — Paiement par virement bancaire',
-    'Le Client effectue le virement depuis sa banque vers le compte indiqué par la Société, en précisant la référence de commande. Aucun paiement n’est prélevé directement sur le Site. Le Client effectue le virement après confirmation du montant définitif, aux coordonnées bancaires indiquées sur le Site ou communiquées par la Société. Le paiement est confirmé après vérification de la réception des fonds par la Société.',
-    'Clause de réserve de propriété : les produits demeurent la propriété de la Société jusqu’à encaissement complet du montant de la commande.',
-  ] },
-  { title: 'Click and Collect et livraison', paragraphs: [
-    '6.1 — La livraison',
-    'La Société livre ses produits dans tous les pays listés sur le Site. La livraison se fait à l’adresse spécifiée par le Client lors du passage de sa commande.',
-    'Le Client doit fournir une adresse de livraison exacte et complète. En cas d’erreur, il contacte la Société afin de corriger l’adresse et de convenir des modalités de livraison.',
-    '6.2 — Le suivi de commande',
-    'Vous recevrez un e-mail vous indiquant le départ de votre colis depuis notre Site. Certains transporteurs peuvent également vous envoyer un e-mail indiquant le numéro de suivi de livraison et, éventuellement, une date prévisionnelle de livraison.',
-    'Attention : en raison de la politique anti-spam de certains fournisseurs d’accès à Internet, ces e-mails peuvent arriver dans vos courriers indésirables.',
-    'Vous pouvez à tout moment consulter l’avancement de la livraison depuis votre espace client.',
-    '6.3 — Les frais de port',
-    'Les frais de transport sont inclus dans le prix des produits pour les livraisons en Allemagne. Aucun supplément de livraison ne sera ajouté après validation de la commande.',
-    'Le montant présenté dans le panier comprend la livraison. Les produits dont le prix est sur devis font l’objet d’une confirmation de prix incluant également la livraison.',
-    'Le transporteur assure uniquement la livraison et ne demande aucun paiement au Client à la réception des produits.',
-    'Le Client peut alors refuser le colis contre remise d’un « relevé d’anomalie ou de spoliation » par le transporteur. Il informe la Société de tout incident (réserves, refus de colis) par téléphone ou par écrit dans les meilleurs délais.',
-    'Cette procédure est indépendante de celle relative à la garantie légale de conformité mentionnée aux articles L217-3 à L217-14 du Code de la consommation et de celle relative aux défauts de la chose vendue dans les conditions prévues aux articles 1641 à 1648 et 2232 du Code civil.',
-  ] },
-];
-
+import PolicyPage from '@/components/PolicyPage';
+import { salesTerms } from '@/lib/sales-terms';
+export const metadata: Metadata = { title: 'Conditions de vente — Bren-nholz' };
 export default function SalesTermsPage() {
-  return <main className="min-h-[60vh] bg-stone-50 py-12 sm:py-16">
-    <section className="container max-w-3xl rounded-2xl border border-stone-200 bg-white p-6 sm:p-10">
-      <p className="text-sm font-bold uppercase tracking-widest text-orange-600">Bren-nholz</p>
-      <h1 className="mt-3 text-3xl font-black leading-tight text-gray-950 sm:text-4xl">Conditions générales de vente</h1>
-      <p className="mt-4 text-sm text-gray-500">Date de dernière modification : <time dateTime="2026-10-08">8 octobre 2026</time></p>
-      <nav aria-label="Sommaire des conditions de vente" className="mt-8 rounded-xl bg-stone-50 p-5"><h2 className="font-bold text-gray-950">Sommaire</h2><ol className="mt-3 space-y-2">{articles.map((article, index) => <li key={article.title}><a href={`#article-${index + 1}`} className="text-sm text-orange-700 underline-offset-4 hover:underline">Article {index + 1} — {article.title}</a></li>)}</ol></nav>
-      <div className="mt-10 space-y-10">{articles.map((article, index) => <section id={`article-${index + 1}`} key={article.title} className="scroll-mt-40 border-t border-stone-200 pt-8"><h2 className="text-xl font-bold leading-snug text-gray-950 sm:text-2xl">Article {index + 1} — {article.title}</h2><div className="mt-5 space-y-4 leading-7 text-gray-700">{article.paragraphs.map((paragraph) => /^\d\.\d —/.test(paragraph) ? <h3 key={paragraph} className="pt-3 text-lg font-bold text-gray-950">{paragraph}</h3> : paragraph.startsWith('1. ') ? <ol key={paragraph} className="list-decimal space-y-2 pl-6">{paragraph.split('\n').map((step) => <li key={step}>{step.replace(/^\d\. /, '')}</li>)}</ol> : <p key={paragraph}>{paragraph}</p>)}</div></section>)}</div>
-      <div className="mt-8 flex flex-wrap gap-4">
-        <Link href="/contact" className="rounded-full bg-orange-600 px-6 py-3 font-bold text-white">Nous contacter</Link>
-        <Link href="/commande" className="rounded-full border border-stone-300 px-6 py-3 font-bold text-gray-800">Retour au formulaire de commande</Link>
-      </div>
-    </section>
-  </main>;
+  return <PolicyPage title="Conditions générales de vente">{salesTerms.map((article, index) => <section key={article.title}><h2 className="text-xl font-bold">{index + 1}. {article.title}</h2><div className="mt-3 space-y-3">{article.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div></section>)}<nav aria-label="Informations complémentaires" className="flex flex-wrap gap-4"><Link href="/retractation" className="font-semibold text-orange-700 underline">Rétractation, retours et remboursements</Link><Link href="/datenschutz" className="font-semibold text-orange-700 underline">Confidentialité</Link><Link href="/commande" className="font-semibold text-orange-700 underline">Retour au formulaire de commande</Link></nav></PolicyPage>;
 }

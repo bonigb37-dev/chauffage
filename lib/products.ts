@@ -89,7 +89,7 @@ const catalogItems: Product[] = [
   { id: 82, name: 'Bûches de Chêne Pur séchées sur palette (2 stères – 50 cm)', type: 'Bois de chauffage', quantity: 'Palette · 2 stères · 50 cm', price: '', description: 'Palette de grandes bûches de chêne 50 cm séchées en chambre.', image: '/bois-chauffages-img-11.jpg', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/bois/' },
 ];
 
-const indicativePrices: Record<number, number> = {
+const catalogPrices: Record<number, number> = {
   1: 768, 2: 49900, 3: 552, 4: 448, 5: 20700, 7: 22000,
   10: 54900, 11: 341, 13: 1460, 14: 730, 15: 1460,
   16: 490, 17: 490, 18: 29600, 19: 420, 20: 375, 21: 35900,
@@ -127,7 +127,7 @@ const indicativePrices: Record<number, number> = {
 const euroLabel = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
 
 export const products: Product[] = catalogItems.map((product) => {
-  const priceAmount = indicativePrices[product.id] ?? product.priceAmount;
+  const priceAmount = catalogPrices[product.id] ?? product.priceAmount;
   let section = product.type;
   if ([2, 25, 26, 28, 30, 49, 56, 57, 73, 74, 75, 76].includes(product.id)) section = 'Granulés de marques';
   else if ([1, 3, 4, 27].includes(product.id)) section = 'Formats compacts';
@@ -135,5 +135,5 @@ export const products: Product[] = catalogItems.map((product) => {
   else if (product.type === 'Bois de chauffage') section = 'Bois de chauffage';
   else if ([10, 11, 40, 43, 51, 52, 53, 54, 55, 60].includes(product.id)) section = 'Briquettes';
   else section = 'Bois d’allumage';
-  return { ...product, section, priceAmount, price: priceAmount === undefined ? 'Prix à confirmer' : euroLabel.format(priceAmount / 100) };
+  return { ...product, section, priceAmount, price: priceAmount === undefined ? 'Indisponible à la vente' : euroLabel.format(priceAmount / 100) };
 });

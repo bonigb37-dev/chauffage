@@ -4,26 +4,29 @@ import Link from 'next/link';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { CheckCircle2, MapPin, Star } from 'lucide-react';
 import ProductDetailAddButton from '@/components/ProductDetailAddButton';
-import { productPathSegment, products } from '@/lib/products';
+import { productPathSegment } from '@/lib/products';
 import { getAverageRating, getReviewsForProduct } from '@/lib/reviews';
+
+import { getServerCatalog } from '@/lib/server-catalog';
+import DeliveryInformation from '@/components/DeliveryInformation';
 
 type Props = { params: Promise<{ slug: string }> };
 
-function findProduct(slug: string) {
+async function findProduct(slug: string) {
   const id = Number(slug.split('-', 1)[0]);
-  return Number.isInteger(id) ? products.find((item) => item.id === id) : undefined;
+  return Number.isInteger(id) ? (await getServerCatalog()).find((item) => item.id === id) : undefined;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = findProduct(slug);
+  const product = await findProduct(slug);
   if (!product) return { title: 'Produit introuvable — Bren-nholz' };
   return { title: `${product.name} — Bren-nholz`, description: product.description };
 }
 
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
-  const product = findProduct(slug);
+  const product = await findProduct(slug);
   if (!product) notFound();
   const canonicalSlug = productPathSegment(product);
   if (slug !== canonicalSlug) permanentRedirect(`/produits/${canonicalSlug}`);
@@ -58,11 +61,11 @@ export default async function ProductDetailPage({ params }: Props) {
       },
       reviewBody: r.comment,
     })),
-    offers: product.priceAmount !== undefined && product.stock !== undefined ? {
+    offers: product.priceAmount !== undefined ? {
       '@type': 'Offer',
       priceCurrency: 'EUR',
       price: (product.priceAmount / 100).toFixed(2),
-      availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      availability: product.stock === 0 ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
     } : undefined,
   };
 
@@ -106,10 +109,10 @@ export default async function ProductDetailPage({ params }: Props) {
 
             <dl className="mt-6 grid gap-3 border-y border-stone-200 py-5 sm:grid-cols-2">
               <div><dt className="text-xs font-bold uppercase tracking-wide text-gray-500">Conditionnement</dt><dd className="mt-1 font-semibold">{product.quantity}</dd></div>
-              <div><dt className="text-xs font-bold uppercase tracking-wide text-gray-500">Disponibilité</dt><dd className="mt-1 font-semibold">{product.stock === undefined ? 'À confirmer avant commande' : product.stock === 0 ? 'Rupture de stock' : `${product.stock} en stock`}</dd></div>
+              <div><dt className="text-xs font-bold uppercase tracking-wide text-gray-500">Disponibilité</dt><dd className="mt-1 font-semibold">{product.stock === 0 ? 'Rupture de stock' : 'En stock — Disponible à la commande'}</dd></div>
             </dl>
             <p className="mt-6 text-3xl font-black text-gray-950">{product.price}</p>
-            <p className="mt-2 text-sm leading-6 text-gray-600">Livraison incluse dans le prix du produit en Allemagne. Aucun frais supplémentaire à régler au transporteur.</p>
+            <DeliveryInformation />
             <div className="mt-6 flex flex-wrap gap-3"><ProductDetailAddButton product={product} /><Link href="/devis" className="inline-flex items-center rounded-full border border-stone-300 px-6 py-3 font-bold text-gray-800 hover:border-orange-500 hover:text-orange-700">Demander un devis</Link></div>
           </div>
         </article>

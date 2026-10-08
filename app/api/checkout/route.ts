@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { products as catalog } from '@/lib/products';
 import { paymentProofToken } from '@/lib/payment-proof-token';
+import { mergeCatalog } from '@/lib/catalog';
 
 export const runtime = 'nodejs';
 
@@ -67,6 +68,7 @@ export async function POST(request: Request) {
   }
 
   const quantities = new Map<number, number>();
+  const expectedPrices = new Map<number, number>();
   for (const item of input.items) {
     if (!isRecord(item) || !Number.isSafeInteger(item.productId) || !Number.isSafeInteger(item.quantity)) {
       return error('Un produit ou une quantité est invalide.', 400);
@@ -77,6 +79,8 @@ export async function POST(request: Request) {
       return error('Chaque produit doit apparaître une seule fois et avec une quantité valide.', 400);
     }
     quantities.set(productId, quantity);
+    if (!Number.isSafeInteger(item.unitPriceCents) || Number(item.unitPriceCents) <= 0) return error('Actualisez le panier pour vérifier les prix avant de commander.', 409);
+    expectedPrices.set(productId, item.unitPriceCents as number);
   }
 
   const admin = createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
@@ -86,6 +90,7 @@ export async function POST(request: Request) {
   if (overrideError) return error('Impossible de vérifier le catalogue. Réessayez plus tard.', 503);
 
   const overrideById = new Map((overrides ?? []).map((row) => [row.product_id, row] as const));
+  const resolvedCatalog = mergeCatalog(overrides ?? []);
   const orderLines: { product_id: number; name: string; quantity: number; unit_price_cents: number }[] = [];
   let totalCents = 0;
   for (const [productId, quantity] of quantities) {
@@ -96,12 +101,11 @@ export async function POST(request: Request) {
     if (!base && !override) return error('Un produit de votre panier n’existe plus.', 409);
 
     const name = cleanText(data.name, 200) || base?.name || '';
-    const priceValue = Object.hasOwn(data, 'priceAmount')
-      ? data.priceAmount
-      : base?.priceAmount;
+    const priceValue = resolvedCatalog.find((product) => product.id === productId)?.priceAmount;
     if (!Number.isSafeInteger(priceValue) || (priceValue as number) <= 0) {
-      return error(`Le prix de « ${name} » doit être confirmé avant la commande.`, 409);
+      return error(`« ${name} » n’est pas disponible à la vente. Actualisez votre panier.`, 409);
     }
+    if (expectedPrices.get(productId) !== priceValue) return error('Un prix a changé. Actualisez votre panier et vérifiez le nouveau total avant de commander.', 409);
     const stockValue = Object.hasOwn(data, 'stock') ? data.stock : base?.stock;
     if (typeof stockValue === 'number' && (!Number.isSafeInteger(stockValue) || stockValue < 0)) {
       return error(`Le stock de « ${name} » doit être corrigé dans l’administration.`, 409);

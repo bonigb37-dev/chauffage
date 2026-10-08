@@ -9,6 +9,7 @@ import { supabase } from '@/lib/supabase';
 import { useCart } from '@/components/CartProvider';
 import type { Product } from '@/lib/products';
 import AdminPaymentProof from '@/components/AdminPaymentProof';
+import { orderStatusLabels, paymentStatusLabel } from '@/lib/order-status';
 
 type Role = 'admin' | 'super_admin' | 'owner';
 type RequestStatus = 'new' | 'in_progress' | 'done';
@@ -27,9 +28,9 @@ function text(value: unknown) { return typeof value === 'string' ? value : ''; }
 function date(value: string) { return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)); }
 function emptyProduct(products: Product[]): Product { return { id: Math.max(0, ...products.map((item) => item.id)) + 1, name: '', type: 'Granulés', quantity: '', price: 'Sur devis', priceAmount: 0, description: '', image: '/pellets.webp', stock: -1 }; }
 
-function StatusSelect({ value, onChange, disabled }: { value: RequestStatus; onChange: (status: RequestStatus) => void; disabled: boolean }) {
+function StatusSelect({ value, onChange, disabled, order = false }: { value: RequestStatus; onChange: (status: RequestStatus) => void; disabled: boolean; order?: boolean }) {
   return <select value={value} disabled={disabled} onChange={(event) => onChange(event.target.value as RequestStatus)} className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm font-semibold text-gray-800 disabled:opacity-50">
-    {Object.entries(statusLabels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}
+    {Object.entries(order ? orderStatusLabels : statusLabels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}
   </select>;
 }
 
@@ -137,6 +138,10 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
 
   async function updateStatus(table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) {
     if (!supabase) return;
+    if (table === 'order_requests' && status !== 'new' && orders.find((order) => order.id === id)?.payment_status !== 'confirmed') {
+      setError('Confirmez la réception effective des fonds avant la préparation ou l’expédition.');
+      return;
+    }
     const key = `${table}-${id}`;
     setWorkingId(key); setError(''); setNotice('');
     const { error: updateError } = await supabase.from(table).update({ status }).eq('id', id);
@@ -315,13 +320,13 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
         const customer = order.customer ?? {};
         const items = Array.isArray(order.items) ? order.items as Array<Record<string, unknown>> : [];
         return <article key={order.id} className="rounded-xl border border-stone-200 p-4 sm:p-5">
-          <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-black">{order.reference}</p><p className="mt-1 text-sm text-gray-500">{date(order.created_at)}</p></div><StatusSelect value={order.status} disabled={workingId === `order_requests-${order.id}`} onChange={(status) => void onStatusChange('order_requests', order.id, status)} /></div>
+          <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-black">{order.reference}</p><p className="mt-1 text-sm text-gray-500">{date(order.created_at)}</p></div><StatusSelect order value={order.status} disabled={workingId === `order_requests-${order.id}`} onChange={(status) => void onStatusChange('order_requests', order.id, status)} /></div>
           <p className="mt-3 font-semibold">{text(customer.firstName)} {text(customer.lastName)} · <a href={`mailto:${text(customer.email)}`} className="text-orange-700 underline">{text(customer.email)}</a></p>
           <div className="mt-3 grid gap-4 text-sm text-gray-600 sm:grid-cols-2"><p><b className="text-gray-800">Facturation :</b><br/>{text(customer.street)} {text(customer.addressLine2)}<br/>{text(customer.postalCode)} {text(customer.city)} {text(customer.state)}</p>{order.shipping && <p><b className="text-gray-800">Livraison :</b><br/>{text(order.shipping.street)} {text(order.shipping.addressLine2)}<br/>{text(order.shipping.postalCode)} {text(order.shipping.city)} {text(order.shipping.state)}</p>}</div>
           <ul className="mt-3 space-y-1 text-sm text-gray-600">{items.map((item, index) => <li key={`${order.id}-${index}`}>{text(item.name)} × {Number(item.quantity) || 0}</li>)}</ul>
           <p className="mt-3 text-sm font-bold text-gray-900">Montant de la commande : {euros.format(order.total_cents / 100)} · livraison incluse · aucun frais à régler au transporteur</p>
           <AdminPaymentProof reference={order.reference} />
-          <div className="mt-3 flex flex-wrap items-center gap-3"><span className={`rounded-full px-3 py-1 text-xs font-bold ${order.payment_status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>Virement : {order.payment_status === 'confirmed' ? 'confirmé' : 'en attente'}</span>{order.payment_status !== 'confirmed' && <button type="button" disabled={workingId === `payment-${order.id}`} onClick={() => onConfirmTransfer(order.id)} className="rounded-lg bg-gray-950 px-3 py-2 text-xs font-bold text-white disabled:opacity-50">{workingId === `payment-${order.id}` ? 'Vérification…' : 'Confirmer le virement reçu'}</button>}</div>
+          <div className="mt-3 flex flex-wrap items-center gap-3"><span className={`rounded-full px-3 py-1 text-xs font-bold ${order.payment_status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>{paymentStatusLabel(order.payment_status)}</span>{order.payment_status !== 'confirmed' && <button type="button" disabled={workingId === `payment-${order.id}`} onClick={() => onConfirmTransfer(order.id)} className="rounded-lg bg-gray-950 px-3 py-2 text-xs font-bold text-white disabled:opacity-50">{workingId === `payment-${order.id}` ? 'Vérification…' : 'Confirmer le virement reçu'}</button>}</div>
         </article>;
       })}</div>}
     </section>

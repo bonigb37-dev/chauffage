@@ -6,10 +6,11 @@ import { useCart } from '@/components/CartProvider';
 import type { Product } from '@/lib/products';
 
 export default function ProductDetailAddButton({ product }: { product: Product }) {
-  const { addItem } = useCart();
+  const { addItem, products } = useCart();
+  const currentProduct = products.find((item) => item.id === product.id) ?? product;
   const [added, setAdded] = useState(false);
 
-  if (product.stock === 0) {
+  if (currentProduct.stock === 0 || currentProduct.priceAmount === undefined) {
     return <button type="button" disabled className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-stone-200 px-6 py-3 font-bold text-stone-600">Rupture de stock</button>;
   }
 

@@ -29,7 +29,7 @@ export default function ProductCard({ p }: { p: Product }) {
   const productUrl = `/produits/${productPathSegment(p)}`;
 
   const handleAddToCart = () => {
-    if (p.stock === 0 || reachedStock) return;
+    if (p.stock === 0 || p.priceAmount === undefined || reachedStock) return;
     addItem(p.id, quantityToAdd);
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 2000);
@@ -162,7 +162,7 @@ export default function ProductCard({ p }: { p: Product }) {
 
         <div className={`mt-1.5 flex min-h-[1.25rem] items-center gap-1 text-[11px] font-semibold ${p.stock === 0 ? 'text-red-700' : p.stock !== undefined ? 'text-emerald-700' : 'text-gray-500'}`}>
           {p.stock !== undefined && <Check size={13} strokeWidth={2.7} />}
-          <span>{p.stock === 0 ? 'Rupture' : p.stock !== undefined ? `${p.stock} en stock` : 'Disponibilité à confirmer'}</span>
+          <span>{p.stock === 0 ? 'Rupture' : p.stock !== undefined ? `${p.stock} en stock` : 'En stock — Disponible à la commande'}</span>
         </div>
 
         <p className="mt-1 line-clamp-2 min-h-[2.25rem] text-xs leading-snug text-gray-500">{p.description}</p>
@@ -215,7 +215,7 @@ export default function ProductCard({ p }: { p: Product }) {
               id={`acheter-produit-${p.id}`}
               type="button"
               onClick={handleAddToCart}
-              disabled={p.stock === 0 || reachedStock}
+              disabled={p.stock === 0 || p.priceAmount === undefined || reachedStock}
               aria-label={`Ajouter ${p.name} au panier`}
               className={`flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-lg py-2 px-2.5 text-xs font-extrabold text-white transition hover:opacity-95 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 shadow-sm ${
                 justAdded ? 'bg-emerald-600' : 'bg-green-600 hover:bg-green-700'

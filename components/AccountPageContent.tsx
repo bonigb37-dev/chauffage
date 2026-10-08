@@ -1,5 +1,6 @@
 'use client';
 
+import { orderStatusLabels, paymentStatusLabel } from '@/lib/order-status';
 import { FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -714,7 +715,7 @@ export default function AccountPageContent() {
                             <span className="text-zinc-300">{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(order.total_cents / 100)}</span>
                           </div>
                           <p className="mt-1 text-xs text-zinc-500">
-                            {new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(order.created_at))} · Virement {order.payment_status === 'confirmed' ? 'confirmé' : 'en attente'}
+                            {new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(order.created_at))} · {paymentStatusLabel(order.payment_status)} · {orderStatusLabels[order.status as keyof typeof orderStatusLabels] ?? order.status}
                           </p>
                         </li>
                       ))}
@@ -1003,6 +1004,7 @@ export default function AccountPageContent() {
       {/* Embedded Minimalist Footer */}
       <footer className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 text-center text-xs text-zinc-500">
         <p>© {new Date().getFullYear()} Bren-nholz — Espace sécurisé. Tous droits réservés.</p>
+        <nav aria-label="Informations juridiques" className="mt-3 flex flex-wrap justify-center gap-4"><Link href="/datenschutz" className="text-zinc-300 underline">Confidentialité</Link><Link href="/retractation#retractation" className="rounded-lg border border-orange-400/50 px-3 py-2 font-bold text-orange-300">Me rétracter du contrat</Link></nav>
       </footer>
     </div>
   );
