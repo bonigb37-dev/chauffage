@@ -185,17 +185,17 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* LEFT: Logo Bren-holz */}
+          {/* LEFT: Logo Bren-nholz */}
           <Link
             href="/"
-            aria-label="Bren-holz, accueil"
+            aria-label="Bren-nholz, accueil"
             className="flex items-center gap-2.5 font-black text-xl tracking-tight text-[#172033] shrink-0 group"
           >
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#FF6B00] text-white shadow-md shadow-orange-500/25 group-hover:bg-[#E85D00] transition-colors">
               <Flame size={22} strokeWidth={2.2} fill="currentColor" />
             </span>
             <span className="font-extrabold text-xl tracking-tight text-[#172033]">
-              Bren<span className="text-[#FF6B00]">-</span>holz
+              Bren<span className="text-[#FF6B00]">-</span>nholz
             </span>
           </Link>
 
@@ -432,7 +432,7 @@ export default function Navbar() {
 
                 <div className="relative z-10">
                   <span className="inline-block px-2.5 py-1 rounded-md bg-[#FF6B00] text-[11px] font-bold uppercase tracking-wider text-white mb-2">
-                    Bren-holz Qualité
+                    Bren-nholz Qualité
                   </span>
                   <p className="text-lg font-bold leading-snug text-white drop-shadow-sm">
                     Du bois de qualité pour un chauffage naturel et durable.
@@ -740,14 +740,14 @@ export default function Navbar() {
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                aria-label="Bren-holz, accueil"
+                aria-label="Bren-nholz, accueil"
                 className="flex items-center gap-2.5 font-black text-xl tracking-tight text-white"
               >
                 <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#FF6B00] text-white shadow-md">
                   <Flame size={20} strokeWidth={2.2} fill="currentColor" />
                 </span>
                 <span className="font-extrabold text-xl tracking-tight text-white">
-                  Bren<span className="text-[#FF6B00]">-</span>holz
+                  Bren<span className="text-[#FF6B00]">-</span>nholz
                 </span>
               </Link>
 

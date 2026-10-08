@@ -1,3 +1,4 @@
+import { storeConfig } from '@/lib/store-config';
 export const faqItems = [
   {
     question: 'Quels sont les moyens et conditions de paiement ?',
@@ -37,7 +38,7 @@ export const faqItems = [
   },
   {
     question: 'Est-il possible de retirer sa commande directement à l’entrepôt ?',
-    answer: 'Oui, le retrait sur place est possible à notre entrepôt de Merzig (3, Brauerstraße, Sarre) du lundi au vendredi ainsi que le samedi matin. Une confirmation préalable est nécessaire afin de préparer vos palettes au chargement.',
+    answer: `Le retrait sur place s’organise sur confirmation préalable auprès de notre entrepôt : ${storeConfig.warehouseAddress}. Contactez-nous pour convenir du rendez-vous et préparer le chargement.`,
   },
   {
     question: 'Comment stocker et conserver vos combustibles bois ?',

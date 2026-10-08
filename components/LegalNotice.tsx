@@ -10,10 +10,15 @@ export default function LegalNotice() {
           <div className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-6">
             <h3 className="text-lg font-bold text-gray-950">Bren-nholz</h3>
             <dl className="mt-4 space-y-4 text-sm leading-6 text-gray-700">
-              <div><dt className="font-semibold text-gray-950">Adresse</dt><dd><address className="not-italic">{storeConfig.address}</address></dd></div>
+              <div><dt className="font-semibold text-gray-950">Raison sociale</dt><dd>{storeConfig.legalName} — enseigne {storeConfig.name}</dd></div>
+              <div><dt className="font-semibold text-gray-950">Forme juridique</dt><dd>{storeConfig.legalForm}</dd></div>
+              <div><dt className="font-semibold text-gray-950">Numéro d’enregistrement KvK (Pays-Bas)</dt><dd>{storeConfig.registrationNumber}</dd></div>
+              <div><dt className="font-semibold text-gray-950">Représentants légaux</dt><dd>{storeConfig.legalRepresentatives}</dd></div>
+              <div><dt className="font-semibold text-gray-950">Siège social</dt><dd><address className="not-italic">{storeConfig.address}</address></dd></div>
+              <div><dt className="font-semibold text-gray-950">Entrepôt et logistique en Allemagne</dt><dd><address className="not-italic">{storeConfig.warehouseAddress}</address></dd></div>
               <div><dt className="font-semibold text-gray-950">Contact</dt><dd><a href={`mailto:${storeConfig.email}`} className="break-all text-orange-700 underline underline-offset-4">{storeConfig.email}</a></dd></div>
               <div><dt className="font-semibold text-gray-950">Téléphone</dt><dd><a href={`tel:${storeConfig.phoneHref}`} className="text-orange-700 underline underline-offset-4">{storeConfig.phone}</a></dd></div>
-              <div><dt className="font-semibold text-gray-950">Numéro de TVA intracommunautaire</dt><dd>{storeConfig.vatNumber}</dd></div>
+              <div><dt className="font-semibold text-gray-950">Numéro de TVA intracommunautaire allemand (USt-IdNr.)</dt><dd>{storeConfig.vatNumber}</dd></div>
               <div><dt className="font-semibold text-gray-950">Activités</dt><dd>Vente de bois de chauffage, de granulés de bois et de machines agricoles.</dd></div>
             </dl>
           </div>

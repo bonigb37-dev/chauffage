@@ -22,8 +22,8 @@ export default function Footer() {
             <div className="flex items-start gap-3">
               <MapPin size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
               <div className="min-w-0">
-                <p className="font-semibold text-white">Adresse</p>
-                <address className="mt-1 not-italic leading-6">{storeConfig.address}</address>
+                <p className="font-semibold text-white">Entrepôt en Allemagne</p>
+                <address className="mt-1 not-italic leading-6">{storeConfig.warehouseAddress}</address>
               </div>
             </div>
             <div className="flex items-start gap-3">

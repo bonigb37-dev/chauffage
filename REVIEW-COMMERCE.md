@@ -26,8 +26,8 @@ Les avis, notes, dates, compteurs et éléments visuels associés ont été pré
 
 ## Informations et configuration à compléter
 
-1. Adresse de retour confirmée par le propriétaire : Brauerstraße 3, 66663 Merzig, Allemagne. Les frais de retour sont pris en charge par Bren-nholz, y compris pour les palettes. Ce point est renseigné dans la politique de retours et les CGV.
-2. Identité juridique complète de l’exploitant ; vérifier la titularité du numéro de TVA déjà présent. Le nom commercial a été conservé sans inventer une société.
+1. Adresse de retour confirmée par le propriétaire : Marie-Curie-Straße 3, 48599 Gronau, Allemagne. Les frais de retour sont pris en charge par Bren-nholz, y compris pour les palettes. Ce point est renseigné dans la politique de retours et les CGV.
+2. Identité fournie par le propriétaire : Leylines, société de droit néerlandais, KvK 34250234, représentée par Joey van Wettum et Thijs Vorstman. Siège : Franciscusweg 16, 1216SK Hilversum, Pays-Bas. Entrepôt : Marie-Curie-Straße 3, 48599 Gronau, Allemagne. TVA allemande : DE300812888. Enseigne : Bren-nholz, harmonisée dans les logos. Ces informations sont reprises telles que fournies, sans vérification indépendante du registre.
 3. Configurer `RESEND_API_KEY` et `WITHDRAWAL_FROM_EMAIL` (expéditeur réellement vérifié) dans Vercel, puis redéployer. Tant que ces paramètres manquent, la déclaration est enregistrée et la confirmation peut être téléchargée, mais l’accusé automatique par e-mail ne fonctionne pas. Cette limite doit être levée pour achever le dispositif de rétractation en ligne.
 4. Formaliser le calendrier de conservation/suppression, les régions d’hébergement, les contrats de sous-traitance et les garanties des éventuels transferts de données. Aucun délai arbitraire ni purge automatique n’a été inventé.
 5. Confirmer les coordonnées professionnelles et le domaine lorsqu’ils seront disponibles. Version française conservée. La clé Geoapify reste nécessaire pour les suggestions d’adresse.
