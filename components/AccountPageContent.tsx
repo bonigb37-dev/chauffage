@@ -414,39 +414,48 @@ export default function AccountPageContent() {
     const supabaseClient = supabase;
 
     let mounted = true;
+    let loadedUserId: string | null | undefined;
+    let loadTimer: ReturnType<typeof setTimeout> | undefined;
     const loadOwnData = async (userId: string) => {
-      const { data: orderData, error: orderError } = await supabaseClient.from('order_requests')
+      const [orderResult, addressResult] = await Promise.all([
+        supabaseClient.from('order_requests')
         .select('id, reference, created_at, total_cents, status, payment_status, items')
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
-        .limit(50);
+        .limit(50),
+        supabaseClient.from('customer_addresses')
+          .select('id,label,recipient_name,street,postal_code,city,country_code')
+          .eq('user_id', userId)
+          .order('is_default', { ascending: false })
+          .order('created_at', { ascending: false })
+          .limit(20),
+      ]);
       if (!mounted) return;
+      const { data: orderData, error: orderError } = orderResult;
       if (orderError) setOrdersError('L’historique sera disponible après activation de la migration commerce Supabase.');
       else {
         setOrders((orderData ?? []) as OwnOrder[]);
         setOrdersError('');
       }
 
-      const { data: addressData, error: addressQueryError } = await supabaseClient.from('customer_addresses')
-        .select('id,label,recipient_name,street,postal_code,city,country_code')
-        .eq('user_id', userId)
-        .order('is_default', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(20);
-      if (!mounted) return;
+      const { data: addressData, error: addressQueryError } = addressResult;
       if (!addressQueryError) setAddresses((addressData ?? []) as OwnAddress[]);
     };
-    supabaseClient.auth.getSession().then(({ data }) => {
-      if (mounted) {
-        setUser(data.session?.user ?? null);
-        setReady(true);
-        if (data.session?.user) void loadOwnData(data.session.user.id);
-      }
-    });
     const { data: listener } = supabaseClient.auth.onAuthStateChange((_event, session) => {
-      if (mounted) setUser(session?.user ?? null);
-      if (session?.user) void loadOwnData(session.user.id);
-      else {
+      if (!mounted) return;
+      setUser(session?.user ?? null);
+      setReady(true);
+      const nextUserId = session?.user.id ?? null;
+      if (loadedUserId === nextUserId) return;
+      loadedUserId = nextUserId;
+      clearTimeout(loadTimer);
+      if (nextUserId) {
+        loadTimer = setTimeout(() => {
+          if (mounted) void loadOwnData(nextUserId).catch(() => {
+            if (mounted) setOrdersError('Impossible de charger les données du compte. Veuillez réessayer.');
+          });
+        }, 0);
+      } else {
         setOrders([]);
         setAddresses([]);
       }
@@ -454,6 +463,7 @@ export default function AccountPageContent() {
 
     return () => {
       mounted = false;
+      clearTimeout(loadTimer);
       listener.subscription.unsubscribe();
     };
   }, []);

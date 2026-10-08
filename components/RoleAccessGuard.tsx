@@ -15,6 +15,7 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   const [access, setAccess] = useState<{ userId: string; role: Role } | null>(null);
   const [error, setError] = useState('');
   const [retry, setRetry] = useState(0);
+  const userId = user?.id;
 
   useEffect(() => {
     if (!supabase) { setSessionReady(true); return; }
@@ -35,18 +36,18 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!supabase || !sessionReady || !user) return;
+    if (!supabase || !sessionReady || !userId) return;
     let active = true;
     setAccess(null);
     setError('');
-    void supabase.from('admin_roles').select('role').eq('user_id', user.id).maybeSingle()
+    void supabase.from('admin_roles').select('role').eq('user_id', userId).maybeSingle()
       .then(({ data, error: roleError }) => {
         if (!active) return;
         if (roleError) setError('Impossible de vérifier votre rôle. Veuillez réessayer.');
-        else setAccess({ userId: user.id, role: data?.role === 'admin' || data?.role === 'super_admin' ? data.role : null });
+        else setAccess({ userId, role: data?.role === 'admin' || data?.role === 'super_admin' ? data.role : null });
       });
     return () => { active = false; };
-  }, [sessionReady, user, pathname, retry]);
+  }, [sessionReady, userId, retry]);
 
   const verified = sessionReady && (!user || access?.userId === user.id);
   const role = user && access?.userId === user.id ? access.role : null;

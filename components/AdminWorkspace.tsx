@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { FormEvent, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -110,15 +110,29 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   useEffect(() => {
     if (!supabase) { setError('Supabase n’est pas configuré sur cette version du site.'); setLoading(false); return; }
     let active = true;
-    const refresh = async (currentUser: User | null) => {
+    let loadedUserId: string | null | undefined;
+    let refreshTimer: ReturnType<typeof setTimeout> | undefined;
+    const refresh = (currentUser: User | null) => {
       if (!active) return;
       setUser(currentUser);
-      if (currentUser) await loadData(currentUser);
-      else { setRole(null); setLoading(false); }
+      const nextUserId = currentUser?.id ?? null;
+      if (loadedUserId === nextUserId) return;
+      loadedUserId = nextUserId;
+      clearTimeout(refreshTimer);
+      setRole(null);
+      if (currentUser) {
+        setLoading(true);
+        // Start database queries after the auth callback has released its lock.
+        refreshTimer = setTimeout(() => {
+          if (active) void loadData(currentUser).catch(() => {
+            if (active) { setError('Impossible de charger votre espace. Veuillez réessayer.'); setLoading(false); }
+          });
+        }, 0);
+      } else { setLoading(false); }
     };
-    supabase.auth.getSession().then(({ data }) => refresh(data.session?.user ?? null));
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => { void refresh(session?.user ?? null); });
-    return () => { active = false; listener.subscription.unsubscribe(); };
+    // INITIAL_SESSION supplies the initial user; avoid a second getSession load.
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => { refresh(session?.user ?? null); });
+    return () => { active = false; clearTimeout(refreshTimer); listener.subscription.unsubscribe(); };
   }, [loadData]);
 
   async function updateStatus(table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) {
@@ -326,20 +340,28 @@ function SuperAdminPanel({ roles, userId, currentRole, newRole, setNewRole, targ
   onSubmit: (event: FormEvent<HTMLFormElement>) => void; onRemove: (userId: string) => void; saving: boolean; workingId: string;
 }) {
   const visibleRoles = roles.filter((entry) => currentRole === 'owner' || entry.role !== 'owner');
+  const roleGroups: { role: Role; title: string }[] = [
+    ...(currentRole === 'owner' ? [{ role: 'owner' as const, title: 'Propriétaires' }] : []),
+    { role: 'super_admin', title: 'Super administrateurs' },
+    { role: 'admin', title: 'Administrateurs' },
+  ];
   return <>
     <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
       <h2 className="text-2xl font-black">Attribuer un rôle</h2>
-      <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-600">Saisissez l’adresse e-mail d’un utilisateur ayant déjà créé son compte sur le site.</p>
+      <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-600">Saisissez l’adresse e-mail d’un utilisateur ayant déjà créé son compte sur le site. Pour des accès indépendants, utilisez un compte et une adresse e-mail différents pour chaque administrateur.</p>
       <form onSubmit={onSubmit} className="mt-5 grid gap-4 sm:grid-cols-[1fr_190px_auto]">
         <label className="text-sm font-semibold text-gray-700">Adresse e-mail utilisateur<input required type="email" value={targetUserId} onChange={(event) => setTargetUserId(event.target.value)} placeholder="utilisateur@exemple.com" className="mt-2 w-full rounded-lg border border-stone-300 px-4 py-3 text-sm" /></label>
         <label className="text-sm font-semibold text-gray-700">Rôle<select value={newRole} onChange={(event) => setNewRole(event.target.value as Role)} className="mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3"><option value="admin">Administrateur</option><option value="super_admin">Super administrateur</option>{currentRole === 'owner' && <option value="owner">Owner</option>}</select></label>
         <button type="submit" disabled={saving} className="self-end rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-60">{saving ? 'Enregistrement...' : 'Enregistrer'}</button>
       </form>
     </section>
-    <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
-      <h2 className="text-2xl font-black">Rôles attribués</h2>
-      {visibleRoles.length === 0 ? <p className="mt-4 text-gray-500">Aucun rôle attribué. Le premier super administrateur doit être créé dans le SQL Editor.</p> : <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead><tr className="border-b text-gray-500"><th className="pb-3 pr-4">UUID utilisateur</th><th className="pb-3 pr-4">Rôle</th><th className="pb-3 pr-4">Ajouté le</th><th className="pb-3 text-right">Action</th></tr></thead><tbody>{visibleRoles.map((entry) => <tr key={entry.user_id} className="border-b last:border-0"><td className="py-4 pr-4 font-mono text-xs">{entry.user_id}</td><td className="py-4 pr-4 font-bold">{entry.role === 'owner' ? 'Owner' : entry.role === 'super_admin' ? 'Super admin' : 'Admin'}</td><td className="py-4 pr-4 text-gray-500">{date(entry.created_at)}</td><td className="py-4 text-right"><button type="button" disabled={entry.user_id === userId || workingId === entry.user_id} onClick={() => void onRemove(entry.user_id)} title={entry.user_id === userId ? 'Vous ne pouvez pas retirer votre propre accès ici.' : 'Retirer les droits'} className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 font-semibold text-red-700 disabled:cursor-not-allowed disabled:opacity-40"><Trash2 size={15}/> Retirer</button></td></tr>)}</tbody></table></div>}
-    </section>
+    {roleGroups.map((group) => {
+      const entries = visibleRoles.filter((entry) => entry.role === group.role);
+      return <section key={group.role} className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
+      <h2 className="text-2xl font-black">{group.title}</h2>
+      {entries.length === 0 ? <p className="mt-4 text-gray-500">Aucun compte dans cette catégorie.</p> : <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead><tr className="border-b text-gray-500"><th className="pb-3 pr-4">UUID utilisateur</th><th className="pb-3 pr-4">Rôle</th><th className="pb-3 pr-4">Ajouté le</th><th className="pb-3 text-right">Action</th></tr></thead><tbody>{entries.map((entry) => <tr key={entry.user_id} className="border-b last:border-0"><td className="py-4 pr-4 font-mono text-xs">{entry.user_id}</td><td className="py-4 pr-4 font-bold">{entry.role === 'owner' ? 'Owner' : entry.role === 'super_admin' ? 'Super admin' : 'Admin'}</td><td className="py-4 pr-4 text-gray-500">{date(entry.created_at)}</td><td className="py-4 text-right"><button type="button" disabled={entry.user_id === userId || workingId === entry.user_id} onClick={() => void onRemove(entry.user_id)} title={entry.user_id === userId ? 'Vous ne pouvez pas retirer votre propre accès ici.' : 'Retirer les droits'} className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 font-semibold text-red-700 disabled:cursor-not-allowed disabled:opacity-40"><Trash2 size={15}/> Retirer</button></td></tr>)}</tbody></table></div>}
+    </section>;
+    })}
   </>;
 }
 
