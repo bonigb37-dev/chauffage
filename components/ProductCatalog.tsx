@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -31,7 +31,7 @@ export default function ProductCatalog() {
     const matchesCategory = category === 'Tous les produits' || product.type === category || (category === 'Granulés' && product.type.startsWith('Granulés'));
     const terms = `${product.name} ${product.type} ${product.quantity} ${product.description}`.toLocaleLowerCase('fr');
     return matchesCategory && terms.includes(query.trim().toLocaleLowerCase('fr'));
-  }), [category, query]);
+  }), [products, category, query]);
   const groupedProducts = useMemo(() => {
     const grouped = new Map<string, typeof visibleProducts>();
     for (const product of visibleProducts) {

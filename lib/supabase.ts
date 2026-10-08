@@ -1,8 +1,35 @@
-import { createClient } from '@supabase/supabase-js';
+﻿import { createClient } from '@supabase/supabase-js';
 
 const configuredSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
 // Only expose Supabase's low-privilege publishable key to browser code.
-const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim();
+
+// Some browsers deny access to localStorage. Keep authentication usable in
+// those browsers without making client initialization fail.
+const sessionMemory = new Map<string, string>();
+const authStorage = {
+  getItem(key: string): string | null {
+    if (typeof window === 'undefined') return null;
+    try {
+      if (typeof window !== 'undefined') return window.localStorage.getItem(key) ?? sessionMemory.get(key) ?? null;
+    } catch { /* Use memory when browser storage is unavailable. */ }
+    return sessionMemory.get(key) ?? null;
+  },
+  setItem(key: string, value: string): void {
+    if (typeof window === 'undefined') return;
+    sessionMemory.set(key, value);
+    try {
+      if (typeof window !== 'undefined') window.localStorage.setItem(key, value);
+    } catch { /* The session remains available in memory. */ }
+  },
+  removeItem(key: string): void {
+    if (typeof window === 'undefined') return;
+    sessionMemory.delete(key);
+    try {
+      if (typeof window !== 'undefined') window.localStorage.removeItem(key);
+    } catch { /* Browser storage is unavailable. */ }
+  },
+};
 
 function normalizeSupabaseUrl(value: string | undefined): string | null {
   if (!value) return null;
@@ -23,6 +50,7 @@ function makeSupabaseClient() {
   try {
     return createClient(supabaseUrl, supabasePublishableKey, {
       auth: {
+        storage: authStorage,
         autoRefreshToken: true,
         persistSession: true,
         detectSessionInUrl: true,

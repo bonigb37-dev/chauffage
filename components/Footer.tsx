@@ -1,7 +1,12 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Flame } from 'lucide-react';
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname === '/compte') return null;
   return (
     <footer className="bg-[#2b2b2b] text-white border-t border-white/10">
       <div className="container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">

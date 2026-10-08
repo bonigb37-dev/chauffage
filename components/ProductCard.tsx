@@ -1,14 +1,12 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
-import { ArrowLeft, ArrowRight, Boxes, Check, Expand, Heart, ShoppingCart, Star, X, ZoomIn, ZoomOut } from 'lucide-react';
-import type { Product } from '@/lib/products';
+import { ArrowLeft, ArrowRight, Boxes, Check, Expand, Heart, ShoppingCart, X, ZoomIn, ZoomOut } from 'lucide-react';
+import { productPathSegment, type Product } from '@/lib/products';
 import { useCart } from '@/components/CartProvider';
-import { getDemoReviews } from '@/lib/demo-reviews';
 
 const formatPrice = (amount: number) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount / 100);
 
@@ -20,12 +18,9 @@ export default function ProductCard({ p }: { p: Product }) {
   const [favorite, setFavorite] = useState(false);
   const [quantityToAdd, setQuantityToAdd] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
-  const router = useRouter();
   const gallery = p.gallery?.length ? p.gallery : [p.image];
   const activeImage = gallery[imageIndex] ?? p.image;
   const { addItem, items } = useCart();
-  const demoReviews = getDemoReviews(p);
-  const demoRating = demoReviews.reduce((sum, review) => sum + review.rating, 0) / demoReviews.length;
   const cartQuantity = items.find((item) => item.productId === p.id)?.quantity ?? 0;
   const reachedStock = p.stock !== undefined && cartQuantity >= p.stock;
 
@@ -106,16 +101,10 @@ export default function ProductCard({ p }: { p: Product }) {
           <span className="truncate">{p.type}</span>
           <span className="shrink-0 text-right font-medium text-gray-400">{p.quantity}</span>
         </div>
-        <h3 className="mt-1 line-clamp-2 min-h-[2.5rem] text-sm font-extrabold leading-snug text-gray-950 sm:text-[15px] flex items-center">{p.name}</h3>
-        <div className="mt-1 flex items-center justify-between min-h-[1.25rem]">
-          <span className="inline-flex items-center gap-1 text-xs text-amber-800">
-            <span className="flex items-center gap-0.5 text-amber-500" aria-hidden="true">{Array.from({ length: 5 }, (_, index) => <Star key={index} size={11} fill={index < Math.floor(demoRating) ? 'currentColor' : 'none'} />)}</span>
-            <span className="text-[11px] font-semibold">{demoRating.toLocaleString('fr-FR', { maximumFractionDigits: 1 })}</span>
-          </span>
-          <div className={`flex items-center gap-1 text-[11px] font-semibold ${p.stock === 0 ? 'text-red-700' : 'text-emerald-700'}`}>
-            <Check size={13} strokeWidth={2.7} />
-            <span>{p.stock === 0 ? 'Rupture' : p.stock !== undefined ? `${p.stock} prod.` : 'En stock'}</span>
-          </div>
+        <h3 className="mt-1 line-clamp-2 min-h-[2.5rem] text-sm font-extrabold leading-snug text-gray-950 sm:text-[15px] flex items-center"><Link href={`/produits/${productPathSegment(p)}`} className="hover:text-orange-700">{p.name}</Link></h3>
+        <div className={`mt-1 flex min-h-[1.25rem] items-center gap-1 text-[11px] font-semibold ${p.stock === 0 ? 'text-red-700' : p.stock !== undefined ? 'text-emerald-700' : 'text-gray-500'}`}>
+          {p.stock !== undefined && <Check size={13} strokeWidth={2.7} />}
+          <span>{p.stock === 0 ? 'Rupture' : p.stock !== undefined ? `${p.stock} en stock` : 'Disponibilité à confirmer'}</span>
         </div>
         <p className="mt-1 line-clamp-2 min-h-[2.25rem] text-xs leading-snug text-gray-500">{p.description}</p>
 
@@ -207,15 +196,6 @@ export default function ProductCard({ p }: { p: Product }) {
         </div>
       </div>
 
-      <details className="border-t border-amber-100/80 bg-amber-50/40 px-3 py-2 text-xs">
-        <summary className="cursor-pointer font-bold text-amber-900">{demoReviews.length} avis clients</summary>
-        <ul className="mt-2 max-h-48 space-y-2 overflow-y-auto pr-1">
-          {demoReviews.map((review) => <li key={review.id} className="rounded-lg border border-amber-100 bg-white p-2 text-xs">
-            <div className="flex items-center justify-between gap-2"><span className="text-[11px] font-bold text-gray-700">{review.label}</span><span className="flex items-center gap-0.5 text-amber-500" aria-label={`${review.rating} étoiles sur 5`}>{Array.from({ length: 5 }, (_, index) => <Star key={index} size={10} fill={index < review.rating ? 'currentColor' : 'none'} />)}</span></div>
-            <p className="mt-1 text-[11px] leading-4 text-gray-600">{review.text}</p>
-          </li>)}
-        </ul>
-      </details>
     </article>
   );
 }
