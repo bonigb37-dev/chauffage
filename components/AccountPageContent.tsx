@@ -1,6 +1,7 @@
 'use client';
 
 import { orderStatusLabels, paymentStatusLabel } from '@/lib/order-status';
+import { getAdminRole } from '@/lib/admin-access';
 import { FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -450,6 +451,9 @@ export default function AccountPageContent() {
     let loadedUserId: string | null | undefined;
     let loadTimer: ReturnType<typeof setTimeout> | undefined;
     const loadOwnData = async (userId: string) => {
+      // Administrators are redirected to their workspace; do not fetch customer history first.
+      if (await getAdminRole(supabaseClient, userId)) return;
+      if (!mounted) return;
       const [orderResult, addressResult] = await Promise.all([
         supabaseClient.from('order_requests')
         .select('id, reference, created_at, total_cents, status, payment_status, items')
@@ -610,20 +614,15 @@ export default function AccountPageContent() {
           setError('Votre adresse e-mail n’est pas encore confirmée. Ouvrez le lien reçu par e-mail ou demandez un nouveau lien.');
           return;
         }
-        const { data: roleData, error: roleError } = await supabase
-          .from('admin_roles')
-          .select('role')
-          .eq('user_id', data.user.id)
-          .maybeSingle();
-        if (roleError) {
+        let accountRole;
+        try { accountRole = await getAdminRole(supabase, data.user.id); } catch {
           setError('Vous êtes connecté, mais votre rôle n’a pas pu être vérifié. Réessayez de vous connecter pour accéder à votre tableau de bord.');
           return;
         }
-        const destination = roleData?.role === 'owner' || roleData?.role === 'super_admin'
+        const destination = accountRole === 'owner' || accountRole === 'super_admin'
           ? '/super-admin'
-          : roleData?.role === 'admin' ? '/admin' : '/compte';
+          : accountRole === 'admin' ? '/admin' : '/compte';
         router.replace(destination);
-        router.refresh();
       } else if (mode === 'forgot') {
         const { error: authError } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/compte?mode=recovery`,

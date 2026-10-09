@@ -10,6 +10,7 @@ import RoleAccessGuard from '@/components/RoleAccessGuard';
 import { ActionLoadingProvider } from '@/components/ActionLoadingProvider';
 import { getServerCatalog } from '@/lib/server-catalog';
 import { siteUrl } from '@/lib/seo';
+import { headers } from 'next/headers';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,7 +26,9 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const initialCatalog = await getServerCatalog();
+  const pathname = (await headers()).get('x-bren-pathname') ?? '';
+  const privateEntry = /^\/(admin|super-admin)(\/|$)/.test(pathname) || pathname === '/compte';
+  const initialCatalog = privateEntry ? undefined : await getServerCatalog();
   return (
     <html lang="fr">
       <body>

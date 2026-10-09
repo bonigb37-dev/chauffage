@@ -7,7 +7,7 @@ async function run() {
     assert.equal(fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n'), execFileSync('git', ['show', `08d9aee:${file}`], { encoding: 'utf8' }).replace(/\r\n/g, '\n'), `Avis modifiés : ${file}`);
   }
   const guard = fs.readFileSync('components/RoleAccessGuard.tsx', 'utf8');
-  assert(guard.includes('if (!requiresSessionCheck && authLinkReady && !destination) return children;'));
+  assert(guard.includes('if (!requiresSessionCheck && authLinkReady && !destination) return content;'));
   assert(guard.includes('isAdminPage || isSuperAdminPage'));
   if (!base) { console.log('OK : avis préservés, rendu public et protection des pages privées.'); return; }
   async function page(path, status = 200, redirect = 'follow') {

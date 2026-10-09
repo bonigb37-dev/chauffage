@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { LoaderCircle, RefreshCw, Trash2 } from 'lucide-react';
@@ -10,6 +10,8 @@ import { useCart } from '@/components/CartProvider';
 import type { Product } from '@/lib/products';
 import AdminPaymentProof from '@/components/AdminPaymentProof';
 import { orderStatusLabels, paymentStatusLabel } from '@/lib/order-status';
+import { getAdminRole, type AdminRole } from '@/lib/admin-access';
+import { useVerifiedAccess } from '@/components/AccessContext';
 
 type Role = 'admin' | 'super_admin' | 'owner';
 type RequestStatus = 'new' | 'in_progress' | 'done';
@@ -36,11 +38,15 @@ function StatusSelect({ value, onChange, disabled, order = false }: { value: Req
 
 export default function AdminWorkspace({ superAdminOnly = false }: { superAdminOnly?: boolean }) {
   const router = useRouter();
+  const access = useVerifiedAccess();
+  const loadGeneration = useRef(0);
+  const loadedAccess = useRef('');
   const [signingOut, setSigningOut] = useState(false);
   const siteData = useCart();
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState(true);
+  const [detailsLoading, setDetailsLoading] = useState(true);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [contacts, setContacts] = useState<ContactRow[]>([]);
@@ -61,80 +67,84 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     if (!editingProduct && !productForm.name) setProductForm(emptyProduct(siteData.products));
   }, [siteData.products, editingProduct, productForm.name]);
 
-  const loadData = useCallback(async (activeUser: User | null) => {
+  const loadData = useCallback(async (activeUser: User | null, verifiedRole?: AdminRole | null) => {
+    const generation = ++loadGeneration.current;
     if (!supabase) { setError('Supabase n’est pas configuré sur cette version du site.'); setLoading(false); return; }
     const currentUser = activeUser;
     if (!currentUser) { setLoading(false); return; }
     setError('');
-    const roleResult = await supabase.from('admin_roles').select('role').eq('user_id', currentUser.id).maybeSingle();
-    if (roleResult.error) {
+    setDetailsLoading(true);
+    let currentRole;
+    try { currentRole = verifiedRole === undefined ? await getAdminRole(supabase, currentUser.id) : verifiedRole; } catch {
       setError('Impossible de vérifier votre rôle. Exécutez supabase-admin.sql dans le SQL Editor Supabase.');
       setLoading(false);
       return;
     }
-    const currentRole = roleResult.data?.role as Role | undefined;
+    if (generation !== loadGeneration.current) return;
     setRole(currentRole ?? null);
     if (!currentRole || (superAdminOnly && currentRole !== 'super_admin' && currentRole !== 'owner')) { setLoading(false); return; }
 
     if (superAdminOnly) {
-      const [roleList, activityList, accountList, auditList] = await Promise.all([
-        supabase.from('admin_roles').select('user_id, role, created_at').order('created_at', { ascending: true }),
+      const secondary = Promise.all([
         supabase.from('user_activity').select('user_id, email, first_seen_at, last_seen_at, sign_in_count').order('last_seen_at', { ascending: false }).limit(200),
         supabase.from('client_accounts').select('user_id, email, full_name, created_at').order('created_at', { ascending: false }).limit(200),
         supabase.from('admin_audit_log').select('id, actor_user_id, actor_role, action, entity, entity_id, details, created_at').order('created_at', { ascending: false }).limit(200),
       ]);
+      void secondary.catch(() => { /* Handled when awaited after the primary list. */ });
+      const roleList = await supabase.from('admin_roles').select('user_id, role, created_at').order('created_at', { ascending: true });
+      if (generation !== loadGeneration.current) return;
       if (roleList.error) setError('Impossible de charger la liste des rôles.');
       else setRoles((roleList.data ?? []) as RoleRow[]);
+      setLoading(false);
+      const [activityList, accountList, auditList] = await secondary;
+      if (generation !== loadGeneration.current) return;
       if (!activityList.error) setActivities((activityList.data ?? []) as ActivityRow[]);
       if (!accountList.error) setAccounts((accountList.data ?? []) as ClientAccountRow[]);
       if (!auditList.error) setAudit((auditList.data ?? []) as AuditRow[]);
     } else {
-      const [contactResult, orderResult, activityList, accountList, settingsResult] = await Promise.all([
-        supabase.from('contact_requests').select('id, created_at, name, email, phone, postal_code, subject, message, status').order('created_at', { ascending: false }).limit(100),
-        supabase.from('order_requests').select('id, created_at, reference, customer, shipping, items, total_cents, status, payment_status').order('created_at', { ascending: false }).limit(100),
+      const secondary = Promise.all([
         supabase.from('user_activity').select('user_id, email, first_seen_at, last_seen_at, sign_in_count').order('last_seen_at', { ascending: false }).limit(200),
         supabase.from('client_accounts').select('user_id, email, full_name, created_at').order('created_at', { ascending: false }).limit(200),
         supabase.from('site_settings').select('value').eq('key', 'bank_transfer').maybeSingle(),
       ]);
+      void secondary.catch(() => { /* Handled when awaited after the primary lists. */ });
+      const [contactResult, orderResult] = await Promise.all([
+        supabase.from('contact_requests').select('id, created_at, name, email, phone, postal_code, subject, message, status').order('created_at', { ascending: false }).limit(100),
+        supabase.from('order_requests').select('id, created_at, reference, customer, shipping, items, total_cents, status, payment_status').order('created_at', { ascending: false }).limit(100),
+      ]);
+      if (generation !== loadGeneration.current) return;
       if (contactResult.error || orderResult.error) setError('Impossible de charger les demandes. Vérifiez les politiques RLS de supabase-admin.sql.');
       else {
         setContacts((contactResult.data ?? []) as ContactRow[]);
         setOrders((orderResult.data ?? []) as OrderRow[]);
       }
+      setLoading(false);
+      const [activityList, accountList, settingsResult] = await secondary;
+      if (generation !== loadGeneration.current) return;
       if (!activityList.error) setActivities((activityList.data ?? []) as ActivityRow[]);
       if (!accountList.error) setAccounts((accountList.data ?? []) as ClientAccountRow[]);
       if (!settingsResult.error) setBankForm(String((settingsResult.data?.value as { details?: unknown } | null)?.details ?? ''));
     }
+    setDetailsLoading(false);
     setLoading(false);
   }, [superAdminOnly]);
 
   useEffect(() => {
     if (!supabase) { setError('Supabase n’est pas configuré sur cette version du site.'); setLoading(false); return; }
-    let active = true;
-    let loadedUserId: string | null | undefined;
-    let refreshTimer: ReturnType<typeof setTimeout> | undefined;
-    const refresh = (currentUser: User | null) => {
-      if (!active) return;
-      setUser(currentUser);
-      const nextUserId = currentUser?.id ?? null;
-      if (loadedUserId === nextUserId) return;
-      loadedUserId = nextUserId;
-      clearTimeout(refreshTimer);
-      setRole(null);
-      if (currentUser) {
-        setLoading(true);
-        // Start database queries after the auth callback has released its lock.
-        refreshTimer = setTimeout(() => {
-          if (active) void loadData(currentUser).catch(() => {
-            if (active) { setError('Impossible de charger votre espace. Veuillez réessayer.'); setLoading(false); }
-          });
-        }, 0);
-      } else { setLoading(false); }
-    };
-    // INITIAL_SESSION supplies the initial user; avoid a second getSession load.
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => { refresh(session?.user ?? null); });
-    return () => { active = false; clearTimeout(refreshTimer); listener.subscription.unsubscribe(); };
-  }, [loadData]);
+    if (!access.verified) return;
+    setUser(access.user);
+    const key = `${access.user?.id ?? ''}:${access.role ?? ''}:${superAdminOnly}`;
+    if (loadedAccess.current === key) return;
+    loadedAccess.current = key;
+    setRole(null);
+    setLoading(true);
+    const generation = loadGeneration.current + 1;
+    void loadData(access.user, access.role).catch(() => {
+      if (generation === loadGeneration.current) { setError('Impossible de charger votre espace. Veuillez réessayer.'); setLoading(false); }
+    });
+  }, [access.user, access.role, access.verified, superAdminOnly, loadData]);
+
+  useEffect(() => () => { ++loadGeneration.current; loadedAccess.current = ''; }, []);
 
   async function updateStatus(table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) {
     if (!supabase) return;
@@ -300,7 +310,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
           : superAdminOnly && !canSeeSuperAdmin ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Page indisponible</h2><p className="mt-2 text-gray-600">Cette page n’est pas accessible avec ce compte.</p></section>
             : !canSeeWorkspace ? <section className="mt-8 rounded-2xl border border-red-200 bg-white p-8"><h2 className="text-xl font-bold text-red-800">Accès administrateur requis</h2><p className="mt-2 text-gray-600">Ce compte n’a pas de rôle administrateur.</p></section>
               : superAdminOnly ? <><Link href="/admin" className="mt-7 inline-flex rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold">Ouvrir l’espace boutique</Link><SuperAdminPanel roles={roles} userId={user.id} currentRole={role} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /><AuditPanel audit={audit} /></>
-                : <><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} /><ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /></>}
+                : <><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} />{siteData.ready && !detailsLoading ? <ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} /> : <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Chargement des produits et des informations de paiement...</div>}<AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /></>}
 
       {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
       {notice && <p role="status" className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">{notice}</p>}

@@ -5,8 +5,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import type { User } from '@supabase/supabase-js';
 import { isPasswordRecoveryRedirect, supabase } from '@/lib/supabase';
 import { incomingAuthLink, verifyIncomingAuthLink, clearEmailConfirmation } from '@/lib/auth-link';
+import { getAdminRole, type AdminRole } from '@/lib/admin-access';
+import { AccessContext } from '@/components/AccessContext';
 
-type Role = 'admin' | 'super_admin' | null;
+type Role = AdminRole | null;
 
 export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -73,12 +75,11 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
     let active = true;
     setAccess(null);
     setError('');
-    void supabase.from('admin_roles').select('role').eq('user_id', userId).maybeSingle()
-      .then(({ data, error: roleError }) => {
+    void getAdminRole(supabase, userId)
+      .then((role) => {
         if (!active) return;
-        if (roleError) setError('Impossible de vérifier votre rôle. Veuillez réessayer.');
-        else setAccess({ userId, role: data?.role === 'admin' || data?.role === 'super_admin' ? data.role : null });
-      });
+        setAccess({ userId, role });
+      }).catch(() => { if (active) setError('Impossible de vérifier votre rôle. Veuillez réessayer.'); });
     return () => { active = false; };
   }, [sessionReady, userId, retry]);
 
@@ -86,7 +87,7 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   const role = user && access?.userId === user.id ? access.role : null;
   const isAdminPage = pathname === '/admin' || pathname.startsWith('/admin/');
   const isSuperAdminPage = pathname === '/super-admin' || pathname.startsWith('/super-admin/');
-  const destination = authLinkFailure ? null : recoveringPassword ? (pathname === '/compte' ? null : '/compte?mode=recovery') : role === 'super_admin'
+  const destination = authLinkFailure ? null : recoveringPassword ? (pathname === '/compte' ? null : '/compte?mode=recovery') : role === 'super_admin' || role === 'owner'
     ? (isAdminPage || isSuperAdminPage ? null : '/super-admin')
     : role === 'admin' ? (isAdminPage ? null : '/admin') : null;
 
@@ -98,7 +99,8 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   // Account, checkout and administration retain the existing access checks.
   const requiresSessionCheck = isAdminPage || isSuperAdminPage || pathname === '/compte'
     || pathname === '/panier' || pathname === '/commande' || pathname.startsWith('/commande/');
-  if (!requiresSessionCheck && authLinkReady && !destination) return children;
+  const content = <AccessContext.Provider value={{ user, role, verified: verified && !error }}>{children}</AccessContext.Provider>;
+  if (!requiresSessionCheck && authLinkReady && !destination) return content;
 
   if (error) return <main className="min-h-[70vh] p-8 text-center">
     <p role="alert">{error}</p>
@@ -106,5 +108,5 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
     <button type="button" onClick={() => void supabase?.auth.signOut()} className="ml-4 underline">Se déconnecter</button>
   </main>;
   if (!authLinkReady || !verified || destination) return <main className="min-h-[70vh] p-8 text-center" role="status">Vérification de votre accès…</main>;
-  return children;
+  return content;
 }
