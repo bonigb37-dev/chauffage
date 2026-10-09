@@ -21,10 +21,10 @@ type CartContextValue = {
 const CartContext = createContext<CartContextValue | null>(null);
 const storageKey = 'thermopro-cart-v1';
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+export function CartProvider({ children, initialCatalog = initialProducts }: { children: React.ReactNode; initialCatalog?: Product[] }) {
   const [items, setItems] = useState<CartLine[]>([]);
   const [ready, setReady] = useState(false);
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [products, setProducts] = useState<Product[]>(initialCatalog);
   const [bankDetails, setBankDetails] = useState('');
   const [catalogReady, setCatalogReady] = useState(!supabase);
 

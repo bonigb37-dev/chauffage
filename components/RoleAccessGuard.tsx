@@ -94,6 +94,12 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
     if (authLinkReady && verified && destination) router.replace(destination);
   }, [authLinkReady, verified, destination, router]);
 
+  // Public content must be rendered for visitors and crawlers before session checks finish.
+  // Account, checkout and administration retain the existing access checks.
+  const requiresSessionCheck = isAdminPage || isSuperAdminPage || pathname === '/compte'
+    || pathname === '/panier' || pathname === '/commande' || pathname.startsWith('/commande/');
+  if (!requiresSessionCheck && authLinkReady && !destination) return children;
+
   if (error) return <main className="min-h-[70vh] p-8 text-center">
     <p role="alert">{error}</p>
     <button type="button" onClick={() => { setError(''); setRetry((value) => value + 1); }} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white">Réessayer</button>

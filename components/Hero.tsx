@@ -37,12 +37,12 @@ export default function Hero() {
           </Link>
 
           <h1 className="max-w-3xl text-4xl font-black leading-[1.02] tracking-tight min-[390px]:text-5xl sm:text-6xl">
-            Votre chauffage au bois,{' '}
-            <span className="gradient-text">bien approvisionné.</span>
+            Bois de chauffage, granulés et briquettes{' '}
+            <span className="gradient-text">avec livraison en Allemagne.</span>
           </h1>
           <p className="mt-7 max-w-xl text-lg leading-8 text-gray-600">
-            Granulés, briquettes et bois de chauffage pour accompagner votre
-            confort au quotidien.
+            Découvrez nos bûches, granulés de bois et briquettes, en sacs,
+            paquets ou palettes selon les références.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <Link
@@ -68,7 +68,7 @@ export default function Hero() {
             <div>
               <BadgeCheck className="mb-2 text-orange-500" />
               <b>Sélection</b>
-              <p className="mt-1 text-gray-500">Produits adaptés</p>
+              <p className="mt-1 text-gray-500">Combustibles bois</p>
             </div>
             <div>
               <Boxes className="mb-2 text-orange-500" />
@@ -78,7 +78,7 @@ export default function Hero() {
             <div>
               <Truck className="mb-2 text-orange-500" />
               <b>Livraison</b>
-              <p className="mt-1 text-gray-500">Selon votre zone</p>
+              <p className="mt-1 text-gray-500">Incluse en Allemagne</p>
             </div>
           </div>
         </motion.div>

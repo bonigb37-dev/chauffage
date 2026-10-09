@@ -1,3 +1,7 @@
+import { publicMetadata } from '@/lib/seo';
+
+export const metadata = publicMetadata("À propos de Bren-nholz : combustibles bois en Allemagne", "Découvrez Bren-nholz, enseigne de Leylines, son catalogue de combustibles bois et ses informations de contact pour vos achats en Allemagne.", "/a-propos");
+
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -18,7 +22,7 @@ const commitments = [
     number: '01',
     icon: ShieldCheck,
     title: 'Une qualité suivie de près',
-    description: 'Nous visitons régulièrement nos fabricants afin de contrôler la qualité de nos combustibles et d’identifier des alternatives fiables et accessibles.',
+    description: 'Comparez les caractéristiques et les conditionnements indiqués sur les fiches pour choisir votre combustible.',
   },
   {
     number: '02',
@@ -35,9 +39,9 @@ const commitments = [
 ];
 
 const highlights = [
-  { icon: Award, label: 'Combustibles Certifiés', text: 'ENplus A1 & DINplus' },
+  { icon: Award, label: 'Caractéristiques des produits', text: 'Certifications selon référence' },
   { icon: Truck, label: 'Livraison à Domicile', text: 'Partout en Allemagne' },
-  { icon: Users, label: 'Conseils Personnalisés', text: 'Accompagnement expert' },
+  { icon: Users, label: 'Conseils Personnalisés', text: 'Informations avant commande' },
 ];
 
 export default function AboutPage() {
@@ -52,11 +56,11 @@ export default function AboutPage() {
           </div>
 
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight">
-            La qualité et le service, au cœur de notre engagement
+            Bren-nholz : votre boutique de combustibles bois
           </h1>
 
           <p className="mt-6 text-base sm:text-xl text-gray-300 leading-relaxed max-w-3xl">
-            Nous sélectionnons le meilleur du chauffage au bois pour votre confort au quotidien : granulés certifiés, bûches séchées et briquettes haute performance.
+            Découvrez notre catalogue de granulés de bois, bûches, briquettes et produits d’allumage. Consultez les caractéristiques de chaque référence et les conditions de livraison en Allemagne.
           </p>
         </div>
       </section>
@@ -97,7 +101,7 @@ export default function AboutPage() {
                     </div>
                     <div>
                       <h3 className="text-sm sm:text-base font-black text-gray-900">
-                        Satisfaction Client Garantie
+                        À votre écoute
                       </h3>
                       <p className="text-xs text-gray-600 mt-0.5 leading-relaxed">
                         Commande simple en ligne, suivi personnalisé et livraison soignée à domicile.
@@ -125,7 +129,7 @@ export default function AboutPage() {
                 </p>
 
                 <p>
-                  Nous nous rendons régulièrement chez nos fabricants afin de contrôler personnellement la qualité de nos produits et de rechercher des alternatives performantes à des prix accessibles.
+                  Notre catalogue réunit du bois de chauffage, des granulés, des briquettes et des produits d’allumage. Consultez les informations de chaque référence et contactez-nous si vous avez besoin de précisions.
                 </p>
 
                 <p>
@@ -185,7 +189,7 @@ export default function AboutPage() {
             Nos 3 engagements majeurs
           </h2>
           <p className="text-sm text-gray-600 mt-2">
-            Un accompagnement rigoureux pour garantir le meilleur confort de votre foyer.
+            Des informations sur les produits, les conditionnements et les modalités de réception.
           </p>
         </div>
 

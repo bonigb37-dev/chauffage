@@ -85,7 +85,7 @@ export default function Contact() {
         <section className="rounded-3xl border border-stone-200 bg-white p-6 shadow-soft sm:p-9">
           <div className="flex items-start gap-4 border-b border-stone-100 pb-6">
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><ShieldCheck size={21}/></span>
-            <div><h2 className="text-2xl font-black text-gray-950">Formulaire de contact généraux</h2><p className="mt-1 text-sm text-gray-500">Les champs marqués d’un astérisque (*) sont obligatoires.</p></div>
+            <div><h2 className="text-2xl font-black text-gray-950">Formulaire de contact</h2><p className="mt-1 text-sm text-gray-500">Les champs marqués d’un astérisque (*) sont obligatoires.</p></div>
           </div>
 
           <form onSubmit={submit} className="mt-6">

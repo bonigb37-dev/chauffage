@@ -1,10 +1,12 @@
-import type { Metadata } from 'next';
+import { publicMetadata } from '@/lib/seo';
+
+export const metadata = publicMetadata("Rétractation, retours et remboursements — Bren-nholz", "Consultez les modalités de rétractation, de retour et de remboursement, l’adresse de retour et le formulaire de déclaration en ligne.", "/retractation");
+
 import Link from 'next/link';
 import PolicyPage from '@/components/PolicyPage';
 import WithdrawalForm from '@/components/WithdrawalForm';
 import { storeConfig } from '@/lib/store-config';
 
-export const metadata: Metadata = { title: 'Rétractation, retours et remboursements — Bren-nholz' };
 export default function ReturnsPage() {
   return <PolicyPage title="Rétractation, retours et remboursements">
     <section><h2 className="text-xl font-bold">Votre droit de rétractation</h2><p>Si vous achetez en tant que consommateur, vous pouvez vous rétracter sans justification dans les 14 jours suivant la réception des marchandises par vous-même ou un tiers désigné autre que le transporteur. Pour une commande livrée en plusieurs envois, le délai commence à la réception du dernier bien. Les exceptions légales applicables, notamment aux produits confectionnés selon vos spécifications ou nettement personnalisés, doivent être indiquées avant l’achat ; aucune exclusion générale ne vise les combustibles de notre catalogue.</p></section>

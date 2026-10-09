@@ -43,176 +43,56 @@ interface GuideDetail {
 }
 
 const guideDetails: GuideDetail[] = [
-  {
-    id: 'certifications',
-    category: 'qualite',
-    title: 'Certifications ENplus A1 & DINplus',
-    summary: 'Garantie de qualité supérieure, de rendement maximal et de protection de votre poêle.',
-    badge: 'Normes Officielles',
-    icon: Award,
-    content: {
-      subtitle: 'Pourquoi exiger la double certification ENplus A1 et DINplus ?',
-      points: [
-        'Les certifications ENplus A1 et DINplus contrôlent l’ensemble de la chaîne de fabrication, depuis la sélection de la matière première jusqu’à la livraison chez l’utilisateur.',
-        'Elles imposent un taux de cendres inférieur à 0,7 %, garantissant un encrassement très faible du creuset et un entretien réduit de votre appareil.',
-        'Elles garantissent l’absence totale de liants chimiques, d’écorces ou d’additifs synthétiques : le granulé est lié uniquement par la pession naturelle et la lignine du bois.',
-        'Densité supérieure à 600 kg/m³ assurant une combustion lente, régulière et un apport calorifique constant.'
-      ],
-      technicalData: [
-        { label: 'Pouvoir calorifique (PCI)', value: '≥ 4,6 kWh/kg (16,5 MJ/kg)' },
-        { label: 'Taux d’humidité', value: '≤ 10 % (maintient le rendement)' },
-        { label: 'Taux de cendres', value: '≤ 0,7 % (très faible résidu)' },
-        { label: 'Diamètre standard', value: '6 mm (± 1 mm)' },
-        { label: 'Taux de poussière', value: '≤ 0,5 % en sac' }
-      ],
-      tip: 'Un granulé certifié ENplus A1 préserve la garantie constructeur de votre poêle à granulés ou chaudière.'
-    }
-  },
-  {
-    id: 'composition-resineux',
-    category: 'qualite',
-    title: '100 % Bois Résineux Pur',
-    summary: 'Une montée en température plus rapide et un pouvoir calorifique élevé sans encrassement.',
-    badge: '100% Naturel',
-    icon: Sparkles,
-    content: {
-      subtitle: 'Pourquoi privilégier les granulés 100 % résineux ?',
-      points: [
-        'Les résineux (mélèze, épicéa, pin) contiennent de la résine naturelle qui agit comme un liant organique naturel lors de la granulation sous forte pression.',
-        'Contrairement aux feux de bûches où le feuillus est préféré, sous forme de granulés compactés, le résineux offre un pouvoir calorifique supérieur à masse égale.',
-        'La combustion des résineux en granulés certifiés est très propre, dégageant moins d’impuretés et évitant le mâchefer dans le brûleur.',
-        'La couleur claire du granulé est le signe caractéristique d’une sciure de résineux écorcée de première qualité.'
-      ],
-      technicalData: [
-        { label: 'Matière première', value: '100 % sciures de résineux écorcés' },
-        { label: 'Liant synthétique', value: '0 % (aucun additif chimique)' },
-        { label: 'Durabilité mécanique', value: '≥ 98 % (anti-effritement)' }
-      ],
-      tip: 'Assurez-vous que les sciures proviennent de forêts gérées durablement et de scieries certifiées.'
-    }
-  },
-  {
-    id: 'conditionnement-sac',
-    category: 'conditionnement',
-    title: 'Sacs de 15 kg & Palettes étanches',
-    summary: 'Un format ergonomique facile à manipuler, protégé sous housse thermo-rétractable.',
-    badge: 'Logistique',
-    icon: Package,
-    content: {
-      subtitle: 'Des emballages conçus pour préserver la qualité des granulés',
-      points: [
-        'Sacs de 15 kg : le poids idéal pour un versement facile et sans effort dans le réservoir de votre poêle à granulés.',
-        'Sacs en plastique résistant et micro-perforé ou en papier renforcé selon les références, évitant les déchirures.',
-        'Livraison sur palette Europe solide (100 x 120 cm), houssée et cerclée avec un film protecteur résistant aux intempéries.',
-        'Stockage compact : une palette de 975 kg occupe moins de 1,2 m² au sol dans un garage ou une remise.'
-      ],
-      technicalData: [
-        { label: 'Format palette complète', value: '65 sacs de 15 kg = 975 kg' },
-        { label: 'Format grand volume', value: '66 sacs de 15 kg = 990 kg' },
-        { label: 'Format demi-palette', value: '35 sacs de 15 kg = 525 kg' },
-        { label: 'Dimensions palette', value: 'L 120 cm × l 100 cm × H 160 cm' }
-      ],
-      tip: 'Laissez la housse plastique de protection sur la palette jusqu’à l’ouverture des premiers sacs.'
-    }
-  },
-  {
-    id: 'equivalences-fioul',
-    category: 'energie',
-    title: 'Équivalence Énergétique & Économies',
-    summary: '2 kg de granulés de bois remplacent environ 1 litre de fioul domestique.',
-    badge: 'Rendement',
-    icon: Zap,
-    content: {
-      subtitle: 'Combien d’énergie contient une palette de granulés ?',
-      points: [
-        '1 kg de granulés de bois haute qualité restitue environ 4,8 kWh à 5,0 kWh d’énergie thermique.',
-        'Une palette de 975 kg de granulés apporte ainsi environ 4 680 kWh d’énergie, soit l’équivalent de près de 500 litres de fioul domestique.',
-        'Bilan carbone neutre : le CO2 rejeté lors de la combustion correspond à la quantité absorbée par l’arbre pendant sa croissance.',
-        'Prix maîtrisé et indépendant des crises géopolitiques pétrolières.'
-      ],
-      technicalData: [
-        { label: '2 kg de granulés', value: '≈ 1 Litre de fioul' },
-        { label: '1 palette (975 kg)', value: '≈ 4 680 kWh d’énergie' },
-        { label: 'Autonomie poêle', value: '≈ 1 sac (15 kg) pour 1 à 2 jours' },
-        { label: 'Rendement poêle', value: '90 % à 95 % de chaleur utile' }
-      ],
-      tip: 'Calculez vos économies : le granulé coûte généralement 30 % à 50 % moins cher que le fioul ou le chauffage électrique direct.'
-    }
-  },
-  {
-    id: 'conditions-livraison',
-    category: 'livraison',
-    title: 'Livraison par Camion avec Hayon & Transpalette',
-    summary: 'Déchargement au sol directement en bordure de propriété dans toute l’Allemagne.',
-    badge: 'Service Inclus',
-    icon: Truck,
-    content: {
-      subtitle: 'Comment se déroule le déchargement de votre palette ?',
-      points: [
-        'Le camion du transporteur est équipé d’un hayon élévateur hydraulique et d’un transpalette manquant (Hubwagen).',
-        'Le chauffeur descend la palette du camion et peut la déplacer sur votre allée si le sol est plat et dur.',
-        'Sol impérativement ferme et carrossable requis : asphalte, béton ou pavés uni. Le transpalette ne roule ni sur les graviers, ni sur l’herbe, la terre ou les pentes fortes.',
-        'Prise de rendez-vous téléphonique préalable par le transporteur pour convenir du jour de passage.'
-      ],
-      technicalData: [
-        { label: 'Frais de port', value: 'Inclus dans le prix des produits' },
-        { label: 'Largeur minimale d’accès', value: '1,20 mètre' },
-        { label: 'Hauteur minimale d’accès', value: '2,10 mètres' },
-        { label: 'Poids total palette', value: 'Env. 1 000 kg avec emballage' }
-      ],
-      tip: 'Si vous avez une allée en gravier, le déchargement se fera en bordure de propriété sur le trottoir ou l’accès asphalté.'
-    }
-  },
-  {
-    id: 'stockage-conservation',
-    category: 'livraison',
-    title: 'Conseils de Stockage & Durée de Conservation',
-    summary: 'Conservez vos sacs au sec pour préserver 100 % de leur rendement année après année.',
-    badge: 'Pratique',
-    icon: Droplets,
-    content: {
-      subtitle: 'Comment conserver vos granulés sans perte de qualité ?',
-      points: [
-        'Les granulés sont très hygroscopiques (ils absorbent l’humidité de l’air). Ils doivent être conservés dans un endroit sec et couvert.',
-        'Un garage, une cave ventilée, un cellier ou un abri de jardin bien étanche constituent d’excellents lieux de stockage.',
-        'Évitez le contact direct du sac avec un sol humide en laissant la palette ou en disposant des tasseaux en bois au sol.',
-        'Conservation illimitée : tant que les sacs restent fermés et à l’abri de l’eau, le granulé conserve l’intégralité de son pouvoir calorifique.'
-      ],
-      technicalData: [
-        { label: 'Humidité maximale air', value: '< 70 % recommandé' },
-        { label: 'Durée de conservation', value: 'Plusieurs années au sec' },
-        { label: 'Protection pluie', value: 'Impérative (sacs fermés)' }
-      ],
-      tip: 'Attendez que le sac soit à température ambiante avant de le verser dans le poêle s’il était stocké dans un endroit froid.'
-    }
-  }
+  { id: 'certifications', category: 'qualite', title: 'Comprendre ENplus A1 et DINplus', summary: 'Vérifiez les certifications indiquées sur la référence et les exigences de votre appareil.', badge: 'Certifications', icon: Award,
+    content: { subtitle: 'Comment choisir une référence certifiée ?', points: [
+      'ENplus et DINplus sont des systèmes de certification des granulés. Consultez les mentions figurant sur le sac et les documents du fabricant.',
+      'La classe ENplus A1 concerne les caractéristiques des granulés ; elle ne garantit pas à elle seule le rendement de votre appareil.',
+      'Vérifiez notamment le diamètre et la qualité exigés par la notice de votre poêle ou chaudière.',
+      'La composition, les additifs éventuels et les valeurs techniques doivent être vérifiés pour la référence choisie.'
+    ], tip: 'Ne supposez pas que toutes les références ont une double certification.' } },
+  { id: 'composition-resineux', category: 'qualite', title: 'Composition et caractéristiques des granulés', summary: 'Comparez les informations du fabricant plutôt que la couleur du granulé.', badge: 'Composition', icon: Sparkles,
+    content: { subtitle: 'Quelles informations consulter ?', points: [
+      'La composition varie selon la référence. La mention « résineux » ne doit être retenue que lorsqu’elle est indiquée pour le produit.',
+      'Consultez le pouvoir calorifique, l’humidité et le taux de cendres lorsqu’ils sont documentés par le fabricant.',
+      'La couleur seule ne permet pas de vérifier une certification ou de conclure à la qualité d’un granulé.',
+      'Les dépôts dépendent aussi des réglages, de l’entretien et des conditions de fonctionnement de l’appareil.'
+    ], tip: 'Suivez la notice et demandez conseil à un professionnel en cas de dépôts inhabituels.' } },
+  { id: 'conditionnement-sac', category: 'conditionnement', title: 'Sacs et palettes : comparer les formats', summary: 'Vérifiez le nombre de sacs et le poids total avant de commander.', badge: 'Conditionnement', icon: Package,
+    content: { subtitle: 'Choisir selon vos besoins de stockage', points: [
+      'Le catalogue propose des sacs individuels et différents conditionnements sur palette.',
+      '65 sacs de 15 kg représentent 975 kg ; 66 sacs de 15 kg représentent 990 kg.',
+      'Les emballages et dimensions varient selon les références. Un film de transport ne garantit pas un stockage prolongé à l’extérieur.',
+      'Prévoyez un emplacement sec, accessible et adapté au poids du conditionnement.'
+    ], tip: 'Si une dimension ou le volume livré manque, demandez cette précision avant l’achat.' } },
+  { id: 'equivalences-fioul', category: 'energie', title: 'Estimer les besoins et comparer le coût', summary: 'La consommation dépend du logement, de l’appareil et de son utilisation.', badge: 'Estimation', icon: Zap,
+    content: { subtitle: 'Une estimation reste indicative', points: [
+      'L’isolation, la surface chauffée, la météo et la température souhaitée influencent la consommation.',
+      'L’énergie du combustible ne correspond pas directement à la chaleur utile restituée par l’appareil.',
+      'Pour comparer les coûts, utilisez les prix actuels, les consommations réelles et les rendements documentés.',
+      'Le bilan environnemental dépend notamment de la fabrication, du transport et de la combustion ; aucune neutralité carbone automatique n’est annoncée.'
+    ], tip: 'Votre historique de consommation constitue un point de départ plus précis qu’une estimation générale.' } },
+  { id: 'conditions-livraison', category: 'livraison', title: 'Livraison des palettes et accès', summary: 'Vérifiez l’accès du camion et la zone de déchargement avant la commande.', badge: 'Livraison', icon: Truck,
+    content: { subtitle: 'Préparer la réception de votre palette', points: [
+      'La livraison en Allemagne est incluse dans le prix des produits. Aucun paiement supplémentaire n’est demandé par le transporteur.',
+      'Le déchargement des palettes est prévu avec un hayon et un transpalette, en bordure de propriété.',
+      'Le sol doit être ferme et plan. Le gravier, l’herbe et les fortes pentes ne permettent pas le déplacement au transpalette.',
+      'Signalez les restrictions d’accès et vérifiez les modalités de réception avant de commander.'
+    ], tip: 'Consultez la FAQ et contactez-nous pour toute difficulté d’accès.' } },
+  { id: 'stockage-conservation', category: 'livraison', title: 'Stocker ses granulés au sec', summary: 'Suivez les recommandations de stockage du fabricant.', badge: 'Stockage', icon: Droplets,
+    content: { subtitle: 'Préserver les granulés de l’humidité', points: [
+      'Conservez les sacs dans un endroit sec et protégé de la pluie.',
+      'Évitez le contact avec un sol humide et vérifiez l’état des emballages.',
+      'Un emballage de transport n’est pas une garantie d’étanchéité pour un stockage prolongé dehors.',
+      'Respectez les recommandations du fabricant ; aucune conservation illimitée ni maintien garanti du rendement n’est annoncé.'
+    ], tip: 'Consultez les recommandations de votre appareil avant d’utiliser des granulés dégradés.' } }
 ];
-
 const faqs = [
-  {
-    q: 'Quelle est la différence entre les normes ENplus A1 et DINplus ?',
-    a: 'Les deux certifications sont basées sur la norme européenne ISO 17225-2 pour la qualité supérieure A1. DINplus est d’origine allemande et contrôlée par DIN CERTCO, tandis qu’ENplus A1 est délivrée par l’European Pellet Council avec une traçabilité intégrale du producteur au distributeur. Choisir un granulé certifié ENplus A1 ou DINplus garantit le même niveau d’excellence (pouvoir calorifique ≥ 4,6 kWh/kg, humidité < 10 %, cendres < 0,7 %).'
-  },
-  {
-    q: 'Combien de sacs de granulés faut-il pour passer l’hiver ?',
-    a: 'Pour un poêle à granulés utilisé en chauffage principal dans une maison bien isolée de 100 m², la consommation moyenne se situe entre 1,5 et 2,5 tonnes par hiver, soit environ 2 à 3 palettes de 65 sacs (100 à 160 sacs). En chauffage d’appoint le soir et le week-end, 1 palette (65 sacs) suffit généralement pour toute la saison.'
-  },
-  {
-    q: 'Pourquoi les granulés 100 % résineux sont-ils recommandés pour les poêles ?',
-    a: 'Les sciures de résineux se compactent parfaitement sans ajout de liant synthétique car la résine naturelle du bois réagit sous pression lors de la granulation. De plus, ils produisent une flamme vive, un excellent rendement calorifique et s’allument très rapidement tout en générant très peu de cendres.'
-  },
-  {
-    q: 'Puis-je stocker la palette de granulés à l’extérieur sous la pluie ?',
-    a: 'La palette est livrée sous une housse étanche qui protège temporairement des intempéries. Cependant, pour un stockage prolongé de plusieurs mois, il est fortement recommandé d’entreposer les sacs à l’intérieur (garage, abri, remise) à l’abri direct du ruissellement d’eau et du soleil intense.'
-  },
-  {
-    q: 'Comment s’effectue la prise de rendez-vous pour la livraison ?',
-    a: 'Une fois votre virement bancaire validé et votre palette arrivée au dépôt régional en Allemagne, le transporteur vous contacte directement par téléphone pour fixer un créneau de livraison sur mesure. Un numéro de suivi (Track & Trace) vous permet de suivre l’acheminement.'
-  },
-  {
-    q: 'Que faire si le creuset de mon poêle forme du mâchefer ?',
-    a: 'Le mâchefer (résidu solide vitrifié) est causé par un mauvais réglage d’air de combustion ou par un granulé de faible qualité riche en écorces. En utilisant nos granulés certifiés ENplus A1 / DINplus avec un taux de cendres < 0,7 % et un air de combustion réglé par un professionnel, vous évitez la formation de mâchefer.'
-  }
+  { q: 'Que signifient ENplus A1 et DINplus ?', a: 'Ce sont des certifications des granulés. Vérifiez les mentions de la référence et les exigences de votre appareil. Elles ne garantissent pas universellement le rendement, l’absence de dépôts ou le maintien de la garantie constructeur.' },
+  { q: 'Combien de sacs prévoir pour l’hiver ?', a: 'La quantité dépend du logement, de l’isolation, de la météo et de l’utilisation de l’appareil. Appuyez-vous sur votre consommation passée. Le simulateur donne une estimation indicative.' },
+  { q: 'Faut-il choisir des granulés de résineux ?', a: 'Consultez la composition et les caractéristiques documentées du produit, puis les exigences du fabricant de votre appareil. Le type de bois et la couleur ne suffisent pas à déterminer sa compatibilité.' },
+  { q: 'Peut-on stocker les sacs dehors ?', a: 'Prévoyez un stockage sec et protégé de l’humidité. Le film de transport ne suffit pas pour un stockage prolongé sous la pluie.' },
+  { q: 'Comment préparer la livraison ?', a: 'Prévoyez un accès carrossable pour le camion et une zone ferme et plane pour la palette. Signalez les restrictions avant la commande.' },
+  { q: 'Que faire si le poêle forme des dépôts ?', a: 'Les dépôts peuvent avoir plusieurs causes : combustible, réglages ou entretien. Consultez la notice et faites contrôler l’appareil si nécessaire.' }
 ];
 
 export default function PelletGuide() {
@@ -302,11 +182,11 @@ export default function PelletGuide() {
           </h1>
 
           <p className="mt-6 text-base sm:text-lg text-gray-300 leading-relaxed max-w-3xl">
-            Avec les granulés de bois, vous vous chauffez automatiquement, efficacement et à moindre coût, tout en bénéficiant d’un pouvoir calorifique élevé et d’émissions nettement inférieures à celles du gaz ou du fioul. Nos granulés de bois sont certifiés <strong className="text-orange-400">ENplus A1</strong> et <strong className="text-orange-400">DINplus</strong> et compatibles avec tous les poêles et chaudières à granulés.
+            Comparez les conditionnements et les caractéristiques des granulés. Vérifiez les certifications <strong className="text-orange-400">ENplus A1</strong> ou <strong className="text-orange-400">DINplus</strong> indiquées pour chaque référence et les exigences de votre appareil.
           </p>
 
           <p className="mt-4 text-sm sm:text-base text-gray-400 italic max-w-3xl border-l-2 border-orange-500 pl-4 py-1">
-            « La question essentielle n’est donc pas de savoir quels granulés choisir, mais quelle quantité correspond le mieux à vos besoins de consommation et de stockage. Nous vous aidons à faire votre choix ci-dessous. »
+            Choisissez une référence adaptée à votre appareil et un conditionnement correspondant à vos besoins de consommation et de stockage.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4 text-xs sm:text-sm text-gray-300 font-semibold">
@@ -314,10 +194,10 @@ export default function PelletGuide() {
               <Award size={16} className="text-orange-400" /> ENplus A1 & DINplus
             </div>
             <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur">
-              <Sparkles size={16} className="text-orange-400" /> 100 % Résineux pur
+              <Sparkles size={16} className="text-orange-400" /> Composition selon référence
             </div>
             <div className="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur">
-              <Truck size={16} className="text-orange-400" /> Livraison & tarif dégressif
+              <Truck size={16} className="text-orange-400" /> Livraison et conditionnements
             </div>
           </div>
         </div>
@@ -332,10 +212,10 @@ export default function PelletGuide() {
                 Simulateur Express
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900">
-                Faites le test et trouvez les granulés parfaits
+                Estimez vos besoins en granulés
               </h2>
               <p className="text-sm text-gray-600 mt-1">
-                Répondez à 3 questions rapides et obtenez immédiatement la quantité adaptée à votre équipement.
+                Obtenez une estimation indicative. La consommation réelle dépend du logement, de l’appareil et de son utilisation.
               </p>
             </div>
             <div className="shrink-0 flex items-center gap-2 text-xs font-semibold text-gray-500 bg-gray-50 px-3 py-2 rounded-xl border border-gray-200">
@@ -665,10 +545,10 @@ export default function PelletGuide() {
               Comparatif des Combustibles
             </span>
             <h2 className="font-serif text-2xl sm:text-4xl font-bold mt-2">
-              Pourquoi choisir les granulés de bois ?
+              Quels critères comparer entre les combustibles ?
             </h2>
             <p className="text-sm text-gray-300 mt-2">
-              Un comparatif clair entre les granulés de bois, le fioul domestique et le gaz naturel.
+              Des points à vérifier pour comparer les combustibles, sans garantie d’économie ou de rendement.
             </p>
           </div>
 
@@ -685,33 +565,33 @@ export default function PelletGuide() {
               <tbody className="divide-y divide-gray-800 text-gray-200">
                 <tr>
                   <td className="py-3.5 px-4 font-semibold text-gray-400">Source d&apos;énergie</td>
-                  <td className="py-3.5 px-4 font-bold text-white">100 % Renouvelable (Bois)</td>
+                  <td className="py-3.5 px-4 font-bold text-white">Bois</td>
                   <td className="py-3.5 px-4">Fossile non renouvelable</td>
                   <td className="py-3.5 px-4">Fossile non renouvelable</td>
                 </tr>
                 <tr>
-                  <td className="py-3.5 px-4 font-semibold text-gray-400">Bilan Carbonne CO2</td>
-                  <td className="py-3.5 px-4 font-bold text-orange-400">Neutre (absorption naturelle)</td>
-                  <td className="py-3.5 px-4">Émissions élevées</td>
-                  <td className="py-3.5 px-4">Émissions modérées</td>
+                  <td className="py-3.5 px-4 font-semibold text-gray-400">Bilan environnemental</td>
+                  <td className="py-3.5 px-4 font-bold text-orange-400">Selon la production et l’utilisation</td>
+                  <td className="py-3.5 px-4">Selon la production et l’utilisation</td>
+                  <td className="py-3.5 px-4">Selon la production et l’utilisation</td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-semibold text-gray-400">Pouvoir calorifique</td>
-                  <td className="py-3.5 px-4 font-bold text-white">≥ 4,6 kWh/kg</td>
-                  <td className="py-3.5 px-4">~ 10 kWh/Litre</td>
-                  <td className="py-3.5 px-4">~ 10 kWh/m³</td>
+                  <td className="py-3.5 px-4 font-bold text-white">Consulter la fiche du fabricant</td>
+                  <td className="py-3.5 px-4">Consulter la fiche du fournisseur</td>
+                  <td className="py-3.5 px-4">Consulter la fiche du fournisseur</td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-semibold text-gray-400">Automatisation poêle</td>
-                  <td className="py-3.5 px-4 font-bold text-white">Oui (programmation & thermostat)</td>
+                  <td className="py-3.5 px-4 font-bold text-white">Selon l’appareil</td>
                   <td className="py-3.5 px-4">Oui</td>
                   <td className="py-3.5 px-4">Oui</td>
                 </tr>
                 <tr>
                   <td className="py-3.5 px-4 font-semibold text-gray-400">Stabilité des prix</td>
-                  <td className="py-3.5 px-4 font-bold text-orange-400">Stable & Local</td>
-                  <td className="py-3.5 px-4">Trés volatile</td>
-                  <td className="py-3.5 px-4">Volatile</td>
+                  <td className="py-3.5 px-4 font-bold text-orange-400">Vérifier les prix actuels</td>
+                  <td className="py-3.5 px-4">Vérifier les prix actuels</td>
+                  <td className="py-3.5 px-4">Vérifier les prix actuels</td>
                 </tr>
               </tbody>
             </table>
@@ -774,7 +654,7 @@ export default function PelletGuide() {
             Prêt à passer votre commande de granulés ?
           </h2>
           <p className="mt-3 text-sm sm:text-base text-orange-100 max-w-2xl mx-auto">
-            Découvrez l’ensemble de nos emballages en sacs et nos palettes de granulés certifiés ENplus A1 / DINplus avec livraison à domicile en Allemagne.
+            Comparez les sacs et palettes de granulés de bois du catalogue, avec livraison à domicile en Allemagne. Vérifiez les certifications indiquées sur chaque référence.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link

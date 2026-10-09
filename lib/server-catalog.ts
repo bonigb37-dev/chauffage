@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 import { mergeCatalog } from '@/lib/catalog';
+import { cache } from 'react';
 
-export async function getServerCatalog() {
+export const getServerCatalog = cache(async () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
   const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim();
   if (!url || !key) return mergeCatalog([]);
@@ -10,4 +11,4 @@ export async function getServerCatalog() {
   const { data, error } = await db.from('product_overrides').select('product_id,data,is_deleted');
   if (error) throw new Error('Catalogue indisponible');
   return mergeCatalog(data ?? []);
-}
+});

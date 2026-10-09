@@ -34,7 +34,7 @@ export const faqItems = [
   },
   {
     question: 'Quels combustibles sont disponibles au catalogue ?',
-    answer: 'Nous proposons une gamme complète de combustibles bois de haute qualité : granulés certifiés DINplus / ENplus A1, briquettes RUF et Pini-Kay, bûches de chauffage séchées au four et bois d’allumage. Chaque fiche produit détaille le conditionnement, le poids et les spécifications techniques.',
+    answer: 'Le catalogue réunit des granulés de bois, des briquettes RUF et Pini-Kay, des bûches et des produits d’allumage. Consultez chaque fiche pour connaître le conditionnement et les caractéristiques indiquées pour la référence. Les certifications et le mode de séchage ne concernent que les produits qui les mentionnent.',
   },
   {
     question: 'Est-il possible de retirer sa commande directement à l’entrepôt ?',
@@ -42,6 +42,6 @@ export const faqItems = [
   },
   {
     question: 'Comment stocker et conserver vos combustibles bois ?',
-    answer: 'Pour préserver un rendement calorifique maximal, stockez les bûches dans un abri ventilé et protégé de la pluie. Les granulés et briquettes doivent être impérativement conservés dans un endroit intérieur sec, fermé et parfaitement abrité de l’humidité.',
+    answer: 'Pour conserver vos combustibles dans de bonnes conditions, stockez les bûches dans un abri ventilé et protégé de la pluie. Conservez les granulés et briquettes au sec et à l’abri de l’humidité, en suivant les recommandations du fabricant.',
   },
 ];

@@ -22,7 +22,7 @@ export default function Services() {
             </span>
             <h3 className="text-2xl font-black">Besoin d’aide pour choisir vos granulés de bois ?</h3>
             <p className="text-sm text-orange-100 mt-1 max-w-xl">
-              Calculez la quantité idéale avec notre simulateur express et consultez tous les détails sur les normes ENplus A1 / DINplus, le stockage et la livraison.
+              Obtenez une estimation indicative de vos besoins et consultez les conseils sur les certifications ENplus A1 / DINplus, le stockage et la livraison.
             </p>
           </div>
           <Link

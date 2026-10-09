@@ -457,7 +457,7 @@ export default function Navbar() {
                 <ul className="space-y-3 text-sm">
                   <li>
                     <Link
-                      href="/produits?category=buches"
+                      href="/produits/categorie/bois-de-chauffage"
                       onClick={() => setMegaMenuOpen(false)}
                       className="group flex items-center justify-between text-[#687280] hover:text-[#FF6B00] font-medium transition"
                     >
@@ -467,7 +467,7 @@ export default function Navbar() {
                   </li>
                   <li>
                     <Link
-                      href="/produits?category=granules"
+                      href="/produits/categorie/granules-de-bois"
                       onClick={() => setMegaMenuOpen(false)}
                       className="group flex items-center justify-between text-[#687280] hover:text-[#FF6B00] font-medium transition"
                     >
@@ -477,7 +477,7 @@ export default function Navbar() {
                   </li>
                   <li>
                     <Link
-                      href="/produits?category=bois-compresse"
+                      href="/produits/categorie/briquettes-de-bois"
                       onClick={() => setMegaMenuOpen(false)}
                       className="group flex items-center justify-between text-[#687280] hover:text-[#FF6B00] font-medium transition"
                     >
@@ -496,7 +496,7 @@ export default function Navbar() {
                 <ul className="space-y-3 text-sm">
                   <li>
                     <Link
-                      href="/produits?category=allume-feu"
+                      href="/produits/categorie/bois-allumage"
                       onClick={() => setMegaMenuOpen(false)}
                       className="group flex items-center justify-between text-[#687280] hover:text-[#FF6B00] font-medium transition"
                     >
@@ -790,28 +790,28 @@ export default function Navbar() {
                 {mobileProduitsOpen && (
                   <div className="ml-4 pl-4 border-l border-white/10 space-y-3 py-2 text-sm font-medium text-zinc-400">
                     <Link
-                      href="/produits?category=buches"
+                      href="/produits/categorie/bois-de-chauffage"
                       onClick={() => setMobileMenuOpen(false)}
                       className="block hover:text-[#FF6B00] py-1"
                     >
                       Bûches de chauffage
                     </Link>
                     <Link
-                      href="/produits?category=granules"
+                      href="/produits/categorie/granules-de-bois"
                       onClick={() => setMobileMenuOpen(false)}
                       className="block hover:text-[#FF6B00] py-1"
                     >
                       Granulés & Pellets DIN+
                     </Link>
                     <Link
-                      href="/produits?category=bois-compresse"
+                      href="/produits/categorie/briquettes-de-bois"
                       onClick={() => setMobileMenuOpen(false)}
                       className="block hover:text-[#FF6B00] py-1"
                     >
                       Bois compressé
                     </Link>
                     <Link
-                      href="/produits?category=allume-feu"
+                      href="/produits/categorie/bois-allumage"
                       onClick={() => setMobileMenuOpen(false)}
                       className="block hover:text-[#FF6B00] py-1"
                     >

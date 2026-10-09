@@ -17,19 +17,19 @@ const sectionDescriptions: Record<string, string> = {
   'Bois d’allumage': 'Bûchettes et allume-feux pour préparer le foyer.',
 };
 
-export default function ProductCatalog() {
+export default function ProductCatalog({ initialCategory = 'Tous les produits' }: { initialCategory?: string }) {
   const { products } = useCart();
   const searchParams = useSearchParams();
   const requestedSearch = searchParams.get('search') ?? '';
   const categoryAliases: Record<string, string> = { buches: 'Bois de chauffage', granules: 'Granulés', 'bois-compresse': 'Briquettes', 'allume-feu': 'Bois d’allumage' };
   const requestedCategory = searchParams.get('categorie') ?? categoryAliases[searchParams.get('category') ?? ''];
-  const [category, setCategory] = useState('Tous les produits');
+  const [category, setCategory] = useState(initialCategory);
   const [query, setQuery] = useState(requestedSearch);
   const categories = ['Tous les produits', ...new Set(products.map((product) => product.type))];
   useEffect(() => {
     setQuery(requestedSearch);
-    setCategory(requestedCategory && products.some((product) => product.type === requestedCategory) ? requestedCategory : 'Tous les produits');
-  }, [products, requestedSearch, requestedCategory]);
+    setCategory(requestedCategory && products.some((product) => product.type === requestedCategory) ? requestedCategory : initialCategory);
+  }, [products, requestedSearch, requestedCategory, initialCategory]);
   const visibleProducts = useMemo(() => products.filter((product) => {
     const matchesCategory = category === 'Tous les produits' || product.type === category || (category === 'Granulés' && product.type.startsWith('Granulés'));
     const terms = `${product.name} ${product.type} ${product.quantity} ${product.description}`.toLocaleLowerCase('fr');
@@ -70,7 +70,7 @@ export default function ProductCatalog() {
               Besoin d’aide pour choisir votre quantité de granulés de bois ?
             </h3>
             <p className="text-xs sm:text-sm text-orange-100">
-              Calculez vos besoins et consultez le guide de sélection interactif complet.
+              Estimez vos besoins et consultez les conseils de sélection et de stockage.
             </p>
           </div>
         </div>

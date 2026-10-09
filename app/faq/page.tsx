@@ -1,3 +1,7 @@
+import { publicMetadata } from '@/lib/seo';
+
+export const metadata = publicMetadata("Livraison, paiement et stockage : vos questions | Bren-nholz", "Consultez les réponses sur le paiement par virement, la livraison en Allemagne, le déchargement des palettes et le stockage des combustibles bois.", "/faq");
+
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';

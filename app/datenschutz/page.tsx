@@ -1,9 +1,11 @@
-import type { Metadata } from 'next';
+import { publicMetadata } from '@/lib/seo';
+
+export const metadata = publicMetadata("Politique de confidentialité — Bren-nholz", "Informations sur les données utilisées pour vos commandes, votre compte, les formulaires et les justificatifs de paiement, et sur vos droits.", "/datenschutz");
+
 import Link from 'next/link';
 import PolicyPage from '@/components/PolicyPage';
 import { storeConfig } from '@/lib/store-config';
 
-export const metadata: Metadata = { title: 'Politique de confidentialité — Bren-nholz' };
 export default function PrivacyPage() {
   return <PolicyPage title="Politique de confidentialité">
     <section><h2 className="text-xl font-bold">Contact relatif aux données personnelles</h2><p>Pour toute demande concernant vos données, contactez Bren-nholz à <a className="text-orange-700 underline" href={`mailto:${storeConfig.email}`}>{storeConfig.email}</a> ou à {storeConfig.address}. Le responsable du traitement est {storeConfig.legalName}, exploitant de l’enseigne {storeConfig.name}, représenté par {storeConfig.legalRepresentatives}. Numéro KvK : {storeConfig.registrationNumber}.</p></section>

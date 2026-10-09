@@ -8,7 +8,7 @@ export default function LegalNotice() {
         <h1 id="legal-notice-title" className="text-3xl font-black text-gray-950">Avis juridique</h1>
         <div className="mt-6 grid gap-8 lg:grid-cols-[1fr_2fr]">
           <div className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-6">
-            <h3 className="text-lg font-bold text-gray-950">Bren-nholz</h3>
+            <h2 className="text-lg font-bold text-gray-950">Bren-nholz</h2>
             <dl className="mt-4 space-y-4 text-sm leading-6 text-gray-700">
               <div><dt className="font-semibold text-gray-950">Raison sociale</dt><dd>{storeConfig.legalName} — enseigne {storeConfig.name}</dd></div>
               <div><dt className="font-semibold text-gray-950">Forme juridique</dt><dd>{storeConfig.legalForm}</dd></div>
@@ -19,7 +19,7 @@ export default function LegalNotice() {
               <div><dt className="font-semibold text-gray-950">Contact</dt><dd><a href={`mailto:${storeConfig.email}`} className="break-all text-orange-700 underline underline-offset-4">{storeConfig.email}</a></dd></div>
               <div><dt className="font-semibold text-gray-950">Téléphone</dt><dd><a href={`tel:${storeConfig.phoneHref}`} className="text-orange-700 underline underline-offset-4">{storeConfig.phone}</a></dd></div>
               <div><dt className="font-semibold text-gray-950">Numéro de TVA intracommunautaire allemand (USt-IdNr.)</dt><dd>{storeConfig.vatNumber}</dd></div>
-              <div><dt className="font-semibold text-gray-950">Activités</dt><dd>Vente de bois de chauffage, de granulés de bois et de machines agricoles.</dd></div>
+              <div><dt className="font-semibold text-gray-950">Activités</dt><dd>Vente de bois de chauffage, de granulés de bois, de briquettes et de produits d’allumage.</dd></div>
             </dl>
           </div>
           <div className="space-y-4 text-sm leading-7 text-gray-700">

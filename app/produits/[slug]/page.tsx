@@ -9,6 +9,7 @@ import { getAverageRating, getReviewsForProduct } from '@/lib/reviews';
 
 import { getServerCatalog } from '@/lib/server-catalog';
 import DeliveryInformation from '@/components/DeliveryInformation';
+import { publicMetadata, siteUrl } from '@/lib/seo';
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await findProduct(slug);
   if (!product) return { title: 'Produit introuvable — Bren-nholz' };
-  return { title: `${product.name} — Bren-nholz`, description: product.description };
+  return publicMetadata(`${product.name} — Bren-nholz`, `${product.description} Conditionnement : ${product.quantity}.`, `/produits/${productPathSegment(product)}`);
 }
 
 export default async function ProductDetailPage({ params }: Props) {
@@ -39,7 +40,8 @@ export default async function ProductDetailPage({ params }: Props) {
     '@type': 'Product',
     name: product.name,
     description: product.description,
-    image: product.gallery?.length ? product.gallery : [product.image],
+    image: (product.gallery?.length ? product.gallery : [product.image]).map((image) => new URL(image, siteUrl).href),
+    url: `${siteUrl}/produits/${canonicalSlug}`,
     sku: product.articleNumber,
     aggregateRating: count > 0 ? {
       '@type': 'AggregateRating',
@@ -63,6 +65,8 @@ export default async function ProductDetailPage({ params }: Props) {
     })),
     offers: product.priceAmount !== undefined ? {
       '@type': 'Offer',
+      url: `${siteUrl}/produits/${canonicalSlug}`,
+      itemCondition: 'https://schema.org/NewCondition',
       priceCurrency: 'EUR',
       price: (product.priceAmount / 100).toFixed(2),
       availability: product.stock === 0 ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
