@@ -14,8 +14,6 @@ import {
   Droplets,
   Sparkles,
   Zap,
-  Phone,
-  MessageSquare,
   ArrowRight,
   Scale,
   Thermometer,
@@ -355,29 +353,6 @@ export default function PelletGuide() {
             </div>
           </div>
 
-          {/* Hotline Expert Banner */}
-          <div className="mt-6 rounded-xl bg-orange-50 border border-orange-200/80 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-            <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-orange-500 text-white shadow-sm">
-                <Phone size={18} />
-              </div>
-              <div>
-                <p className="text-xs sm:text-sm font-bold text-gray-900">
-                  Vous préférez des conseils personnalisés par téléphone ?
-                </p>
-                <p className="text-xs text-gray-600">
-                  Appelez notre expert granulés au <strong className="text-orange-600">039292678243</strong> ou envoyez-nous une demande.
-                </p>
-              </div>
-            </div>
-            <Link
-              href="/contact"
-              className="shrink-0 inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-orange-600 hover:text-orange-700 bg-white px-4 py-2.5 rounded-xl border border-orange-200 hover:border-orange-300 transition"
-            >
-              <MessageSquare size={16} />
-              Nous contacter
-            </Link>
-          </div>
         </div>
       </section>
 
