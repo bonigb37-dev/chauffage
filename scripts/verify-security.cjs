@@ -54,8 +54,8 @@ async function run() {
   assert(!validPaymentProofToken(reference, token, 'wrong-key', now));
   assert(!validPaymentProofToken(reference, token, 'mock-private', now + proofValidityMs));
   assert(!validPaymentProofToken(reference, token.replace(/^\d+/, '9999999999'), 'mock-private', now));
-  const configCode = ts.transpileModule(fs.readFileSync('next.config.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
-  const checkConfig = env => vm.runInNewContext(configCode, { exports: {}, process: { env }, Buffer });
+  const configCode = ts.transpileModule(fs.readFileSync('next.config.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
+  const checkConfig = env => vm.runInNewContext(configCode, { exports: {}, process: { env }, Buffer, require });
   assert.throws(() => checkConfig({ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: 'sb_secret_mock_private' }));
   assert.throws(() => checkConfig({ NEXT_PUBLIC_SERVICE_ROLE_KEY: 'mock' }));
   const privateJwt = 'header.' + Buffer.from(JSON.stringify({ role: 'service_role' })).toString('base64url') + '.signature';

@@ -1,4 +1,8 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { useEffect, useId, useRef, useState } from 'react';
 
@@ -7,6 +11,8 @@ type Suggestion = { label: string; street: string; postalCode: string; city: str
 export default function AddressAutocomplete({ name, postalCodeName, cityName, inputClass }: {
   name: string; postalCodeName: string; cityName: string; inputClass: string;
 }) {
+  const brenLocale = useLocale() as Locale;
+
   const id = useId();
   const input = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState('');
@@ -56,7 +62,7 @@ export default function AddressAutocomplete({ name, postalCodeName, cityName, in
     input.current?.focus();
   }
 
-  return <div className="relative sm:col-span-2">
+  return localizeNode(<div className="relative sm:col-span-2">
     <label htmlFor={id} className="text-sm font-semibold text-gray-700">Rue et numéro *</label>
     <input ref={input} id={id} name={name} required maxLength={180} autoComplete="off" value={query} placeholder="Commencez à saisir la rue et la ville" className={inputClass} role="combobox" aria-autocomplete="list" aria-expanded={open && suggestions.length > 0} aria-controls={`${id}-suggestions`} aria-describedby={`${id}-status`} aria-activedescendant={open && activeIndex >= 0 ? `${id}-option-${activeIndex}` : undefined}
       onChange={(event) => { setQuery(event.target.value); setSuggestions([]); setActiveIndex(-1); setOpen(true); setStatus(''); }}
@@ -75,5 +81,5 @@ export default function AddressAutocomplete({ name, postalCodeName, cityName, in
       <p className="border-t px-4 py-2 text-xs text-gray-500"><a href="https://www.geoapify.com/" target="_blank" rel="noopener noreferrer">Geoapify</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap</a></p>
     </div>}
     <p id={`${id}-status`} role="status" className="mt-1 text-xs text-gray-500">{loading ? 'Recherche d’adresses…' : status || 'Choisissez une suggestion pour remplir la ville et le code postal.'}</p>
-  </div>;
+  </div>, brenLocale);
 }

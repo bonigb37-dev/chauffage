@@ -1,4 +1,8 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 export type FirewoodLoaderProps = {
   message?: string;
@@ -11,7 +15,9 @@ export default function FirewoodLoader({
   className = '',
   fullPage = false,
 }: FirewoodLoaderProps) {
-  return (
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode((
     <div
       className={`firewood-loader-container ${
         fullPage ? 'min-h-[70vh]' : 'min-h-[340px]'
@@ -239,5 +245,5 @@ export default function FirewoodLoader({
         </div>
       </div>
     </div>
-  );
+  ), brenLocale);
 }

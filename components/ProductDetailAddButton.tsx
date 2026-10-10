@@ -1,4 +1,8 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { useState } from 'react';
 import { Check, ShoppingCart } from 'lucide-react';
@@ -6,12 +10,14 @@ import { useCart } from '@/components/CartProvider';
 import type { Product } from '@/lib/products';
 
 export default function ProductDetailAddButton({ product }: { product: Product }) {
+  const brenLocale = useLocale() as Locale;
+
   const { addItem, products } = useCart();
   const currentProduct = products.find((item) => item.id === product.id) ?? product;
   const [added, setAdded] = useState(false);
 
   if (currentProduct.stock === 0 || currentProduct.priceAmount === undefined) {
-    return <button type="button" disabled className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-stone-200 px-6 py-3 font-bold text-stone-600">Rupture de stock</button>;
+    return localizeNode(<button type="button" disabled className="inline-flex cursor-not-allowed items-center gap-2 rounded-full bg-stone-200 px-6 py-3 font-bold text-stone-600">Rupture de stock</button>, brenLocale);
   }
 
   const handleClick = () => {
@@ -20,7 +26,7 @@ export default function ProductDetailAddButton({ product }: { product: Product }
     setTimeout(() => setAdded(false), 2000);
   };
 
-  return (
+  return localizeNode((
     <button
       type="button"
       onClick={handleClick}
@@ -38,5 +44,5 @@ export default function ProductDetailAddButton({ product }: { product: Product }
         </>
       )}
     </button>
-  );
+  ), brenLocale);
 }

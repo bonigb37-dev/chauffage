@@ -1,7 +1,11 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { useState } from 'react';
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import {
   Flame,
   Award,
@@ -94,6 +98,8 @@ const faqs = [
 ];
 
 export default function PelletGuide() {
+  const brenLocale = useLocale() as Locale;
+
   const { addItem } = useCart();
   const [activeTab, setActiveTab] = useState<'all' | 'qualite' | 'conditionnement' | 'livraison' | 'energie'>('all');
   const [openDetailId, setOpenDetailId] = useState<string | null>('certifications');
@@ -165,7 +171,7 @@ export default function PelletGuide() {
     (item) => activeTab === 'all' || item.category === activeTab
   );
 
-  return (
+  return localizeNode((
     <div className="bg-gray-50 text-gray-900 pb-20">
       {/* Header Banner */}
       <section className="bg-gradient-to-br from-gray-950 via-gray-900 to-amber-950 text-white py-16 sm:py-20">
@@ -650,5 +656,5 @@ export default function PelletGuide() {
         </div>
       </section>
     </div>
-  );
+  ), brenLocale);
 }

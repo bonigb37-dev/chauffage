@@ -1,14 +1,20 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { motion, useReducedMotion } from 'framer-motion';
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import Image from 'next/image';
 import { ArrowRight, BadgeCheck, Boxes, Flame, Sparkles, Truck } from 'lucide-react';
 
 export default function Hero() {
+  const brenLocale = useLocale() as Locale;
+
   const reduceMotion = useReducedMotion();
 
-  return (
+  return localizeNode((
     <section className="relative isolate overflow-hidden bg-[#fffaf5]">
       <Image
         src="/BD.jpg"
@@ -129,5 +135,5 @@ export default function Hero() {
         </motion.div>
       </div>
     </section>
-  );
+  ), brenLocale);
 }

@@ -1,4 +1,8 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -33,6 +37,8 @@ const slides = [
 ];
 
 export default function ProductHeroShowcase() {
+  const brenLocale = useLocale() as Locale;
+
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -44,7 +50,7 @@ export default function ProductHeroShowcase() {
 
   const current = slides[index];
 
-  return (
+  return localizeNode((
     <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
       {/* Glow background effect */}
       <div className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-r from-orange-400/30 to-amber-300/30 blur-2xl transition-all duration-700" />
@@ -136,5 +142,5 @@ export default function ProductHeroShowcase() {
         </div>
       </div>
     </div>
-  );
+  ), brenLocale);
 }

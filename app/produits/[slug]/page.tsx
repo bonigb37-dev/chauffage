@@ -1,8 +1,13 @@
+
+import { translate, localizeNode } from '@/i18n/copy';
+import { localizedPath, type Locale } from '@/i18n/routing';
+import { getLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import { headers } from 'next/headers';
 import { notFound, permanentRedirect } from 'next/navigation';
+
 import { Check, CheckCircle2, MapPin, Star } from 'lucide-react';
 import ProductDetailAddButton from '@/components/ProductDetailAddButton';
 import { productPathSegment } from '@/lib/products';
@@ -23,16 +28,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const product = await findProduct(slug);
   if (!product) return { title: 'Produit introuvable — Bren-nholz' };
-  return publicMetadata(`${product.name} — Bren-nholz`, `${product.description} Conditionnement : ${product.quantity}.`, `/produits/${productPathSegment(product)}`);
+  const locale = await getLocale() as Locale;
+  return publicMetadata(`${translate(product.name, locale)} — Bren-nholz`, `${translate(product.description, locale)} ${translate('Conditionnement :', locale)} ${translate(product.quantity, locale)}.`, `/produits/${productPathSegment(product)}`);
 }
 
 export default async function ProductDetailPage({ params }: Props) {
+  const brenLocale = await getLocale() as Locale;
+
   const nonce = (await headers()).get('x-nonce') ?? undefined;
   const { slug } = await params;
   const product = await findProduct(slug);
   if (!product) notFound();
   const canonicalSlug = productPathSegment(product);
-  if (slug !== canonicalSlug) permanentRedirect(`/produits/${canonicalSlug}`);
+  if (slug !== canonicalSlug) permanentRedirect(localizedPath(`/produits/${canonicalSlug}`, brenLocale));
 
   const reviews = getReviewsForProduct(product.id);
   const { average, count } = getAverageRating(product.id);
@@ -40,10 +48,10 @@ export default async function ProductDetailPage({ params }: Props) {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: product.name,
-    description: product.description,
+    name: translate(product.name, brenLocale),
+    description: translate(product.description, brenLocale),
     image: (product.gallery?.length ? product.gallery : [product.image]).map((image) => new URL(image, siteUrl).href),
-    url: `${siteUrl}/produits/${canonicalSlug}`,
+    url: `${siteUrl}${localizedPath(`/produits/${canonicalSlug}`, brenLocale)}`,
     sku: product.articleNumber,
     aggregateRating: count > 0 ? {
       '@type': 'AggregateRating',
@@ -67,7 +75,7 @@ export default async function ProductDetailPage({ params }: Props) {
     })),
     offers: product.priceAmount !== undefined ? {
       '@type': 'Offer',
-      url: `${siteUrl}/produits/${canonicalSlug}`,
+      url: `${siteUrl}${localizedPath(`/produits/${canonicalSlug}`, brenLocale)}`,
       itemCondition: 'https://schema.org/NewCondition',
       priceCurrency: 'EUR',
       price: (product.priceAmount / 100).toFixed(2),
@@ -75,7 +83,7 @@ export default async function ProductDetailPage({ params }: Props) {
     } : undefined,
   };
 
-  return (
+  return localizeNode((
     <main className="min-h-[65vh] bg-[#faf9f6] py-8 sm:py-12">
       <script nonce={nonce} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
       <div className="container">
@@ -106,7 +114,7 @@ export default async function ProductDetailPage({ params }: Props) {
               </div>
               <span className="font-black text-gray-950 text-sm">{average.toFixed(1)} / 5</span>
               <a href="#avis-clients" className="text-sm font-semibold text-orange-600 hover:underline">
-                ({count} avis client{count > 1 ? 's' : ''})
+                ({count} {brenLocale === 'de' ? (count === 1 ? 'Kundenbewertung' : 'Kundenbewertungen') : brenLocale === 'en' ? (count === 1 ? 'customer review' : 'customer reviews') : (count === 1 ? 'avis client' : 'avis clients')})
               </a>
             </div>
 
@@ -148,7 +156,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   ))}
                 </div>
                 <p className="mt-1 text-xs font-semibold text-gray-700">
-                  Basé sur {count} avis client{count > 1 ? 's' : ''}
+                  Basé sur {count} {brenLocale === 'de' ? (count === 1 ? 'Kundenbewertung' : 'Kundenbewertungen') : brenLocale === 'en' ? (count === 1 ? 'customer review' : 'customer reviews') : (count === 1 ? 'avis client' : 'avis clients')}
                 </p>
               </div>
             </div>
@@ -193,8 +201,8 @@ export default async function ProductDetailPage({ params }: Props) {
                 </div>
 
                 <div className="mt-3">
-                  <h3 className="font-bold text-gray-900 text-sm sm:text-base">{rev.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-gray-700">{rev.comment}</p>
+                  <h3 data-original-content className="font-bold text-gray-900 text-sm sm:text-base">{rev.title}</h3>
+                  <p data-original-content className="mt-1 text-sm leading-relaxed text-gray-700">{rev.comment}</p>
                 </div>
               </div>
             ))}
@@ -202,5 +210,5 @@ export default async function ProductDetailPage({ params }: Props) {
         </section>
       </div>
     </main>
-  );
+  ), brenLocale);
 }

@@ -1,13 +1,19 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
 
-import Link from 'next/link';
+
+import Link from '@/i18n/navigation';
 import { useCart } from '@/components/CartProvider';
 import ProductCard from './ProductCard';
 
 export default function Products() {
+  const brenLocale = useLocale() as Locale;
+
   const { products } = useCart();
   const featured = products.filter((product) => [2, 51, 52].includes(product.id));
-  return (
+  return localizeNode((
     <section className="container py-24">
       <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
@@ -18,5 +24,5 @@ export default function Products() {
       </div>
       <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{featured.map((p) => <ProductCard key={p.id} p={p} />)}</div>
     </section>
-  );
+  ), brenLocale);
 }

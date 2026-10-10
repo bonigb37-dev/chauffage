@@ -1,4 +1,8 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { useEffect, useState, useMemo } from 'react';
 import { createPortal } from 'react-dom';
@@ -6,6 +10,8 @@ import { CheckCircle2, MapPin, Search, Star, X, ShieldCheck, Filter } from 'luci
 import { getAllReviews } from '@/lib/reviews';
 
 export default function AllReviewsModal() {
+  const brenLocale = useLocale() as Locale;
+
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [starFilter, setStarFilter] = useState<number | 'all'>('all');
@@ -53,7 +59,7 @@ export default function AllReviewsModal() {
   if (!open || typeof document === 'undefined') return null;
 
   return createPortal(
-    <div
+    localizeNode(<div
       className="fixed inset-0 z-[300] flex items-center justify-center bg-gray-950/80 p-3 sm:p-6 backdrop-blur-sm animate-in fade-in duration-200"
       role="dialog"
       aria-modal="true"
@@ -205,8 +211,8 @@ export default function AllReviewsModal() {
                   </p>
                 )}
 
-                <h3 className="mt-2 font-black text-gray-900 text-sm sm:text-base">{rev.title}</h3>
-                <p className="mt-1.5 text-xs sm:text-sm leading-relaxed text-gray-700 font-normal">{rev.comment}</p>
+                <h3 data-original-content className="mt-2 font-black text-gray-900 text-sm sm:text-base">{rev.title}</h3>
+                <p data-original-content className="mt-1.5 text-xs sm:text-sm leading-relaxed text-gray-700 font-normal">{rev.comment}</p>
               </article>
             ))
           )}
@@ -229,7 +235,7 @@ export default function AllReviewsModal() {
           Consultez tous nos retours d’expérience vérifiés sur combustibles bois & granulés.
         </div>
       </div>
-    </div>,
+    </div>, brenLocale),
     document.body
   );
 }

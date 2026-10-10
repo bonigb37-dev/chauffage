@@ -1,10 +1,14 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { orderStatusLabels, paymentStatusLabel } from '@/lib/order-status';
 import { getAdminRole } from '@/lib/admin-access';
 import { FormEvent, useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import Link from '@/i18n/navigation';
+import { useRouter } from '@/i18n/navigation';
 import {
   AlertCircle,
   AlertTriangle,
@@ -163,10 +167,12 @@ function DarkFormAlert({
   onDismiss?: () => void;
   onSwitchToSignin?: () => void;
 }) {
+  const brenLocale = useLocale() as Locale;
+
   if (!error && !notice) return null;
 
   if (notice) {
-    return (
+    return localizeNode((
       <div className="account-alert-dark account-alert-dark--success" role="status">
         <CheckCircle2 size={18} className="shrink-0 text-emerald-400 mt-0.5" />
         <div className="flex-1">
@@ -178,7 +184,7 @@ function DarkFormAlert({
           </button>
         )}
       </div>
-    );
+    ), brenLocale);
   }
 
   const parsed = parseAuthError(error!, { onSwitchToSignin });
@@ -201,7 +207,7 @@ function DarkFormAlert({
       ? 'account-alert-dark--warning'
       : 'account-alert-dark--error';
 
-  return (
+  return localizeNode((
     <div className={`account-alert-dark ${themeClass}`} role="alert">
       {iconMap[parsed.icon]}
       <div className="flex-1 space-y-1">
@@ -235,12 +241,14 @@ function DarkFormAlert({
         </button>
       )}
     </div>
-  );
+  ), brenLocale);
 }
 
 /* Background Animated Hearth Loop (Cinematic 14-second loop) */
 function BackgroundHearthLoop() {
-  return (
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode((
     <div className="bg-hearth-canvas" aria-hidden="true">
       <div className="relative w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] flex items-center justify-center">
         <svg
@@ -406,10 +414,12 @@ function BackgroundHearthLoop() {
         </svg>
       </div>
     </div>
-  );
+  ), brenLocale);
 }
 
 export default function AccountPageContent() {
+  const brenLocale = useLocale() as Locale;
+
   const { items: cartItems, products: cartProducts, itemCount, ready: cartReady } = useCart();
   const router = useRouter();
   const [mode, setMode] = useState<Mode>(isPasswordRecoveryRedirect ? 'update' : 'signin');
@@ -676,7 +686,7 @@ export default function AccountPageContent() {
       ? 'Nouveau mot de passe'
       : 'Bon retour ';
 
-  return (
+  return localizeNode((
     <div className="account-auth-container min-h-dvh flex flex-col justify-between relative overflow-hidden text-slate-900">
       {/* Background Animated Hearth Loop */}
       <BackgroundHearthLoop />
@@ -746,10 +756,10 @@ export default function AccountPageContent() {
                         <li key={order.id} className="rounded-xl border border-orange-100 bg-orange-50 p-3">
                           <div className="flex items-center justify-between gap-3 text-sm">
                             <b className="text-slate-900">{order.reference}</b>
-                            <span className="text-slate-600">{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(order.total_cents / 100)}</span>
+                            <span className="text-slate-600">{new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' }).format(order.total_cents / 100)}</span>
                           </div>
                           <p className="mt-1 text-xs text-slate-500">
-                            {new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(order.created_at))} · {paymentStatusLabel(order.payment_status)} · {orderStatusLabels[order.status as keyof typeof orderStatusLabels] ?? order.status}
+                            {new Intl.DateTimeFormat(brenLocale, { dateStyle: 'medium' }).format(new Date(order.created_at))} · {paymentStatusLabel(order.payment_status)} · {orderStatusLabels[order.status as keyof typeof orderStatusLabels] ?? order.status}
                           </p>
                         </li>
                       ))}
@@ -1042,6 +1052,6 @@ export default function AccountPageContent() {
         <nav aria-label="Informations juridiques" className="mt-3 flex flex-wrap justify-center gap-4"><Link href="/datenschutz" className="text-slate-600 underline">Confidentialité</Link><Link href="/retractation#retractation" className="rounded-lg border border-orange-400/50 px-3 py-2 font-bold text-orange-700">Me rétracter du contrat</Link></nav>
       </footer>
     </div>
-  );
+  ), brenLocale);
 }
 

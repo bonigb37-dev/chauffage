@@ -1,3 +1,4 @@
+import createNextIntlPlugin from 'next-intl/plugin';
 import type { NextConfig } from 'next';
 
 // Stop the build rather than embedding a privileged Supabase credential in JS.
@@ -12,6 +13,7 @@ const privilegedPublicName = Object.keys(process.env).some(name => name.startsWi
 if (privilegedPublicKey || privilegedPublicName) throw new Error('Une clé privée est configurée dans une variable publique. Corrigez la configuration avant de compiler.');
 
 const config: NextConfig = {
+  distDir: process.env.BREN_BUILD_DIR || '.next',
   poweredByHeader: false,
   async headers() {
     return [{ source: '/:path*', headers: [
@@ -22,4 +24,4 @@ const config: NextConfig = {
   },
 };
 
-export default config;
+export default createNextIntlPlugin('./i18n/request.ts')(config);

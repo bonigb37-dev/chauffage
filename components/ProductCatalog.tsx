@@ -1,8 +1,13 @@
 ﻿'use client';
+import { localizeNode, translate } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
+
 import { ArrowRight, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import ProductCard from '@/components/ProductCard';
@@ -18,6 +23,8 @@ const sectionDescriptions: Record<string, string> = {
 };
 
 export default function ProductCatalog({ initialCategory = 'Tous les produits' }: { initialCategory?: string }) {
+  const brenLocale = useLocale() as Locale;
+
   const { products } = useCart();
   const searchParams = useSearchParams();
   const requestedSearch = searchParams.get('search') ?? '';
@@ -32,9 +39,9 @@ export default function ProductCatalog({ initialCategory = 'Tous les produits' }
   }, [products, requestedSearch, requestedCategory, initialCategory]);
   const visibleProducts = useMemo(() => products.filter((product) => {
     const matchesCategory = category === 'Tous les produits' || product.type === category || (category === 'Granulés' && product.type.startsWith('Granulés'));
-    const terms = `${product.name} ${product.type} ${product.quantity} ${product.description}`.toLocaleLowerCase('fr');
-    return matchesCategory && terms.includes(query.trim().toLocaleLowerCase('fr'));
-  }), [products, category, query]);
+    const terms = [product.name, product.type, product.quantity, product.description].map(value => `${value} ${translate(value, brenLocale)}`).join(' ').toLocaleLowerCase(brenLocale);
+    return matchesCategory && terms.includes(query.trim().toLocaleLowerCase(brenLocale));
+  }), [products, category, query, brenLocale]);
   const groupedProducts = useMemo(() => {
     const grouped = new Map<string, typeof visibleProducts>();
     for (const product of visibleProducts) {
@@ -46,7 +53,7 @@ export default function ProductCatalog({ initialCategory = 'Tous les produits' }
     return [...ordered, ...customSections];
   }, [visibleProducts]);
 
-  return (
+  return localizeNode((
     <section className="container py-8 sm:py-10">
       <div className="flex flex-col gap-5 rounded-3xl border border-stone-200 bg-white p-4 shadow-sm sm:p-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="relative w-full lg:max-w-sm">
@@ -94,5 +101,5 @@ export default function ProductCatalog({ initialCategory = 'Tous les produits' }
         <div className="grid items-stretch gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">{sectionProducts.map((product) => <div id={`produit-${product.id}`} key={product.id} className="h-full"><ProductCard p={product} /></div>)}</div>
       </section>) : <div className="rounded-3xl border border-dashed border-gray-300 py-20 text-center"><h2 className="text-xl font-black">Aucun produit trouvé</h2><p className="mt-2 text-gray-500">Essayez un autre terme ou choisissez une autre catégorie.</p></div>}
     </section>
-  );
+  ), brenLocale);
 }

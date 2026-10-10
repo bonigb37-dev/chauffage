@@ -1,4 +1,8 @@
-import Link from 'next/link';
+
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+import Link from '@/i18n/navigation';
 import { ArrowRight, BadgeCheck, Boxes, CheckCircle2, Truck } from 'lucide-react';
 
 const services = [
@@ -8,7 +12,9 @@ const services = [
 ];
 
 export default function Services() {
-  return (
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode((
     <section className="bg-gray-950 py-24 text-white">
       <div className="container">
         <div className="max-w-2xl"><p className="font-bold uppercase tracking-[.2em] text-orange-400">Notre accompagnement</p><h2 className="mt-3 text-4xl font-black sm:text-5xl">Du bon combustible au bon format.</h2></div>
@@ -36,5 +42,5 @@ export default function Services() {
         </div>
       </div>
     </section>
-  );
+  ), brenLocale);
 }

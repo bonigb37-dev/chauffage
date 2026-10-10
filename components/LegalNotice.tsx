@@ -1,8 +1,14 @@
-import Link from 'next/link';
+
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+import Link from '@/i18n/navigation';
 import { storeConfig, deliverySummary } from '@/lib/store-config';
 
 export default function LegalNotice() {
-  return (
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode((
     <section aria-labelledby="legal-notice-title" className="border-t border-stone-200 bg-stone-50 py-10 sm:py-14">
       <div className="container">
         <h1 id="legal-notice-title" className="text-3xl font-black text-gray-950">Avis juridique</h1>
@@ -32,5 +38,5 @@ export default function LegalNotice() {
         </div>
       </div>
     </section>
-  );
+  ), brenLocale);
 }

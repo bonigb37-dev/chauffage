@@ -1,8 +1,13 @@
+import { localizeMetadata } from '@/lib/seo';
+
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
 import { publicMetadata } from '@/lib/seo';
 
-export const metadata = publicMetadata("À propos de Bren-nholz : combustibles bois en Allemagne", "Découvrez Bren-nholz, enseigne de Leylines, son catalogue de combustibles bois et ses informations de contact pour vos achats en Allemagne.", "/a-propos");
+export async function generateMetadata() { return localizeMetadata(await (publicMetadata("À propos de Bren-nholz : combustibles bois en Allemagne", "Découvrez Bren-nholz, enseigne de Leylines, son catalogue de combustibles bois et ses informations de contact pour vos achats en Allemagne.", "/a-propos"))); }
 
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import Image from 'next/image';
 import {
   Award,
@@ -45,7 +50,9 @@ const highlights = [
 ];
 
 export default function AboutPage() {
-  return (
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode((
     <main className="bg-gray-50 text-gray-900 pb-20">
       {/* Hero Header */}
       <section className="bg-gradient-to-br from-gray-950 via-gray-900 to-amber-950 text-white py-16 sm:py-24">
@@ -244,5 +251,5 @@ export default function AboutPage() {
         </div>
       </section>
     </main>
-  );
+  ), brenLocale);
 }

@@ -1,9 +1,16 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { Star, ShieldCheck, Truck } from 'lucide-react';
 import { getTotalReviewsSummary } from '@/lib/reviews';
+import LanguageSelector from '@/components/LanguageSelector';
 
 export default function TopTrustBanner() {
+  const brenLocale = useLocale() as Locale;
+
   const { totalReviews, averageRating } = getTotalReviewsSummary();
   const displayCount = totalReviews;
   const rating = averageRating || 4.8;
@@ -13,7 +20,7 @@ export default function TopTrustBanner() {
     window.dispatchEvent(new CustomEvent('open-all-reviews'));
   };
 
-  return (
+  return localizeNode((
     <aside aria-label="Avis clients et livraison" className="bg-orange-600 text-white border-b border-orange-700/60 py-2 px-3 text-xs sm:text-sm font-semibold shadow-inner select-none">
       <div className="container flex flex-wrap items-center justify-center sm:justify-between gap-2 sm:gap-4 max-w-7xl mx-auto">
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
@@ -47,6 +54,7 @@ export default function TopTrustBanner() {
         </div>
 
         {/* Trusted Guarantee Badge Style Icon */}
+        <LanguageSelector />
         <div className="hidden sm:flex items-center gap-1.5 bg-orange-700/60 rounded-full px-2.5 py-1 text-xs text-orange-100 border border-orange-400/30 shrink-0">
           <ShieldCheck size={15} className="text-amber-300 shrink-0" />
           <span className="font-extrabold text-[11px] tracking-wide uppercase">Garantie Avis Vérifiés</span>
@@ -54,5 +62,5 @@ export default function TopTrustBanner() {
         </div>
       </div>
     </aside>
-  );
+  ), brenLocale);
 }

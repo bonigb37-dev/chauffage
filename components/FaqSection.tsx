@@ -1,15 +1,21 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
 
-import Link from 'next/link';
+
+import Link from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import { faqItems } from '@/lib/faq';
 
 type Props = { compact?: boolean };
 
 export default function FaqSection({ compact = false }: Props) {
+  const brenLocale = useLocale() as Locale;
+
   const items = compact ? faqItems.slice(0, 5) : faqItems;
 
-  return (
+  return localizeNode((
     <section className="bg-[#faf8f3] py-16 sm:py-20">
       <div className="container max-w-4xl">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
@@ -31,5 +37,5 @@ export default function FaqSection({ compact = false }: Props) {
         </div>
       </div>
     </section>
-  );
+  ), brenLocale);
 }

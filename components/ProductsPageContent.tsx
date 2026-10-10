@@ -1,3 +1,7 @@
+
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { getLocale } from 'next-intl/server';
 import { ArrowDown, ArrowRight, BadgeCheck, Boxes, Search } from 'lucide-react';
 import ProductCatalog from '@/components/ProductCatalog';
 import { Suspense } from 'react';
@@ -12,10 +16,12 @@ const benefits = [
 ];
 
 export default async function ProductsPageContent({ categorySlug }: { categorySlug?: string }) {
+  const brenLocale = await getLocale() as Locale;
+
   const products = await getServerCatalog();
   const productFamilyCount = new Set(products.map((product) => product.type)).size;
   const category = productCategories.find((item) => item.slug === categorySlug);
-  return (
+  return localizeNode((
     <main>
       <section className="relative overflow-hidden bg-[#f8f5ee]">
         <div className="container grid min-h-[380px] items-center gap-8 py-10 lg:grid-cols-[1fr_0.9fr] lg:py-12">
@@ -33,5 +39,5 @@ export default async function ProductsPageContent({ categorySlug }: { categorySl
       </section>
       <div id="catalogue" className="scroll-mt-24"><Suspense fallback={<p className="container py-8" role="status">Chargement des produits…</p>}><ProductCatalog initialCategory={category?.type} /></Suspense></div>
     </main>
-  );
+  ), brenLocale);
 }

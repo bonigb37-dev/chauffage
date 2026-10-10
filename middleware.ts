@@ -1,6 +1,18 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
+  const incomingPath = request.nextUrl.pathname;
+  const pageRequest = !incomingPath.startsWith('/api/') && !/\.[a-z0-9]+$/i.test(incomingPath);
+  const prefix = incomingPath.split('/')[1];
+  const locale = isLocale(prefix) ? prefix : detectLocale(request.cookies.get('bren_locale')?.value, request.headers.get('accept-language'));
+  if (pageRequest && !isLocale(prefix)) {
+    const target = request.nextUrl.clone();
+    target.pathname = `/${locale}${incomingPath === '/' ? '' : incomingPath}`;
+    const redirect = NextResponse.redirect(target);
+    redirect.headers.set('Vary', 'Accept-Language, Cookie');
+    redirect.headers.set('Cache-Control', 'private, no-store');
+    return redirect;
+  }
   const nonce = btoa(crypto.randomUUID());
   const development = process.env.NODE_ENV !== 'production';
   const connections = ["'self'"];
@@ -24,21 +36,25 @@ export function middleware(request: NextRequest) {
   ].join('; ');
   const requestHeaders = new Headers(request.headers);
   // Routing hint only: never used to grant access or identify a user.
-  requestHeaders.set('x-bren-pathname', request.nextUrl.pathname);
+  requestHeaders.set('x-bren-pathname', stripLocale(incomingPath));
+  requestHeaders.set('x-bren-locale', locale);
   requestHeaders.set('x-nonce', nonce);
   // Next.js reads this request header to nonce its generated scripts.
   requestHeaders.set('Content-Security-Policy', policy);
-  const response = NextResponse.next({ request: { headers: requestHeaders } });
+  const target = request.nextUrl.clone();
+  target.pathname = stripLocale(incomingPath);
+  const response = pageRequest ? NextResponse.rewrite(target, { request: { headers: requestHeaders } }) : NextResponse.next({ request: { headers: requestHeaders } });
   response.headers.set('Content-Security-Policy', policy);
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   if (!development) response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-  if (/^\/(api|admin|super-admin|compte|commande)(\/|$)/.test(request.nextUrl.pathname)) {
+  if (/^\/(api|admin|super-admin|compte|commande)(\/|$)/.test(stripLocale(incomingPath))) {
     response.headers.set('Cache-Control', 'private, no-store');
   }
   return response;
 }
 
 export const config = { matcher: ['/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)'] };
+import { detectLocale, isLocale, stripLocale } from './i18n/routing';

@@ -1,14 +1,20 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+
+import Link from '@/i18n/navigation';
+import { usePathname } from '@/i18n/navigation';
 import { storeConfig } from '@/lib/store-config';
 import { ArrowRight, Flame, MapPin, Truck } from 'lucide-react';
 
 export default function Footer() {
+  const brenLocale = useLocale() as Locale;
+
   const pathname = usePathname();
   if (pathname === '/compte') return null;
-  return (
+  return localizeNode((
     <footer className="bg-[#2b2b2b] text-white border-t border-white/10">
       <div className="container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="sm:col-span-2 lg:col-span-2">
@@ -44,5 +50,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
+  ), brenLocale);
 }

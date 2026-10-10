@@ -1,7 +1,11 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { useEffect, useState, type ReactNode } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
 import type { User } from '@supabase/supabase-js';
 import { isPasswordRecoveryRedirect, supabase } from '@/lib/supabase';
 import { incomingAuthLink, verifyIncomingAuthLink, clearEmailConfirmation } from '@/lib/auth-link';
@@ -11,6 +15,8 @@ import { AccessContext } from '@/components/AccessContext';
 type Role = AdminRole | null;
 
 export default function RoleAccessGuard({ children }: { children: ReactNode }) {
+  const brenLocale = useLocale() as Locale;
+
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
@@ -102,11 +108,11 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
   const content = <AccessContext.Provider value={{ user, role, verified: verified && !error }}>{children}</AccessContext.Provider>;
   if (!requiresSessionCheck && authLinkReady && !destination) return content;
 
-  if (error) return <main className="min-h-[70vh] p-8 text-center">
+  if (error) return localizeNode(<main className="min-h-[70vh] p-8 text-center">
     <p role="alert">{error}</p>
     <button type="button" onClick={() => { setError(''); setRetry((value) => value + 1); }} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white">Réessayer</button>
     <button type="button" onClick={() => void supabase?.auth.signOut()} className="ml-4 underline">Se déconnecter</button>
-  </main>;
-  if (!authLinkReady || !verified || destination) return <main className="min-h-[70vh] p-8 text-center" role="status">Vérification de votre accès…</main>;
+  </main>, brenLocale);
+  if (!authLinkReady || !verified || destination) return localizeNode(<main className="min-h-[70vh] p-8 text-center" role="status">Vérification de votre accès…</main>, brenLocale);
   return content;
 }

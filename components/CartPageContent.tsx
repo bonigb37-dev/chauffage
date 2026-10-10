@@ -1,15 +1,21 @@
 ﻿'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import { Minus, Plus, ShoppingCart, Trash2 } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import DeliveryInformation from '@/components/DeliveryInformation';
 import PaymentMethods from '@/components/PaymentMethods';
 
-const euros = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
 
 export default function CartPageContent() {
+  const brenLocale = useLocale() as Locale;
+  const euros = new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' });
+
   const { items, ready, setQuantity, removeItem, products } = useCart();
   const lines = items.flatMap((line) => {
     const product = products.find((item) => item.id === line.productId);
@@ -18,9 +24,9 @@ export default function CartPageContent() {
   const pricedTotal = lines.reduce((total, line) => total + (line.product.priceAmount ?? 0) * line.quantity, 0);
   const hasUnpricedProduct = lines.some((line) => line.product.priceAmount === undefined);
 
-  if (!ready) return <main className="container min-h-[60vh] py-16"><div className="h-10 w-56 animate-pulse rounded bg-gray-100" /><div className="mt-8 h-64 animate-pulse rounded-3xl bg-gray-100" /></main>;
+  if (!ready) return localizeNode(<main className="container min-h-[60vh] py-16"><div className="h-10 w-56 animate-pulse rounded bg-gray-100" /><div className="mt-8 h-64 animate-pulse rounded-3xl bg-gray-100" /></main>, brenLocale);
 
-  return (
+  return localizeNode((
     <main className="min-h-[60vh] bg-[#faf9f6]">
       <section className="border-b border-stone-200 bg-white py-12 sm:py-16"><div className="container"><p className="text-sm font-bold uppercase tracking-[.18em] text-orange-600">Votre sélection</p><h1 className="mt-2 text-4xl font-black sm:text-5xl">Mon panier</h1><p className="mt-3 text-gray-500">Vérifiez les produits et les quantités avant de poursuivre.</p></div></section>
       <div className="container grid gap-8 py-10 lg:grid-cols-[1fr_360px] lg:py-14">
@@ -28,5 +34,5 @@ export default function CartPageContent() {
         {lines.length > 0 && <aside className="h-fit rounded-3xl border border-stone-200 bg-white p-6 shadow-sm sm:p-7"><h2 className="text-xl font-black">Récapitulatif</h2><div className="mt-6 space-y-4 border-b border-gray-100 pb-5 text-sm"><div className="flex justify-between gap-4 text-gray-600"><span>Montant des produits</span><b className="text-gray-950">{hasUnpricedProduct ? 'Indisponible à la vente' : euros.format(pricedTotal / 100)}</b></div><div className="flex justify-between gap-4 text-gray-600"><span>Livraison</span><span className="max-w-[180px] text-right">Incluse dans le prix des produits</span></div></div><div className="mt-5 flex justify-between gap-4"><b>Total, livraison incluse</b><b className="text-right text-sm text-orange-700">{hasUnpricedProduct ? 'Indisponible à la vente' : euros.format(pricedTotal / 100)}</b></div><DeliveryInformation/><PaymentMethods compact/><Link href="/commande" className="mt-6 block rounded-full bg-orange-600 px-5 py-4 text-center font-bold text-white transition hover:bg-orange-700">Continuer vers la commande</Link><Link href="/produits" className="mt-4 block text-center text-sm font-bold text-gray-500 hover:text-orange-600">Continuer mes achats</Link></aside>}
       </div>
     </main>
-  );
+  ), brenLocale);
 }

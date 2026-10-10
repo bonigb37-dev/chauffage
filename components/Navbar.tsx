@@ -1,8 +1,12 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import Link from '@/i18n/navigation';
+import { usePathname, useRouter } from '@/i18n/navigation';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import {
@@ -33,6 +37,8 @@ const links = [
 ];
 
 export default function Navbar() {
+  const brenLocale = useLocale() as Locale;
+
   const pathname = usePathname();
   const router = useRouter();
   const { itemCount, items, products } = useCart();
@@ -160,7 +166,7 @@ export default function Navbar() {
     ? `Compte client · ${user.user_metadata?.full_name || user.email?.split('@')[0] || 'Connecté'}`
     : 'Espace client';
 
-  return (
+  return localizeNode((
     <>
       {/* Top Banner for Delivery Zones */}
       <div
@@ -873,6 +879,6 @@ export default function Navbar() {
         onClose={() => setDeliveryModalOpen(false)}
       />
     </>
-  );
+  ), brenLocale);
 }
 

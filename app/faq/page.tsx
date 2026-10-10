@@ -1,13 +1,20 @@
+import { localizeMetadata } from '@/lib/seo';
+
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
 import { publicMetadata } from '@/lib/seo';
 
-export const metadata = publicMetadata("Livraison, paiement et stockage : vos questions | Bren-nholz", "Consultez les réponses sur le paiement par virement, la livraison en Allemagne, le déchargement des palettes et le stockage des combustibles bois.", "/faq");
+export async function generateMetadata() { return localizeMetadata(await (publicMetadata("Livraison, paiement et stockage : vos questions | Bren-nholz", "Consultez les réponses sur le paiement par virement, la livraison en Allemagne, le déchargement des palettes et le stockage des combustibles bois.", "/faq"))); }
 
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
 
 export default function FaqPage() {
-  return (
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode((
     <main>
       <section className="bg-gray-950 py-20 text-white sm:py-24">
         <div className="container max-w-4xl">
@@ -27,5 +34,5 @@ export default function FaqPage() {
         </Link>
       </section>
     </main>
-  );
+  ), brenLocale);
 }

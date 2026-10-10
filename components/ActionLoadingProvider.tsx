@@ -1,4 +1,8 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import FirewoodLoader from './FirewoodLoader';
@@ -20,6 +24,8 @@ const ActionLoadingContext = createContext<ActionLoadingContextType>({
 export const useActionLoading = () => useContext(ActionLoadingContext);
 
 export function ActionLoadingProvider({ children }: { children: React.ReactNode }) {
+  const brenLocale = useLocale() as Locale;
+
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('Chargement en cours…');
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -104,7 +110,7 @@ export function ActionLoadingProvider({ children }: { children: React.ReactNode 
     };
   }, [triggerLoading]);
 
-  return (
+  return localizeNode((
     <ActionLoadingContext.Provider value={{ isLoading, message, triggerLoading, stopLoading }}>
       {children}
 
@@ -121,5 +127,5 @@ export function ActionLoadingProvider({ children }: { children: React.ReactNode 
         </div>
       )}
     </ActionLoadingContext.Provider>
-  );
+  ), brenLocale);
 }

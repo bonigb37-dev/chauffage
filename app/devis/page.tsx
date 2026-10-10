@@ -1,7 +1,11 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { FormEvent, useState } from 'react';
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import { ArrowRight, Calculator, CheckCircle2, FileText, MapPin, PhoneCall, ShieldCheck, Truck } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
 import { useActionLoading } from '@/components/ActionLoadingProvider';
@@ -10,6 +14,8 @@ import { supabase } from '@/lib/supabase';
 const inputClass = 'mt-1.5 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
 export default function DemandeDevis() {
+  const brenLocale = useLocale() as Locale;
+
   const { stopLoading } = useActionLoading();
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
@@ -77,7 +83,7 @@ Précisions: ${details}`;
     }
   }
 
-  return (
+  return localizeNode((
     <main className="bg-[#faf8f5] min-h-screen">
       {/* Hero Header */}
       <section className="bg-gradient-to-b from-[#2d221c] to-[#1d1612] py-14 text-white sm:py-20">
@@ -273,5 +279,5 @@ Précisions: ${details}`;
 
       <FaqSection compact />
     </main>
-  );
+  ), brenLocale);
 }

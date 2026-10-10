@@ -1,17 +1,23 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import { createPortal } from 'react-dom';
 import { ArrowLeft, ArrowRight, Check, Expand, Heart, ShoppingCart, Star, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { productPathSegment, type Product } from '@/lib/products';
 import { getAverageRating } from '@/lib/reviews';
 import { useCart } from '@/components/CartProvider';
 
-const formatPrice = (amount: number) => new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount / 100);
 
 export default function ProductCard({ p }: { p: Product }) {
+  const brenLocale = useLocale() as Locale;
+  const formatPrice = (amount: number) => new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' }).format(amount / 100);
+
   const [open, setOpen] = useState(false);
   const [zoomed, setZoomed] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
@@ -61,7 +67,7 @@ export default function ProductCard({ p }: { p: Product }) {
     };
   }, [stockOpen]);
 
-  return (
+  return localizeNode((
     <article className="group flex h-full flex-col rounded-2xl border border-stone-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md">
       {/* Product Image Section */}
       <div className="relative h-48 sm:h-52 w-full overflow-hidden rounded-t-2xl border-b border-stone-100 bg-stone-50/50">
@@ -255,5 +261,5 @@ export default function ProductCard({ p }: { p: Product }) {
         </div>
       </div>
     </article>
-  );
+  ), brenLocale);
 }

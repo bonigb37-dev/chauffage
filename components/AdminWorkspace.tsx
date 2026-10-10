@@ -1,8 +1,12 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import Link from '@/i18n/navigation';
+import { useRouter } from '@/i18n/navigation';
 import { LoaderCircle, RefreshCw, Trash2 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
@@ -31,12 +35,16 @@ function date(value: string) { return new Intl.DateTimeFormat('fr-FR', { dateSty
 function emptyProduct(products: Product[]): Product { return { id: Math.max(0, ...products.map((item) => item.id)) + 1, name: '', type: 'Granulés', quantity: '', price: 'Sur devis', priceAmount: 0, description: '', image: '/pellets.webp', stock: -1 }; }
 
 function StatusSelect({ value, onChange, disabled, order = false }: { value: RequestStatus; onChange: (status: RequestStatus) => void; disabled: boolean; order?: boolean }) {
-  return <select value={value} disabled={disabled} onChange={(event) => onChange(event.target.value as RequestStatus)} className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm font-semibold text-gray-800 disabled:opacity-50">
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode(<select value={value} disabled={disabled} onChange={(event) => onChange(event.target.value as RequestStatus)} className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm font-semibold text-gray-800 disabled:opacity-50">
     {Object.entries(order ? orderStatusLabels : statusLabels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}
-  </select>;
+  </select>, brenLocale);
 }
 
 export default function AdminWorkspace({ superAdminOnly = false }: { superAdminOnly?: boolean }) {
+  const brenLocale = useLocale() as Locale;
+
   const router = useRouter();
   const access = useVerifiedAccess();
   const loadGeneration = useRef(0);
@@ -298,7 +306,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   const canSeeWorkspace = role === 'admin' || role === 'super_admin' || role === 'owner';
   const canSeeSuperAdmin = role === 'super_admin' || role === 'owner';
 
-  return <main className="min-h-[70vh] bg-[#fffaf5] py-10 sm:py-14">
+  return localizeNode(<main className="min-h-[70vh] bg-[#fffaf5] py-10 sm:py-14">
     <div className="container max-w-6xl">
       <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
         <div><p className="text-sm font-bold uppercase tracking-[.18em] text-orange-600">Bren-nholz · administration</p><h1 className="mt-2 text-3xl font-black text-gray-950 sm:text-4xl">{superAdminOnly ? (role === 'owner' ? 'Administration Owner' : 'Super administration') : 'Espace administrateur'}</h1></div>
@@ -316,11 +324,13 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       {notice && <p role="status" className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">{notice}</p>}
       <button type="button" onClick={() => void loadData(user)} className="mt-8 flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900"><RefreshCw size={15}/> Actualiser les données</button>
     </div>
-  </main>;
+  </main>, brenLocale);
 }
 
 function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTransfer }: { contacts: ContactRow[]; orders: OrderRow[]; workingId: string; onStatusChange: (table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) => void; onConfirmTransfer: (id: number) => void }) {
-  return <>
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode(<>
     <div className="mt-8 grid gap-4 sm:grid-cols-3">
       {[['Demandes de contact', contacts.length], ['Demandes de commande', orders.length], ['À traiter', contacts.filter((item) => item.status !== 'done').length + orders.filter((item) => item.status !== 'done').length]].map(([label, count]) => <article key={label} className="rounded-2xl border border-stone-200 bg-white p-5"><p className="text-sm font-semibold text-gray-500">{label}</p><p className="mt-2 text-3xl font-black text-gray-950">{count}</p></article>)}
     </div>
@@ -347,20 +357,22 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
         <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-gray-700">{item.message}</p>
       </article>)}</div>}
     </section>
-  </>;
+  </>, brenLocale);
 }
 
 function SuperAdminPanel({ roles, userId, currentRole, newRole, setNewRole, targetUserId, setTargetUserId, onSubmit, onRemove, saving, workingId }: {
   roles: RoleRow[]; userId: string; currentRole: Role | null; newRole: Role; setNewRole: (role: Role) => void; targetUserId: string; setTargetUserId: (value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void; onRemove: (userId: string) => void; saving: boolean; workingId: string;
 }) {
+  const brenLocale = useLocale() as Locale;
+
   const visibleRoles = roles.filter((entry) => currentRole === 'owner' || entry.role !== 'owner');
   const roleGroups: { role: Role; title: string }[] = [
     ...(currentRole === 'owner' ? [{ role: 'owner' as const, title: 'Propriétaires' }] : []),
     { role: 'super_admin', title: 'Super administrateurs' },
     { role: 'admin', title: 'Administrateurs' },
   ];
-  return <>
+  return localizeNode(<>
     <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
       <h2 className="text-2xl font-black">Attribuer un rôle</h2>
       <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-600">Saisissez l’adresse e-mail d’un utilisateur ayant déjà créé son compte sur le site. Pour des accès indépendants, utilisez un compte et une adresse e-mail différents pour chaque administrateur.</p>
@@ -377,45 +389,53 @@ function SuperAdminPanel({ roles, userId, currentRole, newRole, setNewRole, targ
       {entries.length === 0 ? <p className="mt-4 text-gray-500">Aucun compte dans cette catégorie.</p> : <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[620px] text-left text-sm"><thead><tr className="border-b text-gray-500"><th className="pb-3 pr-4">UUID utilisateur</th><th className="pb-3 pr-4">Rôle</th><th className="pb-3 pr-4">Ajouté le</th><th className="pb-3 text-right">Action</th></tr></thead><tbody>{entries.map((entry) => <tr key={entry.user_id} className="border-b last:border-0"><td className="py-4 pr-4 font-mono text-xs">{entry.user_id}</td><td className="py-4 pr-4 font-bold">{entry.role === 'owner' ? 'Owner' : entry.role === 'super_admin' ? 'Super admin' : 'Admin'}</td><td className="py-4 pr-4 text-gray-500">{date(entry.created_at)}</td><td className="py-4 text-right"><button type="button" disabled={entry.user_id === userId || workingId === entry.user_id} onClick={() => void onRemove(entry.user_id)} title={entry.user_id === userId ? 'Vous ne pouvez pas retirer votre propre accès ici.' : 'Retirer les droits'} className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 font-semibold text-red-700 disabled:cursor-not-allowed disabled:opacity-40"><Trash2 size={15}/> Retirer</button></td></tr>)}</tbody></table></div>}
     </section>;
     })}
-  </>;
+  </>, brenLocale);
 }
 
 function ActivityPanel({ activities }: { activities: ActivityRow[] }) {
+  const brenLocale = useLocale() as Locale;
+
   const onlineCutoff = Date.now() - 2 * 60_000;
-  return <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
+  return localizeNode(<section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
     <h2 className="text-2xl font-black">Activité des comptes</h2>
     <p className="mt-2 text-sm text-gray-500">Un compte est marqué actif si sa dernière présence remonte à moins de deux minutes.</p>
     {activities.length === 0 ? <p className="mt-4 text-gray-500">Aucune connexion enregistrée.</p> : <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[680px] text-left text-sm"><thead><tr className="border-b text-gray-500"><th className="pb-3 pr-4">Compte</th><th className="pb-3 pr-4">État</th><th className="pb-3 pr-4">Dernière activité</th><th className="pb-3">Connexions</th></tr></thead><tbody>{activities.map((entry) => <tr key={entry.user_id} className="border-b last:border-0"><td className="py-4 pr-4">{entry.email ?? entry.user_id}</td><td className="py-4 pr-4"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${new Date(entry.last_seen_at).getTime() > onlineCutoff ? 'bg-emerald-50 text-emerald-800' : 'bg-stone-100 text-stone-600'}`}>{new Date(entry.last_seen_at).getTime() > onlineCutoff ? 'En ligne' : 'Hors ligne'}</span></td><td className="py-4 pr-4 text-gray-600">{date(entry.last_seen_at)}</td><td className="py-4">{entry.sign_in_count}</td></tr>)}</tbody></table></div>}
-  </section>;
+  </section>, brenLocale);
 }
 
 function AccountRegistrationPanel({ accounts }: { accounts: ClientAccountRow[] }) {
-  return <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode(<section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
     <h2 className="text-2xl font-black">Comptes inscrits</h2>
     <p className="mt-2 text-sm text-gray-500">Les inscriptions effectuées sur le site apparaissent ici, même avant leur première connexion confirmée.</p>
     {accounts.length === 0 ? <p className="mt-4 text-gray-500">Aucune inscription trouvée. Vérifiez que le script SQL de l’administration a été exécuté dans le projet Supabase utilisé par le site.</p> : <div className="mt-5 overflow-x-auto"><table className="w-full min-w-[560px] text-left text-sm"><thead><tr className="border-b text-gray-500"><th className="pb-3 pr-4">Nom</th><th className="pb-3 pr-4">Adresse e-mail</th><th className="pb-3 pr-4">Inscrit le</th><th className="pb-3">UUID</th></tr></thead><tbody>{accounts.map((account) => <tr key={account.user_id} className="border-b last:border-0"><td className="py-4 pr-4">{account.full_name || '—'}</td><td className="py-4 pr-4">{account.email || '—'}</td><td className="py-4 pr-4 text-gray-600">{date(account.created_at)}</td><td className="py-4 font-mono text-xs">{account.user_id}</td></tr>)}</tbody></table></div>}
-  </section>;
+  </section>, brenLocale);
 }
 
 function AuditPanel({ audit }: { audit: AuditRow[] }) {
+  const brenLocale = useLocale() as Locale;
+
   const actionNames: Record<string, string> = { insert: 'Création', update: 'Modification', delete: 'Suppression' };
-  return <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
+  return localizeNode(<section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
     <h2 className="text-2xl font-black">Journal des actions</h2>
     <p className="mt-2 text-sm text-gray-500">Journal privé des changements faits dans l’administration.</p>
     {audit.length === 0 ? <p className="mt-4 text-gray-500">Aucune action enregistrée.</p> : <div className="mt-5 space-y-3">{audit.map((entry) => <article key={entry.id} className="rounded-xl border border-stone-200 p-4"><div className="flex flex-wrap justify-between gap-2"><b>{actionNames[entry.action] ?? entry.action} · {entry.entity}</b><time className="text-sm text-gray-500">{date(entry.created_at)}</time></div><p className="mt-1 text-sm text-gray-600">Compte : {entry.actor_user_id ?? 'système'} · identifiant : {entry.entity_id ?? '—'} · rôle : {entry.actor_role ?? 'aucun'}</p><details className="mt-3"><summary className="cursor-pointer text-sm font-semibold text-orange-700">Afficher les valeurs enregistrées</summary><pre className="mt-2 max-h-80 overflow-auto rounded-lg bg-stone-50 p-3 text-xs leading-5">{JSON.stringify(entry.details, null, 2)}</pre></details></article>)}</div>}
-  </section>;
+  </section>, brenLocale);
 }
 
 function ProductAdminPanel({ products, product, setProduct, editing, setEditing, saving, onSave, onDelete, onBankSave, bankForm, setBankForm }: {
   products: Product[]; product: Product; setProduct: (product: Product) => void; editing: boolean; setEditing: (editing: boolean) => void; saving: boolean;
   onSave: (event: FormEvent<HTMLFormElement>) => void; onDelete: (id: number | number[]) => void; onBankSave: (event: FormEvent<HTMLFormElement>) => Promise<boolean>; bankForm: string; setBankForm: (value: string) => void;
 }) {
+  const brenLocale = useLocale() as Locale;
+
   const [bankSaved, setBankSaved] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const selectedProducts = products.filter((item) => selectedIds.includes(item.id));
   const allSelected = products.length > 0 && selectedProducts.length === products.length;
   const input = 'mt-1 w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm';
-  return <>
+  return localizeNode(<>
     <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
       <h2 className="text-2xl font-black">Catalogue et stock</h2>
       <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-stone-50 p-4">
@@ -427,7 +447,7 @@ function ProductAdminPanel({ products, product, setProduct, editing, setEditing,
       <form onSubmit={onSave} className="mt-6 rounded-xl bg-stone-50 p-4 sm:p-5"><h3 className="text-lg font-bold">{editing ? 'Modifier le produit sélectionné' : 'Ajouter un produit'}</h3><div className="mt-4 grid gap-4 sm:grid-cols-2"><label className="text-sm font-semibold">ID produit<input required type="number" min="1" value={product.id} onChange={(e) => setProduct({ ...product, id: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Nom<input required value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Catégorie<input required value={product.type} onChange={(e) => setProduct({ ...product, type: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Conditionnement<input required value={product.quantity} onChange={(e) => setProduct({ ...product, quantity: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Prix en centimes (0 = sur devis)<input type="number" min="0" value={product.priceAmount ?? 0} onChange={(e) => setProduct({ ...product, priceAmount: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Stock (-1 non suivi, 0 rupture)<input required type="number" min="-1" value={product.stock ?? -1} onChange={(e) => { const stock = Number(e.target.value); setProduct({ ...product, stock, availability: stock < 0 ? (product.availability === 'Rupture de stock' ? undefined : product.availability) : stock === 0 ? 'Rupture de stock' : 'En stock' }); }} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Image (chemin dans /public, ex. /pellets.webp)<input required value={product.image} onChange={(e) => setProduct({ ...product, image: e.target.value })} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Description<textarea required rows={3} value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} className={input} /></label></div><div className="mt-4 flex flex-wrap gap-3"><button type="submit" disabled={saving} className="rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement...' : 'Enregistrer le produit'}</button>{editing && <button type="button" onClick={() => { setEditing(false); setProduct(emptyProduct(products)); }} className="rounded-lg border px-5 py-3 font-bold">Nouveau produit</button>}</div></form>
     </section>
     <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7"><h2 className="text-2xl font-black">Coordonnées de virement</h2><form onSubmit={async (event) => { setBankSaved(false); setBankSaved(await onBankSave(event)); }} className="mt-4"><label className="text-sm font-semibold">Informations bancaires affichées aux clients<textarea rows={5} value={bankForm} disabled={saving} onChange={(e) => { setBankSaved(false); setBankForm(e.target.value); }} placeholder="Bénéficiaire, IBAN, BIC et référence à indiquer..." className={input} /></label><button type="submit" disabled={saving} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement...' : 'Enregistrer'}</button>{bankSaved && <p role="status" className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">Les coordonnées bancaires ont été sauvegardées avec succès.</p>}</form></section>
-  </>;
+  </>, brenLocale);
 }
 
 

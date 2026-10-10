@@ -1,8 +1,12 @@
 'use client';
+import { localizeNode } from '@/i18n/copy';
+import { localizedPath, type Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { useState, type FormEvent } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import { ArrowLeft, Landmark, ShieldCheck } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import DeliveryInformation from '@/components/DeliveryInformation';
@@ -11,10 +15,12 @@ import AddressAutocomplete from '@/components/AddressAutocomplete';
 import { useActionLoading } from '@/components/ActionLoadingProvider';
 import { supabase } from '@/lib/supabase';
 
-const euro = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
 const inputClass = 'mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
 export default function CheckoutPageContent() {
+  const brenLocale = useLocale() as Locale;
+  const euro = new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' });
+
   const { items, ready, products } = useCart();
   const { stopLoading } = useActionLoading();
   const [starting, setStarting] = useState(false);
@@ -75,7 +81,7 @@ export default function CheckoutPageContent() {
         reference, proofToken: result.proofToken, total: confirmedTotal, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
         customer: { firstName: details.firstName, lastName: details.lastName, email: details.email },
       }));
-      window.location.assign(`/commande/succes?reference=${encodeURIComponent(reference)}`);
+      window.location.assign(localizedPath(`/commande/succes?reference=${encodeURIComponent(reference)}`, brenLocale));
     } catch {
       stopLoading();
       setError('La demande n’a pas pu être enregistrée. Vérifiez votre connexion puis réessayez.');
@@ -83,10 +89,10 @@ export default function CheckoutPageContent() {
     }
   }
 
-  if (!ready) return <main className="container min-h-[60vh] py-16"><div className="h-64 animate-pulse rounded-3xl bg-gray-100"/></main>;
-  if (lines.length === 0) return <main className="container min-h-[60vh] py-20 text-center"><h1 className="text-3xl font-black">Votre panier est vide</h1><p className="mt-3 text-gray-500">Ajoutez des produits avant de passer commande.</p><Link href="/produits" className="mt-7 inline-flex rounded-full bg-orange-600 px-6 py-3 font-bold text-white">Voir les produits</Link></main>;
+  if (!ready) return localizeNode(<main className="container min-h-[60vh] py-16"><div className="h-64 animate-pulse rounded-3xl bg-gray-100"/></main>, brenLocale);
+  if (lines.length === 0) return localizeNode(<main className="container min-h-[60vh] py-20 text-center"><h1 className="text-3xl font-black">Votre panier est vide</h1><p className="mt-3 text-gray-500">Ajoutez des produits avant de passer commande.</p><Link href="/produits" className="mt-7 inline-flex rounded-full bg-orange-600 px-6 py-3 font-bold text-white">Voir les produits</Link></main>, brenLocale);
 
-  return (
+  return localizeNode((
     <main className="min-h-[60vh] bg-[#fffbea]">
       <section className="border-b border-stone-200 bg-white py-8 sm:py-10"><div className="container"><Link href="/panier" className="inline-flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-orange-600"><ArrowLeft size={16}/> Retour au panier</Link><p className="mt-6 text-sm font-bold uppercase tracking-[.18em] text-orange-600">Paiement par virement</p><h1 className="mt-2 text-3xl font-black sm:text-4xl">Commande</h1></div></section>
       <form onSubmit={placeOrder} className="container grid gap-8 py-9 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-12">
@@ -128,5 +134,5 @@ export default function CheckoutPageContent() {
         </aside>
       </form>
     </main>
-  );
+  ), brenLocale);
 }

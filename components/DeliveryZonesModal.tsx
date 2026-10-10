@@ -1,6 +1,10 @@
 ﻿'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
 
-import Link from 'next/link';
+
+import Link from '@/i18n/navigation';
 import { MapPin, Truck, X } from 'lucide-react';
 
 type Props = {
@@ -28,9 +32,11 @@ const deliveryRegions = [
 ];
 
 export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
+  const brenLocale = useLocale() as Locale;
+
   if (!isOpen) return null;
 
-  return <div className="fixed inset-0 z-[200] grid place-items-center overflow-y-auto bg-gray-950/80 p-3 backdrop-blur-md sm:p-5" role="dialog" aria-modal="true" aria-labelledby="modal-delivery-title" onClick={onClose}>
+  return localizeNode(<div className="fixed inset-0 z-[200] grid place-items-center overflow-y-auto bg-gray-950/80 p-3 backdrop-blur-md sm:p-5" role="dialog" aria-modal="true" aria-labelledby="modal-delivery-title" onClick={onClose}>
     <section className="my-auto w-full max-w-2xl overflow-hidden rounded-3xl border border-stone-200 bg-white text-gray-900 shadow-2xl" onClick={(event) => event.stopPropagation()}>
       <div className="bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 p-6 text-white sm:p-8">
         <div className="flex items-start justify-between gap-4">
@@ -65,5 +71,5 @@ export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
         </div>
       </div>
     </section>
-  </div>;
+  </div>, brenLocale);
 }

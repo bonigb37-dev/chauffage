@@ -1,4 +1,8 @@
 ﻿'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { products as initialProducts, type Product } from '@/lib/products';
@@ -22,6 +26,8 @@ const CartContext = createContext<CartContextValue | null>(null);
 const storageKey = 'thermopro-cart-v1';
 
 export function CartProvider({ children, initialCatalog = initialProducts }: { children: React.ReactNode; initialCatalog?: Product[] }) {
+  const brenLocale = useLocale() as Locale;
+
   const [items, setItems] = useState<CartLine[]>([]);
   const [ready, setReady] = useState(false);
   const [products, setProducts] = useState<Product[]>(initialCatalog);
@@ -127,7 +133,7 @@ export function CartProvider({ children, initialCatalog = initialProducts }: { c
     bankDetails,
   }), [items, ready, catalogReady, addItem, setQuantity, removeItem, clearCart, products, bankDetails]);
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
+  return localizeNode(<CartContext.Provider value={value}>{children}</CartContext.Provider>, brenLocale);
 }
 
 export function useCart() {

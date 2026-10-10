@@ -1,3 +1,7 @@
+
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
 const scenes = [
   { title: 'Préparation en entrepôt', position: '0%' },
   { title: 'Palettes prêtes à partir', position: '25%' },
@@ -7,7 +11,9 @@ const scenes = [
 ];
 
 export default function LogisticsGallery() {
-  return (
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode((
     <section className="logistics-gallery" aria-labelledby="logistics-gallery-title">
       <div className="logistics-gallery__inner">
         <div className="logistics-gallery__intro">
@@ -28,5 +34,5 @@ export default function LogisticsGallery() {
         </div>
       </div>
     </section>
-  );
+  ), brenLocale);
 }

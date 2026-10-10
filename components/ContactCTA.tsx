@@ -1,8 +1,14 @@
-import Link from 'next/link';
+
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+import Link from '@/i18n/navigation';
 import { ArrowRight, Calculator } from 'lucide-react';
 
 export default function ContactCTA() {
-  return (
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode((
     <section className="container py-20">
       <div className="relative overflow-hidden rounded-[2rem] bg-orange-600 px-7 py-14 text-white sm:px-12">
         <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10" />
@@ -29,5 +35,5 @@ export default function ContactCTA() {
         </div>
       </div>
     </section>
-  );
+  ), brenLocale);
 }

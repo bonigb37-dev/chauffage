@@ -1,5 +1,9 @@
+
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import { productCategories } from '@/lib/product-categories';
 
@@ -35,7 +39,9 @@ const categories = [
 ];
 
 export default function ProductCategories() {
-  return (
+  const brenLocale = useLocale() as Locale;
+
+  return localizeNode((
     <section id="categories-produits" className="scroll-mt-24 bg-[#fff9e7] py-16 sm:py-20">
       <div className="container">
         <div className="mb-9 max-w-2xl">
@@ -66,5 +72,5 @@ export default function ProductCategories() {
         </div>
       </div>
     </section>
-  );
+  ), brenLocale);
 }

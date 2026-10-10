@@ -1,0 +1,8657 @@
+[
+  {
+    "text": "À propos de Bren-nholz : combustibles bois en Allemagne",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Découvrez Bren-nholz, enseigne de Leylines, son catalogue de combustibles bois et ses informations de contact pour vos achats en Allemagne.",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Une qualité suivie de près",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Comparez les caractéristiques et les conditionnements indiqués sur les fiches pour choisir votre combustible.",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Un service attentionné",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "De la découverte de nos produits jusqu’à leur livraison, nous veillons à vous accompagner avec sérieux, réactivité et disponibilité.",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Votre satisfaction avant tout",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Votre satisfaction est au cœur de nos engagements. Pour toute question ou demande particulière, notre équipe reste à votre écoute directe.",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Caractéristiques des produits",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Certifications selon référence",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Livraison à Domicile",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Partout en Allemagne",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Conseils Personnalisés",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Informations avant commande",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "container max-w-5xl",
+    "files": [
+      "app/a-propos/page.tsx",
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Notre Histoire & Nos Valeurs",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Bren-nholz : votre boutique de combustibles bois",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Découvrez notre catalogue de granulés de bois, bûches, briquettes et produits d’allumage. Consultez les caractéristiques de chaque référence et les conditions de livraison en Allemagne.",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "container max-w-6xl -mt-10 relative z-10",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "lg:col-span-7 relative group",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Un professionnel scie une grume de bois en forêt",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "(max-width: 1024px) 100vw, 58vw",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "absolute top-5 left-5 z-10",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Chaleur, sérénité & confort",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "À votre écoute",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Commande simple en ligne, suivi personnalisé et livraison soignée à domicile.",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "lg:col-span-5 space-y-6",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Présentation",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Bienvenue chez Bren-nholz",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "« La qualité de nos combustibles et l’attention portée à notre clientèle, de la découverte de nos produits jusqu’à leur livraison, sont au centre de nos priorités. »",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Notre catalogue réunit du bois de chauffage, des granulés, des briquettes et des produits d’allumage. Consultez les informations de chaque référence et contactez-nous si vous avez besoin de précisions.",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "La satisfaction de nos clients est essentielle et nous nous engageons à la préserver au quotidien. Pour toute question, conseil technique ou demande particulière, nous vous invitons à nous contacter directement.",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Nous contacter",
+    "files": [
+      "app/a-propos/page.tsx",
+      "components/Footer.tsx",
+      "components/PolicyPage.tsx"
+    ]
+  },
+  {
+    "text": "Voir nos produits",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "container max-w-6xl mt-16 sm:mt-20",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Nos piliers de confiance",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Nos 3 engagements majeurs",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Des informations sur les produits, les conditionnements et les modalités de réception.",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Une question sur nos produits ou la livraison ?",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Notre équipe se tient à votre disposition pour préciser toutes les modalités de votre approvisionnement en Allemagne.",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Prendre contact",
+    "files": [
+      "app/a-propos/page.tsx"
+    ]
+  },
+  {
+    "text": "Conditions générales de vente — Bren-nholz",
+    "files": [
+      "app/agb/page.tsx"
+    ]
+  },
+  {
+    "text": "Consultez les conditions de commande, de paiement par virement, de livraison, de rétractation et de garantie des produits Bren-nholz.",
+    "files": [
+      "app/agb/page.tsx"
+    ]
+  },
+  {
+    "text": "Conditions générales de vente",
+    "files": [
+      "app/agb/page.tsx",
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "mt-3 space-y-3",
+    "files": [
+      "app/agb/page.tsx"
+    ]
+  },
+  {
+    "text": "Informations complémentaires",
+    "files": [
+      "app/agb/page.tsx"
+    ]
+  },
+  {
+    "text": "Rétractation, retours et remboursements",
+    "files": [
+      "app/agb/page.tsx",
+      "app/retractation/page.tsx",
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Confidentialité",
+    "files": [
+      "app/agb/page.tsx",
+      "components/AccountPageContent.tsx",
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "Retour au formulaire de commande",
+    "files": [
+      "app/agb/page.tsx"
+    ]
+  },
+  {
+    "text": "product_id,data,is_deleted",
+    "files": [
+      "app/api/checkout/route.ts",
+      "lib/server-catalog.ts"
+    ]
+  },
+  {
+    "text": "Bearer",
+    "files": [
+      "app/api/checkout/route.ts",
+      "app/api/withdrawal/route.ts",
+      "components/AdminPaymentProof.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Content-Type",
+    "files": [
+      "app/api/payment-proof/route.ts",
+      "app/api/withdrawal/route.ts",
+      "app/contact/page.tsx",
+      "app/devis/page.tsx",
+      "components/AddressAutocomplete.tsx",
+      "components/CheckoutPageContent.tsx",
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Choisissez un justificatif de 3 Mo maximum.",
+    "files": [
+      "app/api/payment-proof/route.ts",
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "POST",
+    "files": [
+      "app/api/withdrawal/route.ts",
+      "app/contact/page.tsx",
+      "app/devis/page.tsx",
+      "components/AddressAutocomplete.tsx",
+      "components/CheckoutPageContent.tsx",
+      "components/PaymentProofUpload.tsx",
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Avis juridique — Bren-nholz",
+    "files": [
+      "app/avis-juridique/page.tsx"
+    ]
+  },
+  {
+    "text": "Identité de Leylines, exploitant de Bren-nholz : siège social, représentants, entrepôt en Allemagne, numéro KvK, TVA et coordonnées de contact.",
+    "files": [
+      "app/avis-juridique/page.tsx"
+    ]
+  },
+  {
+    "text": "Passer commande — Bren-nholz",
+    "files": [
+      "app/commande/page.tsx"
+    ]
+  },
+  {
+    "text": "Confirmation de commande — Bren-nholz",
+    "files": [
+      "app/commande/succes/page.tsx"
+    ]
+  },
+  {
+    "text": "Mon compte — Bren-nholz",
+    "files": [
+      "app/compte/page.tsx"
+    ]
+  },
+  {
+    "text": "Créez votre compte client Bren-nholz ou connectez-vous.",
+    "files": [
+      "app/compte/page.tsx"
+    ]
+  },
+  {
+    "text": "Contact et informations sur vos commandes | Bren-nholz",
+    "files": [
+      "app/contact/layout.tsx"
+    ]
+  },
+  {
+    "text": "Contactez Bren-nholz pour une question sur les combustibles bois, une commande ou les conditions de livraison en Allemagne.",
+    "files": [
+      "app/contact/layout.tsx"
+    ]
+  },
+  {
+    "text": "use client",
+    "files": [
+      "app/contact/page.tsx",
+      "app/devis/page.tsx",
+      "components/AccessContext.tsx",
+      "components/AccountPageContent.tsx",
+      "components/ActionLoadingProvider.tsx",
+      "components/ActivityTracker.tsx",
+      "components/AddressAutocomplete.tsx",
+      "components/AdminPaymentProof.tsx",
+      "components/AdminWorkspace.tsx",
+      "components/AllReviewsModal.tsx",
+      "components/CartPageContent.tsx",
+      "components/CartProvider.tsx",
+      "components/CheckoutPageContent.tsx",
+      "components/CheckoutSuccessContent.tsx",
+      "components/DeliveryZonesModal.tsx",
+      "components/FaqSection.tsx",
+      "components/FirewoodLoader.tsx",
+      "components/Footer.tsx",
+      "components/Hero.tsx",
+      "components/LanguageSelector.tsx",
+      "components/Navbar.tsx",
+      "components/PaymentMethods.tsx",
+      "components/PaymentProofUpload.tsx",
+      "components/PelletGuide.tsx",
+      "components/ProductCard.tsx",
+      "components/ProductCatalog.tsx",
+      "components/ProductDetailAddButton.tsx",
+      "components/ProductHeroShowcase.tsx",
+      "components/Products.tsx",
+      "components/RoleAccessGuard.tsx",
+      "components/TopTrustBanner.tsx",
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Erreur de connexion. Veuillez réessayer ultérieurement.",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "deliveryAddress",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Adresse de livraison :",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Votre message n’a pas pu être envoyé. Veuillez vérifier les informations saisies.",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Merci pour votre message ! Notre service client reviendra vers vous dans les meilleurs délais.",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Votre message n’a pas pu être envoyé. Veuillez vérifier votre connexion.",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Contact & Support Client",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Besoin d’aide ou d’informations ?",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Notre équipe est à votre disposition pour toute question sur nos combustibles, un suivi de commande ou une assistance livraison.",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Comment pouvons-nous vous aider ?",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Pour un suivi de commande, merci d’indiquer votre numéro de référence. Pour une demande de tarification de gros volume, privilégiez le formulaire de devis.",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Besoin d’un devis tarifaire ?",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Obtenez un devis personnalisé pour vos palettes grâce à notre formulaire dédié. La livraison est incluse dans le prix des produits.",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Accéder à la demande de devis",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Questions fréquentes",
+    "files": [
+      "app/contact/page.tsx",
+      "app/faq/page.tsx",
+      "components/FaqSection.tsx",
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "Trouvez des réponses immédiates dans notre FAQ",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Formulaire de contact",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Les champs marqués d’un astérisque (*) sont obligatoires.",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Nom complet *",
+    "files": [
+      "app/contact/page.tsx",
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Votre nom et prénom",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Adresse e-mail *",
+    "files": [
+      "app/contact/page.tsx",
+      "app/devis/page.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "vous@exemple.com",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Téléphone (facultatif)",
+    "files": [
+      "app/contact/page.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Ex. : +49 151 23456789",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Adresse complète de livraison (facultatif)",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Rue et numéro, code postal, ville, Allemagne",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Sujet de votre message *",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Choisissez un motif",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Information sur un produit ou stock",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Suivi d’une commande en cours",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Question sur les modalités de livraison",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Service après-vente / Réclamation",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Autre question générale",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Votre message *",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Expliquez-nous votre demande en détail…",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Envoi du message…",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Envoyer mon message",
+    "files": [
+      "app/contact/page.tsx"
+    ]
+  },
+  {
+    "text": "Politique de confidentialité — Bren-nholz",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Informations sur les données utilisées pour vos commandes, votre compte, les formulaires et les justificatifs de paiement, et sur vos droits.",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Politique de confidentialité",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Contact relatif aux données personnelles",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Pour toute demande concernant vos données, contactez Bren-nholz à",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "ou à",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": ", exploitant de l’enseigne",
+    "files": [
+      "app/datenschutz/page.tsx",
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": ", représenté par",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Données collectées et finalités",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "La commande collecte votre nom, prénom, adresse de facturation et de livraison, adresse e-mail, téléphone facultatif, articles, quantités et montant. Ces informations servent à enregistrer et exécuter votre commande, organiser sa livraison et traiter les demandes après-vente (article 6, paragraphe 1 b du RGPD). Les pièces et informations nécessaires à la comptabilité sont conservées selon les obligations légales (article 6, paragraphe 1 c).",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "La création d’un compte est facultative. Elle permet l’authentification et l’accès aux fonctions de votre espace client. Nous enregistrons l’e-mail, le nom fourni lors de l’inscription et des informations d’activité des comptes connectés (première et dernière activité, nombre de connexions), pour administrer les comptes et sécuriser le service sur la base de notre intérêt légitime (article 6, paragraphe 1 f).",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Les formulaires de contact et de devis collectent les coordonnées et le contenu que vous fournissez pour répondre à votre demande. Les justificatifs de virement servent uniquement à rapprocher un paiement de sa commande. Masquez les informations bancaires sans rapport avec celle-ci. Un justificatif ne constitue pas une confirmation de réception des fonds.",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Prestataires et destinataires",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Vercel assure l’hébergement du site et peut traiter des données techniques telles que l’adresse IP et les journaux de requêtes. Un prestataire technique fournit les services d’authentification des comptes, de base de données et de stockage privé des justificatifs. Les administrateurs habilités et la comptabilité accèdent aux données nécessaires à leurs missions. Le transporteur reçoit les coordonnées nécessaires à la livraison.",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Lorsque la recherche d’adresse est activée, la rue et la ville saisies sont transmises à Geoapify afin de proposer des adresses en Allemagne. Vous pouvez saisir votre adresse manuellement. Les données cartographiques proviennent notamment d’OpenStreetMap.",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Si le service d’accusé de réception par e-mail est configuré, Resend traite le nom, l’adresse e-mail et le contenu de votre déclaration de rétractation pour vous en envoyer une copie. Les régions d’hébergement, les sous-traitants ultérieurs et les garanties de transfert hors de l’Espace économique européen doivent être précisés par l’exploitant selon la configuration effective de ses prestataires. Aucun transfert ne dispense des garanties requises par le RGPD.",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Stockage dans votre navigateur",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Le panier est conservé dans le stockage local du navigateur, avec un secours dans le stockage de session. Les informations de confirmation de commande restent dans la session de navigation. La connexion utilise le stockage du navigateur pour maintenir votre session. Ces mécanismes servent aux fonctions demandées. La version actuelle du code ne contient pas d’outil publicitaire ou de mesure d’audience activé ; leur ajout nécessitera une information et, lorsque requis, un consentement préalable.",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Conservation et sécurité",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Les données sont conservées pendant la durée nécessaire au traitement de la demande, à l’exécution de la commande et à la gestion des réclamations, puis selon les obligations allemandes de conservation applicables aux documents concernés. Les demandes sans suite et justificatifs non nécessaires ne doivent pas être conservés indéfiniment. Le calendrier détaillé et les procédures de suppression restent à formaliser par l’exploitant ; le site n’effectue actuellement aucune purge automatique.",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Les justificatifs sont stockés dans un espace privé ; leur consultation par un administrateur habilité utilise un lien temporaire. Les mots de passe sont gérés par le service sécurisé d’authentification. Limitez les informations envoyées à ce qui est nécessaire à votre demande.",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Vos droits",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Selon les conditions du RGPD, vous disposez de droits d’accès, de rectification, d’effacement, de limitation, de portabilité et d’opposition, notamment pour les traitements fondés sur l’intérêt légitime. Vous pouvez retirer un consentement sans remettre en cause les traitements antérieurs. Les obligations de conservation peuvent limiter l’effacement de certaines pièces.",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Adressez votre demande à",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "ou via le",
+    "files": [
+      "app/datenschutz/page.tsx",
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "formulaire de contact",
+    "files": [
+      "app/datenschutz/page.tsx",
+      "app/retractation/page.tsx",
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Autoriteit Persoonsgegevens aux Pays-Bas",
+    "files": [
+      "app/datenschutz/page.tsx"
+    ]
+  },
+  {
+    "text": "Devis pour vos combustibles bois | Bren-nholz",
+    "files": [
+      "app/devis/layout.tsx"
+    ]
+  },
+  {
+    "text": "Demandez un devis pour vos palettes et volumes de bois de chauffage, granulés et briquettes. Indiquez les produits souhaités et votre adresse en Allemagne.",
+    "files": [
+      "app/devis/layout.tsx"
+    ]
+  },
+  {
+    "text": "Impossible de joindre le serveur. Veuillez réessayer plus tard.",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "clientType",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Particulier",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "companyName",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "postalCode",
+    "files": [
+      "app/devis/page.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "regionState",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Allemagne",
+    "files": [
+      "app/devis/page.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "productType",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "formatChoice",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "volumeQuantity",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "deliveryAccess",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "[DEMANDE DE DEVIS ALLEMAGNE -",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Firme / Raison sociale:",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Produit:",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Format:",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Quantité:",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Adresse en Allemagne:",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": ") Accès camion/Spedition:",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Précisions:",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Une erreur est survenue lors de l’enregistrement de votre demande de devis.",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Vielen Dank! Votre demande de devis pour l’Allemagne a été transmise. Notre service commercial vous répondra sous 24 heures ouvrées.",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Une erreur est survenue lors de l’envoi. Veuillez vérifier votre connexion.",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Service Commercial & Devis",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Vente & Livraison sur toute l’Allemagne (Deutschland)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Demande de devis gratuit pour l’Allemagne",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Obtenez un chiffrage personnalisé sous 24h ouvrées pour vos livraisons de bois de chauffage, granulés et briquettes partout en Allemagne.",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Chiffrage sur-mesure (Deutschland)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Remplissez le formulaire ci-dessous pour obtenir un devis adapté à vos quantités et à votre adresse en Allemagne. La livraison par transporteur spécialisé est incluse dans le prix des produits, sans supplément à régler au chauffeur.",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "mt-7 space-y-6",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Statut du client",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Professionnel",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Professionnel / Firme",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Nom & Prénom *",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Ex. Thomas Müller",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Entreprise / Firmenname (si pro)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Nom de la société",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "exemple@domaine.de",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Téléphone (+49 / FR) *",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Type de combustible *",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Sélectionnez un produit",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Bois de chauffage (Brennholz)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Granulés de bois (Holzpellets ENplus/DIN+)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Granulés de bois (Holzpellets ENplus / DIN+)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Briquettes densifiées (Holzbriketts RUF/Pini-Kay)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Briquettes densifiées (Holzbriketts RUF / Pini-Kay)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Bois d’allumage (Anzündholz)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Bois d’allumage & allume-feux (Anzündholz)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Commande mixte",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Commande mixte / Plusieurs références",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Format ou longueur",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Choix du format",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Bûches 25 cm (Scheite 25 cm)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Bûches 25 cm",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Bûches 33 cm (Scheite 33 cm)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Bûches 33 cm",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Bûches 50 cm (Scheite 50 cm)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Bûches 50 cm",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Sacs de 15 kg (Sackware 15 kg)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Sacs de 15 kg",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Palette complète (Palette)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Palette complète rangée",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Big Bag",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Vrac (Schüttgut)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Vrac",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Quantité ou volume estimé *",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Sélectionnez la quantité",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "1 palette / 1 à 2 stères",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "1 palette / 1 à 2 stères (SRM / RM)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "2 à 4 palettes / 3 à 6 stères",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "5 à 10 palettes (Tarif dégressif)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Camion complet / Plus de 10 palettes",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Camion complet / Gros volume",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Sacs / Filets individuels",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Moins de 1 palette (Sacs / Filets)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Adresse de livraison en Allemagne *",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Straße und Hausnummer",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Code postal (PLZ) *",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "PLZ (Ex. 80331)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Ville / Ort *",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Ex. München, Stuttgart, Berlin...",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Land (Région allemande)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Baden-Württemberg / Bayern",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Baden-Württemberg",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Bayern",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Nordrhein-Westfalen",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Hessen",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Rheinland-Pfalz",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Niedersachsen",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Saarland",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Sachsen / Thüringen",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Autre Bundesland",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Autre région en Allemagne",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Modalités d&apos;accès pour le camion (Spedition)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Camion avec hayon et transpalette (Lkw mit Hebebühne)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Camion avec hayon et transpalette (Standard)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Rue étroite / Accès restreint",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Terrain en pente / Gravier",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Livraison dans garage / Abri",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Accès garage / Abri disponible",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Remarques ou précisions",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Précisez tout détail utile sur vos contraintes d'horaires ou de stockage en Allemagne...",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Envoi de votre demande…",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Demander mon devis gratuit (Deutschland)",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Chiffrage officiel Allemagne",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Réponse rapide sous 24h",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": ": Notre service commercial prépare votre devis, livraison incluse, et vérifie les modalités de livraison à votre code postal (PLZ).",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Tarifs dégressifs par volume",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": ": Prix dégressifs appliqués dès la 2",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "ème",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "palette ou pour commandes groupées.",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Normes & Certifications",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": ": Bûches sèches écorcées et granulés certifiés DINplus & ENplus A1.",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Spedition & Livraison à domicile",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Toutes nos livraisons en Allemagne sont assurées par transporteurs spécialisés équipés de camions avec hayon elevateur et transpalette (Lkw mit Hebebühne) pour déposer vos palettes en toute sécurité.",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Détails de la livraison en Allemagne",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Des questions sur nos produits ?",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Consultez notre catalogue complet de combustibles bois pour l&apos;Allemagne ou contactez directement notre support client.",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Consulter le catalogue",
+    "files": [
+      "app/devis/page.tsx"
+    ]
+  },
+  {
+    "text": "Livraison, paiement et stockage : vos questions | Bren-nholz",
+    "files": [
+      "app/faq/page.tsx"
+    ]
+  },
+  {
+    "text": "Consultez les réponses sur le paiement par virement, la livraison en Allemagne, le déchargement des palettes et le stockage des combustibles bois.",
+    "files": [
+      "app/faq/page.tsx"
+    ]
+  },
+  {
+    "text": "container max-w-4xl",
+    "files": [
+      "app/faq/page.tsx",
+      "components/FaqSection.tsx"
+    ]
+  },
+  {
+    "text": "Aide & informations",
+    "files": [
+      "app/faq/page.tsx"
+    ]
+  },
+  {
+    "text": "Retrouvez les informations essentielles sur nos combustibles, les commandes et la livraison en Allemagne.",
+    "files": [
+      "app/faq/page.tsx"
+    ]
+  },
+  {
+    "text": "Voir les produits",
+    "files": [
+      "app/faq/page.tsx",
+      "app/not-found.tsx",
+      "components/CheckoutPageContent.tsx",
+      "components/PolicyPage.tsx",
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Vous ne trouvez pas votre réponse ?",
+    "files": [
+      "app/faq/page.tsx"
+    ]
+  },
+  {
+    "text": "Décrivez votre besoin et indiquez votre code postal ; nous pourrons préciser les modalités de votre demande.",
+    "files": [
+      "app/faq/page.tsx"
+    ]
+  },
+  {
+    "text": "Contacter notre équipe",
+    "files": [
+      "app/faq/page.tsx"
+    ]
+  },
+  {
+    "text": "Choisir et stocker ses granulés de bois | Bren-nholz",
+    "files": [
+      "app/guide-pellets/page.tsx"
+    ]
+  },
+  {
+    "text": "Comprenez les certifications indiquées sur les granulés, comparez les sacs et palettes et obtenez une estimation indicative de vos besoins.",
+    "files": [
+      "app/guide-pellets/page.tsx"
+    ]
+  },
+  {
+    "text": "Bren-nholz — Granulés, bois de chauffage & briquettes",
+    "files": [
+      "app/layout.tsx"
+    ]
+  },
+  {
+    "text": "Découvrez nos granulés de bois, bûches, briquettes et produits d’allumage. Catalogue et demande de devis.",
+    "files": [
+      "app/layout.tsx"
+    ]
+  },
+  {
+    "text": "Page introuvable",
+    "files": [
+      "app/not-found.tsx"
+    ]
+  },
+  {
+    "text": "Cette adresse ne correspond à aucune page du site.",
+    "files": [
+      "app/not-found.tsx"
+    ]
+  },
+  {
+    "text": "Retour à l’accueil",
+    "files": [
+      "app/not-found.tsx",
+      "components/PolicyPage.tsx"
+    ]
+  },
+  {
+    "text": "Bois de chauffage et granulés en Allemagne | Bren-nholz",
+    "files": [
+      "app/page.tsx"
+    ]
+  },
+  {
+    "text": "Découvrez nos bûches, granulés de bois, briquettes et allume-feux. Comparez les conditionnements et commandez avec livraison incluse en Allemagne.",
+    "files": [
+      "app/page.tsx"
+    ]
+  },
+  {
+    "text": "Mon panier — Bren-nholz",
+    "files": [
+      "app/panier/page.tsx"
+    ]
+  },
+  {
+    "text": "Catégorie introuvable — Bren-nholz",
+    "files": [
+      "app/produits/categorie/[category]/page.tsx"
+    ]
+  },
+  {
+    "text": "avec livraison en Allemagne | Bren-nholz",
+    "files": [
+      "app/produits/categorie/[category]/page.tsx"
+    ]
+  },
+  {
+    "text": "Bois de chauffage, granulés et briquettes | Bren-nholz",
+    "files": [
+      "app/produits/page.tsx"
+    ]
+  },
+  {
+    "text": "Comparez les bûches, granulés de bois, briquettes et allume-feux par format et conditionnement. Livraison incluse en Allemagne.",
+    "files": [
+      "app/produits/page.tsx"
+    ]
+  },
+  {
+    "text": "Produit introuvable — Bren-nholz",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "— Bren-nholz",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Conditionnement :",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Product",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "AggregateRating",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Review",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Rating",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Person",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Offer",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "EUR",
+    "files": [
+      "app/produits/[slug]/page.tsx",
+      "components/AccountPageContent.tsx",
+      "components/AdminWorkspace.tsx",
+      "components/CartPageContent.tsx",
+      "components/CheckoutPageContent.tsx",
+      "components/CheckoutSuccessContent.tsx",
+      "components/ProductCard.tsx",
+      "lib/catalog.ts",
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "application/ld+json",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "\\u003c",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Fil d’Ariane",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Produits",
+    "files": [
+      "app/produits/[slug]/page.tsx",
+      "components/Footer.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "(max-width: 1024px) 100vw, 50vw",
+    "files": [
+      "app/produits/[slug]/page.tsx",
+      "components/Hero.tsx",
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "object-contain p-4",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "avis client",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "N° d’article :",
+    "files": [
+      "app/produits/[slug]/page.tsx",
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Conditionnement",
+    "files": [
+      "app/produits/[slug]/page.tsx",
+      "components/AdminWorkspace.tsx",
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Disponibilité",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Rupture de stock",
+    "files": [
+      "app/produits/[slug]/page.tsx",
+      "components/AdminWorkspace.tsx",
+      "components/CartPageContent.tsx",
+      "components/ProductCard.tsx",
+      "components/ProductDetailAddButton.tsx"
+    ]
+  },
+  {
+    "text": "En stock",
+    "files": [
+      "app/produits/[slug]/page.tsx",
+      "components/AdminWorkspace.tsx",
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Demander un devis",
+    "files": [
+      "app/produits/[slug]/page.tsx",
+      "components/ContactCTA.tsx",
+      "components/Navbar.tsx",
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Retours d’expérience",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Avis vérifiés de nos clients",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Tous les avis sont rédigés par des acheteurs ayant commandé ce produit.",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Basé sur",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "mt-8 space-y-6",
+    "files": [
+      "app/produits/[slug]/page.tsx"
+    ]
+  },
+  {
+    "text": "Achat vérifié",
+    "files": [
+      "app/produits/[slug]/page.tsx",
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Rétractation, retours et remboursements — Bren-nholz",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Consultez les modalités de rétractation, de retour et de remboursement, l’adresse de retour et le formulaire de déclaration en ligne.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Votre droit de rétractation",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Si vous achetez en tant que consommateur, vous pouvez vous rétracter sans justification dans les 14 jours suivant la réception des marchandises par vous-même ou un tiers désigné autre que le transporteur. Pour une commande livrée en plusieurs envois, le délai commence à la réception du dernier bien. Les exceptions légales applicables, notamment aux produits confectionnés selon vos spécifications ou nettement personnalisés, doivent être indiquées avant l’achat ; aucune exclusion générale ne vise les combustibles de notre catalogue.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Comment notifier votre décision",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Envoyez une déclaration claire à",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": ", par courrier à",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": ", ou utilisez la fonction ci-dessous, accessible sans compte. Indiquez votre nom et les informations permettant d’identifier la commande ou les articles concernés. L’envoi avant l’expiration du délai suffit pour exercer ce droit. Le formulaire type est facultatif.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Me rétracter du contrat",
+    "files": [
+      "app/retractation/page.tsx",
+      "components/AccountPageContent.tsx",
+      "components/Footer.tsx",
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Retour des marchandises",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Renvoyez les biens au plus tard dans les 14 jours suivant la notification, sauf si Bren-nholz propose de les récupérer.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Contactez-nous pour organiser le retour, notamment la collecte des palettes. Cette organisation ne conditionne pas la validité de votre notification.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Adresse de retour :",
+    "files": [
+      "app/retractation/page.tsx",
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "L’adresse de retour logistique doit encore être confirmée par Bren-nholz. Ne confondez pas l’adresse de contact avec une adresse de dépôt des marchandises ; contactez-nous pour obtenir les instructions de retour.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "L’emballage intact n’est pas obligatoire et un sac ouvert n’est pas automatiquement exclu. Une dépréciation peut être prise en compte uniquement pour une manipulation dépassant ce qui est nécessaire pour examiner la nature, les caractéristiques et le fonctionnement du produit, dans les conditions légales applicables. Protégez les marchandises pour leur transport.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Remboursement",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Bren-nholz rembourse les sommes reçues dans les 14 jours suivant la notification de rétractation. Le remboursement peut être différé jusqu’à réception des biens ou d’une preuve de leur expédition, selon le premier de ces événements, sauf si Bren-nholz propose de récupérer les biens.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Le remboursement utilise le même moyen de paiement, sauf accord exprès pour un autre moyen sans frais. Les éventuels frais de livraison standard facturés sont remboursés ; les frais supplémentaires liés à un mode de livraison plus coûteux choisi par le client ne le sont pas. Notre livraison standard en Allemagne est incluse dans le prix des produits.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Produit endommagé, incorrect ou non conforme",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Une réclamation est distincte de la rétractation et ne réduit pas vos garanties légales. Signalez le problème via le",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "avec votre référence et, si possible, des photos. Les droits liés aux défauts prévus par le droit allemand, notamment les §§ 434 et suivants et 437 BGB, restent applicables.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Formulaire type de rétractation",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "À",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Je/Nous vous notifie/notifions ma/notre rétractation du contrat portant sur la vente des biens ci-dessous : Biens et référence de commande : … Commandés le / reçus le : … Nom du/des consommateur(s) : … Adresse du/des consommateur(s) : … Date : … Signature (uniquement en cas de notification sur papier) : … Rayez les mentions inutiles.",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Textes de référence :",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "§ 355 BGB",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "§ 356a BGB",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "§ 357 BGB",
+    "files": [
+      "app/retractation/page.tsx"
+    ]
+  },
+  {
+    "text": "Conseils et livraison de combustibles bois | Bren-nholz",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Comparez les conditionnements de bois, granulés et briquettes. Contactez notre équipe pour préciser votre besoin et les conditions de réception.",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Échangeons sur votre besoin",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Indiquez le type de combustible recherché, le volume et votre commune.",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Recevez une proposition",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Nous précisons les formats, la disponibilité et le prix selon les références proposées.",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Organisons la réception",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Nous convenons ensemble des modalités de retrait ou de livraison.",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Conseils & approvisionnement",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Conseils pour choisir et recevoir vos combustibles bois",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Comparez les combustibles et leurs conditionnements, puis échangez avec notre équipe pour préparer votre commande.",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "container py-20 sm:py-24",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Comment ça marche",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Trois étapes pour votre commande.",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "Parler de mon besoin",
+    "files": [
+      "app/services/page.tsx"
+    ]
+  },
+  {
+    "text": "auth session missing",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "session de réinitialisation",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Lien de réinitialisation",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Session de réinitialisation absente ou expirée",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Ouvrez le lien reçu par e-mail dans ce navigateur. Si ce lien a déjà été utilisé ou a expiré, demandez un nouveau lien. Ouvrir cette page directement ne suffit pas.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "supabase non configurée",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Configuration Supabase",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Connexion à la base de données non configurée",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Cette version du site n’est pas encore reliée à un projet Supabase actif.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "NEXT_PUBLIC_SUPABASE_URL",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "invalid login credentials",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Identifiants",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Adresse e-mail ou mot de passe incorrect",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Vérifiez les informations saisies ou utilisez le lien « Mot de passe oublié ? » pour le réinitialiser.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "email not confirmed",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Validation e-mail",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Validation de l’adresse e-mail requise",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Votre inscription est enregistrée mais nécessite la validation de votre e-mail. Cliquez sur le lien reçu dans votre boîte de réception.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "user already registered",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Compte existant",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Un compte existe déjà avec cet e-mail",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Vous possèdez déjà un compte client Bren-nholz avec cette adresse e-mail. Vous pouvez vous connecter directement.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Se connecter avec cet e-mail",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "password should be at least",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "password is too short",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Sécurité du mot de passe",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Mot de passe trop court",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Le mot de passe doit comporter au moins 8 caractères pour protéger votre espace client.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "email rate limit",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Envoi temporairement limité",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Limite d’envoi des e-mails atteinte",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Le service ne peut pas envoyer de nouveau lien pour le moment. Réessayez plus tard : l’attente peut aller jusqu’à une heure. Si un lien précédent vous a déjà connecté, ouvrez la page de nouveau mot de passe.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "rate limit",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "too many requests",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Tentatives limitées",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Trop de tentatives effectuées",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Les demandes sont temporairement limitées. Réessayez plus tard. Cela ne signifie pas que votre compte est bloqué ou supprimé.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "failed to fetch",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Connexion réseau",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Impossible de contacter le serveur",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Problème de communication avec Supabase. Vérifiez votre connexion Internet puis réessayez.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Erreur",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Une erreur est survenue",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Impossible de traiter votre demande. Veuillez vérifier les informations saisies puis réessayer.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "account-alert-dark account-alert-dark--success",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Fermer",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/DeliveryZonesModal.tsx",
+      "components/Navbar.tsx",
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "flex-1 space-y-1",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Fermer l'alerte",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "w-full h-full relative z-10",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "hearthRadialGlow",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "logGrad1",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "logGrad2",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "logGrad3",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "flameOuter",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "flameInner",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "flameCore",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "hearthGlowBlur",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "sparkBlur",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "url(#hearthRadialGlow)",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "url(#hearthGlowBlur)",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "url(#logGrad1)",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "M85 218 H215 M95 225 H200",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "url(#logGrad2)",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "M92 197 H210 M105 204 H195",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "url(#logGrad3)",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "url(#sparkBlur)",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "M150 160 L153.5 176.5 L170 180 L153.5 183.5 L150 200 L146.5 183.5 L130 180 L146.5 176.5 Z",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "M150 65 C180 105 192 142 183 177 C174 207 126 207 117 177 C108 142 120 105 150 65 Z",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "url(#flameOuter)",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "M150 90 C170 120 177 147 171 172 C165 195 135 195 129 172 C123 147 130 120 150 90 Z",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "url(#flameInner)",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "M150 120 C160 138 165 156 160 170 C155 183 145 183 140 170 C135 156 140 138 150 120 Z",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "url(#flameCore)",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "linkError",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Ce lien a expiré. Demandez un nouveau lien pour continuer.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Ce lien est invalide ou a déjà été utilisé. Demandez un nouveau lien pour continuer.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "id, reference, created_at, total_cents, status, payment_status, items",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "id,label,recipient_name,street,postal_code,city,country_code",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "L’historique sera disponible après activation de la migration commerce Supabase.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "PASSWORD_RECOVERY",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "Impossible de charger les données du compte. Veuillez réessayer.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Si cette adresse attend une confirmation, un nouveau lien sécurisé lui a été envoyé. Consultez aussi vos courriers indésirables.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "L’envoi a échoué. Réessayez dans quelques minutes.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Adresse",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "DE",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Impossible d’enregistrer cette adresse. Vérifiez la migration commerce et le code postal allemand.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Impossible de supprimer cette adresse.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Connexion Supabase non configurée sur cette version du site. Ajoutez NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY dans Vercel, puis redéployez.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "confirmPassword",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "firstName",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "lastName",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Les deux mots de passe ne correspondent pas.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "La confirmation par e-mail n’est pas activée sur le projet Supabase. Activez « Confirm email » dans Authentication → Sign In / Providers → Email pour exiger la validation avant la connexion.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Inscription enregistrée. Consultez votre boîte e-mail et cliquez sur le lien de confirmation pour activer votre compte.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Votre adresse e-mail n’est pas encore confirmée. Ouvrez le lien reçu par e-mail ou demandez un nouveau lien.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Vous êtes connecté, mais votre rôle n’a pas pu être vérifié. Réessayez de vous connecter pour accéder à votre tableau de bord.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Si cette adresse est associée à un compte, un lien de réinitialisation vient de lui être envoyé.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Ce lien de réinitialisation est invalide ou expiré. Demandez un nouveau lien.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Session de réinitialisation absente ou expirée.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Votre mot de passe a été mis à jour.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Une erreur est survenue. Réessayez dans quelques instants.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Vous êtes déconnecté.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Créer un compte",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/Footer.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Mot de passe oublié ?",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Nouveau mot de passe",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Bon retour",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Bren-nholz, accueil",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/Footer.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "currentColor",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/Footer.tsx",
+      "components/Hero.tsx",
+      "components/Navbar.tsx",
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Bren",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/Footer.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "hidden sm:inline",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Retour boutique",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Boutique",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Chargement de votre espace...",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Compte connecté",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Bienvenue",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Connecté avec l’adresse",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Mon panier",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/CartPageContent.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Chargement du panier…",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Produit",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/CheckoutPageContent.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "×",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/AdminWorkspace.tsx",
+      "components/CheckoutPageContent.tsx",
+      "components/CheckoutSuccessContent.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Votre panier est vide. Découvrez nos produits pour préparer votre prochaine commande.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Voir mon panier",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Continuer mes achats",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Mes commandes",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Aucune commande liée à ce compte pour le moment.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "mt-3 space-y-2",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "de-DE",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Mes adresses",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Supprimer",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/AdminWorkspace.tsx"
+    ]
+  },
+  {
+    "text": "Nom (Domicile...)",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Nom du destinataire",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Rue et numéro",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "account-input-field sm:col-span-2",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Code postal allemand",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Ville",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Enregistrement...",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/AdminWorkspace.tsx"
+    ]
+  },
+  {
+    "text": "Enregistrer cette adresse",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "pt-2 space-y-3",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Découvrir le catalogue",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Se déconnecter",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/AdminWorkspace.tsx",
+      "components/Navbar.tsx",
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "Connexion",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Inscription",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Inscrivez-vous pour passer vos commandes facilement.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Saisissez votre e-mail pour recevoir un lien de réinitialisation.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Saisissez votre nouveau mot de passe pour sécuriser votre compte.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Connectez-vous à votre compte pour continuer.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Prénom",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Max",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Nom",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/AdminWorkspace.tsx",
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Müller",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Email",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "votre@email.com",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Mot de passe",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "8 caractères minimum",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Votre mot de passe",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "account-input-field pr-10",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Masquer le mot de passe",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Afficher le mot de passe",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Confirmer le mot de passe",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Saisissez à nouveau le mot de passe",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Demander un nouveau lien de confirmation",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Ouvrez le lien de réinitialisation reçu par e-mail pour choisir un nouveau mot de passe.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Demander un nouveau lien",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Patientez...",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Créer mon compte",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Envoyer le lien",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Mettre à jour le mot de passe",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Se connecter",
+    "files": [
+      "components/AccountPageContent.tsx",
+      "components/AdminWorkspace.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Vous n&apos;avez pas de compte ?",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Vous avez déjà un compte ?",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Retour à la connexion",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Bren-nholz — Espace sécurisé. Tous droits réservés.",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Informations juridiques",
+    "files": [
+      "components/AccountPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Chargement en cours…",
+    "files": [
+      "components/ActionLoadingProvider.tsx",
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "Traitement de votre demande…",
+    "files": [
+      "components/ActionLoadingProvider.tsx"
+    ]
+  },
+  {
+    "text": "Sécurisation et enregistrement de votre commande…",
+    "files": [
+      "components/ActionLoadingProvider.tsx"
+    ]
+  },
+  {
+    "text": "Préparation et transmission de votre devis…",
+    "files": [
+      "components/ActionLoadingProvider.tsx"
+    ]
+  },
+  {
+    "text": "Envoi de votre message au service client…",
+    "files": [
+      "components/ActionLoadingProvider.tsx"
+    ]
+  },
+  {
+    "text": "input[type=\"file\"]",
+    "files": [
+      "components/ActionLoadingProvider.tsx"
+    ]
+  },
+  {
+    "text": "Téléversement et vérification du justificatif…",
+    "files": [
+      "components/ActionLoadingProvider.tsx"
+    ]
+  },
+  {
+    "text": "Vérification de vos identifiants…",
+    "files": [
+      "components/ActionLoadingProvider.tsx"
+    ]
+  },
+  {
+    "text": "[data-loading]",
+    "files": [
+      "components/ActionLoadingProvider.tsx"
+    ]
+  },
+  {
+    "text": "FORM",
+    "files": [
+      "components/ActionLoadingProvider.tsx"
+    ]
+  },
+  {
+    "text": "Traitement en cours…",
+    "files": [
+      "components/ActionLoadingProvider.tsx"
+    ]
+  },
+  {
+    "text": "SIGNED_IN",
+    "files": [
+      "components/ActivityTracker.tsx",
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "Suggestions indisponibles. Saisissez votre adresse manuellement.",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Aucune adresse trouvée. Ajoutez la ville ou saisissez votre adresse manuellement.",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Adresse sélectionnée. Vérifiez la ville et le code postal.",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Ajoutez votre numéro de maison et vérifiez la ville et le code postal.",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "relative sm:col-span-2",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Rue et numéro *",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Commencez à saisir la rue et la ville",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "-suggestions",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "-status",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "-option-",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Escape",
+    "files": [
+      "components/AddressAutocomplete.tsx",
+      "components/AllReviewsModal.tsx",
+      "components/Navbar.tsx",
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "ArrowDown",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "ArrowUp",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Enter",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Adresses en Allemagne",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "max-h-64 overflow-y-auto",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "noopener noreferrer",
+    "files": [
+      "components/AddressAutocomplete.tsx",
+      "components/AdminPaymentProof.tsx"
+    ]
+  },
+  {
+    "text": "Geoapify",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "© OpenStreetMap",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Recherche d’adresses…",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Choisissez une suggestion pour remplir la ville et le code postal.",
+    "files": [
+      "components/AddressAutocomplete.tsx"
+    ]
+  },
+  {
+    "text": "Livraison",
+    "files": [
+      "components/AdminWorkspace.tsx",
+      "components/CartPageContent.tsx",
+      "components/CheckoutPageContent.tsx",
+      "components/Hero.tsx",
+      "components/PelletGuide.tsx",
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Commande",
+    "files": [
+      "components/AdminWorkspace.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "fr-FR",
+    "files": [
+      "components/AdminWorkspace.tsx",
+      "components/CartPageContent.tsx",
+      "components/CheckoutPageContent.tsx",
+      "components/CheckoutSuccessContent.tsx",
+      "components/ProductCard.tsx",
+      "lib/catalog.ts",
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés",
+    "files": [
+      "components/AdminWorkspace.tsx",
+      "components/ProductCatalog.tsx",
+      "components/ProductCategories.tsx",
+      "lib/product-categories.ts",
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Sur devis",
+    "files": [
+      "components/AdminWorkspace.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Retirer",
+    "files": [
+      "components/AdminWorkspace.tsx",
+      "components/CartPageContent.tsx",
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Modifier",
+    "files": [
+      "components/AdminWorkspace.tsx",
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "584 Avis Clients Vérifiés",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Retours d’expérience authentiques & certifiés",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Fermer la fenêtre d’avis",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Note de 4.8 sur 5",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Basé sur 584 évaluations réelles",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "✓ 100 % Avis Vérifiés",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Rechercher un mot-clé, une ville, un nom ou un produit...",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Filtrer :",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Tous (584)",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "5 Étoiles",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "4 Étoiles",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Aucun avis ne correspond à votre recherche.",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Réinitialiser les filtres",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Produit :",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Afficher plus d’avis (",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "restants)",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "Consultez tous nos retours d’expérience vérifiés sur combustibles bois & granulés.",
+    "files": [
+      "components/AllReviewsModal.tsx"
+    ]
+  },
+  {
+    "text": "container min-h-[60vh] py-16",
+    "files": [
+      "components/CartPageContent.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Votre sélection",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Vérifiez les produits et les quantités avant de poursuivre.",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Votre panier est vide",
+    "files": [
+      "components/CartPageContent.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Parcourez le catalogue pour ajouter des produits.",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Voir le catalogue",
+    "files": [
+      "components/CartPageContent.tsx",
+      "components/ContactCTA.tsx"
+    ]
+  },
+  {
+    "text": "140px",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "En stock ·",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "unités disponibles",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "En stock — Disponible à la commande",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Diminuer la quantité de",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Augmenter la quantité de",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Récapitulatif",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Montant des produits",
+    "files": [
+      "components/CartPageContent.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Indisponible à la vente",
+    "files": [
+      "components/CartPageContent.tsx",
+      "lib/catalog.ts",
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Incluse dans le prix des produits",
+    "files": [
+      "components/CartPageContent.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Total, livraison incluse",
+    "files": [
+      "components/CartPageContent.tsx",
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Continuer vers la commande",
+    "files": [
+      "components/CartPageContent.tsx"
+    ]
+  },
+  {
+    "text": "product_id, data, is_deleted",
+    "files": [
+      "components/CartProvider.tsx"
+    ]
+  },
+  {
+    "text": "useCart doit être utilisé à l’intérieur de CartProvider.",
+    "files": [
+      "components/CartProvider.tsx"
+    ]
+  },
+  {
+    "text": "Un produit ne peut plus être commandé. Actualisez votre panier.",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Veuillez accepter les conditions de vente avant de continuer.",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shippingFirstName",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shippingLastName",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shippingStreet",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shippingPostalCode",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shippingCity",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Complétez les champs obligatoires de l’adresse de livraison.",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Votre session ne peut pas être vérifiée. Reconnectez-vous puis réessayez.",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "La demande n’a pas pu être enregistrée. Réessayez plus tard.",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "La demande n’a pas pu être enregistrée. Vérifiez votre connexion puis réessayez.",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Ajoutez des produits avant de passer commande.",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Retour au panier",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Paiement par virement",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Données de facturation",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Prénom *",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Nom de famille *",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Pays / Région *",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Complément d’adresse (facultatif)",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "addressLine2",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Appartement, étage, etc.",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Code postal *",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Ville *",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "differentShipping",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "h-4 w-4 accent-orange-600",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Livrer à une autre adresse ?",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shipping given-name",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shipping family-name",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Complément d’adresse",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shippingAddressLine2",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shipping address-line2",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shipping postal-code",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "shipping address-level2",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Livraison uniquement en Allemagne.",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Votre commande",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Sous-total",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "divide-y divide-stone-200",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "64px",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "min-w-0 flex-1",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Indisponible",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "mt-1 h-4 w-4 accent-orange-600",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Je confirme l’exactitude de mes informations et j’accepte les",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "conditions de vente",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "et j’ai pris connaissance du",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "droit de rétractation",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "et de la",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "politique de confidentialité",
+    "files": [
+      "components/CheckoutPageContent.tsx",
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Validation…",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Commander avec obligation de paiement",
+    "files": [
+      "components/CheckoutPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Commande enregistrée",
+    "files": [
+      "components/CheckoutSuccessContent.tsx",
+      "lib/order-status.ts"
+    ]
+  },
+  {
+    "text": "Merci",
+    "files": [
+      "components/CheckoutSuccessContent.tsx"
+    ]
+  },
+  {
+    "text": "Montant de la commande, livraison incluse :",
+    "files": [
+      "components/CheckoutSuccessContent.tsx"
+    ]
+  },
+  {
+    "text": "Référence à indiquer dans le libellé :",
+    "files": [
+      "components/CheckoutSuccessContent.tsx"
+    ]
+  },
+  {
+    "text": "La référence de commande n’est plus disponible dans cette session.",
+    "files": [
+      "components/CheckoutSuccessContent.tsx"
+    ]
+  },
+  {
+    "text": "Retour aux produits",
+    "files": [
+      "components/CheckoutSuccessContent.tsx"
+    ]
+  },
+  {
+    "text": "container py-20",
+    "files": [
+      "components/ContactCTA.tsx"
+    ]
+  },
+  {
+    "text": "Un projet d&apos;approvisionnement ?",
+    "files": [
+      "components/ContactCTA.tsx"
+    ]
+  },
+  {
+    "text": "Obtenez un devis gratuit & personnalisé.",
+    "files": [
+      "components/ContactCTA.tsx"
+    ]
+  },
+  {
+    "text": "Obtenez un devis personnalisé pour vos palettes et volumes. La livraison à domicile est incluse dans le prix des produits.",
+    "files": [
+      "components/ContactCTA.tsx"
+    ]
+  },
+  {
+    "text": "Bade-Wurtemberg (Baden-Württemberg)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Stuttgart, Mannheim, Karlsruhe, Freiburg im Breisgau, Heidelberg, Ulm",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Bavière (Bayern)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "München, Nürnberg, Augsburg, Regensburg, Würzburg, Ingolstadt",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Berlin",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Berlin et tous ses quartiers",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Brandebourg (Brandenburg)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Potsdam, Cottbus, Brandenburg an der Havel, Frankfurt (Oder)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Brême (Bremen)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Bremen, Bremerhaven",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Hambourg (Hamburg)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Hamburg et tous ses quartiers",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Hesse (Hessen)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Frankfurt am Main, Wiesbaden, Kassel, Darmstadt, Offenbach am Main",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Mecklembourg-Poméranie-Occidentale (Mecklenburg-Vorpommern)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Rostock, Schwerin, Neubrandenburg, Stralsund, Greifswald",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Basse-Saxe (Niedersachsen)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Hannover, Braunschweig, Oldenburg, Osnabrück, Wolfsburg, Göttingen",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Rhénanie-du-Nord-Westphalie (Nordrhein-Westfalen)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Köln, Düsseldorf, Dortmund, Essen, Münster, Bielefeld, Aachen, Gronau",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Rhénanie-Palatinat (Rheinland-Pfalz)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Mainz, Ludwigshafen am Rhein, Koblenz, Trier, Kaiserslautern",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Sarre (Saarland)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Saarbrücken, Neunkirchen, Homburg, Saarlouis, Merzig",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Saxe (Sachsen)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Leipzig, Dresden, Chemnitz, Zwickau, Görlitz",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Saxe-Anhalt (Sachsen-Anhalt)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Magdeburg, Halle (Saale), Dessau-Roßlau, Wittenberg",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Schleswig-Holstein",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Kiel, Lübeck, Flensburg, Neumünster, Norderstedt",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Thuringe (Thüringen)",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Erfurt, Jena, Gera, Weimar, Eisenach",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Livraison en Allemagne",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Livraison incluse en Allemagne",
+    "files": [
+      "components/DeliveryZonesModal.tsx",
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "La livraison est incluse dans le prix de nos produits. Aucun frais supplémentaire n’est à régler au transporteur. Communiquez votre code postal allemand pour vérifier les conditions d’accès à votre adresse.",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Fermer la fenêtre",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "space-y-5 p-6 sm:p-8",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Nos zones de livraison à domicile",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Nous livrons dans les 16 Länder d’Allemagne, dans toutes les villes et communes. Les villes ci-dessous sont des exemples : votre commune est également couverte même si elle ne figure pas dans cette liste. Les conditions d’accès à votre adresse restent à vérifier avant la commande.",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Les 16 Länder desservis",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "La livraison est prévue sous 2 à 4 jours ouvrables après réception effective du paiement. Signalez les restrictions d’accès avant de commander ; aucun supplément de transport ne sera imposé après validation.",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Vérifier les modalités de livraison",
+    "files": [
+      "components/DeliveryZonesModal.tsx"
+    ]
+  },
+  {
+    "text": "Besoin d’aide ?",
+    "files": [
+      "components/FaqSection.tsx"
+    ]
+  },
+  {
+    "text": "Toutes les réponses",
+    "files": [
+      "components/FaqSection.tsx"
+    ]
+  },
+  {
+    "text": "group py-5",
+    "files": [
+      "components/FaqSection.tsx"
+    ]
+  },
+  {
+    "text": "min-h-[70vh]",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "min-h-[340px]",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "Chargement Bren-nholz",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "w-48 h-48 sm:w-56 sm:h-56",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "fwFireGlow",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "fwRingGrad",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "fwLogGrad1",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "fwLogGrad2",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "fwLogGrad3",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "fwFlameOuter",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "fwFlameInner",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "fwFlameCore",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "fwGlowBlur",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "fwSparkGlow",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "url(#fwFireGlow)",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "url(#fwGlowBlur)",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "url(#fwRingGrad)",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "url(#fwLogGrad1)",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "M58 147 H140 M65 152 H130",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "url(#fwLogGrad2)",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "M62 135 H138 M70 139 H130",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "url(#fwLogGrad3)",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "--dx",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "-10px",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "12px",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "-4px",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "url(#fwSparkGlow)",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "M100 106 L102.5 117.5 L114 120 L102.5 122.5 L100 134 L97.5 122.5 L86 120 L97.5 117.5 Z",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "M100 42 C120 70 128 95 122 118 C116 138 84 138 78 118 C72 95 80 70 100 42 Z",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "url(#fwFlameOuter)",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "M100 58 C113 78 118 96 114 114 C110 130 90 130 86 114 C82 96 87 78 100 58 Z",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "url(#fwFlameInner)",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "M100 78 C107 90 110 102 107 112 C104 122 96 122 93 112 C90 102 93 90 100 78 Z",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "url(#fwFlameCore)",
+    "files": [
+      "components/FirewoodLoader.tsx"
+    ]
+  },
+  {
+    "text": "Bren-nholz",
+    "files": [
+      "components/FirewoodLoader.tsx",
+      "components/Hero.tsx",
+      "components/LegalNotice.tsx",
+      "components/PolicyPage.tsx",
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "sm:col-span-2 lg:col-span-2",
+    "files": [
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "Granulés, bois de chauffage, briquettes et conseils pour préparer votre approvisionnement.",
+    "files": [
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "Navigation",
+    "files": [
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "Guide Granulés",
+    "files": [
+      "components/Footer.tsx",
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Services",
+    "files": [
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "À propos",
+    "files": [
+      "components/Footer.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Avis juridique",
+    "files": [
+      "components/Footer.tsx",
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Retours et remboursements",
+    "files": [
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "Mon compte",
+    "files": [
+      "components/Footer.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Contact",
+    "files": [
+      "components/Footer.tsx",
+      "components/LegalNotice.tsx",
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Entrepôt en Allemagne",
+    "files": [
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "mt-1 not-italic leading-6",
+    "files": [
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "Une question sur un produit ou votre commande ?",
+    "files": [
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "Bren-nholz. Tous droits réservés.",
+    "files": [
+      "components/Footer.tsx"
+    ]
+  },
+  {
+    "text": "100vw",
+    "files": [
+      "components/Hero.tsx",
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "z-0 object-cover object-center",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Guide de sélection des granulés de bois",
+    "files": [
+      "components/Hero.tsx",
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Bois de chauffage, granulés et briquettes",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "avec livraison en Allemagne.",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Découvrez nos bûches, granulés de bois et briquettes, en sacs, paquets ou palettes selon les références.",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Choisir une catégorie",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Achetez maintenant",
+    "files": [
+      "components/Hero.tsx",
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Sélection",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Combustibles bois",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Formats",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Sac, filet, palette",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Incluse en Allemagne",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "easeInOut",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "COMBUSTIBLES BOIS",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Bûches en feu dans un foyer de chauffage",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Formats disponibles",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Sac · Filet · Palette",
+    "files": [
+      "components/Hero.tsx"
+    ]
+  },
+  {
+    "text": "Language / Sprache / Langue",
+    "files": [
+      "components/LanguageSelector.tsx"
+    ]
+  },
+  {
+    "text": "bren_locale=",
+    "files": [
+      "components/LanguageSelector.tsx"
+    ]
+  },
+  {
+    "text": "; Path=/; Max-Age=31536000; SameSite=Lax",
+    "files": [
+      "components/LanguageSelector.tsx"
+    ]
+  },
+  {
+    "text": "; Secure",
+    "files": [
+      "components/LanguageSelector.tsx"
+    ]
+  },
+  {
+    "text": "Raison sociale",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "— enseigne",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Forme juridique",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Numéro d’enregistrement KvK (Pays-Bas)",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Représentants légaux",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Siège social",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Entrepôt et logistique en Allemagne",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Téléphone",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Numéro de TVA intracommunautaire allemand (USt-IdNr.)",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Activités",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Vente de bois de chauffage, de granulés de bois, de briquettes et de produits d’allumage.",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Toutes les commandes passées sur le site",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "sont soumises aux",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "conditions générales de vente de Bren-nholz",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Les données et le stockage nécessaires au panier et à la connexion sont décrits dans la politique de confidentialité.",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Conformément au",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Règlement général sur la protection des données (RGPD)",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": ", vous disposez d’un droit d’accès, de rectification, d’effacement et de limitation du traitement de vos données personnelles. Pour exercer vos droits, contactez-nous par e-mail à",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Le droit allemand s’applique sans priver les consommateurs de leurs protections impératives. Consultez notre",
+    "files": [
+      "components/LegalNotice.tsx"
+    ]
+  },
+  {
+    "text": "Préparation en entrepôt",
+    "files": [
+      "components/LogisticsGallery.tsx"
+    ]
+  },
+  {
+    "text": "Palettes prêtes à partir",
+    "files": [
+      "components/LogisticsGallery.tsx"
+    ]
+  },
+  {
+    "text": "Combustibles soigneusement conditionnés",
+    "files": [
+      "components/LogisticsGallery.tsx"
+    ]
+  },
+  {
+    "text": "Chargement pour la livraison",
+    "files": [
+      "components/LogisticsGallery.tsx"
+    ]
+  },
+  {
+    "text": "Manutention au dépôt",
+    "files": [
+      "components/LogisticsGallery.tsx"
+    ]
+  },
+  {
+    "text": "Préparation & livraison",
+    "files": [
+      "components/LogisticsGallery.tsx"
+    ]
+  },
+  {
+    "text": "La logistique des combustibles",
+    "files": [
+      "components/LogisticsGallery.tsx"
+    ]
+  },
+  {
+    "text": "Un aperçu des étapes de stockage, de préparation et de livraison de nos produits.",
+    "files": [
+      "components/LogisticsGallery.tsx"
+    ]
+  },
+  {
+    "text": "Accueil",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Mon panier (",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Compte client ·",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Connecté",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Espace client",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Livraison incluse en Allemagne · Aucun frais supplémentaire à régler au transporteur ·",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Consultez nos différentes zones de livraison à domicile en cliquant ici",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "shadow-md py-2.5",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "py-3.5 sm:py-4",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "relative group",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Rechercher des produits",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "⌘K",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Rechercher",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Mes favoris",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Favoris",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Panier,",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Panier vide",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Espace compte client",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Recherche",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Voir le panier",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Fermer le menu",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Ouvrir le menu",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=800&auto=format&fit=crop')",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "relative z-10",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Bren-nholz Qualité",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Du bois de qualité pour un chauffage naturel et durable.",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Voir tous les produits",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "col-span-4 space-y-4",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Bois de chauffage",
+    "files": [
+      "components/Navbar.tsx",
+      "components/ProductCatalog.tsx",
+      "components/ProductCategories.tsx",
+      "components/ProductHeroShowcase.tsx",
+      "lib/product-categories.ts",
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de chêne & hêtre",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Granulés / Pellets DIN+",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Bois compressé & Briquettes",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Accessoires",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Allume-feu naturel",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Packs découverte",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Stockage & transport",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "A",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Client",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Mon profil",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Mes devis",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Préférences",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "space-y-3 py-1",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Espace Client",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Connectez-vous pour suivre vos commandes & devis",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Votre panier (",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "py-3 space-y-3 max-h-60 overflow-y-auto",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Votre panier est vide.",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Total",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Voir mon panier →",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Rechercher des produits (ex: bûches de chêne, granulés, allume-feu...)",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Nom du produit à rechercher",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Chercher",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Fermer la recherche",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Bûches de chauffage",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Granulés & Pellets DIN+",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Bois compressé",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Allume-feu & Accessoires",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Demander un devis →",
+    "files": [
+      "components/Navbar.tsx"
+    ]
+  },
+  {
+    "text": "Moyen de paiement",
+    "files": [
+      "components/PaymentMethods.tsx"
+    ]
+  },
+  {
+    "text": "Virement bancaire",
+    "files": [
+      "components/PaymentMethods.tsx"
+    ]
+  },
+  {
+    "text": "Vous pouvez transmettre un justificatif depuis la page de confirmation. Son envoi ne confirme pas le paiement.",
+    "files": [
+      "components/PaymentMethods.tsx"
+    ]
+  },
+  {
+    "text": "Coordonnées bancaires",
+    "files": [
+      "components/PaymentMethods.tsx"
+    ]
+  },
+  {
+    "text": "Effectuez le virement au nom exact du titulaire indiqué ci-dessous.",
+    "files": [
+      "components/PaymentMethods.tsx"
+    ]
+  },
+  {
+    "text": "L’envoi a échoué.",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "L’envoi a échoué. Vérifiez votre connexion.",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "Preuve de virement",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "Virement effectué ? Ajoutez votre reçu bancaire ou une capture d’écran, puis envoyez votre preuve de paiement.",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "mt-4 space-y-4",
+    "files": [
+      "components/PaymentProofUpload.tsx",
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "1. Ajoutez votre justificatif",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "PDF, JPG, PNG ou WebP · 3 Mo maximum",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "Sélectionner une preuve de paiement",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "Changer le fichier",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "Ajouter ma preuve de paiement",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "min-w-0 break-all",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "Sélectionnez un fichier sur votre téléphone ou ordinateur.",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "Envoi…",
+    "files": [
+      "components/PaymentProofUpload.tsx",
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Preuve envoyée",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "2. Envoyer ma preuve de paiement",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "Votre preuve de virement a été sauvegardée avec succès.",
+    "files": [
+      "components/PaymentProofUpload.tsx"
+    ]
+  },
+  {
+    "text": "Comprendre ENplus A1 et DINplus",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Vérifiez les certifications indiquées sur la référence et les exigences de votre appareil.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Certifications",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Comment choisir une référence certifiée ?",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "ENplus et DINplus sont des systèmes de certification des granulés. Consultez les mentions figurant sur le sac et les documents du fabricant.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "La classe ENplus A1 concerne les caractéristiques des granulés ; elle ne garantit pas à elle seule le rendement de votre appareil.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Vérifiez notamment le diamètre et la qualité exigés par la notice de votre poêle ou chaudière.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "La composition, les additifs éventuels et les valeurs techniques doivent être vérifiés pour la référence choisie.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Ne supposez pas que toutes les références ont une double certification.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Composition et caractéristiques des granulés",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Comparez les informations du fabricant plutôt que la couleur du granulé.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Composition",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Quelles informations consulter ?",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "La composition varie selon la référence. La mention « résineux » ne doit être retenue que lorsqu’elle est indiquée pour le produit.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Consultez le pouvoir calorifique, l’humidité et le taux de cendres lorsqu’ils sont documentés par le fabricant.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "La couleur seule ne permet pas de vérifier une certification ou de conclure à la qualité d’un granulé.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Les dépôts dépendent aussi des réglages, de l’entretien et des conditions de fonctionnement de l’appareil.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Suivez la notice et demandez conseil à un professionnel en cas de dépôts inhabituels.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Sacs et palettes : comparer les formats",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Vérifiez le nombre de sacs et le poids total avant de commander.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Choisir selon vos besoins de stockage",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Le catalogue propose des sacs individuels et différents conditionnements sur palette.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "65 sacs de 15 kg représentent 975 kg ; 66 sacs de 15 kg représentent 990 kg.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Les emballages et dimensions varient selon les références. Un film de transport ne garantit pas un stockage prolongé à l’extérieur.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Prévoyez un emplacement sec, accessible et adapté au poids du conditionnement.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Si une dimension ou le volume livré manque, demandez cette précision avant l’achat.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Estimer les besoins et comparer le coût",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "La consommation dépend du logement, de l’appareil et de son utilisation.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Estimation",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Une estimation reste indicative",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "L’isolation, la surface chauffée, la météo et la température souhaitée influencent la consommation.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "L’énergie du combustible ne correspond pas directement à la chaleur utile restituée par l’appareil.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Pour comparer les coûts, utilisez les prix actuels, les consommations réelles et les rendements documentés.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Le bilan environnemental dépend notamment de la fabrication, du transport et de la combustion ; aucune neutralité carbone automatique n’est annoncée.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Votre historique de consommation constitue un point de départ plus précis qu’une estimation générale.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Livraison des palettes et accès",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Vérifiez l’accès du camion et la zone de déchargement avant la commande.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Préparer la réception de votre palette",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "La livraison en Allemagne est incluse dans le prix des produits. Aucun paiement supplémentaire n’est demandé par le transporteur.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Le déchargement des palettes est prévu avec un hayon et un transpalette, en bordure de propriété.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Le sol doit être ferme et plan. Le gravier, l’herbe et les fortes pentes ne permettent pas le déplacement au transpalette.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Signalez les restrictions d’accès et vérifiez les modalités de réception avant de commander.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Consultez la FAQ et contactez-nous pour toute difficulté d’accès.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Stocker ses granulés au sec",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Suivez les recommandations de stockage du fabricant.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Stockage",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Préserver les granulés de l’humidité",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Conservez les sacs dans un endroit sec et protégé de la pluie.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Évitez le contact avec un sol humide et vérifiez l’état des emballages.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Un emballage de transport n’est pas une garantie d’étanchéité pour un stockage prolongé dehors.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Respectez les recommandations du fabricant ; aucune conservation illimitée ni maintien garanti du rendement n’est annoncé.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Consultez les recommandations de votre appareil avant d’utiliser des granulés dégradés.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Que signifient ENplus A1 et DINplus ?",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Ce sont des certifications des granulés. Vérifiez les mentions de la référence et les exigences de votre appareil. Elles ne garantissent pas universellement le rendement, l’absence de dépôts ou le maintien de la garantie constructeur.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Combien de sacs prévoir pour l’hiver ?",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "La quantité dépend du logement, de l’isolation, de la météo et de l’utilisation de l’appareil. Appuyez-vous sur votre consommation passée. Le simulateur donne une estimation indicative.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Faut-il choisir des granulés de résineux ?",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Consultez la composition et les caractéristiques documentées du produit, puis les exigences du fabricant de votre appareil. Le type de bois et la couleur ne suffisent pas à déterminer sa compatibilité.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Peut-on stocker les sacs dehors ?",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Prévoyez un stockage sec et protégé de l’humidité. Le film de transport ne suffit pas pour un stockage prolongé sous la pluie.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Comment préparer la livraison ?",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Prévoyez un accès carrossable pour le camion et une zone ferme et plane pour la palette. Signalez les restrictions avant la commande.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Que faire si le poêle forme des dépôts ?",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Les dépôts peuvent avoir plusieurs causes : combustible, réglages ou entretien. Consultez la notice et faites contrôler l’appareil si nécessaire.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "1 Demi-palette (35 sacs de 15 kg)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "6 à 8 mois d’appoint",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "≈ 2 520 kWh d’énergie",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "1 Palette complète (65 sacs de 15 kg)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "1 saison complète d’appoint",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "≈ 4 680 kWh (~480 Litres de fioul)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "4 à 5 mois d’hiver",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "2 Palettes complètes (130 sacs de 15 kg)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Toute la saison hivernale (6 mois)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "≈ 9 360 kWh (~960 Litres de fioul)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "3 Palettes complètes (195 sacs de 15 kg)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "1 saison entière grand confort",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "≈ 14 040 kWh (~1 440 Litres de fioul)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Saison de chauffage complète",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "4 Palettes complètes (260 sacs de 15 kg)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Saison complète avec eau chaude sanitaire",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "≈ 18 720 kWh (~1 920 Litres de fioul)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Guide Pratique Bren-nholz",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Comparez les conditionnements et les caractéristiques des granulés. Vérifiez les certifications",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "ENplus A1",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "DINplus",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "indiquées pour chaque référence et les exigences de votre appareil.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Choisissez une référence adaptée à votre appareil et un conditionnement correspondant à vos besoins de consommation et de stockage.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "ENplus A1 & DINplus",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Composition selon référence",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Livraison et conditionnements",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "container max-w-5xl -mt-8 relative z-10",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Simulateur Express",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Estimez vos besoins en granulés",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Obtenez une estimation indicative. La consommation réelle dépend du logement, de l’appareil et de son utilisation.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Calcul instantané",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Type d’équipement",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Poêle (chauffage principal)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Poêle (chauffage d’appoint)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Chaudière à granulés",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Surface du logement",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Moins de 60 m²",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "60 m² à 120 m²",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Plus de 120 m²",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Espace de stockage",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Garage / Cave (Palette complète)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Espace réduit (Demi-palette)",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Achat au sac individuel",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Recommandation Sur Mesure",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Autonomie :",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Énergie :",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Livraison à domicile en Allemagne",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "shrink-0 space-y-2 w-full sm:w-auto",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Commander la quantité recommandée",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Produit ajouté à votre panier avec succès !",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "container max-w-5xl mt-16 sm:mt-20",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Détails & Explications Techniques",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Tout comprendre pour bien choisir vos granulés",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Cliquez sur chaque sujet ci-dessous pour ouvrir les détails, normes et spécifications.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Tous les critères",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Qualité & Normes",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Formats & Conditionnement",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Équivalences Énergétiques",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Livraison & Stockage",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Cliquez pour lire l’explication",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "space-y-3 mb-6",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Spécifications & Données d’Analyse",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Conseil de l’expert Bren-nholz :",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Comparatif des Combustibles",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Quels critères comparer entre les combustibles ?",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Des points à vérifier pour comparer les combustibles, sans garantie d’économie ou de rendement.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "mt-8 overflow-x-auto",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Critère",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Granulés de bois",
+    "files": [
+      "components/PelletGuide.tsx",
+      "components/ProductCategories.tsx",
+      "components/ProductHeroShowcase.tsx",
+      "lib/product-categories.ts"
+    ]
+  },
+  {
+    "text": "Fioul Domestique",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Gaz Naturel",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Source d&apos;énergie",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Bois",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "py-3.5 px-4",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Fossile non renouvelable",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Bilan environnemental",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Selon la production et l’utilisation",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Pouvoir calorifique",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Consulter la fiche du fabricant",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Consulter la fiche du fournisseur",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Automatisation poêle",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Selon l’appareil",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Oui",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Stabilité des prix",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Vérifier les prix actuels",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Foire Aux Questions",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Questions fréquentes sur les granulés",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Des réponses précises à toutes vos interrogations avant de commander.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Prêt à passer votre commande de granulés ?",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Comparez les sacs et palettes de granulés de bois du catalogue, avec livraison à domicile en Allemagne. Vérifiez les certifications indiquées sur chaque référence.",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Voir tous les granulés de bois",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Demander un devis gratuit",
+    "files": [
+      "components/PelletGuide.tsx"
+    ]
+  },
+  {
+    "text": "Mis à jour le 8 octobre 2026",
+    "files": [
+      "components/PolicyPage.tsx"
+    ]
+  },
+  {
+    "text": "absolute inset-0 block h-full w-full",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Agrandir la photo :",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Agrandir",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "des favoris",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Ajouter",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "aux favoris",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Photo du produit :",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "avis vérifiés)",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Photo précédente",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Photo suivante",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Réduire l’image",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Zoomer sur l’image",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "— photo",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "object-contain p-2 sm:p-4",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "avis)",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "au panier",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Diminuer la quantité",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Augmenter la quantité",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Ajouté !",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Rupture",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Ajouter au panier",
+    "files": [
+      "components/ProductCard.tsx",
+      "components/ProductDetailAddButton.tsx"
+    ]
+  },
+  {
+    "text": "Voir mon panier & payer",
+    "files": [
+      "components/ProductCard.tsx"
+    ]
+  },
+  {
+    "text": "Granulés de marques",
+    "files": [
+      "components/ProductCatalog.tsx",
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Formats compacts",
+    "files": [
+      "components/ProductCatalog.tsx",
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Autres granulés",
+    "files": [
+      "components/ProductCatalog.tsx",
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes",
+    "files": [
+      "components/ProductCatalog.tsx",
+      "components/ProductCategories.tsx",
+      "lib/product-categories.ts",
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois d’allumage",
+    "files": [
+      "components/ProductCatalog.tsx",
+      "components/ProductCategories.tsx",
+      "lib/product-categories.ts",
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Références EPH, TotalEnergies, HEIZFUXX, HELIOS, PROXIMA STAR et FireStixx.",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Sacs individuels et petits conditionnements pour un approvisionnement flexible.",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Granulés en palette et formats spécifiques. Vérifiez toujours la compatibilité avec votre appareil.",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Bûches et bois densifié, proposés en différents formats.",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Briquettes compressées en paquets ou en palettes.",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Bûchettes et allume-feux pour préparer le foyer.",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Tous les produits",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "container py-8 sm:py-10",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "relative w-full lg:max-w-sm",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Rechercher un produit…",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Rechercher un produit",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Catégories",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Besoin d’aide pour choisir votre quantité de granulés de bois ?",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Estimez vos besoins et consultez les conseils de sélection et de stockage.",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Consulter le guide",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Sélectionnez une photo pour l’agrandir",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Les prix affichés incluent la livraison en Allemagne. Le montant total est indiqué avant la validation de votre commande.",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "mt-8 first:mt-0",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Aucun produit trouvé",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Essayez un autre terme ou choisissez une autre catégorie.",
+    "files": [
+      "components/ProductCatalog.tsx"
+    ]
+  },
+  {
+    "text": "Combustible compressé, pratique à stocker et adapté aux appareils compatibles.",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Briquettes de bois compressé",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Bûches et bois densifié pour alimenter votre poêle, insert ou cheminée compatible.",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Bûches de bois de chauffage sur palette",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Granulés en sacs ou en palettes, destinés aux poêles et chaudières compatibles.",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Palette de granulés FireStixx en sacs",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Bois d’allumage et allume-feux",
+    "files": [
+      "components/ProductCategories.tsx",
+      "lib/product-categories.ts"
+    ]
+  },
+  {
+    "text": "Bûchettes et allume-feux pour préparer et démarrer votre feu simplement.",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Bûchettes de bois pour allumer un feu",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "mb-9 max-w-2xl",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Nos combustibles",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Trouvez le combustible adapté",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Choisissez une catégorie, puis comparez les produits et leurs conditionnements.",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "p-5 sm:p-6",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Explorer cette catégorie",
+    "files": [
+      "components/ProductCategories.tsx"
+    ]
+  },
+  {
+    "text": "Ajouté au panier !",
+    "files": [
+      "components/ProductDetailAddButton.tsx"
+    ]
+  },
+  {
+    "text": "Granulés de bois conditionnés en sacs et en palette",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Sacs & Palettes ENplus A1 / DINplus",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Bûches de bois de chauffage sèches sur palette",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Bûches de chêne & hêtre séchées",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Briquettes de bois densifiées Pini-Kay",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Briquettes densifiées",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Briquettes RUF & Pini-Kay haute performance",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Palette EPH Premium 975 kg",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Offre Phare",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Palette EPH Premium 975 kg (65 sacs)",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "relative mx-auto w-full max-w-xl lg:max-w-none",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "absolute inset-0 h-full w-full",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "object-cover object-center",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Image précédente",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Image suivante",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "Aller à la diapositive",
+    "files": [
+      "components/ProductHeroShowcase.tsx"
+    ]
+  },
+  {
+    "text": "container py-24",
+    "files": [
+      "components/Products.tsx"
+    ]
+  },
+  {
+    "text": "Notre sélection",
+    "files": [
+      "components/Products.tsx"
+    ]
+  },
+  {
+    "text": "Notre sélection de granulés et de briquettes de bois",
+    "files": [
+      "components/Products.tsx"
+    ]
+  },
+  {
+    "text": "Voir toute la boutique →",
+    "files": [
+      "components/Products.tsx"
+    ]
+  },
+  {
+    "text": "Des combustibles adaptés",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Granulés, bois et briquettes pour différents appareils.",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Plusieurs conditionnements",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Du sac individuel à la palette, selon vos besoins.",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Un conseil avant commande",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Notre équipe vous oriente vers le format approprié.",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "relative z-10 max-w-2xl",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Catalogue de bois de chauffage, granulés et briquettes",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Comparez les marques de granulés, les palettes et les différents conditionnements. Retrouvez aussi notre sélection de bois de chauffage, de briquettes et de produits d’allumage.",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "références",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "familles de produits",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "marques de granulés",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "container py-8",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "Chargement des produits…",
+    "files": [
+      "components/ProductsPageContent.tsx"
+    ]
+  },
+  {
+    "text": "&linkError=",
+    "files": [
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "SIGNED_OUT",
+    "files": [
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "USER_UPDATED",
+    "files": [
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "Impossible de vérifier votre session.",
+    "files": [
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "Impossible de vérifier votre rôle. Veuillez réessayer.",
+    "files": [
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "Réessayer",
+    "files": [
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "ml-4 underline",
+    "files": [
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "Vérification de votre accès…",
+    "files": [
+      "components/RoleAccessGuard.tsx"
+    ]
+  },
+  {
+    "text": "Une gamme claire",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Granulés, bûches, briquettes et bois d’allumage réunis dans un même catalogue.",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Conseil sur le format",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Nous vous aidons à comparer les conditionnements selon votre appareil et votre espace de stockage.",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Livraison à organiser",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Parlons du volume, de votre adresse et des modalités possibles avant votre commande.",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Notre accompagnement",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Du bon combustible au bon format.",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Échange personnalisé",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Guide Interactif",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Besoin d’aide pour choisir vos granulés de bois ?",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Obtenez une estimation indicative de vos besoins et consultez les conseils sur les certifications ENplus A1 / DINplus, le stockage et la livraison.",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Consulter le guide de sélection",
+    "files": [
+      "components/Services.tsx"
+    ]
+  },
+  {
+    "text": "Avis clients et livraison",
+    "files": [
+      "components/TopTrustBanner.tsx"
+    ]
+  },
+  {
+    "text": "Très bien",
+    "files": [
+      "components/TopTrustBanner.tsx"
+    ]
+  },
+  {
+    "text": "avis clients",
+    "files": [
+      "components/TopTrustBanner.tsx"
+    ]
+  },
+  {
+    "text": "Livraison : 2 à 4 jours ouvrables",
+    "files": [
+      "components/TopTrustBanner.tsx"
+    ]
+  },
+  {
+    "text": "Garantie Avis Vérifiés",
+    "files": [
+      "components/TopTrustBanner.tsx"
+    ]
+  },
+  {
+    "text": "Votre déclaration n’a pas pu être envoyée.",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Veuillez réessayer.",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "text/plain;charset=utf-8",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Aucune connexion nécessaire. Cette démarche ne déclenche aucun remboursement automatique.",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Votre déclaration a été reçue par Bren-nholz.",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Un accusé de réception a été envoyé à votre adresse e-mail.",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "L’accusé de réception par e-mail n’a pas pu être envoyé. Téléchargez votre confirmation et contactez-nous si nécessaire.",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Télécharger la confirmation",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "mt-4 space-y-3",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Je déclare me rétracter du contrat ou des articles identifiés ci-dessous.",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Contrat ou articles concernés",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Adresse de l’accusé de réception",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Confirmer la rétractation",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "E-mail pour l’accusé de réception *",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Référence de commande ou informations identifiant le contrat et les articles concernés *",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Continuer vers la confirmation",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "Vous pouvez aussi notifier votre rétractation à",
+    "files": [
+      "components/WithdrawalForm.tsx"
+    ]
+  },
+  {
+    "text": "priceAmount",
+    "files": [
+      "lib/catalog.ts"
+    ]
+  },
+  {
+    "text": "Quels sont les moyens et conditions de paiement ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Le règlement de vos commandes s’effectue exclusivement par virement bancaire sécurisé. Le paiement intégral doit être impérativement confirmé avant la préparation de la commande et le déclenchement de la livraison. Aucune livraison ni remise de marchandise ne peut être effectuée sans réception préalable de votre règlement.",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Quand la livraison est-elle déclenchée après mon paiement ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Dès la réception de votre virement bancaire, votre commande est préparée et transmise à notre transporteur partenaire pour une livraison sous 2 à 4 jours ouvrables après réception effective du paiement. Vous recevez une confirmation par e-mail dès la prise en charge de votre palette.",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Combien coûtent les frais de livraison ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "La livraison en Allemagne est incluse dans le prix de nos produits. Aucun frais de transport ne s’ajoute au montant de votre commande et aucun paiement n’est à remettre au transporteur lors de la livraison.",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Quels sont les délais de livraison et jours de passage ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Le délai de livraison standard est de 2 à 4 jours ouvrés après réception effective du paiement. Les livraisons s’effectuent du lundi au vendredi sur les heures ouvrables (hors week-ends et jours fériés).",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Comment s’organise la prise de rendez-vous pour la livraison ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Dès l’arrivée de votre palette au dépôt régional de destination, l’entreprise de transport vous contacte directement par téléphone pour convenir d’une date de passage. Un lien de suivi d’expédition (Track & Trace) vous est également transmis par e-mail afin de suivre l’acheminement en temps réel.",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Ma présence est-elle obligatoire lors de la livraison ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Oui, la présence d’une personne majeure sur place est obligatoire pour réceptionner, contrôler l’état de la marchandise et signer le bon de livraison auprès du chauffeur.",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Comment s’effectue le déchargement de la palette ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "La livraison est réalisée par camion équipé d’un hayon élévateur hydraulique. La palette est descendue au sol puis déplacée au transpalette (Hubwagen) au plus près de votre propriété, en bordure de voie publique.",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Quelles sont les conditions d’accès et la nature du sol exigées ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Le sol de déchargement doit être impérativement ferme, plan et carrossable (asphalte, pavés ou béton). En raison de la charge totale (environ 1 200 kg avec le transpalette), tout déplacement sur du gravier, de l’herbe, de la terre, des cailloux ou de fortes pentes est impossible. L’accès nécessite un passage d’au moins 1,20 m de largeur et 2,10 m de hauteur.",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Quels combustibles sont disponibles au catalogue ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Le catalogue réunit des granulés de bois, des briquettes RUF et Pini-Kay, des bûches et des produits d’allumage. Consultez chaque fiche pour connaître le conditionnement et les caractéristiques indiquées pour la référence. Les certifications et le mode de séchage ne concernent que les produits qui les mentionnent.",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Est-il possible de retirer sa commande directement à l’entrepôt ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Le retrait sur place s’organise sur confirmation préalable auprès de notre entrepôt :",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Comment stocker et conserver vos combustibles bois ?",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Pour conserver vos combustibles dans de bonnes conditions, stockez les bûches dans un abri ventilé et protégé de la pluie. Conservez les granulés et briquettes au sec et à l’abri de l’humidité, en suivant les recommandations du fabricant.",
+    "files": [
+      "lib/faq.ts"
+    ]
+  },
+  {
+    "text": "Préparation",
+    "files": [
+      "lib/order-status.ts"
+    ]
+  },
+  {
+    "text": "Expédiée",
+    "files": [
+      "lib/order-status.ts"
+    ]
+  },
+  {
+    "text": "Paiement en attente",
+    "files": [
+      "lib/order-status.ts"
+    ]
+  },
+  {
+    "text": "Paiement reçu",
+    "files": [
+      "lib/order-status.ts"
+    ]
+  },
+  {
+    "text": "Paiement non reçu",
+    "files": [
+      "lib/order-status.ts"
+    ]
+  },
+  {
+    "text": "Remboursé",
+    "files": [
+      "lib/order-status.ts"
+    ]
+  },
+  {
+    "text": "Comparez nos bûches par essence, longueur et conditionnement. Retrouvez aussi les références de bois densifié proposées au catalogue, avec livraison incluse en Allemagne.",
+    "files": [
+      "lib/product-categories.ts"
+    ]
+  },
+  {
+    "text": "Comparez les granulés de bois en sacs et palettes par marque et poids total. Vérifiez les caractéristiques et les certifications indiquées sur chaque référence avant de choisir.",
+    "files": [
+      "lib/product-categories.ts"
+    ]
+  },
+  {
+    "text": "Briquettes de bois",
+    "files": [
+      "lib/product-categories.ts"
+    ]
+  },
+  {
+    "text": "Découvrez nos briquettes RUF, Pini-Kay et rondes, en paquets, demi-palettes ou palettes selon les références. Comparez leur format et leur poids total.",
+    "files": [
+      "lib/product-categories.ts"
+    ]
+  },
+  {
+    "text": "Découvrez les bûchettes et allume-feux du catalogue. Comparez les sacs, filets, cartons et boîtes pour préparer l’allumage de votre foyer.",
+    "files": [
+      "lib/product-categories.ts"
+    ]
+  },
+  {
+    "text": "NFD",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois – sac",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Sac de 15 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois conditionnés en sac de 15 kg. Consultez les exigences de votre appareil avant utilisation.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés EPH Premium DINplus/ENplus A1 – palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "65 sacs en papier · 975 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Une palette de 65 sacs papier, soit 975 kg de granulés EPH Premium certifiés DINplus et ENplus A1.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Produit phare",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois ENplus A1 – sac",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Des granulés conditionnés en sac de 15 kg pour un stockage et un usage pratiques.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois économiques – sac",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Un sac de granulés de bois pour les appareils compatibles avec cette qualité.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de chêne sèches",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette · 1 stère · 25 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de chêne fendues, séchées et prêtes à l’emploi dans un foyer adapté.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de bouleau sèches",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de bouleau fendues et séchées, présentées sur palette.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes Pini-Kay (origine Pays-Bas) – palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "96 sacs de 10 kg · 960 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes Pini-Kay à combustion régulière, conditionnées en palette complète. À utiliser dans un appareil compatible.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Nouveau",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes RUF – paquet",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Paquet de 10 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes de bois RUF conditionnées en paquet de 10 kg, à conserver au sec.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûchettes d’allumage sèches",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Carton de 10 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Des bûchettes sèches pour préparer l’allumage du foyer.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois d’allumage en sac",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Sac de 5 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Des bûchettes rangées dans un sac pratique à conserver au sec.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûchettes en filet",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Filet de 10 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Un filet compact de bois d’allumage à garder près du foyer.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Allume-feux en laine de bois",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Sachet de 32 pièces",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Des allume-feux en laine de bois pour démarrer le feu.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Cubes allume-feux",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Boîte de 64 pièces",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Des cubes d’allumage à conserver au sec près du foyer.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois économiques",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette · 66 sacs · 990 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette de 66 sacs de granulés de bois, soit 990 kg au total.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de bois compressé",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Des bûches densifiées proposées en paquet pratique.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches densifiées rondes",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Un format rond de bois compressé à utiliser dans un foyer compatible.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés ENplus A1 – palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "66 sacs de 15 kg · 990 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de résineux ENplus A1 conditionnés sur palette, pour les appareils compatibles.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés TotalEnergies Premium ENplus A1",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "65 sacs de 15 kg · 975 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de résineux TotalEnergies en sacs de 15 kg. Palette adaptée aux poêles et chaudières compatibles ENplus A1.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés HEIZFUXX Blue ENplus A1",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de résineux certifiés ENplus A1, conditionnés en 65 sacs sur palette.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés DINplus – palette petit format",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "20 sacs de 15 kg · 300 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Format compact de granulés de bois certifiés DINplus et ENplus A1. Une option pratique pour compléter le stock.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Petit format",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés HELIOS DINplus / ENplus A1",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés HELIOS en palette, 100 % résineux, pour poêles et chaudières compatibles.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés PROXIMA STAR Premium",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de résineux PROXIMA STAR conditionnés en palette, pour poêles, inserts et chaudières compatibles.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de hêtre écorcé – palette filetée",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "33 cm · env. 1,6 m³ · 500 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de hêtre de première qualité, écorcées et fendues, livrées sur palette en filet. Bois prêt à brûler.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes rondes de hêtre – palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "96 paquets de 10 kg · 960 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes rondes en hêtre, conditionnées en paquets de 10 kg. Stocker au sec et vérifier la compatibilité de l’appareil.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes Biomac Extra – braise longue durée",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "100 paquets de 10 kg · 1 000 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes de nuit Biomac fabriquées à partir d’écorce lavée et séchée. Elles sont conçues pour maintenir les braises plusieurs heures ; vérifier les consignes de l’appareil.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés FireStixx Premium DINplus / ENplus A1",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés FireStixx Premium certifiés DINplus et ENplus A1, en sacs de 15 kg sur palette.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chêne sec – bûches de 33 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette filetée · env. 1,6 m³",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de chêne fendues en longueur de 33 cm, présentées sur palette filetée pour le stockage et la manutention.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes RUF – palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes de bois RUF rectangulaires, conditionnées en 96 paquets de 10 kg, soit 960 kg au total. À conserver au sec.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes Pini-Kay importées – palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes Pini-Kay avec canaux d’aération, proposées en palette complète.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes RUF – demi-palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "48 paquets de 10 kg · 480 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Un conditionnement intermédiaire de briquettes RUF, plus facile à stocker qu’une palette complète.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes Pini-Kay – demi-palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "48 sacs de 10 kg · 480 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Le format demi-palette des briquettes Pini-Kay d’origine néerlandaise, à conserver dans un endroit sec.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes rondes de hêtre – demi-palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes rondes de hêtre en format demi-palette, pour un stockage plus compact.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés Giant Flames – palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois ENplus A1 conditionnés en sacs de 15 kg. Livraison nationale gratuite en Allemagne.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés Giant Flames – demi-palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "35 sacs de 15 kg · 525 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Format demi-palette de granulés de bois, adapté aux besoins de stockage plus limités.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chêne séché au four – filets",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "88 filets · bûches de 25 cm · env. 2 m³ empilé",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de chêne fendues et séchées en chambre, prêtes à l’emploi. Le conditionnement en filets facilite le rangement.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de hêtre séché au four – palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de 33 cm · env. 2,6 m³ empilé",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de hêtre fendues et séchées en chambre, livrées en palette pour un usage immédiat.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes Giant Flames – palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "190 paquets de 4,8 kg · 912 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Briquettes de bois Giant Flames en petits paquets individuels.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage mi-sec en vrac – 25 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Vrac · 25 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage mi-sec en vrac, longueur 25 cm, essences variées (chêne, charme, hêtre).",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage mi-sec en vrac – 33 ou 50 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Vrac · 33 / 50 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage mi-sec en vrac, longueurs au choix de 33 ou 50 cm, en différentes essences.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage sec en Big Bag – 25 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Big Bag · 25 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage prêt à brûler conditionné en Big Bag pour un stockage propre et pratique.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage sec en Big Bag – 33 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Big Bag · 33 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de 33 cm séchées à cœur présentées dans un Big Bag robuste et facile à déplacer.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage sec en Big Bag – 50 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Big Bag · 50 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Format 50 cm sec en Big Bag, idéal pour les grands foyers, chaudières et inserts.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage sec en vrac – 25 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de 25 cm séchées, prêtes pour allumage rapide et feu vif dans poêle ou foyer fermé.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage sec en vrac – 33 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Vrac · 33 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois dur séché en vrac, découpe 33 cm pour une excellente tenue du feu.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage sec en vrac – 50 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Vrac · 50 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de 50 cm séchées pour inserts et chaudières, fort pouvoir calorifique.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage sec sur palette – 25 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette rangée · 25 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette de bois de chauffage sec calibré à 25 cm, empilé avec soin.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage sec sur palette – 33 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette rangée · 33 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette de bois sec rangé en bûches de 33 cm d’essences feuillus dures.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage sec sur palette – 50 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette rangée · 50 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette complète de 50 cm sec, livraison propre et manipulation simplifiée.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Filet de bûches de bois 33 cm (6 à 8 pièces)",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Filet individuel · 33 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Petit filet individuel de bûches de 33 cm pour un appoint rapide au coin du feu.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois ANTE DIN+ et EN+ – sac de 15 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois ANTE certifiés DIN+ et EN+ A1 pour poêles et chaudières.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois ANTE DIN+ et EN+ – palette complète",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette de 66 sacs · 990 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette complète de granulés ANTE résineux haute qualité.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois VERPELLET PELLETS – palette",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette · 66 sacs",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois VERPELLET PELLETS 100 % résineux certifiés en palette.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Granulés de bois VERPELLET PELLETS – sac de 15 kg",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Sac individuel de 15 kg de granulés VERPELLET PELLETS.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Allume-feu écologique en laine de bois",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Boîte de laine de bois",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Allume-feux écologiques à base de laine de bois et de cire naturelle.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Allume-feu sans pétrole",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Boîte d’allume-feux",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Allume-feux naturels sans dérivé de pétrole, sans odeur.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Filet de bois allume-feu",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Filet de bois tendre",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Filet de bûchettes de bois sec très fines pour allumage facile.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois de chauffage Chêne & Hêtre sec en box (2 stères)",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Box · 2 stères · 25 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bois dur chêne et hêtre écorcé et rangé en box palette prêt à brûler.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de Hêtre séchées sur palette (1,5 stère – 33 cm)",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette · 1,5 stère · 33 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette de hêtre pur séchée à moins de 20 % d’humidité.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Bûches de Chêne Pur séchées sur palette (2 stères – 50 cm)",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette · 2 stères · 50 cm",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Palette de grandes bûches de chêne 50 cm séchées en chambre.",
+    "files": [
+      "lib/products.ts"
+    ]
+  },
+  {
+    "text": "Champ d’application et contact",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Ces conditions s’appliquent aux achats réalisés sur le site Bren-nholz. Les conditions présentées lors de la commande sont celles applicables à votre achat. Contact :",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Produits, disponibilité et prix",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Les produits sont proposés dans la limite des stocks affichés. Un produit signalé en rupture ne peut pas être commandé. Les prix sont exprimés en euros, toutes taxes comprises. Le prix et le total présentés avant validation sont définitifs pour la commande enregistrée. Si un prix a changé pendant votre navigation, le site vous demande de vérifier le nouveau panier avant de commander.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "La livraison standard en Allemagne est incluse. Aucun paiement n’est demandé par le transporteur. Aucun nouveau prix ne vous est imposé après validation. Les demandes de devis distinctes ne modifient pas les commandes déjà validées.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Commande avec obligation de paiement",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Ajoutez les produits au panier, vérifiez les quantités et le total, puis renseignez vos coordonnées et une adresse de livraison complète en Allemagne. La création d’un compte est facultative. Vous pouvez corriger votre panier et vos coordonnées avant validation.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Après avoir accepté les conditions de vente et pris connaissance du droit de rétractation et de la politique de confidentialité, cliquez sur « Commander avec obligation de paiement ». Cette validation constitue votre commande et vous engage à régler le montant affiché, sans préjudice de votre droit de rétractation. Le site enregistre la commande et affiche sa référence et son montant final sur la page de confirmation. Aucun prélèvement bancaire n’est effectué par le site.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Conservez les informations de confirmation. Si une indisponibilité exceptionnelle survient après enregistrement, Bren-nholz vous informe et convient avec vous d’une solution ; aucune substitution ne vous est imposée sans votre accord.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Paiement par virement bancaire",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Utilisez les coordonnées affichées et le nom exact du titulaire.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Les coordonnées peuvent être remplacées par l’administration ; en cas de doute avant le règlement, contactez Bren-nholz avec votre référence.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Une commande enregistrée reste en attente de paiement jusqu’à réception effective des fonds. L’envoi d’une preuve de virement ne confirme pas le paiement. La réception est vérifiée par un administrateur avant la préparation et l’expédition. Les produits restent la propriété du vendeur jusqu’au règlement intégral.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Les jours ouvrables annoncés s’entendent du lundi au vendredi, hors jours fériés. Le délai commence à la réception effective du paiement, et non à la validation de la commande ou à l’envoi d’un justificatif. La livraison est effectuée à l’adresse allemande renseignée lors de la commande.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Pour les palettes, la FAQ décrit le déchargement avec hayon et transpalette en bordure de propriété. Prévoyez une personne pour réceptionner la marchandise et signalez les contraintes particulières avant l’achat. Aucun supplément de transport ne sera imposé après validation. En cas de difficulté d’accès, contactez-nous pour convenir d’une solution.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Les consommateurs disposent d’un droit de rétractation de 14 jours après réception, sous réserve des exceptions légales applicables. Les modalités détaillées, le formulaire type et la fonction en ligne figurent sur la page Rétractation, retours et remboursements, accessible ci-dessous et faisant partie de ces conditions.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "L’emballage intact n’est pas obligatoire et les sacs ouverts ne sont pas automatiquement exclus. Une dépréciation peut être prise en compte pour une manipulation dépassant l’examen nécessaire du produit, dans les conditions légales applicables.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Réclamations et garanties légales",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Pour un produit endommagé, incorrect ou non conforme, contactez-nous avec votre référence et une description du problème. Les droits légaux liés aux défauts, notamment ceux prévus aux §§ 434 et suivants et 437 BGB, s’appliquent indépendamment de la rétractation. Signaler une anomalie au transporteur aide au traitement ; l’absence de réserve ne supprime pas vos droits légaux.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Données personnelles et droit applicable",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Le traitement des données est décrit dans la politique de confidentialité, accessible ci-dessous. Le droit allemand s’applique, sans priver un consommateur des protections impératives qui lui seraient applicables. Les règles de compétence des juridictions restent celles prévues par la loi.",
+    "files": [
+      "lib/sales-terms.ts"
+    ]
+  },
+  {
+    "text": "Catalogue indisponible",
+    "files": [
+      "lib/server-catalog.ts"
+    ]
+  },
+  {
+    "text": "kontakt@interpl.de",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Leylines",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Société de droit néerlandais, enregistrée auprès de la Chambre de commerce des Pays-Bas",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Joey van Wettum et Thijs Vorstman",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Franciscusweg 16, 1216SK Hilversum, Pays-Bas",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Marie-Curie-Straße 3, 48599 Gronau, Allemagne",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "DE300812888",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Les frais de retour sont pris en charge par Bren-nholz, y compris pour les palettes.",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Ce compte est utilisé par la comptable pour encaisser les commandes de Bren-nholz.",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Livraison incluse en Allemagne, sous 2 à 4 jours ouvrables après réception effective du paiement. Aucun paiement au transporteur.",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Pour les palettes, prévoyez un accès carrossable pour le camion et une zone de déchargement ferme, plane et accessible au transpalette. Le gravier, l’herbe et les fortes pentes ne permettent pas le déplacement de la palette. Signalez toute restriction d’accès avant de commander.",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Merci pour votre commande. Pour procéder au règlement, effectuez votre virement en indiquant la référence de commande. Votre paiement sera confirmé après réception effective des fonds, puis votre commande sera préparée pour l’expédition.",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  },
+  {
+    "text": "Après validation de votre commande, effectuez votre virement en indiquant la référence de commande dans le libellé. La préparation débutera après réception effective des fonds.",
+    "files": [
+      "lib/store-config.ts"
+    ]
+  }
+]

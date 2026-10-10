@@ -1,7 +1,11 @@
 ﻿'use client';
+import { localizeNode } from '@/i18n/copy';
+import type { Locale } from '@/i18n/routing';
+import { useLocale } from 'next-intl';
+
 
 import { FormEvent, useState } from 'react';
-import Link from 'next/link';
+import Link from '@/i18n/navigation';
 import { ArrowRight, Boxes, CircleHelp, MessageCircle, ShieldCheck } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
 import { supabase } from '@/lib/supabase';
@@ -9,6 +13,8 @@ import { supabase } from '@/lib/supabase';
 const inputClass = 'mt-2 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
 export default function Contact() {
+  const brenLocale = useLocale() as Locale;
+
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
   const [sending, setSending] = useState(false);
@@ -47,7 +53,7 @@ export default function Contact() {
     }
   }
 
-  return (
+  return localizeNode((
     <main>
       {/* Header */}
       <section className="bg-[#fffaf5] py-14 sm:py-20 border-b border-orange-100/60">
@@ -119,5 +125,5 @@ export default function Contact() {
 
       <FaqSection compact/>
     </main>
-  );
+  ), brenLocale);
 }
