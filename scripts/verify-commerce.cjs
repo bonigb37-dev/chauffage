@@ -12,7 +12,9 @@ function load(file) {
   if (cache.has(file)) return cache.get(file).exports;
   const module = { exports: {} }; cache.set(file, module);
   const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
-  const localRequire = name => name === '@supabase/supabase-js' ? { createClient: () => mockDb } : name.startsWith('@/') ? load(`${name.slice(2)}.ts`) : require(name);
+  const localRequire = name => name === '@supabase/supabase-js' ? { createClient: () => new Proxy(mockDb ?? {}, { get(target, key) {
+    return key === 'rpc' ? (name, payload) => name === 'consume_api_rate_limit' ? Promise.resolve({ data: [{ allowed: true, retry_after: 60 }], error: null }) : target.rpc(name, payload) : target[key];
+  } }) } : name.startsWith('@/') ? load(`${name.slice(2)}.ts`) : require(name);
   vm.runInThisContext(`(function(require,module,exports){${code}\n})`, { filename: file })(localRequire, module, module.exports);
   return module.exports;
 }

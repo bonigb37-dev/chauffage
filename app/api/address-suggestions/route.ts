@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security';
 
 export async function POST(request: Request) {
-  const blocked = protectApi(request, 60);
+  const blocked = await protectApi(request, 60);
   if (blocked) return blocked;
   const headers = { 'Cache-Control': 'no-store' };
   const key = process.env.GEOAPIFY_API_KEY?.trim();

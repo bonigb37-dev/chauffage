@@ -5,7 +5,7 @@ import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security'
 
 export const runtime = 'nodejs';
 export async function POST(request: Request) {
-  const blocked = protectApi(request, 5, 10 * 60_000);
+  const blocked = await protectApi(request, 5, 10 * 60_000);
   if (blocked) return blocked;
   const headers = { 'Cache-Control': 'no-store' };
   const fail = (error: string, status: number) => NextResponse.json({ error }, { status, headers });

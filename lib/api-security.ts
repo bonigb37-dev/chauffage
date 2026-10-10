@@ -1,31 +1,35 @@
-import { createHash } from 'node:crypto';
+import { createHmac } from 'node:crypto';
 import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 
-// Burst protection per server instance, not a distributed quota. Use the
-// Vercel Firewall for a durable limit across instances and cold starts.
-const windows = new Map<string, { count: number; until: number }>();
-export function protectApi(request: Request, limit: number, windowMs = 60_000) {
+export async function protectApi(request: Request, limit: number, windowMs = 60_000) {
   const deny = (error: string, status: number, extra: Record<string, string> = {}) =>
     NextResponse.json({ error }, { status, headers: { 'Cache-Control': 'no-store', ...extra } });
   const origin = request.headers.get('origin');
   const expected = new URL(request.url).origin;
   if (origin && origin !== expected) return deny('Origine de la demande refusée.', 403);
   if (request.headers.get('sec-fetch-site') === 'cross-site') return deny('Origine de la demande refusée.', 403);
-  const now = Date.now();
-  for (const [key, value] of windows) if (value.until <= now) windows.delete(key);
   // On Vercel this header is overwritten by the platform; do not trust arbitrary
   // x-forwarded-for supplied by a caller. Local tests deliberately share a bucket.
   const ip = process.env.VERCEL === '1'
     ? request.headers.get('x-vercel-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
     : 'local';
-  const key = createHash('sha256').update(`${new URL(request.url).pathname}:${ip}`).digest('hex');
-  let entry = windows.get(key);
-  if (!entry) {
-    if (windows.size >= 10_000) return deny('Trop de demandes. Réessayez plus tard.', 429, { 'Retry-After': '60' });
-    entry = { count: 0, until: now + windowMs }; windows.set(key, entry);
-  }
-  if (++entry.count > limit) return deny('Trop de demandes. Réessayez plus tard.', 429, { 'Retry-After': String(Math.ceil((entry.until - now) / 1000)) });
-  return null;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const secret = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !secret) return deny('Service temporairement indisponible. Réessayez plus tard.', 503);
+  const key = createHmac('sha256', secret).update(`${request.method}:${new URL(request.url).pathname}:${ip}`).digest('hex');
+  try {
+    const db = createClient(url, secret, {
+      auth: { persistSession: false, autoRefreshToken: false },
+      global: { fetch: (input, init) => fetch(input, { ...init, signal: AbortSignal.timeout(5000) }) },
+    });
+    const result = await db.rpc('consume_api_rate_limit', { p_key: key, p_limit: limit, p_window_seconds: Math.ceil(windowMs / 1000) });
+    const quota = Array.isArray(result.data) ? result.data[0] : null;
+    if (result.error || !quota || typeof quota.allowed !== 'boolean' || !Number.isInteger(quota.retry_after) || quota.retry_after < 1 || quota.retry_after > 3600) {
+      return deny('Service temporairement indisponible. Réessayez plus tard.', 503);
+    }
+    return quota.allowed ? null : deny('Trop de demandes. Réessayez plus tard.', 429, { 'Retry-After': String(quota.retry_after) });
+  } catch { return deny('Service temporairement indisponible. Réessayez plus tard.', 503); }
 }
 
 export class BodyLimitError extends Error {}

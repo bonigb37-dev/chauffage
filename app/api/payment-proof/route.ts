@@ -12,7 +12,7 @@ function client() {
 }
 function fail(error: string, status: number) { return NextResponse.json({ error }, { status }); }
 export async function POST(request: Request) {
-  const blocked = protectApi(request, 10, 10 * 60_000);
+  const blocked = await protectApi(request, 10, 10 * 60_000);
   if (blocked) return blocked;
   const server = client();
   if (!server) return fail('Service d’envoi indisponible.', 503);
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
   } catch (cause) { return fail('L’envoi a échoué. Réessayez.', cause instanceof BodyLimitError ? 413 : 400); }
 }
 export async function GET(request: Request) {
-  const blocked = protectApi(request, 60);
+  const blocked = await protectApi(request, 60);
   if (blocked) return blocked;
   const server = client();
   if (!server) return fail('Service indisponible.', 503);

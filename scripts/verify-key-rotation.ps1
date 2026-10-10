@@ -38,22 +38,29 @@ if (Test-Path -LiteralPath $rotationStatePath) {
   }
 }
 $rotationDeploymentWorks = $false
-if ($CheckDeployment) {
+function Get-DeploymentKeyStatus([string]$keyToCheck) {
   $rotationTimestamp = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds().ToString()
   $rotationNonce = [Guid]::NewGuid().ToString('N')
   $rotationHmac = New-Object Security.Cryptography.HMACSHA256
-  $rotationHmac.Key = [Text.Encoding]::UTF8.GetBytes($rotationKey)
+  $rotationHmac.Key = [Text.Encoding]::UTF8.GetBytes($keyToCheck)
   $rotationSignature = ([BitConverter]::ToString($rotationHmac.ComputeHash([Text.Encoding]::UTF8.GetBytes("GET:/api/security-check:${rotationTimestamp}:${rotationNonce}")))).Replace('-','').ToLowerInvariant()
   try {
     $rotationResponse = Invoke-WebRequest -Uri "https://bois-de-chauffage-de.vercel.app/api/security-check?timestamp=$rotationTimestamp&nonce=$rotationNonce" -Headers @{ 'x-security-check-signature' = $rotationSignature } -UseBasicParsing -MaximumRedirection 0 -TimeoutSec 10
     $rotationBody = $rotationResponse.Content | ConvertFrom-Json
-    $rotationDeploymentWorks = [int]$rotationResponse.StatusCode -eq 200 -and $rotationBody.deploymentKeyMatches -eq $true -and $rotationBody.backendReadVerified -eq $true
-    $rotationResults['deploymentReadStatus'] = [int]$rotationResponse.StatusCode
+    return @{ status = [int]$rotationResponse.StatusCode; works = ([int]$rotationResponse.StatusCode -eq 200 -and $rotationBody.deploymentKeyMatches -eq $true -and $rotationBody.backendReadVerified -eq $true) }
   } catch {
-    $rotationResults['deploymentReadStatus'] = if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { 0 }
-  }
-  $rotationHmac.Dispose()
+    return @{ status = $(if ($_.Exception.Response) { [int]$_.Exception.Response.StatusCode } else { 0 }); works = $false }
+  } finally { $rotationHmac.Dispose() }
+}
+if ($CheckDeployment) {
+  $rotationDeployment = Get-DeploymentKeyStatus $rotationKey
+  $rotationDeploymentWorks = $rotationDeployment.works
+  $rotationResults['deploymentReadStatus'] = $rotationDeployment.status
   $rotationResults['deploymentUsesCurrentKey'] = $rotationDeploymentWorks
+  if (-not $rotationDeploymentWorks -and $rotationChanged) {
+    $rotationOldDeployment = Get-DeploymentKeyStatus $rotationOldKey
+    $rotationResults['deploymentUsesOldKey'] = $rotationOldDeployment.works
+  }
 }
 if ($RemoveRevokedSnapshot) {
   if (-not ($rotationOldRevoked -and $rotationCurrentStatus -eq 200 -and $rotationDeploymentWorks)) { throw 'Refuse cleanup before new deployment works and old key is revoked.' }

@@ -6,25 +6,44 @@ const assert = require('node:assert/strict');
 const ts = require('typescript');
 const cache = new Map();
 let mockDb;
+const persistentQuotas = new Map();
+let quotaFailure = false;
+async function mockQuota(payload) {
+  if (quotaFailure) return { data: null, error: new Error('mock unavailable') };
+  const used = (persistentQuotas.get(payload.p_key) ?? 0) + 1;
+  persistentQuotas.set(payload.p_key, used);
+  return { data: [{ allowed: used <= payload.p_limit, retry_after: payload.p_window_seconds }], error: null };
+}
 function load(file) {
   file = path.resolve(file);
   if (cache.has(file)) return cache.get(file).exports;
   const module = { exports: {} }; cache.set(file, module);
   const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
-  const localRequire = name => name === '@supabase/supabase-js' ? { createClient: () => mockDb } : name.startsWith('@/') ? load(`${name.slice(2)}.ts`) : require(name);
+  const localRequire = name => name === '@supabase/supabase-js' ? { createClient: () => new Proxy(mockDb ?? {}, { get(target, key) {
+    return key === 'rpc' ? (name, payload) => name === 'consume_api_rate_limit' ? mockQuota(payload) : target.rpc(name, payload) : target[key];
+  } }) } : name.startsWith('@/') ? load(`${name.slice(2)}.ts`) : require(name);
   vm.runInThisContext(`(function(require,module,exports){${code}\n})`, { filename: file })(localRequire, module, module.exports);
   return module.exports;
 }
 async function run() {
+  process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://mock.invalid';
+  process.env.SUPABASE_SERVICE_ROLE_KEY = 'mock-private';
   const { protectApi, readLimitedJson, BodyLimitError } = load('lib/api-security.ts');
   const request = (headers = {}) => new Request('https://shop.invalid/api/security-test', { method: 'POST', headers, body: '{}' });
-  assert.equal(protectApi(request({ origin: 'https://evil.invalid' }), 2).status, 403);
-  assert.equal(protectApi(request({ 'sec-fetch-site': 'cross-site' }), 2).status, 403);
-  assert.equal(protectApi(request({ origin: 'null' }), 2).status, 403);
-  assert.equal(protectApi(request({ origin: 'https://shop.invalid' }), 2), null);
-  assert.equal(protectApi(request({ 'x-forwarded-for': 'fake-1' }), 2), null);
-  const limited = protectApi(request({ 'x-forwarded-for': 'fake-2' }), 2);
+  assert.equal((await protectApi(request({ origin: 'https://evil.invalid' }), 2)).status, 403);
+  assert.equal((await protectApi(request({ 'sec-fetch-site': 'cross-site' }), 2)).status, 403);
+  assert.equal((await protectApi(request({ origin: 'null' }), 2)).status, 403);
+  assert.equal(await protectApi(request({ origin: 'https://shop.invalid' }), 2), null);
+  assert.equal(await protectApi(request({ 'x-forwarded-for': 'fake-1' }), 2), null);
+  // A second loaded module represents a new serverless instance. It uses the
+  // same mock database quota rather than resetting a module-local counter.
+  cache.delete(path.resolve('lib/api-security.ts'));
+  const otherInstance = load('lib/api-security.ts');
+  const limited = await otherInstance.protectApi(request({ 'x-forwarded-for': 'fake-2' }), 2);
   assert.equal(limited.status, 429); assert(limited.headers.get('retry-after'));
+  quotaFailure = true;
+  assert.equal((await protectApi(request(), 2)).status, 503, 'Quota database outage fails closed');
+  quotaFailure = false;
   assert.deepEqual(await readLimitedJson(request(), 10), {});
   await assert.rejects(readLimitedJson(new Request('https://shop.invalid', { method: 'POST', body: 'x'.repeat(1000), headers: { 'content-length': '1' } }), 20), BodyLimitError);
   const { paymentProofToken, validPaymentProofToken, proofValidityMs } = load('lib/payment-proof-token.ts');
@@ -76,6 +95,23 @@ async function run() {
   const order = { customer: { firstName:'Test',lastName:'Client',street:'Teststrasse 1',postalCode:'66663',city:'Merzig',email:'test@example.invalid' }, acceptedTerms:true, userId:'forged', items:[{productId:2,quantity:1,unitPriceCents:49900}] };
   assert.equal((await checkout.POST(new Request('https://shop.invalid/api/checkout', { method:'POST',headers:{authorization:'Bearer forged'},body:JSON.stringify(order) }))).status, 401);
   assert.equal(written, false);
+  const health = load('app/api/security-check/route.ts');
+  let healthReads = 0;
+  mockDb = { from: table => {
+    assert.equal(table, 'order_requests');
+    return { select: field => { assert.equal(field,'id'); return { limit: async size => {
+      assert.equal(size,0); healthReads++; return { data: [], error: null };
+    } }; } };
+  } };
+  const nonce = 'a'.repeat(32), stamp = String(Math.floor(Date.now()/1000));
+  const checkRequest = (time, secret = 'mock-private') => new Request(`https://shop.invalid/api/security-check?timestamp=${time}&nonce=${nonce}`, {
+    headers: { 'x-security-check-signature': require('node:crypto').createHmac('sha256',secret).update(`GET:/api/security-check:${time}:${nonce}`).digest('hex') },
+  });
+  assert.equal((await health.GET(checkRequest(stamp,'wrong-key'))).status,401); assert.equal(healthReads,0);
+  assert.equal((await health.GET(checkRequest(String(Number(stamp)-120)))).status,401); assert.equal(healthReads,0);
+  const matching = await health.GET(checkRequest(stamp));
+  assert.equal(matching.status,200); assert.equal(healthReads,1);
+  assert.deepEqual(await matching.json(),{ok:true,deploymentKeyMatches:true,backendReadVerified:true});
   const sql = fs.readFileSync('supabase-commerce.sql','utf8');
   assert(sql.includes('using (user_id = auth.uid()) with check (user_id = auth.uid())'));
   assert(sql.includes('using (user_id = auth.uid())'));

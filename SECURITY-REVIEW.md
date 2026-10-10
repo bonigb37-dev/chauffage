@@ -1,5 +1,7 @@
 # Revue de sécurité — 10 octobre 2026
 
+Suite de cette revue : voir [SECURITY-ACTIONS.md](SECURITY-ACTIONS.md). Les quotas PostgreSQL et les tests RLS exécutés sont préparés ; leur activation distante attend l'application SQL. Rotation en attente de remplacement par l'utilisateur, SMTP reporté à la disponibilité du domaine. Les constats ci-dessous décrivent la première publication de sécurité.
+
 Périmètre : boutique Bren-nholz, code courant et vérifications distantes en lecture seule. Aucun client réel créé, aucun mot de passe modifié, aucune commande, aucun paiement ni e-mail réel déclenché. Design, textes visibles et avis clients conservés.
 
 ## Corrections
