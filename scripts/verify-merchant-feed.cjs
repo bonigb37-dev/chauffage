@@ -1,0 +1,55 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
+const {execFileSync} = require('node:child_process');
+const ts = require('typescript');
+const cache = new Map();
+function load(file) {
+ file=path.resolve(file);if(cache.has(file))return cache.get(file).exports;
+ const module={exports:{}};cache.set(file,module);
+ const requireLocal=name=>name.startsWith('@/') ? name.endsWith('.json') ? JSON.parse(fs.readFileSync(name.slice(2),'utf8')) : load(name.slice(2)+'.ts') : require(name);
+ const code=ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,esModuleInterop:true}}).outputText;
+ vm.runInThisContext('(function(require,module,exports){'+code+'\n})',{filename:file})(requireLocal,module,module.exports);return module.exports;
+}
+function parseXml(xml) {
+ const ps="$ErrorActionPreference='Stop'; $utf8=New-Object System.Text.UTF8Encoding $false; [Console]::InputEncoding=$utf8; [Console]::OutputEncoding=$utf8; $OutputEncoding=$utf8; $doc=New-Object System.Xml.XmlDocument; $doc.XmlResolver=$null; $doc.LoadXml([Console]::In.ReadToEnd()); $ns=New-Object System.Xml.XmlNamespaceManager($doc.NameTable); $ns.AddNamespace('g','http://base.google.com/ns/1.0'); @($doc.SelectNodes('/rss/channel/item') | ForEach-Object { $item=$_; $row=@{}; foreach($key in @('id','title','description','link','image_link','price','availability','condition','brand','gtin','mpn','identifier_exists')) { $node=$item.SelectSingleNode('g:'+$key,$ns); if($node){$row[$key]=$node.InnerText} }; $row.shipping=$item.SelectSingleNode('g:shipping/g:price',$ns).InnerText; $row }) | ConvertTo-Json -Compress";
+ const parsed=JSON.parse(execFileSync('powershell',['-NoProfile','-Command',ps],{input:xml,encoding:'utf8',windowsHide:true,maxBuffer:4000000}));
+ return Array.isArray(parsed)?parsed:[parsed];
+}
+const {buildMerchantFeed}=load('lib/merchant-feed.ts');
+const {mergeCatalog}=load('lib/catalog.ts');
+const de=JSON.parse(fs.readFileSync('translations/de.json','utf8'));
+const base='https://www.brennholz-direk.de';
+const products=mergeCatalog([]);
+const original=buildMerchantFeed(products,base);
+const items=parseXml(original.xml);
+assert.equal(original.omitted.length,0);
+assert.equal(items.length,products.length);
+assert.equal(new Set(items.map(item=>item.id)).size,items.length);
+for(const item of items){const p=products.find(p=>String(p.id)===item.id);assert.equal(item.title,de[p.name]);assert.equal(item.description,de[p.description]);assert.equal(item.price,(p.priceAmount/100).toFixed(2)+' EUR');assert.equal(item.availability,p.stock===0?'out_of_stock':'in_stock');assert(item.link.startsWith(base+'/de/produits/'));assert(item.image_link.startsWith('https://'));assert(!item.gtin&&!item.mpn&&!item.identifier_exists);assert.equal(item.shipping,'0.00 EUR');assert(item.title.length<=150&&item.description.length<=5000);}
+const changed=mergeCatalog([{product_id:2,data:{priceAmount:12345,stock:0},is_deleted:false},{product_id:3,data:{},is_deleted:true}]);
+const changedItems=parseXml(buildMerchantFeed(changed,base).xml);
+assert.equal(changedItems.find(item=>item.id==='2').price,'123.45 EUR');
+assert.equal(changedItems.find(item=>item.id==='2').availability,'out_of_stock');
+assert(!changedItems.some(item=>item.id==='3'));
+const p=products[0];
+assert.equal(buildMerchantFeed([{...p,priceAmount:undefined}],base).count,0);
+assert.equal(buildMerchantFeed([{...p,name:'Untranslated new product'}],base).count,0);
+assert.equal(buildMerchantFeed([{...p,image:'javascript:alert(1)'}],base).count,0);
+const escaped=parseXml(buildMerchantFeed([{...p,image:'/image.png?x=1&y=2'}],base).xml);
+assert.equal(escaped[0].image_link,base+'/image.png?x=1&y=2');
+console.log('PASS '+items.length+' products: valid parsed XML, German copy, stable IDs, prices, stock/deletion overrides, escaping, invalid records omitted, no invented identifiers.');
+async function live(){const endpoint=process.argv[2];if(!endpoint)return;
+ let liveItems;
+ for(const headers of [{},{'accept-language':'fr-FR',cookie:'bren_locale=fr'},{'accept-language':'en-US',cookie:'bren_locale=en'}]){const r=await fetch(endpoint+'/google-merchant.xml',{headers,redirect:'manual'});assert.equal(r.status,200);assert(r.headers.get('content-type')?.startsWith('application/xml'));assert(!r.headers.get('location'));const xml=await r.text();assert(!xml.includes('<html'));const rows=parseXml(xml);assert(rows.length>0);if(liveItems)assert.deepEqual(rows,liveItems);else liveItems=rows;}
+ for(const item of liveItems){
+  const url=new URL(item.link);const r=await fetch(endpoint+url.pathname);assert.equal(r.status,200);const html=await r.text();assert(html.includes('lang="de"'));
+  const json=html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/)?.[1];assert(json,item.id+' structured data');const product=JSON.parse(json);
+  assert.equal(item.title,product.name);assert.equal(item.description,product.description);assert.equal(item.price,product.offers.price+' '+product.offers.priceCurrency);
+  assert.equal(item.availability,product.offers.availability.endsWith('/OutOfStock')?'out_of_stock':'in_stock');
+  const image=new URL(item.image_link);const imageResponse=await fetch(endpoint+image.pathname+image.search,{method:'HEAD'});assert.equal(imageResponse.status,200,item.id+' image');assert(imageResponse.headers.get('content-type')?.startsWith('image/'));
+ }
+ console.log('PASS public XML without auth/locale redirects; '+liveItems.length+' live products agree with German landing-page prices, availability, titles, descriptions and accessible images. Read-only checks.');
+}
+live().catch(error=>{console.error(error);process.exitCode=1;});
