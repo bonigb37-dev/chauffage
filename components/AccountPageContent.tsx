@@ -677,24 +677,24 @@ export default function AccountPageContent() {
       : 'Bon retour ';
 
   return (
-    <div className="account-auth-container min-h-dvh flex flex-col justify-between relative overflow-hidden text-white">
+    <div className="account-auth-container min-h-dvh flex flex-col justify-between relative overflow-hidden text-slate-900">
       {/* Background Animated Hearth Loop */}
       <BackgroundHearthLoop />
 
       {/* Embedded Minimalist Header */}
       <header className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-5 sm:py-6 flex items-center justify-between">
-        <Link href="/" aria-label="Bren-nholz, accueil" className="group flex items-center gap-2.5 font-black text-xl tracking-tight text-white transition">
+        <Link href="/" aria-label="Bren-nholz, accueil" className="group flex items-center gap-2.5 font-black text-xl tracking-tight text-slate-900 transition">
           <span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500 text-white shadow-lg shadow-orange-500/30 group-hover:bg-orange-600 transition">
             <Flame size={23} strokeWidth={2.2} fill="currentColor" />
           </span>
-          <span className="text-white font-black tracking-tight text-xl">
+          <span className="text-slate-900 font-black tracking-tight text-xl">
             Bren<span className="text-orange-500">-</span>nholz
           </span>
         </Link>
 
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-xs sm:text-sm font-semibold text-zinc-300 hover:text-white transition backdrop-blur-md"
+          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/70 hover:bg-orange-50 border border-orange-100 hover:border-orange-200 text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition backdrop-blur-md"
         >
           <ArrowLeft size={15} />
           <span className="hidden sm:inline">Retour boutique</span>
@@ -708,47 +708,47 @@ export default function AccountPageContent() {
           {!ready ? (
             <div className="py-12 flex flex-col items-center justify-center gap-3">
               <LoaderCircle className="animate-spin text-orange-500" size={28} />
-              <span className="text-sm font-medium text-zinc-400">Chargement de votre espace...</span>
+              <span className="text-sm font-medium text-slate-600">Chargement de votre espace...</span>
             </div>
           ) : user && mode !== 'update' && !needsConfirmationLink ? (
             <div className="text-center space-y-5 py-2">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mx-auto shadow-lg">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-700 flex items-center justify-center mx-auto shadow-lg">
                 <CheckCircle2 size={32} />
               </div>
               <div>
-                <p className="text-xs uppercase tracking-widest font-bold text-emerald-400 mb-1">Compte connecté</p>
-                <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Bienvenue</h2>
-                <p className="text-sm text-zinc-400 mt-1">
-                  Connecté avec l’adresse <strong className="text-zinc-200">{user.email}</strong>
+                <p className="text-xs uppercase tracking-widest font-bold text-emerald-700 mb-1">Compte connecté</p>
+                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Bienvenue</h2>
+                <p className="text-sm text-slate-600 mt-1">
+                  Connecté avec l’adresse <strong className="text-slate-800">{user.email}</strong>
                 </p>
               </div>
 
               <DarkFormAlert notice={notice} error={error} onDismiss={() => { setNotice(''); setError(''); }} />
 
               <div className="space-y-5 text-left">
-                <section className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                  <h3 className="text-sm font-bold text-white">Mon panier{cartReady ? ` (${itemCount})` : ''}</h3>
-                  {!cartReady ? <p role="status" className="mt-2 text-xs text-zinc-400">Chargement du panier…</p> : cartItems.length ? <ul className="mt-3 space-y-2 text-sm text-zinc-300">{cartItems.map((item) => <li key={item.productId} className="flex justify-between gap-3"><span>{cartProducts.find((product) => product.id === item.productId)?.name ?? 'Produit'}</span><span className="shrink-0">× {item.quantity}</span></li>)}</ul> : <p className="mt-2 text-sm text-zinc-400">Votre panier est vide. Découvrez nos produits pour préparer votre prochaine commande.</p>}
+                <section className="rounded-2xl border border-orange-100 bg-white/70 p-4">
+                  <h3 className="text-sm font-bold text-slate-900">Mon panier{cartReady ? ` (${itemCount})` : ''}</h3>
+                  {!cartReady ? <p role="status" className="mt-2 text-xs text-slate-600">Chargement du panier…</p> : cartItems.length ? <ul className="mt-3 space-y-2 text-sm text-slate-600">{cartItems.map((item) => <li key={item.productId} className="flex justify-between gap-3"><span>{cartProducts.find((product) => product.id === item.productId)?.name ?? 'Produit'}</span><span className="shrink-0">× {item.quantity}</span></li>)}</ul> : <p className="mt-2 text-sm text-slate-600">Votre panier est vide. Découvrez nos produits pour préparer votre prochaine commande.</p>}
                   <div className="mt-4 flex flex-wrap gap-3">
                     <Link href="/panier" className="rounded-xl bg-orange-600 px-4 py-3 text-sm font-bold text-white transition hover:bg-orange-700">Voir mon panier</Link>
-                    <Link href="/produits" className="rounded-xl border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">Continuer mes achats</Link>
+                    <Link href="/produits" className="rounded-xl border border-orange-200 px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-orange-50">Continuer mes achats</Link>
                   </div>
                 </section>
-                <section className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                  <h3 className="text-sm font-bold text-white">Mes commandes</h3>
+                <section className="rounded-2xl border border-orange-100 bg-white/70 p-4">
+                  <h3 className="text-sm font-bold text-slate-900">Mes commandes</h3>
                   {ordersError ? (
-                    <p className="mt-2 text-xs leading-relaxed text-amber-300">{ordersError}</p>
+                    <p className="mt-2 text-xs leading-relaxed text-amber-800">{ordersError}</p>
                   ) : orders.length === 0 ? (
-                    <p className="mt-2 text-xs leading-relaxed text-zinc-400">Aucune commande liée à ce compte pour le moment.</p>
+                    <p className="mt-2 text-xs leading-relaxed text-slate-600">Aucune commande liée à ce compte pour le moment.</p>
                   ) : (
                     <ul className="mt-3 space-y-2">
                       {orders.map((order) => (
-                        <li key={order.id} className="rounded-xl border border-white/10 bg-black/20 p-3">
+                        <li key={order.id} className="rounded-xl border border-orange-100 bg-orange-50 p-3">
                           <div className="flex items-center justify-between gap-3 text-sm">
-                            <b className="text-white">{order.reference}</b>
-                            <span className="text-zinc-300">{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(order.total_cents / 100)}</span>
+                            <b className="text-slate-900">{order.reference}</b>
+                            <span className="text-slate-600">{new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(order.total_cents / 100)}</span>
                           </div>
-                          <p className="mt-1 text-xs text-zinc-500">
+                          <p className="mt-1 text-xs text-slate-500">
                             {new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium' }).format(new Date(order.created_at))} · {paymentStatusLabel(order.payment_status)} · {orderStatusLabels[order.status as keyof typeof orderStatusLabels] ?? order.status}
                           </p>
                         </li>
@@ -757,14 +757,14 @@ export default function AccountPageContent() {
                   )}
                 </section>
 
-                <section className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                  <h3 className="text-sm font-bold text-white">Mes adresses</h3>
+                <section className="rounded-2xl border border-orange-100 bg-white/70 p-4">
+                  <h3 className="text-sm font-bold text-slate-900">Mes adresses</h3>
                   {addresses.length > 0 && (
                     <ul className="mt-3 space-y-2">
                       {addresses.map((address) => (
-                        <li key={address.id} className="flex items-start justify-between gap-3 rounded-xl border border-white/10 bg-black/20 p-3 text-xs text-zinc-300">
-                          <span><b className="text-white">{address.label} · {address.recipient_name}</b><br />{address.street}<br />{address.postal_code} {address.city}, {address.country_code}</span>
-                          <button type="button" onClick={() => void deleteAddress(address.id)} className="font-semibold text-red-300 hover:text-red-200">Supprimer</button>
+                        <li key={address.id} className="flex items-start justify-between gap-3 rounded-xl border border-orange-100 bg-orange-50 p-3 text-xs text-slate-600">
+                          <span><b className="text-slate-900">{address.label} · {address.recipient_name}</b><br />{address.street}<br />{address.postal_code} {address.city}, {address.country_code}</span>
+                          <button type="button" onClick={() => void deleteAddress(address.id)} className="font-semibold text-red-700 hover:text-red-800">Supprimer</button>
                         </li>
                       ))}
                     </ul>
@@ -775,11 +775,11 @@ export default function AccountPageContent() {
                     <input required name="street" placeholder="Rue et numéro" className="account-input-field sm:col-span-2" />
                     <input required name="postal_code" pattern="[0-9]{5}" maxLength={5} placeholder="Code postal allemand" className="account-input-field" />
                     <input required name="city" placeholder="Ville" className="account-input-field" />
-                    <button type="submit" disabled={savingAddress} className="rounded-xl bg-white/10 px-4 py-3 text-sm font-bold text-white transition hover:bg-white/15 disabled:opacity-50 sm:col-span-2">
+                    <button type="submit" disabled={savingAddress} className="rounded-xl bg-orange-50 px-4 py-3 text-sm font-bold text-slate-900 transition hover:bg-orange-100 disabled:opacity-50 sm:col-span-2">
                       {savingAddress ? 'Enregistrement...' : 'Enregistrer cette adresse'}
                     </button>
                   </form>
-                  {addressError && <p role="alert" className="mt-3 text-xs text-red-300">{addressError}</p>}
+                  {addressError && <p role="alert" className="mt-3 text-xs text-red-700">{addressError}</p>}
                 </section>
               </div>
 
@@ -792,7 +792,7 @@ export default function AccountPageContent() {
                 </Link>
                 <button
                   type="button"
-                  className="w-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-zinc-300 hover:text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 text-sm"
+                  className="w-full bg-white/70 hover:bg-orange-50 border border-orange-100 hover:border-orange-200 text-slate-600 hover:text-slate-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 text-sm"
                   onClick={handleSignOut}
                 >
                   Se déconnecter
@@ -803,14 +803,14 @@ export default function AccountPageContent() {
             <>
               {/* Segmented Auth Tabs (Connexion / Inscription) */}
               {(mode === 'signin' || mode === 'signup') && (
-                <div className="flex items-center p-1 bg-[#090A0D]/80 rounded-2xl border border-white/10 mb-6 backdrop-blur-md">
+                <div className="flex items-center p-1 bg-orange-50 rounded-2xl border border-orange-100 mb-6 backdrop-blur-md">
                   <button
                     type="button"
                     onClick={() => switchMode('signin')}
                     className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
                       mode === 'signin'
-                        ? 'bg-zinc-800 text-white shadow-md border border-white/15'
-                        : 'text-zinc-400 hover:text-white'
+                        ? 'bg-white text-slate-900 shadow-md border border-orange-200'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     Connexion
@@ -820,8 +820,8 @@ export default function AccountPageContent() {
                     onClick={() => switchMode('signup')}
                     className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
                       mode === 'signup'
-                        ? 'bg-zinc-800 text-white shadow-md border border-white/15'
-                        : 'text-zinc-400 hover:text-white'
+                        ? 'bg-white text-slate-900 shadow-md border border-orange-200'
+                        : 'text-slate-600 hover:text-slate-900'
                     }`}
                   >
                     Inscription
@@ -831,10 +831,10 @@ export default function AccountPageContent() {
 
               {/* Header Title & Subtitle */}
               <div className="mb-6">
-                <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                   {heading}
                 </h2>
-                <p className="text-xs sm:text-sm text-zinc-400 mt-1.5 leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
                   {mode === 'signup'
                     ? 'Inscrivez-vous pour passer vos commandes facilement.'
                     : mode === 'forgot'
@@ -856,11 +856,11 @@ export default function AccountPageContent() {
                 {mode === 'signup' && (
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
                         Prénom
                       </label>
                       <div className="relative flex items-center">
-                        <UserRound size={17} className="absolute left-3 text-zinc-500 pointer-events-none" />
+                        <UserRound size={17} className="absolute left-3 text-slate-500 pointer-events-none" />
                         <input
                           autoComplete="given-name"
                           name="firstName"
@@ -871,11 +871,11 @@ export default function AccountPageContent() {
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
                         Nom
                       </label>
                       <div className="relative flex items-center">
-                        <UserRound size={17} className="absolute left-3 text-zinc-500 pointer-events-none" />
+                        <UserRound size={17} className="absolute left-3 text-slate-500 pointer-events-none" />
                         <input
                           autoComplete="family-name"
                           name="lastName"
@@ -890,11 +890,11 @@ export default function AccountPageContent() {
 
                 {mode !== 'update' && (
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
                       Email
                     </label>
                     <div className="relative flex items-center">
-                      <Mail size={17} className="absolute left-3 text-zinc-500 pointer-events-none" />
+                      <Mail size={17} className="absolute left-3 text-slate-500 pointer-events-none" />
                       <input
                         autoComplete="email"
                         name="email"
@@ -910,13 +910,13 @@ export default function AccountPageContent() {
                 {mode !== 'forgot' && (
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
                         {mode === 'update' ? 'Nouveau mot de passe' : 'Mot de passe'}
                       </label>
                       {mode === 'signin' && (
                         <button
                           type="button"
-                          className="text-xs text-orange-400 hover:text-orange-300 hover:underline transition font-medium"
+                          className="text-xs text-orange-700 hover:text-orange-700 hover:underline transition font-medium"
                           onClick={() => switchMode('forgot')}
                         >
                           Mot de passe oublié ?
@@ -924,7 +924,7 @@ export default function AccountPageContent() {
                       )}
                     </div>
                     <div className="relative flex items-center">
-                      <LockKeyhole size={17} className="absolute left-3 text-zinc-500 pointer-events-none" />
+                      <LockKeyhole size={17} className="absolute left-3 text-slate-500 pointer-events-none" />
                       <input
                         autoComplete={mode === 'signup' || mode === 'update' ? 'new-password' : 'current-password'}
                         name="password"
@@ -935,7 +935,7 @@ export default function AccountPageContent() {
                         className="account-input-field pr-10"
                       />
                       <button
-                        className="absolute right-3 text-zinc-400 hover:text-white transition p-1"
+                        className="absolute right-3 text-slate-600 hover:text-slate-900 transition p-1"
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
@@ -948,11 +948,11 @@ export default function AccountPageContent() {
 
                 {mode === 'signup' && (
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
                       Confirmer le mot de passe
                     </label>
                     <div className="relative flex items-center">
-                      <LockKeyhole size={17} className="absolute left-3 text-zinc-500 pointer-events-none" />
+                      <LockKeyhole size={17} className="absolute left-3 text-slate-500 pointer-events-none" />
                       <input
                         autoComplete="new-password"
                         name="confirmPassword"
@@ -966,10 +966,10 @@ export default function AccountPageContent() {
                   </div>
                 )}
 
-                {(needsConfirmationLink || mode === 'signup') && <button type="button" disabled={busy} onClick={resendConfirmation} className="text-sm font-bold text-orange-400 underline underline-offset-4 disabled:opacity-50">Demander un nouveau lien de confirmation</button>}
-                {mode === 'update' && (!user || recoveryLinkInvalid) && <div role="alert" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm leading-6 text-amber-200">Ouvrez le lien de réinitialisation reçu par e-mail pour choisir un nouveau mot de passe.<button type="button" onClick={() => switchMode('forgot')} className="mt-2 block font-bold underline underline-offset-4">Demander un nouveau lien</button></div>}
+                {(needsConfirmationLink || mode === 'signup') && <button type="button" disabled={busy} onClick={resendConfirmation} className="text-sm font-bold text-orange-700 underline underline-offset-4 disabled:opacity-50">Demander un nouveau lien de confirmation</button>}
+                {mode === 'update' && (!user || recoveryLinkInvalid) && <div role="alert" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm leading-6 text-amber-800">Ouvrez le lien de réinitialisation reçu par e-mail pour choisir un nouveau mot de passe.<button type="button" onClick={() => switchMode('forgot')} className="mt-2 block font-bold underline underline-offset-4">Demander un nouveau lien</button></div>}
                 <button
-                  className="w-full mt-2 bg-gradient-to-r from-orange-500 via-amber-600 to-orange-600 hover:from-orange-400 hover:to-amber-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-orange-950/40 hover:shadow-orange-900/60 transition-all duration-200 transform active:scale-[0.99] flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#121215]"
+                  className="w-full mt-2 bg-gradient-to-r from-orange-500 via-amber-600 to-orange-600 hover:from-orange-400 hover:to-amber-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-orange-950/40 hover:shadow-orange-900/60 transition-all duration-200 transform active:scale-[0.99] flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#fffaf5]"
                   type="submit"
                   disabled={busy || (mode === 'update' && (!user || recoveryLinkInvalid))}
                 >
@@ -993,14 +993,14 @@ export default function AccountPageContent() {
 
               {/* Mode Switches */}
               {(mode === 'signin' || mode === 'signup') && (
-                <div className="mt-6 text-center text-xs text-zinc-400">
+                <div className="mt-6 text-center text-xs text-slate-600">
                   {mode === 'signin' ? (
                     <p>
                       Vous n&apos;avez pas de compte ?{' '}
                       <button
                         type="button"
                         onClick={() => switchMode('signup')}
-                        className="font-bold text-white hover:text-orange-400 transition underline underline-offset-2"
+                        className="font-bold text-slate-900 hover:text-orange-700 transition underline underline-offset-2"
                       >
                         Créer un compte
                       </button>
@@ -1011,7 +1011,7 @@ export default function AccountPageContent() {
                       <button
                         type="button"
                         onClick={() => switchMode('signin')}
-                        className="font-bold text-white hover:text-orange-400 transition underline underline-offset-2"
+                        className="font-bold text-slate-900 hover:text-orange-700 transition underline underline-offset-2"
                       >
                         Se connecter
                       </button>
@@ -1024,7 +1024,7 @@ export default function AccountPageContent() {
                 <div className="mt-6 text-center">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-400 hover:text-white transition"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition"
                     onClick={() => switchMode('signin')}
                   >
                     <ArrowLeft size={15} /> Retour à la connexion
@@ -1037,9 +1037,9 @@ export default function AccountPageContent() {
       </main>
 
       {/* Embedded Minimalist Footer */}
-      <footer className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 text-center text-xs text-zinc-500">
+      <footer className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 text-center text-xs text-slate-500">
         <p>© {new Date().getFullYear()} Bren-nholz — Espace sécurisé. Tous droits réservés.</p>
-        <nav aria-label="Informations juridiques" className="mt-3 flex flex-wrap justify-center gap-4"><Link href="/datenschutz" className="text-zinc-300 underline">Confidentialité</Link><Link href="/retractation#retractation" className="rounded-lg border border-orange-400/50 px-3 py-2 font-bold text-orange-300">Me rétracter du contrat</Link></nav>
+        <nav aria-label="Informations juridiques" className="mt-3 flex flex-wrap justify-center gap-4"><Link href="/datenschutz" className="text-slate-600 underline">Confidentialité</Link><Link href="/retractation#retractation" className="rounded-lg border border-orange-400/50 px-3 py-2 font-bold text-orange-700">Me rétracter du contrat</Link></nav>
       </footer>
     </div>
   );

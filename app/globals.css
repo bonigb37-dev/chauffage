@@ -478,11 +478,9 @@ select:-webkit-autofill:focus {
   position: relative;
   min-height: 100dvh;
   width: 100%;
-  background-color: #2d3038;
+  background-color: #fffaf5;
   background-image:
-    radial-gradient(ellipse at 50% 12%, rgba(59, 130, 246, 0.18) 0%, transparent 60%),
-    radial-gradient(ellipse at 50% 85%, rgba(249, 115, 22, 0.38) 0%, rgba(45, 48, 56, 0.5) 55%, transparent 80%),
-    radial-gradient(circle at 50% 50%, #353843 0%, #22242c 100%);
+    radial-gradient(ellipse at 50% 85%, rgba(249, 115, 22, 0.08), transparent 65%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -741,3 +739,18 @@ select:-webkit-autofill:focus {
 
 
 
+
+/* Cream palette for the customer account, including recovery forms. */
+.account-auth-container { color: #111827; }
+.account-auth-container .bg-hearth-canvas { opacity: 0.12; }
+.account-auth-container .account-dark-glass-card { background: rgba(255, 250, 245, 0.96); border-color: #eadbcb; box-shadow: 0 24px 65px rgba(92, 60, 30, 0.12); }
+.account-auth-container .account-input-field { background: #fff; border-color: #d9cec2; color: #111827; }
+.account-auth-container .account-input-field::placeholder { color: #6b7280; }
+.account-auth-container .account-input-field:hover { background: #fff; border-color: #bca58d; }
+.account-auth-container .account-input-field:focus { background: #fff; border-color: #ea580c; box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.14); }
+.account-auth-container .account-alert-dark--error { background: #fef2f2; color: #991b1b; }
+.account-auth-container .account-alert-dark--warning { background: #fffbeb; color: #92400e; }
+.account-auth-container .account-alert-dark--success { background: #ecfdf5; color: #065f46; }
+.account-auth-container .account-alert-dark--config { background: #eff6ff; color: #1e40af; }
+
+.account-auth-container .account-alert-dark--success :is(p, button, svg) { color: #065f46; }
