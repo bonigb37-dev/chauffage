@@ -22,11 +22,13 @@ async function run() {
   let nextId = 0;
   const pending = new Map();
   const errors = [];
+  const cspViolations = [];
   let mockRequest;
   socket.onmessage = (event) => {
     const message = JSON.parse(event.data);
     if (message.method === 'Fetch.requestPaused' && mockRequest) void mockRequest(message.params).catch((error) => errors.push(error.message));
     if (message.method === 'Runtime.exceptionThrown') errors.push(message.params.exceptionDetails.text);
+    if (message.method === 'Runtime.bindingCalled' && message.params.name === '__reportCsp') cspViolations.push(message.params.payload);
     const request = pending.get(message.id);
     if (request) { pending.delete(message.id); clearTimeout(request.timer); message.error ? request.reject(new Error(message.error.message)) : request.resolve(message.result); }
   };
@@ -53,6 +55,10 @@ async function run() {
   }
   await send('Page.enable');
   await send('Runtime.enable');
+  if (process.argv[3] === '--security') {
+    await send('Runtime.addBinding', { name: '__reportCsp' });
+    await send('Page.addScriptToEvaluateOnNewDocument', { source: "document.addEventListener('securitypolicyviolation', e => window.__reportCsp(e.effectiveDirective));" });
+  }
   if (process.argv[3] === '--admin') {
     const configuredUrl = fs.readFileSync('.env.local', 'utf8').match(/^NEXT_PUBLIC_SUPABASE_URL\s*=\s*["']?([^\r\n"']+)/m)?.[1]?.trim();
     assert(configuredUrl, 'Projet de test configuré');
@@ -126,6 +132,22 @@ async function run() {
   await visit('/compte');
   assert(await evaluate("document.querySelector('meta[name=robots]').content.includes('noindex')"));
   assert.equal(errors.length, 0, `Exceptions navigateur : ${errors.join(', ')}`);
+  if (process.argv[3] === '--security') {
+    await visit('/contact');
+    await visit('/devis');
+    await visit('/panier');
+    await visit('/guide-pellets');
+    assert.equal(cspViolations.length, 0, `CSP blocking required resources: ${cspViolations.join(', ')}`);
+    const response = await fetch(`${base}/guide-pellets`);
+    const attackHtml = (await response.text()).replace('</head>', '<script>window.__securityProbeExecuted=true</script></head>');
+    const responseHeaders = [...response.headers].filter(([name]) => !['content-length','content-encoding','transfer-encoding'].includes(name)).map(([name,value]) => ({ name, value }));
+    mockRequest = async event => send('Fetch.fulfillRequest', { requestId: event.requestId, responseCode: 200, responseHeaders, body: Buffer.from(attackHtml).toString('base64') });
+    await send('Fetch.enable', { patterns: [{ urlPattern: `${base}/guide-pellets?security-probe=1`, requestStage: 'Request' }] });
+    await visit('/guide-pellets?security-probe=1');
+    assert.equal(await evaluate('window.__securityProbeExecuted === true'), false, 'Untrusted parser-inserted inline script blocked');
+    assert(cspViolations.some(d => d === 'script-src-elem'), 'Browser enforces CSP');
+    console.log('OK CSP browser: required resources allowed; untrusted inline script blocked; contact, quote, cart and guide render.');
+  }
   console.log('OK navigateur : accueil, ouverture/fermeture des zones, catégorie filtrée, recherche EPH, fiche produit, compte et absence d’exception JavaScript. Aucun achat ni e-mail envoyé.');
 }
 run().catch((error) => { console.error(error); process.exitCode = 1; }).finally(async () => {

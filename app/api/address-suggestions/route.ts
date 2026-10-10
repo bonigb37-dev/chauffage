@@ -1,11 +1,14 @@
 import { NextResponse } from 'next/server';
+import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security';
 
 export async function POST(request: Request) {
+  const blocked = protectApi(request, 60);
+  if (blocked) return blocked;
   const headers = { 'Cache-Control': 'no-store' };
   const key = process.env.GEOAPIFY_API_KEY?.trim();
   if (!key) return NextResponse.json({ suggestions: [], unavailable: true }, { headers });
   try {
-    const body: unknown = await request.json();
+    const body = await readLimitedJson(request, 2000);
     const query = body && typeof body === 'object' && 'query' in body ? body.query : null;
     if (typeof query !== 'string' || query.trim().length < 4 || query.length > 180) return NextResponse.json({ suggestions: [] }, { status: 400, headers });
     const url = new URL('https://api.geoapify.com/v1/geocode/autocomplete');
@@ -23,7 +26,7 @@ export async function POST(request: Request) {
         hasHouseNumber: Boolean(item.housenumber),
       }));
     return NextResponse.json({ suggestions }, { headers });
-  } catch {
-    return NextResponse.json({ suggestions: [], unavailable: true }, { status: 503, headers });
+  } catch (cause) {
+    return NextResponse.json({ suggestions: [], unavailable: true }, { status: cause instanceof BodyLimitError ? 413 : 503, headers });
   }
 }

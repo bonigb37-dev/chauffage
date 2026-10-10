@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { headers } from 'next/headers';
 import { notFound, permanentRedirect } from 'next/navigation';
 import { Check, CheckCircle2, MapPin, Star } from 'lucide-react';
 import ProductDetailAddButton from '@/components/ProductDetailAddButton';
@@ -26,6 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductDetailPage({ params }: Props) {
+  const nonce = (await headers()).get('x-nonce') ?? undefined;
   const { slug } = await params;
   const product = await findProduct(slug);
   if (!product) notFound();
@@ -75,7 +77,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
   return (
     <main className="min-h-[65vh] bg-[#faf9f6] py-8 sm:py-12">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
+      <script nonce={nonce} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
       <div className="container">
         <nav aria-label="Fil d’Ariane" className="mb-6 text-sm text-gray-500">
           <Link href="/produits" className="hover:text-orange-700">Produits</Link>

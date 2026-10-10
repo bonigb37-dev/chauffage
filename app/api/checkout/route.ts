@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { products as catalog } from '@/lib/products';
 import { paymentProofToken } from '@/lib/payment-proof-token';
 import { mergeCatalog } from '@/lib/catalog';
+import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security';
 
 export const runtime = 'nodejs';
 
@@ -20,6 +21,8 @@ function error(message: string, status: number) {
 }
 
 export async function POST(request: Request) {
+  const blocked = protectApi(request, 8, 10 * 60_000);
+  if (blocked) return blocked;
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
   const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -29,8 +32,9 @@ export async function POST(request: Request) {
 
   let input: unknown;
   try {
-    input = await request.json();
-  } catch {
+    input = await readLimitedJson(request, 32_000);
+  } catch (cause) {
+    if (cause instanceof BodyLimitError) return error('La demande de commande est trop longue.', 413);
     return error('La demande de commande est invalide.', 400);
   }
 
@@ -146,5 +150,5 @@ export async function POST(request: Request) {
     return error('La commande n’a pas pu être enregistrée. Vérifiez que la migration Supabase commerce a été appliquée.', 503);
   }
 
-  return NextResponse.json({ reference, orderId, totalCents, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey) }, { status: 201 });
+  return NextResponse.json({ reference, orderId, totalCents, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey) }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
 }

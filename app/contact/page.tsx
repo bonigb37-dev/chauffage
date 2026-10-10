@@ -27,14 +27,14 @@ export default function Contact() {
     const message = String(form.get('message') ?? '').trim();
     setSending(true);
     try {
-      const { error: insertError } = await supabase.from('contact_requests').insert({
+      const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
         name: String(form.get('name') ?? '').trim(),
         email: String(form.get('email') ?? '').trim(),
         phone: String(form.get('phone') ?? '').trim() || null,
         subject: String(form.get('subject') ?? ''),
         message: deliveryAddress ? `${message}\n\nAdresse de livraison :\n${deliveryAddress}` : message,
-      });
-      if (insertError) {
+      }) });
+      if (!response.ok) {
         setError('Votre message n’a pas pu être envoyé. Veuillez vérifier les informations saisies.');
         return;
       }

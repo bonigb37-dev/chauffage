@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { storeConfig } from '@/lib/store-config';
+import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security';
 
 export const runtime = 'nodejs';
 export async function POST(request: Request) {
+  const blocked = protectApi(request, 5, 10 * 60_000);
+  if (blocked) return blocked;
   const headers = { 'Cache-Control': 'no-store' };
   const fail = (error: string, status: number) => NextResponse.json({ error }, { status, headers });
   if (Number(request.headers.get('content-length')) > 12000) return fail('Déclaration trop longue.', 413);
@@ -11,9 +14,9 @@ export async function POST(request: Request) {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) return fail('Service indisponible. Notifiez votre rétractation par e-mail.', 503);
   try {
-    const body = await request.json();
+    const body = await readLimitedJson(request, 12000);
     if (!body || typeof body !== 'object') return fail('Déclaration invalide.', 400);
-    const { name, email, contract, id } = body;
+    const { name, email, contract, id } = body as Record<string, unknown>;
     if (typeof name !== 'string' || !name.trim() || name.length > 120 || typeof email !== 'string' || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || typeof contract !== 'string' || !contract.trim() || contract.length > 2000 || typeof id !== 'string' || !/^[a-f0-9-]{36}$/.test(id)) return fail('Vérifiez votre nom, votre e-mail et le contrat concerné.', 400);
     const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
     const marker = `Rétractation ${id}`;
@@ -34,5 +37,5 @@ export async function POST(request: Request) {
       } catch { /* La déclaration reçue reste valable malgré un échec de l’e-mail. */ }
     }
     return NextResponse.json({ receipt, emailSent }, { headers });
-  } catch { return fail('Déclaration invalide. Réessayez ou utilisez l’e-mail.', 400); }
+  } catch (cause) { return fail('Déclaration invalide. Réessayez ou utilisez l’e-mail.', cause instanceof BodyLimitError ? 413 : 400); }
 }

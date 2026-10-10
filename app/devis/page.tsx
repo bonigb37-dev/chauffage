@@ -52,16 +52,16 @@ Adresse en Allemagne: ${address}, ${postalCode} ${city} (${regionState})
 Accès camion/Spedition: ${deliveryAccess}
 Précisions: ${details}`;
 
-      const { error: insertError } = await supabase.from('contact_requests').insert({
+      const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
         name: companyName ? `${name} (${companyName})` : name,
         email,
         phone: phone || null,
         postal_code: postalCode || null,
-        subject: `Devis Allemagne - ${productType} (${postalCode})`,
+        subject: 'quote',
         message: messageContent,
-      });
+      }) });
 
-      if (insertError) {
+      if (!response.ok) {
         stopLoading();
         setError('Une erreur est survenue lors de l’enregistrement de votre demande de devis.');
         return;
