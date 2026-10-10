@@ -1,8 +1,8 @@
 export const storeConfig = {
   name: 'Bren-nholz',
-  email: 'kontakt@interpl.de',
-  phone: '+49 1521 3058561',
-  phoneHref: '+4915213058561',
+  email: 'kontakt@brennholz-direk.de',
+  phone: '+49 15259143676',
+  phoneHref: '+4915259143676',
   legalName: 'Leylines',
   legalForm: 'Société de droit néerlandais, enregistrée auprès de la Chambre de commerce des Pays-Bas',
   registrationNumber: '34250234',
