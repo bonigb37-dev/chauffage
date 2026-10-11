@@ -57,14 +57,18 @@ export async function GET(request: Request) {
       const counts = await db.rpc('support_notification_counts', { p_reader: user.id });
       if (counts.error) return response({ error: 'setup' }, 503);
       const unread = new Map<string, number>((counts.data?.threads ?? []).map((row: { user_id: string; unread: number }) => [row.user_id, row.unread]));
-      return response({ threads: threads.map(row => ({ ...row, unread: unread.get(row.user_id) ?? 0 })) });
+      const profiles = threads.length ? await db.from('client_accounts').select('user_id,full_name').in('user_id', threads.map(row => row.user_id)) : { data: [] };
+      const names = new Map<string, string>((profiles.data ?? []).map(row => [row.user_id, typeof row.full_name === 'string' ? row.full_name.trim().slice(0,160) : '']));
+      return response({ threads: threads.map(row => ({ ...row, customer_name: names.get(row.user_id) || null, unread: unread.get(row.user_id) ?? 0 })) });
     }
     const target = params.get('user_id') ?? user.id;
     if (!uuid.test(target)) return response({ error: 'invalid' }, 400);
     if (target !== user.id && !admin) return response({ error: 'forbidden' }, 403);
     const result = await db.from('support_messages').select(fields).eq('user_id', target).order('created_at', { ascending: false }).limit(100);
     if (result.error) return response({ error: 'setup' }, 503);
-    return response({ messages: (result.data ?? []).reverse() });
+    const profile = admin ? await db.from('client_accounts').select('full_name').eq('user_id',target).maybeSingle() : null;
+    const name = typeof profile?.data?.full_name === 'string' ? profile.data.full_name.trim().slice(0,160) : null;
+    return response({ messages: (result.data ?? []).reverse().map(row => admin ? { ...row, customer_name: name || null } : row) });
   } catch { return response({ error: 'unavailable' }, 503); }
 }
 export async function POST(request: Request) {

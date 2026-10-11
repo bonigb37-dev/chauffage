@@ -10,10 +10,10 @@ const db = {
   from: table => {
     let filters = [], max = Infinity;
     const query = {
-      select() { return this; }, eq(key, value) { filters.push([key,value]); return this; }, order() { return this; }, limit(n) { max = n; return this; },
-      maybeSingle: async () => ({ data: table === 'admin_roles' ? (active === ADMIN ? { role: 'admin' } : null) : rows.find(row=>filters.every(([k,v])=>row[k]===v)) ?? null, error: null }),
+      select() { return this; }, in(key,values) { filters.push([key,values]); return this; }, eq(key, value) { filters.push([key,value]); return this; }, order() { return this; }, limit(n) { max = n; return this; },
+      maybeSingle: async () => ({ data: table === 'client_accounts' ? {full_name:'Test Customer'} : table === 'admin_roles' ? (active === ADMIN ? { role: 'admin' } : null) : rows.find(row=>filters.every(([k,v])=>row[k]===v)) ?? null, error: null }),
       insert: async payload => { rows.push({ ...payload, id: 'new', created_at: '2026-10-11T13:00:00Z' }); return { error: dbFailure ? {} : null }; },
-      then(resolve, reject) { return Promise.resolve({ data: rows.filter(row => filters.every(([k,v]) => row[k] === v)).slice(0,max), error: dbFailure ? {} : null }).then(resolve,reject); },
+      then(resolve, reject) { return Promise.resolve({ data: table === 'client_accounts' ? [{user_id:A,full_name:'Test Customer'}] : rows.filter(row => filters.every(([k,v]) => row[k] === v)).slice(0,max), error: dbFailure ? {} : null }).then(resolve,reject); },
     }; return query;
   },
 };
@@ -48,6 +48,9 @@ function request(token, query = '', body) { return new Request('https://mock.inv
   assert((await(await api.GET(request('B'))).json()).messages.every(row=>row.user_id===B));
   assert.equal((await api.GET(request('ADMIN','?inbox=1'))).status,200);
   assert((await (await api.GET(request('ADMIN','?inbox=1'))).json()).threads.some(row=>row.user_id===A),'Saved customer message appears in administrator inbox');
+  assert.equal((await (await api.GET(request('ADMIN','?inbox=1'))).json()).threads.find(row=>row.user_id===A).customer_name,'Test Customer');
+  assert.equal((await (await api.GET(request('ADMIN','?user_id='+A))).json()).messages[0].customer_name,'Test Customer');
+  assert(!(await (await api.GET(request('B'))).json()).messages.some(row=>'customer_name' in row),'Profile enrichment reserved for admin');
   assert.equal((await api.POST(request('ADMIN','',{user_id:B,body:'Reply',locale:'de'}))).status,201);
   assert.equal(rows.at(-1).sender_kind,'admin'); assert.equal(rows.at(-1).sender_id,ADMIN);
   for(const body of [{body:'',locale:'de'},{body:'x'.repeat(3001),locale:'de'},{body:'ok',locale:'xx'},{body:'ok',locale:['de']},{body:'ok',locale:'de',user_id:'invalid'}]) assert.equal((await api.POST(request('A','',body))).status,400);
