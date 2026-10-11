@@ -8,9 +8,9 @@ export const storeConfig = {
   registrationNumber: '34250234',
   legalRepresentatives: 'Joey van Wettum et Thijs Vorstman',
   address: 'Franciscusweg 16, 1216SK Hilversum, Pays-Bas',
-  warehouseAddress: 'Marie-Curie-Straße 3, 48599 Gronau, Allemagne',
+  warehouseAddress: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
   vatNumber: 'DE300812888',
-  returnAddress: 'Marie-Curie-Straße 3, 48599 Gronau, Allemagne',
+  returnAddress: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
   returnCosts: 'Les frais de retour sont pris en charge par Bren-nholz, y compris pour les palettes.',
   bankHolderRelationship: 'Ce compte est utilisé par la comptable pour encaisser les commandes de Bren-nholz.',
 };
