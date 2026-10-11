@@ -72,7 +72,7 @@ async function run() {
   await send('Emulation.setDeviceMetricsOverride', {width:390,height:844,deviceScaleFactor:2,mobile:true});
   await visit('/de/aide');
   assert(await evaluate('document.documentElement.scrollWidth <= innerWidth'),'Mobile page fits viewport');
-  const user={id:'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',aud:'authenticated',email:'test@example.invalid',email_confirmed_at:'2026-10-01',app_metadata:{provider:'email'},user_metadata:{},created_at:'2026-10-01T00:00:00Z'};
+  const user={id:'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',aud:'authenticated',email:'test@example.invalid',email_confirmed_at:'2026-10-01',app_metadata:{provider:'email'},user_metadata:{full_name:"Test Customer"},created_at:'2026-10-01T00:00:00Z'};
   const token=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify({sub:user.id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated'})).toString('base64url')+'.mock';
   const session={access_token:token,refresh_token:'mock-refresh',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user};
   let messages=[{id:'mock1',user_id:user.id,sender_kind:'admin',body:'Test reply <script>window.__injected=1</script>',locale:'de',created_at:'2026-10-11T12:00:00Z'}];
@@ -105,6 +105,7 @@ async function run() {
   await evaluate("document.querySelector('textarea').closest('form').requestSubmit()");
   await pause(1500);
   assert(await evaluate('document.body.innerText.includes("Browser test message")'),'Message shown after saved response');
+  assert(await evaluate("[...document.querySelectorAll('[role=log] strong')].some(el=>el.textContent==='Test Customer')"),'Client message displays account name');
   delayRefresh=true;
   await evaluate("document.querySelector('button[aria-busy]').click()");
   await pause(200);
