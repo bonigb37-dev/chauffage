@@ -72,6 +72,7 @@ async function run() {
   const analyticsWords = require('typescript').transpileModule(fs.readFileSync('lib/analytics-copy.ts','utf8'),{compilerOptions:{module:require('typescript').ModuleKind.CommonJS}}).outputText;
   new Function('module','exports',analyticsWords)(analyticsModule,analyticsModule.exports);
   const collected = [];
+  let activeRole = 'owner';
   const statistics = {totals:{visits:2,views:3,customers:1,active:1,seconds:90,single_page:1},daily:[{day:'2026-10-11',visits:2,views:3}],pages:[{path:'/produits',visits:2,views:3}],sections:[{path:'/',section:'products',visits:1,views:1}],actions:[{kind:'cart_add',total:1,visits:1}],devices:[{device:'mobile',visits:2}],sources:[{source:'direct',visits:2}],funnel:{products:2,cart:1,checkout:1,orders:0},sessions:[{session_id:'cccccccc-cccc-cccc-cccc-cccccccccccc',started_at:user.created_at,last_at:user.created_at,user_id:user.id,customer_name:'Alice Analytics',customer_email:'alice@example.invalid',entry:'/',exit:'/produits',device:'mobile',source:'direct',views:2,seconds:90}]};
   const fixtures = [
     {user_id:'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',customer_name:'Alice Inbox',body:'Delivery question',sender_kind:'customer',locale:'de',unread:2,created_at:user.created_at},
@@ -80,7 +81,7 @@ async function run() {
   mockRequest=async({requestId,request})=>{
     let data=[];const u=new URL(request.url);
     if(u.pathname.includes('/auth/v1/user'))data=user;
-    else if(u.pathname.includes('admin_roles')) data=u.searchParams.has('user_id')?[{role:'owner'}]:[{user_id:user.id,role:'owner',created_at:user.created_at},{user_id:'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',role:'super_admin',created_at:user.created_at}];
+    else if(u.pathname.includes('admin_roles')) data=u.searchParams.has('user_id')?(activeRole ? [{role:activeRole}] : []):[{user_id:user.id,role:'owner',created_at:user.created_at},{user_id:'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',role:'super_admin',created_at:user.created_at}];
     else if(u.pathname.includes('admin_audit_log'))data=[{id:'audit-test',action:'update',entity:'products',entity_id:'1',actor_user_id:user.id,actor_role:'owner',details:{price:100},created_at:user.created_at}];
     else if(u.pathname.includes('client_accounts'))data=[{user_id:user.id,full_name:'Test Admin',email:user.email,created_at:user.created_at}];
     else if(u.pathname.includes('user_activity'))data=[{user_id:user.id,email:user.email,last_seen_at:user.created_at,first_seen_at:user.created_at,sign_in_count:1}];
@@ -99,13 +100,20 @@ async function run() {
     await send('Fetch.fulfillRequest',{requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'application/json'},{name:'Access-Control-Allow-Origin',value:'*'},{name:'Access-Control-Allow-Headers',value:'*'},{name:'Access-Control-Allow-Methods',value:'GET,POST,OPTIONS'}],body:Buffer.from(JSON.stringify(data)).toString('base64')});
   };
   await send('Fetch.enable',{patterns:[{urlPattern:'*supabase.co/*'},{urlPattern:'*/api/support*'},{urlPattern:'*/api/analytics*'}]});
+  await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
   await visit('/fr/contact');
-  const consentCopy=analyticsModule.exports.analyticsCopy.fr;
+  const consentCopy=analyticsModule.exports.cookieConsentCopy.fr;
   assert.equal(collected.length,0,'No collection before consent');
+  assert(await evaluate("!document.querySelector('[data-cookie-account]').checked"),'Account checkbox is unchecked on first visit');
+  assert(await evaluate('document.documentElement.scrollWidth <= innerWidth'),'Cookie banner fits mobile viewport');
   await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.refuse)+").click()");
   await pause(500); assert.equal(collected.length,0,'No collection after refusal');
   await evaluate("[...document.querySelectorAll('footer button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.settings)+").click()");
-  assert(await evaluate("!document.querySelector('[role=dialog] input[type=checkbox]').checked"),'Account association is optional and unchecked');
+  assert(await evaluate("!document.querySelector('[data-cookie-account]').checked"),'Account association is optional and unchecked');
+  assert(await evaluate("!document.querySelector('#analytics-cookie-options input').checked"),'Optional statistics are unchecked when declined');
+  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.saveChoices)+").click()");
+  await pause(500); assert.equal(collected.length,0,'Personalized essential-only choice does not track');
+  await evaluate("[...document.querySelectorAll('footer button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.settings)+").click()");
   await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.accept)+").click()");
   await pause(1500); assert(collected.length>0,'Collection starts after consent');
   assert(collected.every(row=>!Object.keys(row.headers).some(key=>key.toLowerCase()==='authorization')),'Anonymous consent never links an account');
@@ -119,6 +127,34 @@ async function run() {
   await pause(500); const afterWithdrawal=collected.length;
   await visit('/fr/produits'); assert.equal(collected.length,afterWithdrawal,'Withdrawal stops collection across navigation');
   await evaluate('localStorage.setItem('+JSON.stringify('sb-ykmwooejlvcsalobjopl-auth-token')+','+JSON.stringify(JSON.stringify(session))+')');
+  activeRole=null;
+  await visit('/fr/contact');
+  await evaluate("[...document.querySelectorAll('footer button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.settings)+").click()");
+  assert(await evaluate("document.querySelector('#analytics-consent-title').textContent==="+JSON.stringify(consentCopy.consentTitle)), 'Cookie banner title');
+  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.customize)+").click()");
+  assert(await evaluate("!document.querySelector('[data-cookie-account]').checked"),'Customization does not enable account association');
+  const beforeSignedAnonymous=collected.length;
+  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.accept)+").click()");
+  await pause(1000);
+  assert(collected.length>beforeSignedAnonymous);
+  assert(collected.slice(beforeSignedAnonymous).every(row=>row.body.account_link===false&&!Object.keys(row.headers).some(key=>key.toLowerCase()==='authorization')),'Accept remains anonymous for signed-in customers');
+  await evaluate("[...document.querySelectorAll('footer button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.settings)+").click()");
+  await evaluate("document.querySelector('[data-cookie-account]').click()");
+  const beforeLinked=collected.length;
+  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.saveChoices)+").click()");
+  await pause(1000);
+  assert(collected.length>beforeLinked);
+  assert(collected.slice(beforeLinked).every(row=>row.body.account_link===true&&Object.keys(row.headers).some(key=>key.toLowerCase()==='authorization')),'Only separate opt-in sends verified account authorization');
+  await evaluate("[...document.querySelectorAll('footer button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.settings)+").click()");
+  await evaluate("document.querySelector('[data-cookie-account]').click()");
+  const beforeLinkWithdrawal=collected.length;
+  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.saveChoices)+").click()");
+  await pause(1000);
+  assert(collected.slice(beforeLinkWithdrawal).every(row=>row.body.account_link===false&&!Object.keys(row.headers).some(key=>key.toLowerCase()==='authorization')),'Withdrawing account consent retains only anonymous statistics');
+  await evaluate("[...document.querySelectorAll('footer button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.settings)+").click()");
+  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.refuse)+").click()");
+  await pause(500);
+  activeRole='owner';
   for(const route of process.argv.includes('--admin-only') ? ['admin'] : ['super-admin','admin']) {
   await visit('/fr/'+route);
   for(const mobile of [false,true]) {

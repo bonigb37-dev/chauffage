@@ -59,7 +59,11 @@ const event = (n, session=1, kind='page_view', extra={})=>({id:id(n),session_id:
   assert.equal((await api.POST(request('POST',{events:[event(1)]}))).status,400);
   assert.equal((await api.POST(request('POST',{consent:analytics.analyticsConsentVersion,events:[event(1)]}))).status,200);
   assert.equal(rpcArgs.p_user_id,null);
-  assert.equal((await api.POST(request('POST',{consent:analytics.analyticsConsentVersion,events:[{...event(2),user_id:id(888)}]},'valid'))).status,200);
+  assert.equal((await api.POST(request('POST',{consent:analytics.analyticsConsentVersion,events:[event(2)]},'valid'))).status,200);
+  assert.equal(rpcArgs.p_user_id,null,'Being signed in does not imply account-link consent');
+  assert.equal((await api.POST(request('POST',{consent:analytics.analyticsConsentVersion,account_link:false,events:[event(2)]},'valid'))).status,200);
+  assert.equal(rpcArgs.p_user_id,null,'Statistics-only consent remains anonymous');
+  assert.equal((await api.POST(request('POST',{consent:analytics.analyticsConsentVersion,account_link:true,events:[{...event(2),user_id:id(888)}]},'valid'))).status,200);
   assert.equal(rpcArgs.p_user_id,id(999),'Linked identity is verified, never taken from payload');
   activeRole='owner'; const previousWrites=writes;
   assert.equal((await api.POST(request('POST',{consent:analytics.analyticsConsentVersion,events:[event(3)]},'valid'))).status,200);

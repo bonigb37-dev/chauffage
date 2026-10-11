@@ -12,7 +12,7 @@ function database() {
 export async function POST(request: Request) {
   try {
     const blocked = await protectApi(request, 120); if (blocked) return blocked;
-    const input = await readLimitedJson(request, 16000) as { consent?: string; events?: unknown } | null;
+    const input = await readLimitedJson(request, 16000) as { consent?: string; account_link?: boolean; events?: unknown } | null;
     if (input?.consent !== analyticsConsentVersion) return response({ error: 'consent' }, 400);
     const events = validateAnalyticsEvents(input.events); if (!events) return response({ error: 'invalid' }, 400);
     const db = database(); if (!db) return response({ error: 'unavailable' }, 503);
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       const role = await db.from('admin_roles').select('role').eq('user_id', verified.data.user.id).maybeSingle();
       if (role.error) return response({ error: 'unavailable' }, 503);
       if (role.data) return response({ ok: true, excluded: true });
-      userId = verified.data.user.id;
+      if (input.account_link === true) userId = verified.data.user.id;
     }
     const result = await db.rpc('record_analytics_events', { p_events: events, p_user_id: userId, p_consent_version: analyticsConsentVersion });
     if (result.error) return response({ error: result.error.code === 'PGRST202' || result.error.code === '42P01' ? 'setup' : 'unavailable' }, 503);

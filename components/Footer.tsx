@@ -8,7 +8,7 @@ import Link from '@/i18n/navigation';
 import { usePathname } from '@/i18n/navigation';
 import { storeConfig } from '@/lib/store-config';
 import { supportCopy } from '@/lib/support-copy';
-import { analyticsCopy } from '@/lib/analytics-copy';
+import { cookieConsentCopy } from '@/lib/analytics-copy';
 import { ArrowRight, Flame, MapPin, Phone, Truck } from 'lucide-react';
 
 export default function Footer() {
@@ -53,7 +53,7 @@ export default function Footer() {
       <div className="border-t border-white/10 py-6 text-center text-sm text-gray-400">
         <div className="container flex flex-col items-center justify-between gap-3 sm:flex-row">
           <p>© {new Date().getFullYear()} Bren-nholz. Tous droits réservés.</p>
-          <button data-original-content type="button" onClick={() => window.dispatchEvent(new Event('bren-analytics-settings'))} className="font-semibold text-gray-300 underline underline-offset-4 hover:text-orange-400">{analyticsCopy[brenLocale].settings}</button>
+          <button data-original-content type="button" onClick={() => window.dispatchEvent(new Event('bren-analytics-settings'))} className="font-semibold text-gray-300 underline underline-offset-4 hover:text-orange-400">{cookieConsentCopy[brenLocale].settings}</button>
           <Link href="/agb" className="font-semibold text-gray-300 underline underline-offset-4 transition hover:text-orange-400">Conditions générales de vente</Link>
         </div>
       </div>

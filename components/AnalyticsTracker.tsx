@@ -7,7 +7,7 @@ import type { Locale } from '@/i18n/routing';
 import { supabase } from '@/lib/supabase';
 import { useVerifiedAccess } from './AccessContext';
 import { analyticsConsentKey, analyticsSessionKey, analyticsConsentVersion, analyticsPath, analyticsKinds, type AnalyticsEvent, type AnalyticsKind } from '@/lib/analytics';
-import { analyticsCopy, analyticsPrivacySignalCopy } from '@/lib/analytics-copy';
+import { analyticsCopy, analyticsPrivacySignalCopy, cookieConsentCopy } from '@/lib/analytics-copy';
 
 type Consent = { mode: 'anonymous' | 'linked' | 'declined'; expires: number; version: string };
 function readConsent(): Consent | null {
@@ -16,18 +16,20 @@ function readConsent(): Consent | null {
 export default function AnalyticsTracker() {
   const pathname = usePathname();
   const locale = useLocale() as Locale;
-  const copy = analyticsCopy[locale];
+  const copy = { ...analyticsCopy[locale], ...cookieConsentCopy[locale] };
   const access = useVerifiedAccess();
   const [consent, setConsent] = useState<Consent | null>(null);
   const [ready, setReady] = useState(false);
   const [open, setOpen] = useState(false);
   const [linked, setLinked] = useState(false);
+  const [customizing, setCustomizing] = useState(false);
+  const [statistics, setStatistics] = useState(false);
   const [blocked, setBlocked] = useState(false);
   const account = access.user?.id;
   useEffect(() => {
     const saved = readConsent(); setConsent(saved); setLinked(saved?.mode === 'linked'); setReady(true); setOpen(!saved);
     setBlocked(navigator.doNotTrack === '1' || (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true);
-    const settings = () => { setOpen(true); setLinked(readConsent()?.mode === 'linked'); };
+    const settings = () => { const saved = readConsent(); setOpen(true); setCustomizing(true); setStatistics(!!saved && saved.mode !== 'declined'); setLinked(saved?.mode === 'linked'); };
     const sync = (event: StorageEvent) => {
       if (event.key !== analyticsConsentKey && event.key !== null) return;
       const next = readConsent(); setConsent(next);
@@ -40,7 +42,7 @@ export default function AnalyticsTracker() {
   function choose(mode: Consent['mode']) {
     const next = { mode, version: analyticsConsentVersion, expires: Date.now() + 180 * 86400000 };
     try { localStorage.setItem(analyticsConsentKey, JSON.stringify(next)); if (mode === 'declined' || mode !== consent?.mode) sessionStorage.removeItem(analyticsSessionKey); } catch { /* No persistence means no collection. */ }
-    setConsent(next); setOpen(false);
+    setConsent(next); setOpen(false); setCustomizing(false);
   }
   useEffect(() => {
     const path = analyticsPath(pathname);
@@ -79,7 +81,7 @@ export default function AnalyticsTracker() {
           cachedToken = token;
         }
         if (stopped || readConsent()?.mode !== consent.mode) return;
-        const response = await fetch('/api/analytics', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ consent: analyticsConsentVersion, events: batch }), signal: controller.signal, keepalive: true });
+        const response = await fetch('/api/analytics', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) }, body: JSON.stringify({ consent: analyticsConsentVersion, account_link: consent.mode === 'linked', events: batch }), signal: controller.signal, keepalive: true });
         if (!response.ok) { backoff = Date.now() + (response.status === 503 ? 300000 : 60000); if (response.status !== 400 && response.status !== 401 && !stopped) queue = [...batch,...queue].slice(0,100); }
       } catch { if (!stopped) { queue = [...batch,...queue].slice(0,100); backoff = Date.now()+60000; } }
       finally { sending = false; }
@@ -106,15 +108,25 @@ export default function AnalyticsTracker() {
       stopped=true;
       const permitted = readConsent()?.mode === consent.mode;
       if (!permitted) controller.abort();
-      if (permitted && Date.now()>=backoff && queue.length && (owner==='anonymous' || cachedToken)) void fetch('/api/analytics', { method:'POST', headers:{'Content-Type':'application/json',...(cachedToken ? {Authorization:`Bearer ${cachedToken}`} : {})}, body:JSON.stringify({consent:analyticsConsentVersion,events:queue.slice(0,20)}),keepalive:true }).catch(()=>{});
+      if (permitted && Date.now()>=backoff && queue.length && (owner==='anonymous' || cachedToken)) void fetch('/api/analytics', { method:'POST', headers:{'Content-Type':'application/json',...(cachedToken ? {Authorization:`Bearer ${cachedToken}`} : {})}, body:JSON.stringify({consent:analyticsConsentVersion,account_link:consent.mode==='linked',events:queue.slice(0,20)}),keepalive:true }).catch(()=>{});
       queue=[]; observer.disconnect(); mutation.disconnect(); clearInterval(batchTimer); clearInterval(activeTimer); document.removeEventListener('visibilitychange',visibility); window.removeEventListener('bren-analytics-action',action);
     };
   }, [pathname, locale, ready, consent, blocked, access.verified, access.role, account]);
   if (!ready || !open || access.role || !analyticsPath(pathname)) return null;
-  return <section data-original-content role="dialog" aria-labelledby="analytics-consent-title" className="fixed inset-x-3 bottom-3 z-[100] mx-auto max-w-3xl rounded-2xl border border-stone-200 bg-white p-5 shadow-2xl sm:p-6">
-    <h2 id="analytics-consent-title" className="font-black text-gray-950">{copy.consentTitle}</h2><p className="mt-2 text-sm leading-6 text-gray-600">{copy.consentNote}</p>
-    {blocked && <p role="status" className="mt-2 text-sm text-gray-600">{analyticsPrivacySignalCopy[locale]}</p>}
-    <label className="mt-3 flex items-start gap-3 text-sm text-gray-700"><input type="checkbox" checked={linked} disabled={blocked} onChange={event=>setLinked(event.target.checked)} className="mt-1 h-4 w-4 accent-orange-600"/>{copy.linkAccount}</label>
-    <div className="mt-4 flex flex-wrap items-center gap-3"><button type="button" onClick={()=>choose('declined')} className="rounded-lg border border-stone-300 px-4 py-3 text-sm font-bold text-gray-950 hover:bg-stone-100">{copy.refuse}</button><button type="button" disabled={blocked} onClick={()=>choose(linked?'linked':'anonymous')} className="rounded-lg border border-stone-300 px-4 py-3 text-sm font-bold text-gray-950 hover:bg-stone-100 disabled:opacity-50">{copy.accept}</button><Link href="/datenschutz" className="text-sm text-orange-700 underline">{copy.privacy}</Link></div>
-  </section>;
+  return <aside data-original-content aria-labelledby="analytics-consent-title" className="fixed inset-x-0 bottom-0 z-[100] max-h-[80dvh] overflow-y-auto border-t border-stone-200 bg-white/95 px-4 py-4 shadow-lg backdrop-blur-sm sm:px-6">
+    <div className="mx-auto max-w-6xl">
+      <h2 id="analytics-consent-title" className="text-sm font-bold text-gray-950">{copy.consentTitle}</h2>
+      <p className="mt-1 text-xs leading-5 text-gray-600 sm:text-sm">{copy.consentNote}</p>
+      {blocked && <p role="status" className="mt-2 text-sm text-gray-600">{analyticsPrivacySignalCopy[locale]}</p>}
+      {customizing && <div id="analytics-cookie-options" className="mt-3 rounded-lg bg-stone-50 p-3 text-sm text-gray-700"><p>{copy.essential}</p><label className="mt-2 flex items-center gap-3"><input type="checkbox" checked={statistics} disabled={blocked} onChange={event=>{setStatistics(event.target.checked); if(!event.target.checked) setLinked(false);}} className="h-4 w-4 accent-orange-600"/>{copy.optionalStatistics}</label></div>}
+      <label className="mt-2 flex items-start gap-2 text-xs text-gray-700 sm:text-sm"><input data-cookie-account type="checkbox" checked={linked} disabled={blocked || (customizing && !statistics)} onChange={event=>setLinked(event.target.checked)} className="mt-0.5 h-4 w-4 shrink-0 accent-orange-600"/>{copy.linkAccount}</label>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <button type="button" disabled={blocked} onClick={()=>choose(linked?'linked':'anonymous')} className="rounded-lg border border-stone-300 px-4 py-2 text-sm font-bold text-gray-950 hover:bg-stone-100 disabled:opacity-50">{copy.accept}</button>
+        <button type="button" onClick={()=>choose('declined')} className="rounded-lg border border-stone-300 px-4 py-2 text-sm font-bold text-gray-950 hover:bg-stone-100">{copy.refuse}</button>
+        <button type="button" aria-expanded={customizing} aria-controls="analytics-cookie-options" onClick={()=>{if(!customizing){setCustomizing(true);setStatistics(consent?.mode==='anonymous'||consent?.mode==='linked');if(!consent||consent.mode==='declined')setLinked(false);}}} className="rounded-lg border border-stone-300 px-4 py-2 text-sm font-bold text-gray-950 hover:bg-stone-100">{copy.customize}</button>
+        {customizing && <button type="button" onClick={()=>choose(!blocked && statistics ? linked?'linked':'anonymous' : 'declined')} className="rounded-lg bg-gray-950 px-4 py-2 text-sm font-bold text-white">{copy.saveChoices}</button>}
+        <Link href="/datenschutz" className="ml-1 text-xs text-orange-700 underline sm:text-sm">{copy.privacy}</Link>
+      </div>
+    </div>
+  </aside>;
 }
