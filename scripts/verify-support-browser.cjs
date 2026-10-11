@@ -97,6 +97,9 @@ async function run() {
   assert(await evaluate('!!document.querySelector("textarea")'),'Authenticated messaging form visible: '+await evaluate('document.body.innerText.slice(-1200)'));
   assert(await evaluate('document.body.innerText.includes("Test reply <script>")'),'Reply is literal text');
   assert(!await evaluate('window.__injected'),'Message HTML cannot execute');
+  assert(await evaluate("document.querySelector('input[type=file]').accept.includes('application/pdf')"),'Attachment picker visible with supported formats');
+  await evaluate("(()=>{const input=document.querySelector('input[type=file]');const dt=new DataTransfer();dt.items.add(new File(['bad'], 'test.exe', {type:'application/x-msdownload'}));input.files=dt.files;input.dispatchEvent(new Event('change',{bubbles:true}));})()");
+  await pause(300);assert(await evaluate("!!document.querySelector('[role=alert]')"),'Unsupported attachment rejected');
   await evaluate("(()=>{const t=document.querySelector('textarea');Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(t,'Browser test message');t.dispatchEvent(new Event('input',{bubbles:true}));})()");
   await pause(300);
   await evaluate("document.querySelector('textarea').closest('form').requestSubmit()");

@@ -1,11 +1,12 @@
 import { NextResponse, after } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { BodyLimitError, protectApi, readLimitedJson } from '@/lib/api-security';
+import { BodyLimitError, protectApi, readLimitedJson, readLimitedBody } from '@/lib/api-security';
+import { attachmentType, attachmentName, supportAttachmentLimit, supportAttachmentBucket } from '@/lib/support-attachments';
 import { dispatchSupportMail, supportMailConfigured } from '@/lib/support-mail';
 
 export const runtime = 'nodejs';
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const fields = 'id,user_id,sender_kind,body,locale,created_at';
+const fields = 'id,user_id,sender_kind,body,locale,created_at,attachment_name,attachment_type,attachment_size';
 const response = (data: unknown, status = 200) => NextResponse.json(data, { status, headers: { 'Cache-Control': 'private, no-store', Vary: 'Authorization' } });
 async function authenticate(request: Request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -28,6 +29,17 @@ export async function GET(request: Request) {
     const access = await authenticate(request); if (access.error) return access.error;
     const { db, user, admin } = access;
     const params = new URL(request.url).searchParams;
+    if (params.has('attachment')) {
+      const id = params.get('attachment')!;
+      if (!uuid.test(id)) return response({ error: 'invalid' }, 400);
+      const record = await db.from('support_messages').select('user_id,attachment_path,attachment_name,attachment_type').eq('id',id).maybeSingle();
+      if (record.error) return response({ error: 'setup' }, 503);
+      if (!record.data || (!admin && record.data.user_id !== user.id)) return response({ error: 'forbidden' }, 403);
+      if (!record.data.attachment_path) return response({ error: 'invalid' }, 404);
+      const downloaded = await db.storage.from(supportAttachmentBucket).download(record.data.attachment_path);
+      if (downloaded.error || !downloaded.data) return response({ error: 'unavailable' }, 503);
+      return new Response(await downloaded.data.arrayBuffer(), { headers: { 'Content-Type': record.data.attachment_type || 'application/octet-stream', 'Content-Disposition': `attachment; filename="attachment"; filename*=UTF-8''${encodeURIComponent(attachmentName(record.data.attachment_name || 'attachment'))}`, 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'none'; sandbox", Vary: 'Authorization' } });
+    }
     if (params.get('notifications') === '1') {
       const counts = await db.rpc('support_notification_counts', { p_reader: user.id });
       if (counts.error) return response({ error: 'setup' }, 503);
@@ -60,7 +72,16 @@ export async function POST(request: Request) {
     const blocked = await protectApi(request, 20, 10 * 60_000); if (blocked) return blocked;
     const access = await authenticate(request); if (access.error) return access.error;
     const { db, user, admin } = access;
-    const payload = await readLimitedJson(request, 14000);
+    let file: File | null = null;
+    let payload: unknown;
+    if (request.headers.get('content-type')?.startsWith('multipart/form-data')) {
+      const bytes = await readLimitedBody(request, supportAttachmentLimit + 20000);
+      const form = await new Response(bytes.buffer as ArrayBuffer, { headers: { 'Content-Type': request.headers.get('content-type')! } }).formData();
+      const candidate = form.get('file');
+      if (!(candidate instanceof File) || !candidate.size || candidate.size > supportAttachmentLimit) return response({ error: 'attachment' }, 400);
+      file = candidate;
+      payload = { body: form.get('body'), locale: form.get('locale'), ...(form.has('user_id') ? { user_id: form.get('user_id') } : {}) };
+    } else payload = await readLimitedJson(request, 14000);
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return response({ error: 'invalid' }, 400);
     const body = payload as Record<string, unknown>;
     if (body.action === 'retry_mail') {
@@ -77,8 +98,22 @@ export async function POST(request: Request) {
       if (existing.error) return response({ error: 'setup' }, 503);
       if (!existing.data?.length) return response({ error: 'invalid' }, 400);
     }
-    const result = await db.from('support_messages').insert({ user_id: target, sender_id: user.id, sender_kind: admin ? 'admin' : 'customer', body: body.body.trim(), locale: body.locale });
-    if (result.error) return response({ error: 'setup' }, 503);
+    let attachment: Record<string, unknown> = {};
+    let uploadedPath: string | null = null;
+    if (file) {
+      const bytes = Buffer.from(await file.arrayBuffer());
+      const detected = attachmentType(bytes);
+      if (!detected || file.type !== detected.mime) return response({ error: 'attachment' }, 400);
+      uploadedPath = `${target}/${crypto.randomUUID()}.${detected.extension}`;
+      const saved = await db.storage.from(supportAttachmentBucket).upload(uploadedPath, bytes, { contentType: detected.mime, upsert: false });
+      if (saved.error) return response({ error: 'setup' }, 503);
+      attachment = { attachment_path: uploadedPath, attachment_name: attachmentName(file.name), attachment_type: detected.mime, attachment_size: file.size };
+    }
+    const result = await db.from('support_messages').insert({ user_id: target, sender_id: user.id, sender_kind: admin ? 'admin' : 'customer', body: body.body.trim(), locale: body.locale, ...attachment });
+    if (result.error) {
+      if (uploadedPath) await db.storage.from(supportAttachmentBucket).remove([uploadedPath]);
+      return response({ error: 'setup' }, 503);
+    }
     try { after(async () => { await dispatchSupportMail(db); }); } catch { /* Outbox retained for retry. */ }
     return response({ success: true }, 201);
   } catch (cause) { const invalid = cause instanceof BodyLimitError || cause instanceof SyntaxError; return response({ error: invalid ? 'invalid' : 'unavailable' }, cause instanceof BodyLimitError ? 413 : invalid ? 400 : 503); }
