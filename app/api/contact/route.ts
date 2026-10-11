@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { BodyLimitError, protectApi, readLimitedJson } from '@/lib/api-security';
+import { dispatchSupportMail } from '@/lib/support-mail';
 
 export const runtime = 'nodejs';
 export async function POST(request: Request) {
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
       postal_code: postal_code ?? null, subject, message: (message as string).trim(),
     });
     if (result.error) return fail('La demande n’a pas pu être enregistrée.', 503);
+    try { after(async () => { await dispatchSupportMail(db); }); } catch { /* Outbox retained for retry. */ }
     return NextResponse.json({ success: true }, { status: 201, headers });
   } catch (cause) { return fail('Demande invalide.', cause instanceof BodyLimitError ? 413 : 400); }
 }

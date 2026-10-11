@@ -4,6 +4,7 @@ const A = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', B = 'bbbbbbbb-bbbb-bbbb-bbbb-b
 let rows = [{ id: 'b-message', user_id: B, sender_kind: 'customer', body: 'Private B', locale: 'de', created_at: '2026-10-11T12:00:00Z' }];
 let active, blocked = false, dbFailure = false;
 const db = {
+  rpc: async (name,payload) => name==='support_notification_counts' ? { data: {support:1,contacts:0,threads:[{user_id:A,unread:1}]},error:null } : {data:null,error:null},
   auth: { getUser: async token => { active = ['A','UNCONFIRMED'].includes(token) ? A : token === 'B' ? B : token === 'ADMIN' ? ADMIN : null; return { data: { user: active ? { id: active, email_confirmed_at: token === 'UNCONFIRMED' ? null : '2026-10-01' } : null }, error: !active }; } },
   from: table => {
     let filters = [], max = Infinity;
@@ -17,7 +18,7 @@ const db = {
 };
 const moduleMock = { exports: {} };
 const code = ts.transpileModule(fs.readFileSync('app/api/support/route.ts','utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
-const localRequire = name => name === '@supabase/supabase-js' ? { createClient: () => db } : name === '@/lib/api-security' ? {
+const localRequire = name => name === '@/lib/support-mail' ? { dispatchSupportMail: async()=>({configured:false,sent:0,failed:0}), supportMailConfigured:()=>false } : name === '@supabase/supabase-js' ? { createClient: () => db } : name === '@/lib/api-security' ? {
   BodyLimitError: class BodyLimitError extends Error {},
   protectApi: async req => blocked || req.headers.get('origin') === 'https://evil.invalid' ? new Response('{}', { status: 403 }) : null,
   readLimitedJson: req => req.json(),
@@ -33,6 +34,10 @@ function request(token, query = '', body) { return new Request('https://mock.inv
   assert.equal((await api.GET(request('A','?user_id='+B))).status,403,'A cannot read B');
   assert.equal((await api.POST(request('A','',{user_id:B,body:'overwrite',locale:'de'}))).status,403,'A cannot write to B');
   assert.equal((await api.GET(request('A','?inbox=1'))).status,403,'customer cannot access admin inbox');
+  assert.equal((await api.POST(request('A','',{action:'retry_mail'}))).status,403,'customer cannot dispatch notifications');
+  const deniedRead=request('A','',{user_id:B,message_id:'dddddddd-dddd-dddd-dddd-dddddddddddd'});
+  assert.equal((await api.PATCH(new Request(deniedRead,{method:'PATCH'}))).status,403,'customer cannot mark another conversation read');
+  assert.equal((await api.GET(request('A','?notifications=1'))).status,200);
   assert.deepEqual((await(await api.GET(request('A'))).json()).messages,[]);
   const before = rows.length;
   assert.equal((await api.POST(request('A','',{body:'<script>alert(1)</script>',locale:'fr',sender_kind:'admin',sender_id:ADMIN}))).status,201);

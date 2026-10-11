@@ -76,10 +76,12 @@ async function run() {
   const token=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify({sub:user.id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated'})).toString('base64url')+'.mock';
   const session={access_token:token,refresh_token:'mock-refresh',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user};
   let messages=[{id:'mock1',user_id:user.id,sender_kind:'admin',body:'Test reply <script>window.__injected=1</script>',locale:'de',created_at:'2026-10-11T12:00:00Z'}];
-  let delayRefresh=false, failSend=false;
+  let delayRefresh=false, failSend=false, unread=2;
   mockRequest=async ({requestId,request})=>{
     let data;
     if(request.url.includes('/api/support')){
+      if(new URL(request.url).searchParams.has('notifications')) { await send('Fetch.fulfillRequest',{requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'application/json'}],body:Buffer.from(JSON.stringify({support:unread,contacts:0})).toString('base64')});return; }
+      if(request.method==='PATCH') { unread=0; await send('Fetch.fulfillRequest',{requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'application/json'}],body:Buffer.from(JSON.stringify({success:true})).toString('base64')});return; }
       if(delayRefresh) await pause(1200);
       if(failSend && request.method==='POST') { await send('Fetch.fulfillRequest',{requestId,responseCode:503,responseHeaders:[{name:'Content-Type',value:'application/json'}],body:Buffer.from(JSON.stringify({error:'unavailable'})).toString('base64')});return; }
       if(request.method==='POST'){const p=JSON.parse(request.postData);messages.push({id:'mock2',user_id:user.id,sender_kind:'customer',body:p.body,locale:p.locale,created_at:'2026-10-11T13:00:00Z'});data={success:true};}else data={messages};
@@ -112,6 +114,14 @@ async function run() {
   await pause(300); await evaluate("document.querySelector('textarea').closest('form').requestSubmit()"); await pause(1500);
   assert(await evaluate("!!document.querySelector('[role=alert]')"),'Send failure visible');
   assert.equal(await evaluate("document.querySelector('textarea').value"),'Unsent draft','Failed send preserves draft');
+  failSend=false; unread=2;
+  await visit('/de');
+  for(let i=0;i<40;i++){if(await evaluate("!!document.querySelector('a.fixed .bg-red-600')"))break;await pause(250);}
+  assert.equal(await evaluate("document.querySelector('a.fixed .bg-red-600')?.textContent"),'2','Unread badge visible to client');
+  await visit('/de/aide'); await pause(500);
+  assert.equal(unread,0,'Reading conversation acknowledges notifications');
+  await visit('/de');
+  assert(!await evaluate("document.querySelector('a.fixed .bg-red-600')"),'Read badge cleared');
   assert.equal(errors.length,0,errors.join(', '));
   assert.equal(cspViolations.length,0,cspViolations.join(', '));
   console.log('PASS multilingual guest/mobile and mocked authenticated read/send, HTML text safe, no real messages sent.');

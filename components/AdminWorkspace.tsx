@@ -14,6 +14,7 @@ import { useCart } from '@/components/CartProvider';
 import type { Product } from '@/lib/products';
 import AdminPaymentProof from '@/components/AdminPaymentProof';
 import SupportMessenger from '@/components/SupportMessenger';
+import SupportNotifications from '@/components/SupportNotifications';
 import { orderStatusLabels, paymentStatusLabel } from '@/lib/order-status';
 import { getAdminRole, type AdminRole } from '@/lib/admin-access';
 import { useVerifiedAccess } from '@/components/AccessContext';
@@ -314,6 +315,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
         {user && <div className="flex flex-wrap items-center gap-3"><div className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-gray-600">{user.email}</div><button type="button" onClick={() => void handleSignOut()} disabled={signingOut} className="rounded-lg bg-gray-950 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50">{signingOut ? 'Déconnexion...' : 'Se déconnecter'}</button></div>}
       </div>
 
+      {!loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportNotifications />}
       {loading ? <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Vérification de l’accès...</div>
         : !user ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Connexion requise</h2><p className="mt-2 text-gray-600">Connectez-vous avec votre compte administrateur pour continuer.</p><Link href="/compte" className="mt-5 inline-flex rounded-xl bg-orange-600 px-5 py-3 font-bold text-white">Se connecter</Link></section>
           : superAdminOnly && !canSeeSuperAdmin ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Page indisponible</h2><p className="mt-2 text-gray-600">Cette page n’est pas accessible avec ce compte.</p></section>

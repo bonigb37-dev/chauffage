@@ -9,7 +9,7 @@ import { RefreshCw, LoaderCircle } from 'lucide-react';
 import { useVerifiedAccess } from './AccessContext';
 
 type Message = { id: string; user_id: string; body: string; locale: Locale; sender_kind: 'customer' | 'admin'; created_at: string };
-type Thread = Omit<Message, 'id'>;
+type Thread = Omit<Message, 'id'> & { unread?: number };
 export default function SupportMessenger({ admin = false }: { admin?: boolean }) {
   const access = useVerifiedAccess();
   const locale = useLocale() as Locale;
@@ -38,14 +38,26 @@ function Messages({ admin, locale }: { admin: boolean; locale: Locale }) {
   };
   const generation = useRef({ value: 0 });
   const live = useRef(true);
+  const marked = useRef('');
   useEffect(() => { const counter = generation.current; live.current = true; return () => { live.current = false; counter.value++; }; }, []);
   const call = useCallback(async (query = '', payload?: object) => {
     if (!supabase) throw new Error('unavailable');
     const { data, error } = await supabase.auth.getSession();
     if (error || !data.session) throw new Error('signin');
-    const response = await fetch(`/api/support${query}`, { method: payload ? 'POST' : 'GET', headers: { Authorization: `Bearer ${data.session.access_token}`, ...(payload ? { 'Content-Type': 'application/json' } : {}) }, ...(payload ? { body: JSON.stringify(payload) } : {}), cache: 'no-store', signal: AbortSignal.timeout(15000) });
+    const response = await fetch(`/api/support${query}`, { method: (payload as { action?: string })?.action === 'read' ? 'PATCH' : payload ? 'POST' : 'GET', headers: { Authorization: `Bearer ${data.session.access_token}`, ...(payload ? { 'Content-Type': 'application/json' } : {}) }, ...(payload ? { body: JSON.stringify(payload) } : {}), cache: 'no-store', signal: AbortSignal.timeout(15000) });
     const result = await response.json(); if (!response.ok) throw new Error(response.status === 429 ? 'limit' : result.error); return result;
   }, []);
+  useEffect(() => {
+    const last = messages.at(-1);
+    if (!last || loading || document.visibilityState !== 'visible' || marked.current === last.id) return;
+    let active = true;
+    void call('', { action: 'read', message_id: last.id, user_id: last.user_id }).then(() => {
+      if (!active) return; marked.current = last.id;
+      setThreads(rows => rows.map(row => row.user_id === last.user_id ? { ...row, unread: 0 } : row));
+      window.dispatchEvent(new Event('bren-support-updated'));
+    }).catch(() => { /* Message remains unread if acknowledgement fails. */ });
+    return () => { active = false; };
+  }, [messages, loading, call]);
   const load = useCallback(async () => {
     const current = ++generation.current.value;
     setRefreshing(true);
@@ -70,7 +82,7 @@ function Messages({ admin, locale }: { admin: boolean; locale: Locale }) {
     } catch (cause) { if (live.current) setError(cause instanceof Error ? cause.message : 'unavailable'); }
     finally { if (live.current) setSending(false); }
   }
-  return <section data-original-content className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-8">
+  return <section id={admin ? 'support-messages' : undefined} data-original-content className="mt-8 scroll-mt-32 rounded-2xl border border-stone-200 bg-white p-5 sm:p-8">
     <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-black">{admin ? copy.inbox : copy.title}</h2><button type="button" disabled={refreshing || sending} aria-busy={refreshing} onClick={async () => { setNotice(''); if (await load()) setNotice(statusCopy.refreshed); }} className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold transition hover:border-orange-500 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600 disabled:cursor-wait disabled:opacity-60">{refreshing ? <LoaderCircle size={18} className="animate-spin" aria-hidden="true" /> : <RefreshCw size={18} aria-hidden="true" />}{refreshing ? copy.loading : copy.refresh}</button></div>
     {!admin && <p className="mt-3 text-sm leading-6 text-gray-600">{copy.note}</p>}
     {admin && <div className="mt-3 rounded-lg bg-orange-50 p-4 text-sm leading-6 text-gray-700"><p>{supportContactCopy[locale].note}</p><Link href="/admin#contact-requests" className="mt-2 inline-block font-bold text-orange-700 underline">{supportContactCopy[locale].link}</Link></div>}
