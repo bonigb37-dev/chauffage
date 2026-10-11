@@ -10,6 +10,7 @@ export async function generateMetadata() { return localizeMetadata(await (public
 import Link from '@/i18n/navigation';
 import { ArrowRight } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
+import { supportCopy } from '@/lib/support-copy';
 
 export default function FaqPage() {
   const brenLocale = useLocale() as Locale;
@@ -27,6 +28,7 @@ export default function FaqPage() {
       <FaqSection />
       <section className="container py-16 text-center sm:py-20">
         <h2 className="font-serif text-3xl font-bold">Vous ne trouvez pas votre réponse ?</h2>
+        <Link href="/aide" className="mt-5 inline-flex rounded-full bg-orange-600 px-6 py-3 font-bold text-white">{supportCopy[brenLocale].help}</Link>
         <p className="mx-auto mt-3 max-w-xl leading-7 text-gray-600">Décrivez votre besoin et indiquez votre code postal ; nous pourrons préciser les modalités de votre demande.</p>
         <Link href="/contact" className="mt-6 inline-flex items-center gap-2 rounded-full bg-gray-950 px-6 py-3 font-bold text-white transition hover:bg-orange-600" style={{ color: '#ffffff' }}>
           <span style={{ color: '#ffffff' }}>Contacter notre équipe</span>

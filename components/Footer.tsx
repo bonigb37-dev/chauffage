@@ -7,6 +7,7 @@ import { useLocale } from 'next-intl';
 import Link from '@/i18n/navigation';
 import { usePathname } from '@/i18n/navigation';
 import { storeConfig } from '@/lib/store-config';
+import { supportCopy } from '@/lib/support-copy';
 import { ArrowRight, Flame, MapPin, Phone, Truck } from 'lucide-react';
 
 export default function Footer() {
@@ -24,6 +25,7 @@ export default function Footer() {
         <div><h3 className="font-black text-white">Navigation</h3><div className="mt-4 space-y-3 text-sm text-gray-300"><Link className="block transition hover:text-orange-400" href="/produits">Produits</Link><Link className="block transition hover:text-orange-400" href="/guide-pellets">Guide Granulés</Link><Link className="block transition hover:text-orange-400" href="/services">Services</Link><Link className="block transition hover:text-orange-400" href="/faq">Questions fréquentes</Link><Link className="block transition hover:text-orange-400" href="/a-propos">À propos</Link><Link className="block transition hover:text-orange-400" href="/avis-juridique">Avis juridique</Link><Link className="block transition hover:text-orange-400" href="/datenschutz">Confidentialité</Link><Link className="block transition hover:text-orange-400" href="/retractation">Retours et remboursements</Link><Link className="block rounded-lg border border-orange-400/50 px-3 py-2 font-bold text-orange-300 hover:bg-white/5" href="/retractation#retractation">Me rétracter du contrat</Link><Link className="block transition hover:text-orange-400" href="/compte">Mon compte</Link><Link className="block transition hover:text-orange-400" href="/compte?mode=signup">Créer un compte</Link></div></div>
         <div>
           <h3 className="font-black text-white">Contact</h3>
+          <Link href="/aide" className="mt-4 inline-block font-semibold text-orange-400 underline underline-offset-4">{supportCopy[brenLocale].help}</Link>
           <div className="mt-5 space-y-5 text-sm text-gray-300">
             <div className="flex items-start gap-3">
               <Phone size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
