@@ -1,4 +1,5 @@
 'use client';
+import { emitAnalytics } from '@/lib/analytics';
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -75,6 +76,7 @@ Précisions: ${details}`;
 
       setNotice('Vielen Dank! Votre demande de devis pour l’Allemagne a été transmise. Notre service commercial vous répondra sous 24 heures ouvrées.');
       formElement.reset();
+      emitAnalytics('quote_sent');
     } catch {
       stopLoading();
       setError('Une erreur est survenue lors de l’envoi. Veuillez vérifier votre connexion.');

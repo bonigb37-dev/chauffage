@@ -16,6 +16,8 @@ import AdminPaymentProof from '@/components/AdminPaymentProof';
 import SupportMessenger from '@/components/SupportMessenger';
 import SupportNotifications, { SupportUnreadBadge } from '@/components/SupportNotifications';
 import { supportCopy, supportInboxCopy } from '@/lib/support-copy';
+import AnalyticsDashboard from '@/components/AnalyticsDashboard';
+import { analyticsCopy } from '@/lib/analytics-copy';
 import { orderStatusLabels, paymentStatusLabel } from '@/lib/order-status';
 import { getAdminRole, type AdminRole } from '@/lib/admin-access';
 import { useVerifiedAccess } from '@/components/AccessContext';
@@ -73,13 +75,14 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   const [bankForm, setBankForm] = useState('');
   const [productForm, setProductForm] = useState<Product>(() => emptyProduct(siteData.products));
   const [editingProduct, setEditingProduct] = useState(false);
-  const [activeView, setActiveView] = useState<'workspace' | 'messages'>('workspace');
+  const [activeView, setActiveView] = useState<'workspace' | 'messages' | 'statistics'>('workspace');
 
   useEffect(() => {
     const syncHash = () => {
       const messages = window.location.hash === '#support-messages';
-      setActiveView(messages ? 'messages' : 'workspace');
-      requestAnimationFrame(() => document.getElementById(messages ? 'support-messages' : window.location.hash.slice(1))?.scrollIntoView({ block: 'start' }));
+      const statistics = window.location.hash === '#site-statistics';
+      setActiveView(messages ? 'messages' : statistics ? 'statistics' : 'workspace');
+      requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ block: 'start' }));
     };
     syncHash();
     const showMessages = () => setActiveView('messages');
@@ -342,8 +345,9 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       {!loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <nav data-original-content aria-label={supportInboxCopy[brenLocale].workspace} className="mt-6 flex flex-wrap gap-2 rounded-xl border border-stone-200 bg-white p-2">
         <button type="button" aria-pressed={activeView === 'workspace'} onClick={() => { setActiveView('workspace'); window.history.replaceState(null, '', window.location.pathname + window.location.search); }} className={`rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'workspace' ? 'bg-gray-950 text-white' : 'text-gray-600 hover:bg-stone-100'}`}>{supportInboxCopy[brenLocale].workspace}</button>
         <button type="button" aria-pressed={activeView === 'messages'} onClick={() => { setActiveView('messages'); window.history.replaceState(null, '', '#support-messages'); }} className={`flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'messages' ? 'bg-orange-600 text-white' : 'text-gray-600 hover:bg-orange-50'}`}>{supportCopy[brenLocale].inbox}<SupportUnreadBadge /></button>
+        <button type="button" aria-pressed={activeView === 'statistics'} onClick={() => { setActiveView('statistics'); window.history.replaceState(null, '', '#site-statistics'); }} className={`rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'statistics' ? 'bg-orange-600 text-white' : 'text-gray-600 hover:bg-orange-50'}`}>{analyticsCopy[brenLocale].title}</button>
       </nav>}
-      <div className={activeView === 'messages' && !loading && canSeeWorkspace && (!superAdminOnly || canSeeSuperAdmin) ? 'hidden' : ''}>
+      <div className={activeView !== 'workspace' && !loading && canSeeWorkspace && (!superAdminOnly || canSeeSuperAdmin) ? 'hidden' : ''}>
       {loading ? <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Vérification de l’accès...</div>
         : !user ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Connexion requise</h2><p className="mt-2 text-gray-600">Connectez-vous avec votre compte administrateur pour continuer.</p><Link href="/compte" className="mt-5 inline-flex rounded-xl bg-orange-600 px-5 py-3 font-bold text-white">Se connecter</Link></section>
           : superAdminOnly && !canSeeSuperAdmin ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Page indisponible</h2><p className="mt-2 text-gray-600">Cette page n’est pas accessible avec ce compte.</p></section>
@@ -353,6 +357,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
 
       </div>
       {activeView === 'messages' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportMessenger admin />}
+      {activeView === 'statistics' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <AnalyticsDashboard />}
       {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
       {notice && <p role="status" className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">{notice}</p>}
       <button type="button" onClick={() => void loadData(user)} className="mt-8 flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900"><RefreshCw size={15}/> Actualiser les données</button>

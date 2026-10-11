@@ -1,4 +1,5 @@
 'use client';
+import { emitAnalytics } from '@/lib/analytics';
 import { localizeNode } from '@/i18n/copy';
 import { localizedPath, type Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -76,6 +77,7 @@ export default function CheckoutPageContent() {
         return;
       }
       const reference = result.reference;
+      emitAnalytics('order_sent');
       const confirmedTotal = result.totalCents;
       sessionStorage.setItem('thermopro-pending-order', JSON.stringify({
         reference, proofToken: result.proofToken, total: confirmedTotal, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),

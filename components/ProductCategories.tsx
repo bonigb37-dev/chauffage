@@ -42,7 +42,7 @@ export default function ProductCategories() {
   const brenLocale = useLocale() as Locale;
 
   return localizeNode((
-    <section id="categories-produits" className="scroll-mt-24 bg-[#fff9e7] py-16 sm:py-20">
+    <section data-analytics-section="categories" id="categories-produits" className="scroll-mt-24 bg-[#fff9e7] py-16 sm:py-20">
       <div className="container">
         <div className="mb-9 max-w-2xl">
           <p className="font-bold uppercase tracking-[.18em] text-orange-600">Nos combustibles</p>

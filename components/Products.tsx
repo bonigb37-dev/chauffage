@@ -14,7 +14,7 @@ export default function Products() {
   const { products } = useCart();
   const featured = products.filter((product) => [2, 51, 52].includes(product.id));
   return localizeNode((
-    <section className="container py-24">
+    <section data-analytics-section="products" className="container py-24">
       <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
           <p className="font-bold uppercase tracking-[.2em] text-orange-500">Notre sélection</p>

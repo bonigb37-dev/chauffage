@@ -9,7 +9,7 @@ export default function ContactCTA() {
   const brenLocale = useLocale() as Locale;
 
   return localizeNode((
-    <section className="container py-20">
+    <section data-analytics-section="contact" className="container py-20">
       <div className="relative overflow-hidden rounded-[2rem] bg-orange-600 px-7 py-14 text-white sm:px-12">
         <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10" />
         <div className="relative flex flex-col justify-between gap-8 md:flex-row md:items-center">

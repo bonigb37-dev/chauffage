@@ -14,7 +14,7 @@ export default function LogisticsGallery() {
   const brenLocale = useLocale() as Locale;
 
   return localizeNode((
-    <section className="logistics-gallery" aria-labelledby="logistics-gallery-title">
+    <section data-analytics-section="logistics" className="logistics-gallery" aria-labelledby="logistics-gallery-title">
       <div className="logistics-gallery__inner">
         <div className="logistics-gallery__intro">
           <p className="logistics-gallery__eyebrow">Préparation & livraison</p>

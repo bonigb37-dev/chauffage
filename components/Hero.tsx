@@ -15,7 +15,7 @@ export default function Hero() {
   const reduceMotion = useReducedMotion();
 
   return localizeNode((
-    <section className="relative isolate overflow-hidden bg-[#fffaf5]">
+    <section data-analytics-section="hero" className="relative isolate overflow-hidden bg-[#fffaf5]">
       <Image
         src="/BD.jpg"
         alt=""

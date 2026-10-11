@@ -8,6 +8,7 @@ import Footer from '@/components/Footer';
 import SupportHelpButton from '@/components/SupportHelpButton';
 import { CartProvider } from '@/components/CartProvider';
 import ActivityTracker from '@/components/ActivityTracker';
+import AnalyticsTracker from '@/components/AnalyticsTracker';
 import RoleAccessGuard from '@/components/RoleAccessGuard';
 import { ActionLoadingProvider } from '@/components/ActionLoadingProvider';
 import { getServerCatalog } from '@/lib/server-catalog';
@@ -42,6 +43,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
           <ActionLoadingProvider>
             <ActivityTracker />
             <RoleAccessGuard>
+              <AnalyticsTracker />
               <TopTrustBanner />
               <Navbar />
               {children}

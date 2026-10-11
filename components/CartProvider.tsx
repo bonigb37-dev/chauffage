@@ -8,6 +8,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { products as initialProducts, type Product } from '@/lib/products';
 import { supabase } from '@/lib/supabase';
 import { mergeCatalog } from '@/lib/catalog';
+import { emitAnalytics } from '@/lib/analytics';
 
 type CartLine = { productId: number; quantity: number };
 type CartContextValue = {
@@ -94,6 +95,7 @@ export function CartProvider({ children, initialCatalog = initialProducts }: { c
   }, [items, ready]);
 
   const addItem = useCallback((productId: number, quantityToAdd: number = 1) => {
+    if (products.some(product => product.id === productId && product.stock !== 0)) emitAnalytics('cart_add', `product-${productId}`);
     setItems((current) => {
       const existing = current.find((line) => line.productId === productId);
       const stock = products.find((product) => product.id === productId)?.stock;

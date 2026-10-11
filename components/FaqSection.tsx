@@ -16,7 +16,7 @@ export default function FaqSection({ compact = false }: Props) {
   const items = compact ? faqItems.slice(0, 5) : faqItems;
 
   return localizeNode((
-    <section className="bg-[#faf8f3] py-16 sm:py-20">
+    <section data-analytics-section="faq" className="bg-[#faf8f3] py-16 sm:py-20">
       <div className="container max-w-4xl">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>

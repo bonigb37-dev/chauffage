@@ -1150,7 +1150,7 @@
     ]
   },
   {
-    "text": "Les données sont conservées pendant la durée nécessaire au traitement de la demande, à l’exécution de la commande et à la gestion des réclamations, puis selon les obligations allemandes de conservation applicables aux documents concernés. Les demandes sans suite et justificatifs non nécessaires ne doivent pas être conservés indéfiniment. Le calendrier détaillé et les procédures de suppression restent à formaliser par l’exploitant ; le site n’effectue actuellement aucune purge automatique.",
+    "text": "Les données sont conservées pendant la durée nécessaire au traitement de la demande, à l’exécution de la commande et à la gestion des réclamations, puis selon les obligations allemandes de conservation applicables aux documents concernés. Les demandes sans suite et justificatifs non nécessaires ne doivent pas être conservés indéfiniment. Le calendrier détaillé et les procédures de suppression restent à formaliser par l’exploitant ; hors statistiques, le site n’effectue actuellement aucune purge automatique.",
     "files": [
       "app/datenschutz/page.tsx"
     ]

@@ -68,6 +68,11 @@ async function run() {
   const session={access_token:token,refresh_token:'mock-refresh',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user};
   const inboxWords = require('typescript').transpileModule(require('fs').readFileSync('lib/support-copy.ts','utf8'), {compilerOptions:{module:require('typescript').ModuleKind.CommonJS}}).outputText;
   const inboxModule = {exports:{}}; new Function('module','exports',inboxWords)(inboxModule,inboxModule.exports);
+  const analyticsModule = {exports:{}};
+  const analyticsWords = require('typescript').transpileModule(fs.readFileSync('lib/analytics-copy.ts','utf8'),{compilerOptions:{module:require('typescript').ModuleKind.CommonJS}}).outputText;
+  new Function('module','exports',analyticsWords)(analyticsModule,analyticsModule.exports);
+  const collected = [];
+  const statistics = {totals:{visits:2,views:3,customers:1,active:1,seconds:90,single_page:1},daily:[{day:'2026-10-11',visits:2,views:3}],pages:[{path:'/produits',visits:2,views:3}],sections:[{path:'/',section:'products',visits:1,views:1}],actions:[{kind:'cart_add',total:1,visits:1}],devices:[{device:'mobile',visits:2}],sources:[{source:'direct',visits:2}],funnel:{products:2,cart:1,checkout:1,orders:0},sessions:[{session_id:'cccccccc-cccc-cccc-cccc-cccccccccccc',started_at:user.created_at,last_at:user.created_at,user_id:user.id,customer_name:'Alice Analytics',customer_email:'alice@example.invalid',entry:'/',exit:'/produits',device:'mobile',source:'direct',views:2,seconds:90}]};
   const fixtures = [
     {user_id:'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',customer_name:'Alice Inbox',body:'Delivery question',sender_kind:'customer',locale:'de',unread:2,created_at:user.created_at},
     {user_id:'dddddddd-dddd-dddd-dddd-dddddddddddd',customer_name:'Bob Inbox',body:'Order confirmed',sender_kind:'admin',locale:'en',unread:0,created_at:user.created_at},
@@ -81,6 +86,10 @@ async function run() {
     else if(u.pathname.includes('user_activity'))data=[{user_id:user.id,email:user.email,last_seen_at:user.created_at,first_seen_at:user.created_at,sign_in_count:1}];
     else if(u.pathname.includes('contact_requests'))data=[{id:1,name:'Enregistrer',email:user.email,message:'Attribuer un rôle',subject:'product',status:'new',created_at:user.created_at}];
     else if(u.pathname.includes('order_requests'))data=[{id:1,reference:'TEST-ORDER',customer:{firstName:'Enregistrer',lastName:'Test',email:user.email,street:'Teststrasse 1',postalCode:'10115',city:'Berlin'},items:[],total_cents:1000,status:'new',payment_status:'pending',created_at:user.created_at}];
+    else if(u.pathname==='/api/analytics') {
+      if(request.method==='POST') { collected.push({body:JSON.parse(request.postData),headers:request.headers}); data={ok:true}; }
+      else data=u.searchParams.has('session')?{events:[{id:'journey-1',kind:'page_view',path:'/produits',section:'',locale:'de',created_at:user.created_at}],truncated:false}:statistics;
+    }
     else if(u.pathname.includes('support')) {
       if(request.method==='PATCH') data={success:true};
       else if(request.method==='POST') data={success:true};
@@ -89,7 +98,26 @@ async function run() {
     else if(!u.hostname.includes('supabase.co')){await send('Fetch.continueRequest',{requestId});return;}
     await send('Fetch.fulfillRequest',{requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'application/json'},{name:'Access-Control-Allow-Origin',value:'*'},{name:'Access-Control-Allow-Headers',value:'*'},{name:'Access-Control-Allow-Methods',value:'GET,POST,OPTIONS'}],body:Buffer.from(JSON.stringify(data)).toString('base64')});
   };
-  await send('Fetch.enable',{patterns:[{urlPattern:'*supabase.co/*'},{urlPattern:'*/api/support*'}]});
+  await send('Fetch.enable',{patterns:[{urlPattern:'*supabase.co/*'},{urlPattern:'*/api/support*'},{urlPattern:'*/api/analytics*'}]});
+  await visit('/fr/contact');
+  const consentCopy=analyticsModule.exports.analyticsCopy.fr;
+  assert.equal(collected.length,0,'No collection before consent');
+  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.refuse)+").click()");
+  await pause(500); assert.equal(collected.length,0,'No collection after refusal');
+  await evaluate("[...document.querySelectorAll('footer button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.settings)+").click()");
+  assert(await evaluate("!document.querySelector('[role=dialog] input[type=checkbox]').checked"),'Account association is optional and unchecked');
+  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.accept)+").click()");
+  await pause(1500); assert(collected.length>0,'Collection starts after consent');
+  assert(collected.every(row=>!Object.keys(row.headers).some(key=>key.toLowerCase()==='authorization')),'Anonymous consent never links an account');
+  assert(collected.every(row=>row.body.events.every(event=>!event.path.includes('?')&&!event.path.includes('#'))),'Paths have no personal query parameters');
+  const pageViewsBeforeStorage = collected.flatMap(row=>row.body.events).filter(event=>event.kind==='page_view').length;
+  await evaluate("window.dispatchEvent(new StorageEvent('storage',{key:'thermopro-cart-v1',newValue:'[]'}))");
+  await pause(500);
+  assert.equal(collected.flatMap(row=>row.body.events).filter(event=>event.kind==='page_view').length,pageViewsBeforeStorage,'Unrelated cart storage changes do not restart tracking');
+  await evaluate("[...document.querySelectorAll('footer button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.settings)+").click()");
+  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(consentCopy.refuse)+").click()");
+  await pause(500); const afterWithdrawal=collected.length;
+  await visit('/fr/produits'); assert.equal(collected.length,afterWithdrawal,'Withdrawal stops collection across navigation');
   await evaluate('localStorage.setItem('+JSON.stringify('sb-ykmwooejlvcsalobjopl-auth-token')+','+JSON.stringify(JSON.stringify(session))+')');
   for(const route of process.argv.includes('--admin-only') ? ['admin'] : ['super-admin','admin']) {
   await visit('/fr/'+route);
@@ -132,11 +160,21 @@ async function run() {
     } else {
       await evaluate("[...document.querySelectorAll('nav button')].find(b=>b.textContent==="+JSON.stringify(inboxLabels.workspace)+").click()");
     }
+    const statsCopy=analyticsModule.exports.analyticsCopy[locale];
+    await evaluate("[...document.querySelectorAll('nav button')].find(b=>b.textContent==="+JSON.stringify(statsCopy.title)+").click()");
+    await pause(1000);
+    assert(await evaluate("document.querySelector('#site-statistics').textContent.includes('Alice Analytics')"),'Statistics show consent-linked client sessions');
+    assert(await evaluate("!!document.querySelector('#site-statistics [role=img]')"),'Visits chart is rendered');
+    assert(await evaluate('document.documentElement.scrollWidth <= innerWidth'),'Statistics fit desktop/mobile viewport');
+    await evaluate("[...document.querySelectorAll('#site-statistics button')].find(b=>b.textContent.includes('Alice Analytics')).click()");
+    await pause(500);
+    assert(await evaluate("!!document.querySelector('#site-statistics ol') && document.querySelector('#site-statistics ol').textContent.includes('/produits')"),'Session timeline shows visited pages');
+    await evaluate("[...document.querySelectorAll('nav button')].find(b=>b.textContent==="+JSON.stringify(inboxLabels.workspace)+").click()");
   }
   }
   }
   assert.equal(errors.length,0,errors.join('\n'));
-  console.log('PASS administration and inbox: locale switching, filters, replies, mobile navigation and contact requests with mocked records. No real writes.');
+  console.log('PASS administration, inbox and statistics: consent/refusal/withdrawal, anonymous collection, charts, session journeys, locale switching and mobile navigation with mocked records. No real writes.');
 
 }
 

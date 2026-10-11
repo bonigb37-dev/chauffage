@@ -10,6 +10,7 @@ import { ArrowRight, Boxes, CircleHelp, Mail, MessageCircle, ShieldCheck } from 
 import FaqSection from '@/components/FaqSection';
 import { supabase } from '@/lib/supabase';
 import { storeConfig } from '@/lib/store-config';
+import { emitAnalytics } from '@/lib/analytics';
 
 const inputClass = 'mt-2 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
@@ -46,6 +47,7 @@ export default function Contact() {
         return;
       }
       setNotice('Merci pour votre message ! Notre service client reviendra vers vous dans les meilleurs délais.');
+      emitAnalytics('contact_sent');
       formElement.reset();
     } catch {
       setError('Votre message n’a pas pu être envoyé. Veuillez vérifier votre connexion.');
