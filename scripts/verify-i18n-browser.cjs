@@ -27,7 +27,7 @@ async function run() {
   socket.onmessage = (event) => {
     const message = JSON.parse(event.data);
     if (message.method === 'Fetch.requestPaused' && mockRequest) void mockRequest(message.params).catch((error) => errors.push(error.message));
-    if (message.method === 'Runtime.exceptionThrown') errors.push(message.params.exceptionDetails.text);
+    if (message.method === 'Runtime.exceptionThrown') errors.push(message.params.exceptionDetails.exception?.description || message.params.exceptionDetails.text);
     if (message.method === 'Runtime.bindingCalled' && message.params.name === '__reportCsp') cspViolations.push(message.params.payload);
     const request = pending.get(message.id);
     if (request) { pending.delete(message.id); clearTimeout(request.timer); message.error ? request.reject(new Error(message.error.message)) : request.resolve(message.result); }

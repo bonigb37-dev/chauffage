@@ -23,11 +23,12 @@ for line in (SOURCE / 'reviewed.tsv').read_text(encoding='utf-8').splitlines():
     for locale, value in zip(('de', 'en'), columns[1:]):
         catalogues[locale][source] = value
     catalogues['fr'][source] = source
-extra_path = SOURCE / 'additional.json'
-if extra_path.exists():
-    for source, values in json.loads(extra_path.read_text(encoding='utf-8')).items():
-        for locale in catalogues:
-            catalogues[locale][source] = values.get(locale, source)
+for filename in ('additional.json', 'admin.json'):
+    extra_path = SOURCE / filename
+    if extra_path.exists():
+        for source, values in json.loads(extra_path.read_text(encoding='utf-8')).items():
+            for locale in catalogues:
+                catalogues[locale][source] = values.get(locale, source)
 for locale, catalogue in catalogues.items():
     (SOURCE / f'{locale}.json').write_text(json.dumps(catalogue, ensure_ascii=False, indent=2, sort_keys=True) + '\n', encoding='utf-8')
 print(f'Prepared {len(catalogues["de"])} reviewed strings in DE / FR / EN.')

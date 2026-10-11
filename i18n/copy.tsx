@@ -8,7 +8,7 @@ const phrases = Object.fromEntries(Object.entries(dictionaries).map(([locale, di
 export function translate(text: string, locale: Locale): string {
   if (locale === 'fr' || !text.trim()) return text;
   const clean = text.replace(/\s+/g, ' ').trim();
-  const translation = dictionaries[locale][clean];
+  const translation = Object.hasOwn(dictionaries[locale], clean) ? dictionaries[locale][clean] : undefined;
   if (translation !== undefined) return (text.match(/^\s*/)?.[0] ?? '') + translation + (text.match(/\s*$/)?.[0] ?? '');
   // Template strings combine fixed copy with quantities, references or names.
   // Replace reviewed phrases only; never infer translations for customer data.
