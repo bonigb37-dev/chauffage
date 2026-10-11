@@ -66,6 +66,12 @@ async function run() {
   const user={id:'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',aud:'authenticated',email:'test@example.invalid',email_confirmed_at:'2026-10-01',app_metadata:{provider:'email'},user_metadata:{full_name:'Test Admin'},created_at:'2026-10-01T00:00:00Z'};
   const token=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify({sub:user.id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated'})).toString('base64url')+'.mock';
   const session={access_token:token,refresh_token:'mock-refresh',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user};
+  const inboxWords = require('typescript').transpileModule(require('fs').readFileSync('lib/support-copy.ts','utf8'), {compilerOptions:{module:require('typescript').ModuleKind.CommonJS}}).outputText;
+  const inboxModule = {exports:{}}; new Function('module','exports',inboxWords)(inboxModule,inboxModule.exports);
+  const fixtures = [
+    {user_id:'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',customer_name:'Alice Inbox',body:'Delivery question',sender_kind:'customer',locale:'de',unread:2,created_at:user.created_at},
+    {user_id:'dddddddd-dddd-dddd-dddd-dddddddddddd',customer_name:'Bob Inbox',body:'Order confirmed',sender_kind:'admin',locale:'en',unread:0,created_at:user.created_at},
+  ];
   mockRequest=async({requestId,request})=>{
     let data=[];const u=new URL(request.url);
     if(u.pathname.includes('/auth/v1/user'))data=user;
@@ -75,16 +81,20 @@ async function run() {
     else if(u.pathname.includes('user_activity'))data=[{user_id:user.id,email:user.email,last_seen_at:user.created_at,first_seen_at:user.created_at,sign_in_count:1}];
     else if(u.pathname.includes('contact_requests'))data=[{id:1,name:'Enregistrer',email:user.email,message:'Attribuer un rôle',subject:'product',status:'new',created_at:user.created_at}];
     else if(u.pathname.includes('order_requests'))data=[{id:1,reference:'TEST-ORDER',customer:{firstName:'Enregistrer',lastName:'Test',email:user.email,street:'Teststrasse 1',postalCode:'10115',city:'Berlin'},items:[],total_cents:1000,status:'new',payment_status:'pending',created_at:user.created_at}];
-    else if(u.pathname.includes('support'))data=u.searchParams.has('notifications')?{support:0,contacts:0,mail:{pending:0,failed:0,configured:false}}:u.searchParams.has('inbox')?{threads:[]}:{messages:[]};
+    else if(u.pathname.includes('support')) {
+      if(request.method==='PATCH') data={success:true};
+      else if(request.method==='POST') data={success:true};
+      else data=u.searchParams.has('notifications')?{support:2,contacts:0,mail:{pending:0,failed:0,configured:false}}:u.searchParams.has('inbox')?{threads:fixtures}:{messages:u.searchParams.has('user_id')?[{...fixtures.find(row=>row.user_id===u.searchParams.get('user_id')),id:'fixture-message',body:'Literal <script>test</script>'}]:[]};
+    }
     else if(!u.hostname.includes('supabase.co')){await send('Fetch.continueRequest',{requestId});return;}
     await send('Fetch.fulfillRequest',{requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'application/json'},{name:'Access-Control-Allow-Origin',value:'*'},{name:'Access-Control-Allow-Headers',value:'*'},{name:'Access-Control-Allow-Methods',value:'GET,POST,OPTIONS'}],body:Buffer.from(JSON.stringify(data)).toString('base64')});
   };
   await send('Fetch.enable',{patterns:[{urlPattern:'*supabase.co/*'},{urlPattern:'*/api/support*'}]});
   await evaluate('localStorage.setItem('+JSON.stringify('sb-ykmwooejlvcsalobjopl-auth-token')+','+JSON.stringify(JSON.stringify(session))+')');
-  for(const route of ['super-admin','admin']) {
+  for(const route of process.argv.includes('--admin-only') ? ['admin'] : ['super-admin','admin']) {
   await visit('/fr/'+route);
   for(const mobile of [false,true]) {
-  if(mobile) await send('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
+  await send('Emulation.setDeviceMetricsOverride',{width:mobile ? 390 : 1280,height:844,deviceScaleFactor:1,mobile});
   for(const locale of ['de','en','fr']){
     await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==='"+locale.toUpperCase()+"').click()");
     await pause(4500);
@@ -96,11 +106,37 @@ async function run() {
       if(locale !== 'fr') assert(!await evaluate('document.body.innerText.includes('+JSON.stringify(source)+')'),locale+' no French '+source);
     }
     if(route === 'admin') assert(await evaluate("!![...document.querySelectorAll('[data-original-content]')].find(el=>el.textContent==='Attribuer un rôle')"),'Customer message is not translated');
+    const inboxCopy = inboxModule.exports.supportCopy[locale];
+    const inboxLabels = inboxModule.exports.supportInboxCopy[locale];
+    await evaluate("[...document.querySelectorAll('nav button')].find(b=>b.textContent.startsWith("+JSON.stringify(inboxCopy.inbox)+")).click()");
+    await pause(1500);
+    assert(await evaluate("!!document.querySelector('#support-messages input[type=search]')"),'Inbox opens from top navigation');
+    assert(await evaluate("document.querySelector('#support-messages').innerText.includes('Alice Inbox')"));
+    await evaluate("[...document.querySelectorAll('#support-messages button')].find(b=>b.textContent==="+JSON.stringify(inboxLabels.answered)+").click()");
+    assert(await evaluate("document.querySelector('#support-messages aside').innerText.includes('Bob Inbox') && !document.querySelector('#support-messages aside').innerText.includes('Alice Inbox')"),'Answered filter');
+    await evaluate("[...document.querySelectorAll('#support-messages button')].find(b=>b.textContent==="+JSON.stringify(inboxLabels.all)+").click()");
+    await evaluate("[...document.querySelectorAll('#support-messages aside button')].find(b=>b.textContent.includes('Alice Inbox')).click()");
+    await pause(1500);
+    assert(await evaluate("!!document.querySelector('#support-messages textarea')"),'Reply composer');
+    assert(await evaluate("document.querySelector('#support-messages [role=log]').textContent.includes('Literal <script>test</script>')"),'Messages remain literal');
+    assert(await evaluate('document.documentElement.scrollWidth <= innerWidth'),'Inbox fits viewport');
+    if(mobile) {
+      assert(await evaluate("getComputedStyle(document.querySelector('#support-messages aside')).display==='none'"),'Mobile conversation replaces list');
+      await evaluate("document.querySelector('#support-messages button[aria-label="+JSON.stringify(inboxLabels.back)+"]').click()");
+      assert(await evaluate("getComputedStyle(document.querySelector('#support-messages aside')).display!=='none'"),'Back to mobile conversation list');
+    }
+    if(route === 'admin') {
+      await evaluate("[...document.querySelectorAll('#support-messages a')].find(a=>a.getAttribute('href').includes('#contact-requests')).click()");
+      await pause(1000);
+      assert(await evaluate("!document.querySelector('#support-messages') && !!document.querySelector('#contact-requests')"),'Contact requests return to workspace');
+    } else {
+      await evaluate("[...document.querySelectorAll('nav button')].find(b=>b.textContent==="+JSON.stringify(inboxLabels.workspace)+").click()");
+    }
   }
   }
   }
   assert.equal(errors.length,0,errors.join('\n'));
-  console.log('PASS super admin locale switching with mocked session and records. No real writes.');
+  console.log('PASS administration and inbox: locale switching, filters, replies, mobile navigation and contact requests with mocked records. No real writes.');
 
 }
 

@@ -14,7 +14,8 @@ import { useCart } from '@/components/CartProvider';
 import type { Product } from '@/lib/products';
 import AdminPaymentProof from '@/components/AdminPaymentProof';
 import SupportMessenger from '@/components/SupportMessenger';
-import SupportNotifications from '@/components/SupportNotifications';
+import SupportNotifications, { SupportUnreadBadge } from '@/components/SupportNotifications';
+import { supportCopy, supportInboxCopy } from '@/lib/support-copy';
 import { orderStatusLabels, paymentStatusLabel } from '@/lib/order-status';
 import { getAdminRole, type AdminRole } from '@/lib/admin-access';
 import { useVerifiedAccess } from '@/components/AccessContext';
@@ -72,6 +73,28 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   const [bankForm, setBankForm] = useState('');
   const [productForm, setProductForm] = useState<Product>(() => emptyProduct(siteData.products));
   const [editingProduct, setEditingProduct] = useState(false);
+  const [activeView, setActiveView] = useState<'workspace' | 'messages'>('workspace');
+
+  useEffect(() => {
+    const syncHash = () => {
+      const messages = window.location.hash === '#support-messages';
+      setActiveView(messages ? 'messages' : 'workspace');
+      requestAnimationFrame(() => document.getElementById(messages ? 'support-messages' : window.location.hash.slice(1))?.scrollIntoView({ block: 'start' }));
+    };
+    syncHash();
+    const showMessages = () => setActiveView('messages');
+    const showWorkspace = () => { setActiveView('workspace'); requestAnimationFrame(() => document.getElementById('contact-requests')?.scrollIntoView({ block: 'start' })); };
+    window.addEventListener('hashchange', syncHash);
+    window.addEventListener('popstate', syncHash);
+    window.addEventListener('bren-admin-messages', showMessages);
+    window.addEventListener('bren-admin-workspace', showWorkspace);
+    return () => {
+      window.removeEventListener('hashchange', syncHash);
+      window.removeEventListener('popstate', syncHash);
+      window.removeEventListener('bren-admin-messages', showMessages);
+      window.removeEventListener('bren-admin-workspace', showWorkspace);
+    };
+  }, []);
 
   useEffect(() => {
     if (!editingProduct && !productForm.name) setProductForm(emptyProduct(siteData.products));
@@ -316,6 +339,11 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       </div>
 
       {!loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportNotifications />}
+      {!loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <nav data-original-content aria-label={supportInboxCopy[brenLocale].workspace} className="mt-6 flex flex-wrap gap-2 rounded-xl border border-stone-200 bg-white p-2">
+        <button type="button" aria-pressed={activeView === 'workspace'} onClick={() => { setActiveView('workspace'); window.history.replaceState(null, '', window.location.pathname + window.location.search); }} className={`rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'workspace' ? 'bg-gray-950 text-white' : 'text-gray-600 hover:bg-stone-100'}`}>{supportInboxCopy[brenLocale].workspace}</button>
+        <button type="button" aria-pressed={activeView === 'messages'} onClick={() => { setActiveView('messages'); window.history.replaceState(null, '', '#support-messages'); }} className={`flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'messages' ? 'bg-orange-600 text-white' : 'text-gray-600 hover:bg-orange-50'}`}>{supportCopy[brenLocale].inbox}<SupportUnreadBadge /></button>
+      </nav>}
+      <div className={activeView === 'messages' && !loading && canSeeWorkspace && (!superAdminOnly || canSeeSuperAdmin) ? 'hidden' : ''}>
       {loading ? <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Vérification de l’accès...</div>
         : !user ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Connexion requise</h2><p className="mt-2 text-gray-600">Connectez-vous avec votre compte administrateur pour continuer.</p><Link href="/compte" className="mt-5 inline-flex rounded-xl bg-orange-600 px-5 py-3 font-bold text-white">Se connecter</Link></section>
           : superAdminOnly && !canSeeSuperAdmin ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Page indisponible</h2><p className="mt-2 text-gray-600">Cette page n’est pas accessible avec ce compte.</p></section>
@@ -323,7 +351,8 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               : superAdminOnly ? <><Link href="/admin" className="mt-7 inline-flex rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold">Ouvrir l’espace boutique</Link><SuperAdminPanel roles={roles} userId={user.id} currentRole={role} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /><AuditPanel audit={audit} /></>
                 : <><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} />{siteData.ready && !detailsLoading ? <ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} /> : <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Chargement des produits et des informations de paiement...</div>}<AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /></>}
 
-      {!loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportMessenger admin />}
+      </div>
+      {activeView === 'messages' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportMessenger admin />}
       {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
       {notice && <p role="status" className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">{notice}</p>}
       <button type="button" onClick={() => void loadData(user)} className="mt-8 flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900"><RefreshCw size={15}/> Actualiser les données</button>
