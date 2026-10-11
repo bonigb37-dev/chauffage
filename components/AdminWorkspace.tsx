@@ -353,7 +353,7 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
       })}</div>}
     </section>
     <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-5 sm:p-7">
-      <h2 className="text-2xl font-black">Demandes de contact</h2>
+      <h2 id="contact-requests" className="scroll-mt-32 text-2xl font-black">Demandes de contact</h2>
       {contacts.length === 0 ? <p className="mt-4 text-gray-500">Aucune demande de contact pour le moment.</p> : <div className="mt-5 space-y-4">{contacts.map((item) => <article key={item.id} className="rounded-xl border border-stone-200 p-4 sm:p-5">
         <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-black">{item.name} · {subjectLabels[item.subject] ?? item.subject}</p><p className="mt-1 text-sm text-gray-500">{date(item.created_at)} · <a className="text-orange-700 underline" href={`mailto:${item.email}`}>{item.email}</a>{item.phone ? ` · ${item.phone}` : ''}{item.postal_code ? ` · ${item.postal_code}` : ''}</p></div><StatusSelect value={item.status} disabled={workingId === `contact_requests-${item.id}`} onChange={(status) => void onStatusChange('contact_requests', item.id, status)} /></div>
         <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-gray-700">{item.message}</p>

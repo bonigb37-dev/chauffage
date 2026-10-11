@@ -40,9 +40,10 @@ function request(token, query = '', body) { return new Request('https://mock.inv
   assert((await(await api.GET(request('A'))).json()).messages.every(row=>row.user_id===A));
   assert((await(await api.GET(request('B'))).json()).messages.every(row=>row.user_id===B));
   assert.equal((await api.GET(request('ADMIN','?inbox=1'))).status,200);
+  assert((await (await api.GET(request('ADMIN','?inbox=1'))).json()).threads.some(row=>row.user_id===A),'Saved customer message appears in administrator inbox');
   assert.equal((await api.POST(request('ADMIN','',{user_id:B,body:'Reply',locale:'de'}))).status,201);
   assert.equal(rows.at(-1).sender_kind,'admin'); assert.equal(rows.at(-1).sender_id,ADMIN);
-  for(const body of [{body:'',locale:'de'},{body:'x'.repeat(3001),locale:'de'},{body:'ok',locale:'xx'},{body:'ok',locale:'de',user_id:'invalid'}]) assert.equal((await api.POST(request('A','',body))).status,400);
+  for(const body of [{body:'',locale:'de'},{body:'x'.repeat(3001),locale:'de'},{body:'ok',locale:'xx'},{body:'ok',locale:['de']},{body:'ok',locale:'de',user_id:'invalid'}]) assert.equal((await api.POST(request('A','',body))).status,400);
   blocked=true; assert.equal((await api.POST(request('A','',{body:'ok',locale:'de'}))).status,403); blocked=false;
   dbFailure=true; assert.equal((await api.GET(request('A'))).status,503); dbFailure=false;
   const sql=fs.readFileSync('supabase-support.sql','utf8'); assert(sql.includes('enable row level security')); assert(sql.includes('revoke all on public.support_messages from public,anon,authenticated')); assert(sql.includes('user_id = auth.uid() or public.current_user_is_admin()'));

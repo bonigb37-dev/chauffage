@@ -51,7 +51,7 @@ export async function POST(request: Request) {
     const payload = await readLimitedJson(request, 14000);
     if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return response({ error: 'invalid' }, 400);
     const body = payload as Record<string, unknown>;
-    if (typeof body.body !== 'string' || !body.body.trim() || body.body.length > 3000 || !['de','fr','en'].includes(String(body.locale))) return response({ error: 'invalid' }, 400);
+    if (typeof body.body !== 'string' || !body.body.trim() || body.body.length > 3000 || typeof body.locale !== 'string' || !['de','fr','en'].includes(body.locale)) return response({ error: 'invalid' }, 400);
     const target = body.user_id ?? user.id;
     if (typeof target !== 'string' || !uuid.test(target)) return response({ error: 'invalid' }, 400);
     if (target !== user.id && !admin) return response({ error: 'forbidden' }, 403);

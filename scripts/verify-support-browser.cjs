@@ -76,9 +76,12 @@ async function run() {
   const token=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify({sub:user.id,exp:Math.floor(Date.now()/1000)+3600,role:'authenticated'})).toString('base64url')+'.mock';
   const session={access_token:token,refresh_token:'mock-refresh',expires_in:3600,expires_at:Math.floor(Date.now()/1000)+3600,token_type:'bearer',user};
   let messages=[{id:'mock1',user_id:user.id,sender_kind:'admin',body:'Test reply <script>window.__injected=1</script>',locale:'de',created_at:'2026-10-11T12:00:00Z'}];
+  let delayRefresh=false, failSend=false;
   mockRequest=async ({requestId,request})=>{
     let data;
     if(request.url.includes('/api/support')){
+      if(delayRefresh) await pause(1200);
+      if(failSend && request.method==='POST') { await send('Fetch.fulfillRequest',{requestId,responseCode:503,responseHeaders:[{name:'Content-Type',value:'application/json'}],body:Buffer.from(JSON.stringify({error:'unavailable'})).toString('base64')});return; }
       if(request.method==='POST'){const p=JSON.parse(request.postData);messages.push({id:'mock2',user_id:user.id,sender_kind:'customer',body:p.body,locale:p.locale,created_at:'2026-10-11T13:00:00Z'});data={success:true};}else data={messages};
     }else if(request.url.includes('/auth/v1/user'))data=user;
     else if(request.url.includes('/rest/v1/'))data=[];
@@ -97,6 +100,18 @@ async function run() {
   await evaluate("document.querySelector('textarea').closest('form').requestSubmit()");
   await pause(1500);
   assert(await evaluate('document.body.innerText.includes("Browser test message")'),'Message shown after saved response');
+  delayRefresh=true;
+  await evaluate("document.querySelector('button[aria-busy]').click()");
+  await pause(200);
+  assert(await evaluate("document.querySelector('button[aria-busy]').disabled && document.querySelector('button[aria-busy]').getAttribute('aria-busy')==='true'"),'Refresh visibly busy');
+  await pause(1800);
+  assert(await evaluate("!document.querySelector('button[aria-busy]').disabled"),'Refresh reenabled');
+  assert(await evaluate("document.querySelector('[role=status]').textContent.includes('aktualisiert')"),'Refresh completion visible');
+  delayRefresh=false; failSend=true;
+  await evaluate("(()=>{const t=document.querySelector('textarea');Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(t,'Unsent draft');t.dispatchEvent(new Event('input',{bubbles:true}));})()");
+  await pause(300); await evaluate("document.querySelector('textarea').closest('form').requestSubmit()"); await pause(1500);
+  assert(await evaluate("!!document.querySelector('[role=alert]')"),'Send failure visible');
+  assert.equal(await evaluate("document.querySelector('textarea').value"),'Unsent draft','Failed send preserves draft');
   assert.equal(errors.length,0,errors.join(', '));
   assert.equal(cspViolations.length,0,cspViolations.join(', '));
   console.log('PASS multilingual guest/mobile and mocked authenticated read/send, HTML text safe, no real messages sent.');
