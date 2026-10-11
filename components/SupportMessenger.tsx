@@ -31,6 +31,12 @@ function Messages({ admin, locale }: { admin: boolean; locale: Locale }) {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [connected, setConnected] = useState(false);
+  const viewport = useRef<HTMLDivElement>(null);
+  const follow = useRef(true);
+  const previousLast = useRef('');
+  const busy = useRef(false);
+  const liveCopy = { de: ['Live-Verbindung aktiv', 'Automatische Aktualisierung aktiv'], fr: ['Connexion en direct active', 'Actualisation automatique active'], en: ['Live connection active', 'Automatic refresh active'] }[locale];
   const statusCopy = supportStatusCopy[locale];
   const errorText = (cause: unknown) => {
     const code = cause instanceof Error ? cause.message : 'unavailable';
@@ -58,36 +64,61 @@ function Messages({ admin, locale }: { admin: boolean; locale: Locale }) {
     }).catch(() => { /* Message remains unread if acknowledgement fails. */ });
     return () => { active = false; };
   }, [messages, loading, call]);
-  const load = useCallback(async () => {
+  const load = useCallback(async (quiet = false) => {
+    if (quiet && busy.current) return;
     const current = ++generation.current.value;
-    setRefreshing(true);
+    busy.current = true;
+    if (!quiet) setRefreshing(true);
     try {
       const inbox = admin ? await call('?inbox=1') : null;
       const conversation = !admin || target ? await call(target ? `?user_id=${encodeURIComponent(target)}` : '') : { messages: [] };
       if (!live.current || current !== generation.current.value) return;
       if (inbox) setThreads(inbox.threads);
-      setMessages(conversation.messages); setError('');
+      setMessages(rows => JSON.stringify(rows) === JSON.stringify(conversation.messages) ? rows : conversation.messages); setError('');
       return true;
     } catch (cause) { if (live.current && current === generation.current.value) setError(cause instanceof Error ? cause.message : 'unavailable'); return false; }
-    finally { if (live.current && current === generation.current.value) { setLoading(false); setRefreshing(false); } }
+    finally { if (live.current && current === generation.current.value) { busy.current = false; setLoading(false); setRefreshing(false); } }
   }, [admin, target, call]);
-  useEffect(() => { const counter = generation.current; setMessages([]); setBody(''); setNotice(''); setLoading(true); void load(); const timer = setInterval(() => { if (document.visibilityState === 'visible') void load(); }, 30000); return () => { clearInterval(timer); counter.value++; }; }, [load]);
+  useEffect(() => { const counter = generation.current; setMessages([]); setBody(''); setNotice(''); setLoading(true); follow.current = true; previousLast.current = ''; void load(); const refresh = () => { if (document.visibilityState === 'visible') void load(true); }; const timer = setInterval(refresh, 10000); document.addEventListener('visibilitychange', refresh); window.addEventListener('online', refresh); return () => { clearInterval(timer); document.removeEventListener('visibilitychange', refresh); window.removeEventListener('online', refresh); counter.value++; }; }, [load]);
+  useEffect(() => {
+    if (!supabase) return;
+    let active = true;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    setConnected(false);
+    const channel = supabase.channel(`support-chat-${crypto.randomUUID()}`).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'support_messages' }, () => {
+      // Refetch through the authorized server; never render websocket payloads.
+      if (!active || document.visibilityState !== 'visible' || timer) return;
+      timer = setTimeout(() => { timer = undefined; if (active) { void load(true); window.dispatchEvent(new Event('bren-support-updated')); } }, 500);
+    }).subscribe(status => {
+      if (!active) return;
+      setConnected(status === 'SUBSCRIBED');
+      if (status === 'SUBSCRIBED') void load(true);
+    });
+    return () => { active = false; clearTimeout(timer); void supabase!.removeChannel(channel); };
+  }, [load]);
+  useEffect(() => {
+    const last = messages.at(-1)?.id;
+    if (!last || last === previousLast.current) return;
+    previousLast.current = last;
+    if (follow.current && viewport.current) viewport.current.scrollTop = viewport.current.scrollHeight;
+  }, [messages]);
   async function submit(event: FormEvent) {
     event.preventDefault(); if (sending || !body.trim()) return;
     setSending(true); setError(''); setNotice('');
     try {
       await call('', { body, locale: admin ? threads.find(thread => thread.user_id === target)?.locale ?? locale : locale, ...(admin ? { user_id: target } : {}) });
       if (!live.current) return;
-      setBody(''); setNotice(copy.sent); await load();
+      follow.current = true; setBody(''); setNotice(copy.sent); await load();
     } catch (cause) { if (live.current) setError(cause instanceof Error ? cause.message : 'unavailable'); }
     finally { if (live.current) setSending(false); }
   }
   return <section id={admin ? 'support-messages' : undefined} data-original-content className="mt-8 scroll-mt-32 rounded-2xl border border-stone-200 bg-white p-5 sm:p-8">
     <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-black">{admin ? copy.inbox : copy.title}</h2><button type="button" disabled={refreshing || sending} aria-busy={refreshing} onClick={async () => { setNotice(''); if (await load()) setNotice(statusCopy.refreshed); }} className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-stone-300 px-4 py-2 text-sm font-semibold transition hover:border-orange-500 hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600 disabled:cursor-wait disabled:opacity-60">{refreshing ? <LoaderCircle size={18} className="animate-spin" aria-hidden="true" /> : <RefreshCw size={18} aria-hidden="true" />}{refreshing ? copy.loading : copy.refresh}</button></div>
     {!admin && <p className="mt-3 text-sm leading-6 text-gray-600">{copy.note}</p>}
+    <p role="status" className="mt-3 flex items-center gap-2 text-xs text-gray-600"><span aria-hidden="true" className={`h-2 w-2 rounded-full ${connected ? 'bg-green-600' : 'bg-amber-500'}`} />{liveCopy[connected ? 0 : 1]}</p>
     {admin && <div className="mt-3 rounded-lg bg-orange-50 p-4 text-sm leading-6 text-gray-700"><p>{supportContactCopy[locale].note}</p><Link href="/admin#contact-requests" className="mt-2 inline-block font-bold text-orange-700 underline">{supportContactCopy[locale].link}</Link></div>}
     {admin && <><label className="mt-5 block text-sm font-bold">{copy.select}<select value={target} disabled={sending} onChange={event => setTarget(event.target.value)} className="mt-2 block w-full rounded-lg border border-stone-300 bg-white p-3"><option value="">{copy.select}</option>{threads.map(thread => <option key={thread.user_id} value={thread.user_id}>{thread.locale.toUpperCase()} · {thread.user_id.slice(0,8)} · {thread.body.slice(0,60)}</option>)}</select></label><p className="mt-2 text-xs text-gray-500">{copy.recent}</p>{!loading && !threads.length && <p className="mt-3">{copy.noThreads}</p>}</>}
-    {loading ? <p className="py-8">{copy.loading}</p> : (!admin || target) && <><div className="my-5 max-h-96 space-y-4 overflow-y-auto" aria-label={copy.title}>{!messages.length && <p className="text-gray-500">{copy.empty}</p>}{messages.map(message => <article key={message.id} className={`rounded-xl p-4 ${message.sender_kind === 'admin' ? 'bg-orange-50' : 'bg-stone-50'}`}><div className="mb-2 flex flex-wrap justify-between gap-2 text-xs text-gray-600"><strong>{message.sender_kind === 'admin' ? copy.team : copy.you}</strong><time dateTime={message.created_at}>{new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(message.created_at))}</time></div><p className="whitespace-pre-wrap break-words">{message.body}</p></article>)}</div><p className="mb-4 text-xs text-gray-500">{copy.latest}</p><form onSubmit={submit}><label className="block text-sm font-bold">{copy.message}<textarea required minLength={1} maxLength={3000} value={body} disabled={sending} onChange={event => setBody(event.target.value)} rows={4} className="mt-2 block w-full rounded-xl border border-stone-300 p-3 font-normal" /></label><button disabled={sending || !body.trim()} className="mt-3 rounded-xl bg-orange-600 px-5 py-3 font-bold text-white disabled:opacity-50">{sending ? copy.sending : copy.send}</button></form></>}
+    {loading ? <p className="py-8">{copy.loading}</p> : (!admin || target) && <><div ref={viewport} onScroll={event => { const el = event.currentTarget; follow.current = el.scrollHeight - el.scrollTop - el.clientHeight < 80; }} className="my-5 max-h-96 space-y-4 overflow-y-auto" role="log" aria-live="polite" aria-relevant="additions" aria-label={copy.title}>{!messages.length && <p className="text-gray-500">{copy.empty}</p>}{messages.map(message => <article key={message.id} className={`rounded-xl p-4 ${message.sender_kind === 'admin' ? 'bg-orange-50' : 'bg-stone-50'}`}><div className="mb-2 flex flex-wrap justify-between gap-2 text-xs text-gray-600"><strong>{message.sender_kind === 'admin' ? copy.team : copy.you}</strong><time dateTime={message.created_at}>{new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' }).format(new Date(message.created_at))}</time></div><p className="whitespace-pre-wrap break-words">{message.body}</p></article>)}</div><p className="mb-4 text-xs text-gray-500">{copy.latest}</p><form onSubmit={submit}><label className="block text-sm font-bold">{copy.message}<textarea required minLength={1} maxLength={3000} value={body} disabled={sending} onChange={event => setBody(event.target.value)} rows={4} className="mt-2 block w-full rounded-xl border border-stone-300 p-3 font-normal" /></label><button disabled={sending || !body.trim()} className="mt-3 rounded-xl bg-orange-600 px-5 py-3 font-bold text-white disabled:opacity-50">{sending ? copy.sending : copy.send}</button></form></>}
     {error && <p role="alert" className="mt-4 text-red-700">{errorText(new Error(error))}</p>}{notice && <p role="status" className="mt-4 text-green-700">{notice}</p>}
     {!admin && <Link href="/contact" className="mt-4 inline-block text-sm text-orange-700 underline">{copy.contact}</Link>}
   </section>;

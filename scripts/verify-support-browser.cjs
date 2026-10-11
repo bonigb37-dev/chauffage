@@ -108,13 +108,19 @@ async function run() {
   assert(await evaluate("document.querySelector('button[aria-busy]').disabled && document.querySelector('button[aria-busy]').getAttribute('aria-busy')==='true'"),'Refresh visibly busy');
   await pause(1800);
   assert(await evaluate("!document.querySelector('button[aria-busy]').disabled"),'Refresh reenabled');
-  assert(await evaluate("document.querySelector('[role=status]').textContent.includes('aktualisiert')"),'Refresh completion visible');
+  assert(await evaluate("[...document.querySelectorAll('[role=status]')].some(el => el.textContent.includes('aktualisiert'))"),'Refresh completion visible');
   delayRefresh=false; failSend=true;
   await evaluate("(()=>{const t=document.querySelector('textarea');Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(t,'Unsent draft');t.dispatchEvent(new Event('input',{bubbles:true}));})()");
   await pause(300); await evaluate("document.querySelector('textarea').closest('form').requestSubmit()"); await pause(1500);
   assert(await evaluate("!!document.querySelector('[role=alert]')"),'Send failure visible');
   assert.equal(await evaluate("document.querySelector('textarea').value"),'Unsent draft','Failed send preserves draft');
-  failSend=false; unread=2;
+  failSend=false;
+  messages.push({id:'mock-live',user_id:user.id,sender_kind:'admin',body:'Automatic incoming reply',locale:'de',created_at:'2026-10-11T14:00:00Z'});
+  for(let i=0;i<60;i++){if(await evaluate('document.body.innerText.includes("Automatic incoming reply")'))break;await pause(250);}
+  assert(await evaluate('document.body.innerText.includes("Automatic incoming reply")'),'Incoming message appears without refresh click');
+  assert.equal(await evaluate("document.querySelector('textarea').value"),'Unsent draft','Automatic refresh preserves draft');
+  assert(await evaluate("!!document.querySelector('[role=log]')"),'Accessible chat log');
+  unread=2;
   await visit('/de');
   for(let i=0;i<40;i++){if(await evaluate("!!document.querySelector('a.fixed .bg-red-600')"))break;await pause(250);}
   assert.equal(await evaluate("document.querySelector('a.fixed .bg-red-600')?.textContent"),'2','Unread badge visible to client');
