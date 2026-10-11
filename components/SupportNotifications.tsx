@@ -20,22 +20,40 @@ function useCounts() {
   useEffect(() => {
     if (!accountId || !verified || !supabase) return;
     let active = true;
+    let busy = false;
+    let retryTimer: ReturnType<typeof setTimeout> | undefined;
+    let retries = 0;
     const account = accountId;
     const load = async () => {
+      if (!active || busy || !navigator.onLine) return;
+      busy = true;
       try {
         const { data } = await supabase!.auth.getSession();
         if (!data.session || data.session.user.id !== account) return;
         const r = await fetch('/api/support?notifications=1', { headers: { Authorization: `Bearer ${data.session.access_token}` }, cache: 'no-store', signal: AbortSignal.timeout(15000) });
-        const counts = await r.json(); if (!r.ok) throw new Error();
-        if (active) { setState({ user: account, data: counts }); setError(false); }
-      } catch { if (active) setError(true); }
+        if (!r.ok) {
+          const wait = r.status === 429 ? Number(r.headers.get('Retry-After')) : 0;
+          if (active && retries < 1 && (r.status === 429 || r.status >= 500)) {
+            retries++; retryTimer = setTimeout(() => { retryTimer = undefined; void load(); }, Math.min(3600, Math.max(3, wait || 3)) * 1000); return;
+          }
+          throw new Error();
+        }
+        const counts = await r.json();
+        if (typeof counts.support !== 'number' || typeof counts.contacts !== 'number') throw new Error();
+        if (active) { retries = 0; setState({ user: account, data: counts }); setError(false); }
+      } catch {
+        if (active && retries < 1) {
+          retries++; retryTimer = setTimeout(() => { retryTimer = undefined; void load(); }, 3000);
+        } else if (active) setError(true);
+      } finally { busy = false; }
     };
     void load();
-    const refresh = () => { if (document.visibilityState === 'visible') void load(); };
+    const refresh = () => { if (document.visibilityState === 'visible' && !retryTimer) void load(); };
     const timer = setInterval(refresh, 30000);
     window.addEventListener('bren-support-updated', refresh);
     document.addEventListener('visibilitychange', refresh);
-    return () => { active = false; clearInterval(timer); window.removeEventListener('bren-support-updated', refresh); document.removeEventListener('visibilitychange', refresh); };
+    window.addEventListener('online', refresh);
+    return () => { active = false; clearInterval(timer); clearTimeout(retryTimer); window.removeEventListener('online', refresh); window.removeEventListener('bren-support-updated', refresh); document.removeEventListener('visibilitychange', refresh); };
   }, [accountId, verified]);
   return { counts: state && verified && user?.id === state.user ? state.data : null, error };
 }
@@ -64,6 +82,6 @@ export default function SupportNotifications() {
   return <section data-original-content className="mt-6 rounded-xl border border-orange-200 bg-orange-50 p-4">
     <div className="flex flex-wrap gap-4"><Link href="/admin#support-messages" className="font-bold text-orange-800 underline">{copy.support}: {counts?.support ?? '…'}</Link><Link href="/admin#contact-requests" className="font-bold text-orange-800 underline">{copy.contacts}: {counts?.contacts ?? '…'}</Link></div>
     {counts?.mail && <div className="mt-3 text-sm text-gray-700">{!counts.mail.configured ? <p>{copy.disabled}</p> : <><span>{copy.pending}: {counts.mail.pending}</span>{counts.mail.pending > 0 && <button type="button" disabled={sending} onClick={() => void retry()} className="ml-3 cursor-pointer rounded-lg border border-orange-300 bg-white px-3 py-2 font-bold disabled:opacity-50">{sending ? copy.sending : copy.retry}</button>}</>}</div>}
-    {error && <p role="alert" className="mt-2 text-sm text-red-700">{copy.error}</p>}{notice && <p role="status" className="mt-2 text-sm">{notice}</p>}
+    {error && <p role="alert" className="mt-2 text-sm text-red-700">{locale === 'fr' ? 'Impossible d’actualiser les compteurs. Nouvelle tentative automatique.' : locale === 'en' ? 'Unable to refresh counts. Retrying automatically.' : 'Die Zähler konnten nicht aktualisiert werden. Ein neuer Versuch erfolgt automatisch.'}</p>}{notice && <p role="status" className="mt-2 text-sm">{notice}</p>}
   </section>;
 }
