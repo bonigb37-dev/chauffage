@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import TopTrustBanner from '@/components/TopTrustBanner';
 import AllReviewsModal from '@/components/AllReviewsModal';
 import Footer from '@/components/Footer';
+import SupportHelpButton from '@/components/SupportHelpButton';
 import { CartProvider } from '@/components/CartProvider';
 import ActivityTracker from '@/components/ActivityTracker';
 import RoleAccessGuard from '@/components/RoleAccessGuard';
@@ -45,6 +46,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
               <Navbar />
               {children}
               <Footer />
+              <SupportHelpButton />
               <AllReviewsModal />
             </RoleAccessGuard>
           </ActionLoadingProvider>
