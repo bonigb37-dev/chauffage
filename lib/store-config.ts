@@ -1,8 +1,8 @@
 export const storeConfig = {
   name: 'Bren-nholz',
   email: 'kontakt@brennholz-direk.de',
-  phone: '+49 15259143676',
-  phoneHref: '+4915259143676',
+  phone: '+49 176 68417729',
+  phoneHref: '+4917668417729',
   legalName: 'Leylines',
   legalForm: 'Société de droit néerlandais, enregistrée auprès de la Chambre de commerce des Pays-Bas',
   registrationNumber: '34250234',
@@ -14,6 +14,8 @@ export const storeConfig = {
   returnCosts: 'Les frais de retour sont pris en charge par Bren-nholz, y compris pour les palettes.',
   bankHolderRelationship: 'Ce compte est utilisé par la comptable pour encaisser les commandes de Bren-nholz.',
 };
+
+export const whatsappUrl = `https://wa.me/${storeConfig.phoneHref.replace(/\D/g, '')}`;
 
 export const deliverySummary = 'Livraison incluse en Allemagne, sous 2 à 4 jours ouvrables après réception effective du paiement. Aucun paiement au transporteur.';
 export const deliveryAccess = 'Pour les palettes, prévoyez un accès carrossable pour le camion et une zone de déchargement ferme, plane et accessible au transpalette. Le gravier, l’herbe et les fortes pentes ne permettent pas le déplacement de la palette. Signalez toute restriction d’accès avant de commander.';

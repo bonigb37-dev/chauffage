@@ -11,6 +11,7 @@ import FaqSection from '@/components/FaqSection';
 import { supabase } from '@/lib/supabase';
 import { storeConfig } from '@/lib/store-config';
 import { emitAnalytics } from '@/lib/analytics';
+import WhatsAppLink from '@/components/WhatsAppLink';
 
 const inputClass = 'mt-2 w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
@@ -72,6 +73,10 @@ export default function Contact() {
       {/* Main Form & Sidebar */}
       <section className="container grid gap-10 py-12 lg:grid-cols-[.72fr_1.28fr] lg:gap-14 lg:py-16">
         <aside className="space-y-5">
+          <div className="rounded-2xl border border-stone-200 bg-white p-6 sm:p-7">
+            <a href={`tel:${storeConfig.phoneHref}`} className="block font-bold text-gray-950 underline underline-offset-4">{storeConfig.phone}</a>
+            <WhatsAppLink className="mt-4 border border-stone-200" />
+          </div>
           <div className="rounded-2xl border border-stone-200 bg-white p-6 sm:p-7">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-orange-50 text-orange-700"><Mail size={21} aria-hidden="true"/></span>
             <h2 className="mt-5 text-xl font-black">Adresse e-mail</h2>
