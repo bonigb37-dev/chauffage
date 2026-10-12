@@ -18,6 +18,7 @@ import SupportNotifications, { SupportUnreadBadge } from '@/components/SupportNo
 import { supportCopy, supportInboxCopy } from '@/lib/support-copy';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import { analyticsCopy } from '@/lib/analytics-copy';
+import { orderArchiveCopy } from '@/lib/order-archive-copy';
 import { orderStatusLabels, paymentStatusLabel } from '@/lib/order-status';
 import { getAdminRole, type AdminRole } from '@/lib/admin-access';
 import { useVerifiedAccess } from '@/components/AccessContext';
@@ -26,7 +27,7 @@ type Role = 'admin' | 'super_admin' | 'owner';
 type RequestStatus = 'new' | 'in_progress' | 'done';
 type RoleRow = { user_id: string; role: Role; created_at: string };
 type ContactRow = { id: number; created_at: string; name: string; email: string; phone: string | null; postal_code: string | null; subject: string; message: string; status: RequestStatus };
-type OrderRow = { id: number; created_at: string; reference: string; customer: Record<string, unknown>; shipping: Record<string, unknown> | null; items: unknown; total_cents: number; status: RequestStatus; payment_status: string };
+type OrderRow = { id: number; created_at: string; reference: string; customer: Record<string, unknown>; shipping: Record<string, unknown> | null; items: unknown; total_cents: number; status: RequestStatus; payment_status: string; archived_at?: string | null };
 type ActivityRow = { user_id: string; email: string | null; first_seen_at: string; last_seen_at: string; sign_in_count: number };
 type ClientAccountRow = { user_id: string; email: string | null; full_name: string | null; created_at: string };
 type AuditRow = { id: number; actor_user_id: string | null; actor_role: string | null; action: string; entity: string; entity_id: string | null; details: Record<string, unknown>; created_at: string };
@@ -64,6 +65,9 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   const [notice, setNotice] = useState('');
   const [contacts, setContacts] = useState<ContactRow[]>([]);
   const [orders, setOrders] = useState<OrderRow[]>([]);
+  const [archiveReady, setArchiveReady] = useState(false);
+  const [showArchived, setShowArchived] = useState(false);
+  const [orderOffset, setOrderOffset] = useState(0);
   const [roles, setRoles] = useState<RoleRow[]>([]);
   const [userId, setUserId] = useState('');
   const [newRole, setNewRole] = useState<Role>('admin');
@@ -120,6 +124,16 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     setRole(currentRole ?? null);
     if (!currentRole || (superAdminOnly && currentRole !== 'super_admin' && currentRole !== 'owner')) { setLoading(false); return; }
 
+    const orderFields = 'id, created_at, reference, customer, shipping, items, total_cents, status, payment_status';
+    const orderQuery = supabase.from('order_requests').select(`${orderFields}, archived_at`).order('created_at', { ascending: false }).range(orderOffset, orderOffset+99);
+    let orderResult: { data: unknown; error: { code: string } | null } = await (showArchived ? orderQuery.not('archived_at', 'is', null) : orderQuery.is('archived_at', null));
+    const ready = !orderResult.error;
+    if (orderResult.error?.code === '42703' || orderResult.error?.code === 'PGRST204') orderResult = await supabase.from('order_requests').select(orderFields).order('created_at', { ascending: false }).range(orderOffset,orderOffset+99);
+    if (generation !== loadGeneration.current) return;
+    setArchiveReady(ready);
+    if (orderResult.error) setError('Impossible de charger les commandes.');
+    else setOrders((orderResult.data ?? []) as unknown as OrderRow[]);
+
     if (superAdminOnly) {
       const secondary = Promise.all([
         supabase.from('user_activity').select('user_id, email, first_seen_at, last_seen_at, sign_in_count').order('last_seen_at', { ascending: false }).limit(200),
@@ -144,10 +158,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
         supabase.from('site_settings').select('value').eq('key', 'bank_transfer').maybeSingle(),
       ]);
       void secondary.catch(() => { /* Handled when awaited after the primary lists. */ });
-      const [contactResult, orderResult] = await Promise.all([
-        supabase.from('contact_requests').select('id, created_at, name, email, phone, postal_code, subject, message, status').order('created_at', { ascending: false }).limit(100),
-        supabase.from('order_requests').select('id, created_at, reference, customer, shipping, items, total_cents, status, payment_status').order('created_at', { ascending: false }).limit(100),
-      ]);
+      const contactResult = await supabase.from('contact_requests').select('id, created_at, name, email, phone, postal_code, subject, message, status').order('created_at', { ascending: false }).limit(100);
       if (generation !== loadGeneration.current) return;
       if (contactResult.error || orderResult.error) setError('Impossible de charger les demandes. Vérifiez les politiques RLS de supabase-admin.sql.');
       else {
@@ -163,13 +174,30 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     }
     setDetailsLoading(false);
     setLoading(false);
-  }, [superAdminOnly]);
+  }, [superAdminOnly, showArchived, orderOffset]);
+
+  async function archiveOrder(id: number, archived: boolean) {
+    if (!supabase || workingId) return;
+    const copy = orderArchiveCopy[brenLocale];
+    const order = orders.find(row => row.id === id);
+    if (!order || (archived && !window.confirm(`${copy.confirm}\n${order.reference}`))) return;
+    setWorkingId(`archive-${id}`); setError(''); setNotice('');
+    try {
+      const result = await supabase.rpc('set_order_archived', { p_order_id: id, p_archived: archived });
+      if (result.error) { setError(result.error.code === 'PGRST202' ? copy.setup : copy.error); return; }
+      if (result.data !== true) { setError(copy.error); return; }
+      setOrders(rows => rows.filter(row => row.id !== id));
+      setNotice(archived ? copy.removed : copy.restored);
+      void loadData(user);
+    } catch { setError(copy.error); }
+    finally { setWorkingId(''); }
+  }
 
   useEffect(() => {
     if (!supabase) { setError('Supabase n’est pas configuré sur cette version du site.'); setLoading(false); return; }
     if (!access.verified) return;
     setUser(access.user);
-    const key = `${access.user?.id ?? ''}:${access.role ?? ''}:${superAdminOnly}`;
+    const key = `${access.user?.id ?? ''}:${access.role ?? ''}:${superAdminOnly}:${showArchived}:${orderOffset}`;
     if (loadedAccess.current === key) return;
     loadedAccess.current = key;
     setRole(null);
@@ -178,7 +206,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     void loadData(access.user, access.role).catch(() => {
       if (generation === loadGeneration.current) { setError('Impossible de charger votre espace. Veuillez réessayer.'); setLoading(false); }
     });
-  }, [access.user, access.role, access.verified, superAdminOnly, loadData]);
+  }, [access.user, access.role, access.verified, superAdminOnly, showArchived, orderOffset, loadData]);
 
   useEffect(() => () => { ++loadGeneration.current; loadedAccess.current = ''; }, []);
 
@@ -352,8 +380,8 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
         : !user ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Connexion requise</h2><p className="mt-2 text-gray-600">Connectez-vous avec votre compte administrateur pour continuer.</p><Link href="/compte" className="mt-5 inline-flex rounded-xl bg-orange-600 px-5 py-3 font-bold text-white">Se connecter</Link></section>
           : superAdminOnly && !canSeeSuperAdmin ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Page indisponible</h2><p className="mt-2 text-gray-600">Cette page n’est pas accessible avec ce compte.</p></section>
             : !canSeeWorkspace ? <section className="mt-8 rounded-2xl border border-red-200 bg-white p-8"><h2 className="text-xl font-bold text-red-800">Accès administrateur requis</h2><p className="mt-2 text-gray-600">Ce compte n’a pas de rôle administrateur.</p></section>
-              : superAdminOnly ? <><Link href="/admin" className="mt-7 inline-flex rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold">Ouvrir l’espace boutique</Link><SuperAdminPanel roles={roles} userId={user.id} currentRole={role} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /><AuditPanel audit={audit} /></>
-                : <><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} />{siteData.ready && !detailsLoading ? <ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} /> : <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Chargement des produits et des informations de paiement...</div>}<AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /></>}
+              : superAdminOnly ? <><Link href="/admin" className="mt-7 inline-flex rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold">Ouvrir l’espace boutique</Link><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} ordersOnly /><SuperAdminPanel roles={roles} userId={user.id} currentRole={role} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /><AuditPanel audit={audit} /></>
+                : <><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} />{siteData.ready && !detailsLoading ? <ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} /> : <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Chargement des produits et des informations de paiement...</div>}<AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /></>}
 
       </div>
       {activeView === 'messages' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportMessenger admin />}
@@ -365,36 +393,40 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   </main>, brenLocale);
 }
 
-function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTransfer }: { contacts: ContactRow[]; orders: OrderRow[]; workingId: string; onStatusChange: (table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) => void; onConfirmTransfer: (id: number) => void }) {
+function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTransfer, archiveReady, showArchived, onArchive, onArchiveView, orderOffset, onOrderPage, ordersOnly = false }: { archiveReady: boolean; showArchived: boolean; onArchive: (id: number, archived: boolean) => void; onArchiveView: (archived: boolean) => void; orderOffset: number; onOrderPage: (offset: number) => void; ordersOnly?: boolean; contacts: ContactRow[]; orders: OrderRow[]; workingId: string; onStatusChange: (table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) => void; onConfirmTransfer: (id: number) => void }) {
   const brenLocale = useLocale() as Locale;
 
   return localizeNode(<>
-    <div className="mt-8 grid gap-4 sm:grid-cols-3">
+    {!ordersOnly && <div className="mt-8 grid gap-4 sm:grid-cols-3">
       {[['Demandes de contact', contacts.length], ['Demandes de commande', orders.length], ['À traiter', contacts.filter((item) => item.status !== 'done').length + orders.filter((item) => item.status !== 'done').length]].map(([label, count]) => <article key={label} className="rounded-2xl border border-stone-200 bg-white p-5"><p className="text-sm font-semibold text-gray-500">{label}</p><p className="mt-2 text-3xl font-black text-gray-950">{count}</p></article>)}
-    </div>
+    </div>}
     <section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
       <h2 className="text-xl font-black lg:text-2xl">Demandes de commande</h2>
-      {orders.length === 0 ? <p className="mt-4 text-gray-500">Aucune demande de commande pour le moment.</p> : <div className="mt-3 space-y-3">{orders.map((order) => {
+      <div data-original-content className="mt-3 flex flex-wrap gap-2">{[false,true].map(archived => <button key={String(archived)} type="button" disabled={!!workingId || (archived && !archiveReady)} aria-pressed={showArchived === archived} onClick={() => onArchiveView(archived)} className={`rounded-lg px-4 py-2 text-sm font-bold disabled:opacity-50 ${showArchived === archived ? 'bg-gray-950 text-white' : 'border border-stone-300 bg-white text-gray-700'}`}>{archived ? orderArchiveCopy[brenLocale].archives : orderArchiveCopy[brenLocale].active}</button>)}</div>
+      <p data-original-content className="mt-3 text-xs leading-5 text-gray-500">{archiveReady ? orderArchiveCopy[brenLocale].note : orderArchiveCopy[brenLocale].setup}</p>
+      {orders.length === 0 ? <p data-original-content className="mt-4 text-gray-500">{orderArchiveCopy[brenLocale].empty}</p> : <div className="mt-3 space-y-3">{orders.map((order) => {
         const customer = order.customer ?? {};
         const items = Array.isArray(order.items) ? order.items as Array<Record<string, unknown>> : [];
         return <article key={order.id} className="min-w-0 break-words rounded-xl border border-stone-200 p-4 text-base sm:p-5 lg:p-6">
-          <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-black">{order.reference}</p><p className="mt-1 text-sm text-gray-500">{date(order.created_at, brenLocale)}</p></div><StatusSelect order value={order.status} disabled={workingId === `order_requests-${order.id}`} onChange={(status) => void onStatusChange('order_requests', order.id, status)} /></div>
+          <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-black">{order.reference}</p><p className="mt-1 text-sm text-gray-500">{date(order.created_at, brenLocale)}</p></div><StatusSelect order value={order.status} disabled={!!workingId || showArchived} onChange={(status) => void onStatusChange('order_requests', order.id, status)} /></div>
           <p className="mt-3 break-all font-semibold"><span data-original-content>{text(customer.firstName)} {text(customer.lastName)}</span> · <a href={`mailto:${text(customer.email)}`} className="text-orange-700 underline">{text(customer.email)}</a></p>
           <div className="mt-2 grid gap-3 text-sm text-gray-600 sm:grid-cols-2"><p><b className="text-gray-800">Facturation :</b><br/>{text(customer.street)} {text(customer.addressLine2)}<br/>{text(customer.postalCode)} {text(customer.city)} {text(customer.state)}</p>{order.shipping && <p><b className="text-gray-800">Livraison :</b><br/>{text(order.shipping.street)} {text(order.shipping.addressLine2)}<br/>{text(order.shipping.postalCode)} {text(order.shipping.city)} {text(order.shipping.state)}</p>}</div>
           <ul className="mt-2 space-y-1 text-sm text-gray-600">{items.map((item, index) => <li key={`${order.id}-${index}`}>{text(item.name)} × {Number(item.quantity) || 0}</li>)}</ul>
           <p className="mt-2 text-sm font-bold text-gray-900">Montant de la commande : {new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' }).format(order.total_cents / 100)} · livraison incluse · aucun frais à régler au transporteur</p>
+          <div data-original-content className="mt-3"><button type="button" disabled={!!workingId || !archiveReady} onClick={() => onArchive(order.id, !showArchived)} className="inline-flex items-center gap-2 rounded-lg border border-stone-300 px-3 py-2 text-sm font-bold text-gray-700 hover:border-orange-400 disabled:opacity-50"><Trash2 size={15} aria-hidden="true"/>{showArchived ? orderArchiveCopy[brenLocale].restore : orderArchiveCopy[brenLocale].remove}</button></div>
           <AdminPaymentProof reference={order.reference} />
-          <div className="mt-2 flex flex-wrap items-center gap-3"><span className={`rounded-full px-3 py-1 text-xs font-bold ${order.payment_status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>{paymentStatusLabel(order.payment_status)}</span>{order.payment_status !== 'confirmed' && <button type="button" disabled={workingId === `payment-${order.id}`} onClick={() => onConfirmTransfer(order.id)} className="rounded-lg bg-gray-950 px-3 py-2 text-xs font-bold text-white disabled:opacity-50">{workingId === `payment-${order.id}` ? 'Vérification…' : 'Confirmer le virement reçu'}</button>}</div>
+          <div className="mt-2 flex flex-wrap items-center gap-3"><span className={`rounded-full px-3 py-1 text-xs font-bold ${order.payment_status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>{paymentStatusLabel(order.payment_status)}</span>{order.payment_status !== 'confirmed' && <button type="button" disabled={!!workingId || showArchived} onClick={() => onConfirmTransfer(order.id)} className="rounded-lg bg-gray-950 px-3 py-2 text-xs font-bold text-white disabled:opacity-50">{workingId === `payment-${order.id}` ? 'Vérification…' : 'Confirmer le virement reçu'}</button>}</div>
         </article>;
       })}</div>}
+      <div data-original-content className="mt-4 flex flex-wrap items-center justify-between gap-3"><button type="button" disabled={orderOffset === 0 || !!workingId} onClick={() => onOrderPage(Math.max(0,orderOffset-100))} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-40">{analyticsCopy[brenLocale].previous}</button><span className="text-xs text-gray-500">{orders.length ? orderOffset+1 : 0}–{orderOffset+orders.length}</span><button type="button" disabled={orders.length<100 || !!workingId} onClick={() => onOrderPage(orderOffset+100)} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-40">{orderArchiveCopy[brenLocale].more}</button></div>
     </section>
-    <section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
+    {!ordersOnly && <section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
       <h2 id="contact-requests" className="scroll-mt-32 text-xl font-black lg:text-2xl">Demandes de contact</h2>
       {contacts.length === 0 ? <p className="mt-4 text-gray-500">Aucune demande de contact pour le moment.</p> : <div tabIndex={0} className="mt-3 space-y-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600">{contacts.map((item) => <article key={item.id} className="min-w-0 break-words rounded-xl border border-stone-200 p-4 text-base">
         <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-black"><span data-original-content>{item.name}</span> · {subjectLabels[item.subject] ?? item.subject}</p><p className="mt-1 text-sm text-gray-500">{date(item.created_at, brenLocale)} · <a className="text-orange-700 underline" href={`mailto:${item.email}`}>{item.email}</a>{item.phone ? ` · ${item.phone}` : ''}{item.postal_code ? ` · ${item.postal_code}` : ''}</p></div><StatusSelect value={item.status} disabled={workingId === `contact_requests-${item.id}`} onChange={(status) => void onStatusChange('contact_requests', item.id, status)} /></div>
         <p data-original-content className="mt-3 whitespace-pre-wrap text-sm leading-6 text-gray-700">{item.message}</p>
       </article>)}</div>}
-    </section>
+    </section>}
   </>, brenLocale);
 }
 

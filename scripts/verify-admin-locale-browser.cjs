@@ -22,10 +22,12 @@ async function run() {
   let nextId = 0;
   const pending = new Map();
   const errors = [];
+  let acceptArchiveDialog=false;
   const cspViolations = [];
   let mockRequest;
   socket.onmessage = (event) => {
     const message = JSON.parse(event.data);
+    if(message.method==='Page.javascriptDialogOpening') void send('Page.handleJavaScriptDialog',{accept:acceptArchiveDialog});
     if (message.method === 'Fetch.requestPaused' && mockRequest) void mockRequest(message.params).catch((error) => errors.push(error.message));
     if (message.method === 'Runtime.exceptionThrown') errors.push(message.params.exceptionDetails.exception?.description || message.params.exceptionDetails.text);
     if (message.method === 'Runtime.bindingCalled' && message.params.name === '__reportCsp') cspViolations.push(message.params.payload);
@@ -73,12 +75,16 @@ async function run() {
   new Function('module','exports',analyticsWords)(analyticsModule,analyticsModule.exports);
   const collected = [];
   let activeRole = 'owner';
+  const archiveModule={exports:{}};
+  new Function('module','exports',require('typescript').transpileModule(fs.readFileSync('lib/order-archive-copy.ts','utf8'),{compilerOptions:{module:require('typescript').ModuleKind.CommonJS}}).outputText)(archiveModule,archiveModule.exports);
+  let orderArchived=false;
   const statistics = {totals:{visits:2,views:3,customers:1,active:1,seconds:90,single_page:1},daily:[{day:'2026-10-11',visits:2,views:3}],pages:[{path:'/produits',visits:2,views:3}],sections:[{path:'/',section:'products',visits:1,views:1}],actions:[{kind:'cart_add',total:1,visits:1}],devices:[{device:'mobile',visits:2}],sources:[{source:'direct',visits:2}],funnel:{products:2,cart:1,checkout:1,orders:0},sessions:[{session_id:'cccccccc-cccc-cccc-cccc-cccccccccccc',started_at:user.created_at,last_at:user.created_at,user_id:user.id,customer_name:'Alice Analytics',customer_email:'alice@example.invalid',entry:'/',exit:'/produits',device:'mobile',source:'direct',views:2,seconds:90}]};
   const fixtures = [
     {user_id:'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',customer_name:'Alice Inbox',body:'Delivery question',sender_kind:'customer',locale:'de',unread:2,created_at:user.created_at},
     {user_id:'dddddddd-dddd-dddd-dddd-dddddddddddd',customer_name:'Bob Inbox',body:'Order confirmed',sender_kind:'admin',locale:'en',unread:0,created_at:user.created_at},
   ];
   mockRequest=async({requestId,request})=>{
+    if(request.method==='OPTIONS'){await send('Fetch.fulfillRequest',{requestId,responseCode:200,responseHeaders:[{name:'Access-Control-Allow-Origin',value:'*'},{name:'Access-Control-Allow-Headers',value:'*'},{name:'Access-Control-Allow-Methods',value:'GET,POST,PATCH,OPTIONS'}],body:''});return;}
     let data=[];const u=new URL(request.url);
     if(u.pathname.includes('/auth/v1/user'))data=user;
     else if(u.pathname.includes('admin_roles')) data=u.searchParams.has('user_id')?(activeRole ? [{role:activeRole}] : []):[{user_id:user.id,role:'owner',created_at:user.created_at},{user_id:'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',role:'super_admin',created_at:user.created_at}];
@@ -86,7 +92,11 @@ async function run() {
     else if(u.pathname.includes('client_accounts'))data=[{user_id:user.id,full_name:'Test Admin',email:user.email,created_at:user.created_at}];
     else if(u.pathname.includes('user_activity'))data=[{user_id:user.id,email:user.email,last_seen_at:user.created_at,first_seen_at:user.created_at,sign_in_count:1}];
     else if(u.pathname.includes('contact_requests'))data=[{id:1,name:'Enregistrer',email:user.email,message:'Attribuer un rôle',subject:'product',status:'new',created_at:user.created_at}];
-    else if(u.pathname.includes('order_requests'))data=[{id:1,reference:'TEST-ORDER',customer:{firstName:'Enregistrer',lastName:'Test',email:user.email,street:'Teststrasse 1',postalCode:'10115',city:'Berlin'},items:[],total_cents:1000,status:'new',payment_status:'pending',created_at:user.created_at}];
+    else if(u.pathname.includes('order_requests')) {
+      const archivedFilter=u.searchParams.get('archived_at');
+      data=(archivedFilter==='is.null'&&orderArchived)||(archivedFilter==='not.is.null'&&!orderArchived)?[]:[{id:1,reference:'TEST-ORDER',customer:{firstName:'Enregistrer',lastName:'Test',email:user.email,street:'Teststrasse 1',postalCode:'10115',city:'Berlin'},items:[],total_cents:1000,status:'new',payment_status:'pending',archived_at:orderArchived?user.created_at:null,created_at:user.created_at}];
+    }
+    else if(u.pathname.includes('set_order_archived')) {const payload=JSON.parse(request.postData);assert.equal(payload.p_order_id,1);orderArchived=payload.p_archived;data=true;}
     else if(u.pathname==='/api/analytics') {
       if(request.method==='POST') { collected.push({body:JSON.parse(request.postData),headers:request.headers}); data={ok:true}; }
       else data=u.searchParams.has('session')?{events:[{id:'journey-1',kind:'page_view',path:'/produits',section:'',locale:'de',created_at:user.created_at}],truncated:false}:statistics;
@@ -170,6 +180,21 @@ async function run() {
       if(locale !== 'fr') assert(!await evaluate('document.body.innerText.includes('+JSON.stringify(source)+')'),locale+' no French '+source);
     }
     if(route === 'admin') assert(await evaluate("!![...document.querySelectorAll('[data-original-content]')].find(el=>el.textContent==='Attribuer un rôle')"),'Customer message is not translated');
+    const archiveCopy=archiveModule.exports.orderArchiveCopy[locale];
+    assert(await evaluate("[...document.querySelectorAll('button')].some(b=>b.textContent==="+JSON.stringify(archiveCopy.remove)+")"),'Order removal available in both administration routes');
+    acceptArchiveDialog=false;
+    await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(archiveCopy.remove)+").click()");
+    await pause(300); assert.equal(orderArchived,false,'Cancelled confirmation does not archive');
+    acceptArchiveDialog=true;
+    await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(archiveCopy.remove)+").click()");
+    await pause(1200); assert.equal(orderArchived,true,'Archive result: '+errors.join(', ')+' / '+await evaluate("document.body.innerText.slice(-1000)"));
+    assert(!await evaluate("document.body.innerText.includes('TEST-ORDER')"),'Removed order leaves active list');
+    await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(archiveCopy.archives)+").click()");
+    await pause(1200); assert(await evaluate("document.body.innerText.includes('TEST-ORDER')"),'Archived order can be found');
+    await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(archiveCopy.restore)+").click()");
+    await pause(1200); assert.equal(orderArchived,false);
+    await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==="+JSON.stringify(archiveCopy.active)+").click()");
+    await pause(1200); assert(await evaluate("document.body.innerText.includes('TEST-ORDER')"),'Restored order returns to active list');
     const inboxCopy = inboxModule.exports.supportCopy[locale];
     const inboxLabels = inboxModule.exports.supportInboxCopy[locale];
     await evaluate("[...document.querySelectorAll('nav button')].find(b=>b.textContent.startsWith("+JSON.stringify(inboxCopy.inbox)+")).click()");
