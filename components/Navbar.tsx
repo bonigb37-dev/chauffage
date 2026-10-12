@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import DeliveryZonesModal from '@/components/DeliveryZonesModal';
+import { isAdministrationPath } from '@/components/RoleAccessGuard';
 
 const links = [
   { label: 'Accueil', href: '/' },
@@ -36,8 +37,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { itemCount, items, products } = useCart();
-  const isAdminPage = pathname === '/admin' || pathname.startsWith('/admin/')
-    || pathname === '/super-admin' || pathname.startsWith('/super-admin/');
+  const isAdminPage = isAdministrationPath(pathname);
 
   // Navigation & User states
   const [user, setUser] = useState<SupabaseUser | null>(null);

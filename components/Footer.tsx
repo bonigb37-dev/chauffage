@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Flame, MapPin } from 'lucide-react';
+import { isAdministrationPath } from '@/components/RoleAccessGuard';
 
 export default function Footer() {
   const pathname = usePathname();
-  if (pathname === '/compte') return null;
+  const isAdminPage = isAdministrationPath(pathname);
+  if (pathname === '/compte' || isAdminPage) return null;
   return (
     <footer className="bg-[#2b2b2b] text-white border-t border-white/10">
       <div className="container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">

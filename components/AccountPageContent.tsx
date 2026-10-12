@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
+import { clearCachedRole, setCachedRole, SIMPLE_ADMIN_PATH, SUPER_ADMIN_PATH } from '@/components/RoleAccessGuard';
 
 type Mode = 'signin' | 'signup' | 'forgot' | 'update';
 type OwnOrder = { id: number; reference: string; created_at: string; total_cents: number; status: string; payment_status: string; items: unknown };
@@ -436,11 +437,29 @@ export default function AccountPageContent() {
       if (!mounted) return;
       if (!addressQueryError) setAddresses((addressData ?? []) as OwnAddress[]);
     };
-    supabaseClient.auth.getSession().then(({ data }) => {
+    supabaseClient.auth.getSession().then(async ({ data }) => {
       if (mounted) {
-        setUser(data.session?.user ?? null);
+        const u = data.session?.user ?? null;
+        setUser(u);
         setReady(true);
-        if (data.session?.user) void loadOwnData(data.session.user.id);
+        if (u) {
+          const { data: roleRow } = await supabaseClient
+            .from('admin_roles')
+            .select('role')
+            .eq('user_id', u.id)
+            .maybeSingle();
+          const r = roleRow?.role;
+          if (r === 'owner' || r === 'super_admin') {
+            setCachedRole(u.id, r);
+            router.replace(SUPER_ADMIN_PATH);
+            return;
+          } else if (r === 'admin') {
+            setCachedRole(u.id, r);
+            router.replace(SIMPLE_ADMIN_PATH);
+            return;
+          }
+          void loadOwnData(u.id);
+        }
       }
     });
     const { data: listener } = supabaseClient.auth.onAuthStateChange((_event, session) => {
@@ -456,7 +475,7 @@ export default function AccountPageContent() {
       mounted = false;
       listener.subscription.unsubscribe();
     };
-  }, []);
+  }, [router]);
 
   function switchMode(nextMode: Mode) {
     setMode(nextMode);
@@ -552,9 +571,15 @@ export default function AccountPageContent() {
           setError('Vous êtes connecté, mais votre rôle n’a pas pu être vérifié. Réessayez de vous connecter pour accéder à votre tableau de bord.');
           return;
         }
-        const destination = roleData?.role === 'owner' || roleData?.role === 'super_admin'
-          ? '/super-admin'
-          : roleData?.role === 'admin' ? '/admin' : '/';
+        const userRole = roleData?.role;
+        if (userRole === 'owner' || userRole === 'super_admin' || userRole === 'admin') {
+          setCachedRole(data.user.id, userRole);
+        } else {
+          clearCachedRole();
+        }
+        const destination = userRole === 'owner' || userRole === 'super_admin'
+          ? SUPER_ADMIN_PATH
+          : userRole === 'admin' ? SIMPLE_ADMIN_PATH : '/';
         router.replace(destination);
         router.refresh();
       } else if (mode === 'forgot') {
@@ -582,6 +607,7 @@ export default function AccountPageContent() {
   async function handleSignOut() {
     if (!supabase) return;
     setError('');
+    clearCachedRole();
     const { error: authError } = await supabase.auth.signOut();
     if (authError) setError(authError.message);
     else {
