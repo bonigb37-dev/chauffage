@@ -9,7 +9,6 @@ import { usePathname } from '@/i18n/navigation';
 import { storeConfig } from '@/lib/store-config';
 import { supportCopy } from '@/lib/support-copy';
 import { cookieConsentCopy } from '@/lib/analytics-copy';
-import WhatsAppLink from '@/components/WhatsAppLink';
 import { ArrowRight, Flame, MapPin, Phone, Truck } from 'lucide-react';
 
 export default function Footer() {
@@ -33,7 +32,6 @@ export default function Footer() {
               <Phone size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
               <a href={`tel:${storeConfig.phoneHref}`} className="font-semibold leading-6 text-white transition hover:text-orange-400">{storeConfig.phone}</a>
             </div>
-            <WhatsAppLink />
             <div className="flex items-start gap-3">
               <MapPin size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
               <div className="min-w-0">
