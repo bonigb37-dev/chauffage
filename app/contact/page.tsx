@@ -64,6 +64,7 @@ export default function Contact() {
         <div className="container">
           <div>
             <p className="font-bold uppercase tracking-[.2em] text-orange-600">Contact & Support Client</p>
+            <p data-original-content className="mt-2 text-sm font-semibold text-gray-700">{storeConfig.name}</p>
             <h1 className="mt-3 max-w-3xl text-4xl font-black leading-tight text-gray-950 sm:text-5xl">Besoin d’aide ou d’informations ?</h1>
             <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-gray-600">Notre équipe est à votre disposition pour toute question sur nos combustibles, un suivi de commande ou une assistance livraison.</p>
           </div>

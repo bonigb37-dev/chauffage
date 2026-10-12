@@ -1,4 +1,5 @@
 'use client';
+import BrandWordmark from '@/components/BrandWordmark';
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -194,14 +195,14 @@ export default function Navbar() {
           {/* LEFT: Logo Bren-nholz */}
           <Link
             href="/"
-            aria-label="Bren-nholz, accueil"
+            aria-label="Bren-nholz — Leylines Park, accueil"
             className="flex items-center gap-2.5 font-black text-xl tracking-tight text-[#172033] shrink-0 group"
           >
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#FF6B00] text-white shadow-md shadow-orange-500/25 group-hover:bg-[#E85D00] transition-colors">
               <Flame size={22} strokeWidth={2.2} fill="currentColor" />
             </span>
             <span className="font-extrabold text-xl tracking-tight text-[#172033]">
-              Bren<span className="text-[#FF6B00]">-</span>nholz
+              <BrandWordmark hyphenClass="text-[#FF6B00]" />
             </span>
           </Link>
 
@@ -746,14 +747,14 @@ export default function Navbar() {
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                aria-label="Bren-nholz, accueil"
+                aria-label="Bren-nholz — Leylines Park, accueil"
                 className="flex items-center gap-2.5 font-black text-xl tracking-tight text-white"
               >
                 <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#FF6B00] text-white shadow-md">
                   <Flame size={20} strokeWidth={2.2} fill="currentColor" />
                 </span>
                 <span className="font-extrabold text-xl tracking-tight text-white">
-                  Bren<span className="text-[#FF6B00]">-</span>nholz
+                  <BrandWordmark hyphenClass="text-[#FF6B00]" />
                 </span>
               </Link>
 

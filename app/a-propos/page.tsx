@@ -5,7 +5,7 @@ import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 import { publicMetadata } from '@/lib/seo';
 
-export async function generateMetadata() { return localizeMetadata(await (publicMetadata("À propos de Bren-nholz : combustibles bois en Allemagne", "Découvrez Bren-nholz, enseigne de Leylines, son catalogue de combustibles bois et ses informations de contact pour vos achats en Allemagne.", "/a-propos"))); }
+export async function generateMetadata() { return localizeMetadata(await (publicMetadata("À propos de Bren-nholz — Leylines Park : combustibles bois en Allemagne", "Découvrez Bren-nholz — Leylines Park, enseigne de Leylines, son catalogue de combustibles bois et ses informations de contact pour vos achats en Allemagne.", "/a-propos"))); }
 
 import Link from '@/i18n/navigation';
 import Image from 'next/image';
@@ -63,7 +63,7 @@ export default function AboutPage() {
           </div>
 
           <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-tight">
-            Bren-nholz : votre boutique de combustibles bois
+            Bren-nholz — Leylines Park : votre boutique de combustibles bois
           </h1>
 
           <p className="mt-6 text-base sm:text-xl text-gray-300 leading-relaxed max-w-3xl">
@@ -126,7 +126,7 @@ export default function AboutPage() {
                   Présentation
                 </span>
                 <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">
-                  Bienvenue chez Bren-nholz
+                  Bienvenue chez Bren-nholz — Leylines Park
                 </h2>
               </div>
 

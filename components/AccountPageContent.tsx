@@ -1,4 +1,5 @@
 'use client';
+import BrandWordmark from '@/components/BrandWordmark';
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -693,12 +694,12 @@ export default function AccountPageContent() {
 
       {/* Embedded Minimalist Header */}
       <header className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-5 sm:py-6 flex items-center justify-between">
-        <Link href="/" aria-label="Bren-nholz, accueil" className="group flex items-center gap-2.5 font-black text-xl tracking-tight text-slate-900 transition">
+        <Link href="/" aria-label="Bren-nholz — Leylines Park, accueil" className="group flex items-center gap-2.5 font-black text-xl tracking-tight text-slate-900 transition">
           <span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500 text-white shadow-lg shadow-orange-500/30 group-hover:bg-orange-600 transition">
             <Flame size={23} strokeWidth={2.2} fill="currentColor" />
           </span>
           <span className="text-slate-900 font-black tracking-tight text-xl">
-            Bren<span className="text-orange-500">-</span>nholz
+            <BrandWordmark hyphenClass="text-orange-500" />
           </span>
         </Link>
 
@@ -1048,7 +1049,7 @@ export default function AccountPageContent() {
 
       {/* Embedded Minimalist Footer */}
       <footer className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 text-center text-xs text-slate-500">
-        <p>© {new Date().getFullYear()} Bren-nholz — Espace sécurisé. Tous droits réservés.</p>
+        <p>© {new Date().getFullYear()} Bren-nholz — Leylines Park — Espace sécurisé. Tous droits réservés.</p>
         <nav aria-label="Informations juridiques" className="mt-3 flex flex-wrap justify-center gap-4"><Link href="/datenschutz" className="text-slate-600 underline">Confidentialité</Link><Link href="/retractation#retractation" className="rounded-lg border border-orange-400/50 px-3 py-2 font-bold text-orange-700">Me rétracter du contrat</Link></nav>
       </footer>
     </div>

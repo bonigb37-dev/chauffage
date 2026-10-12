@@ -1,4 +1,5 @@
 'use client';
+import BrandWordmark from '@/components/BrandWordmark';
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -112,7 +113,7 @@ export default function Hero() {
             className="relative overflow-hidden rounded-[2.5rem] bg-gray-950 p-5 shadow-2xl will-change-transform"
           >
             <div className="flex items-center justify-between rounded-2xl bg-white/10 px-5 py-4 text-white">
-              <span className="flex items-center gap-2 font-black tracking-tight"><span className="grid h-8 w-8 place-items-center rounded-lg bg-orange-500 text-white"><Flame size={18} strokeWidth={2.2} fill="currentColor" /></span>Bren-nholz</span>
+              <span className="flex items-center gap-2 font-black tracking-tight"><span className="grid h-8 w-8 place-items-center rounded-lg bg-orange-500 text-white"><Flame size={18} strokeWidth={2.2} fill="currentColor" /></span><BrandWordmark /></span>
               <span className="text-xs text-orange-300">COMBUSTIBLES BOIS</span>
             </div>
             <div className="relative min-h-[430px] overflow-hidden rounded-[2rem] bg-orange-50">
