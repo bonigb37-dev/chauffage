@@ -10,7 +10,7 @@ import { usePathname } from '@/i18n/navigation';
 import { storeConfig } from '@/lib/store-config';
 import { supportCopy } from '@/lib/support-copy';
 import { cookieConsentCopy } from '@/lib/analytics-copy';
-import { ArrowRight, Flame, MapPin, Phone, Truck } from 'lucide-react';
+import { ArrowRight, Flame, Mail, MapPin, Phone, Truck } from 'lucide-react';
 
 export default function Footer() {
   const brenLocale = useLocale() as Locale;
@@ -32,6 +32,10 @@ export default function Footer() {
             <div className="flex items-start gap-3">
               <Phone size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
               <a href={`tel:${storeConfig.phoneHref}`} className="font-semibold leading-6 text-white transition hover:text-orange-400">{storeConfig.phone}</a>
+            </div>
+            <div className="flex items-start gap-3">
+              <Mail size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
+              <a href={`mailto:${storeConfig.email}`} className="min-w-0 break-words font-semibold leading-6 text-white transition hover:text-orange-400">{storeConfig.email}</a>
             </div>
             <div className="flex items-start gap-3">
               <MapPin size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
