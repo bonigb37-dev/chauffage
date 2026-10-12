@@ -50,7 +50,7 @@ export function middleware(request: NextRequest) {
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   if (!development) response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-  if (/^\/(api|admin|super-admin|compte|commande)(\/|$)/.test(stripLocale(incomingPath))) {
+  if (/^\/(api|admin|super-admin|bren-gate-9f4a|compte|commande)(\/|$)/.test(stripLocale(incomingPath))) {
     response.headers.set('Cache-Control', 'private, no-store');
   }
   return response;

@@ -4,19 +4,20 @@ import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
-
 import Link from '@/i18n/navigation';
 import { usePathname } from '@/i18n/navigation';
 import { storeConfig } from '@/lib/store-config';
 import { supportCopy } from '@/lib/support-copy';
 import { cookieConsentCopy } from '@/lib/analytics-copy';
 import { ArrowRight, Flame, Mail, MapPin, Phone, Truck } from 'lucide-react';
+import { isAdministrationPath } from '@/components/RoleAccessGuard';
 
 export default function Footer() {
   const brenLocale = useLocale() as Locale;
 
   const pathname = usePathname();
-  if (pathname === '/compte') return null;
+  const isAdminPage = isAdministrationPath(pathname);
+  if (pathname === '/compte' || isAdminPage) return null;
   return localizeNode((
     <footer className="bg-[#2b2b2b] text-white border-t border-white/10">
       <div className="container grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">

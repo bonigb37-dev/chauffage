@@ -34,6 +34,7 @@ import type { User } from '@supabase/supabase-js';
 import { isPasswordRecoveryRedirect, supabase } from '@/lib/supabase';
 import { confirmationMessage, wasEmailConfirmed } from '@/lib/auth-link';
 import { useCart } from '@/components/CartProvider';
+import { clearCachedRole, setCachedRole, SIMPLE_ADMIN_PATH, SUPER_ADMIN_PATH } from '@/components/RoleAccessGuard';
 
 type Mode = 'signin' | 'signup' | 'forgot' | 'update';
 type OwnOrder = { id: number; reference: string; created_at: string; total_cents: number; status: string; payment_status: string; items: unknown };
@@ -489,12 +490,33 @@ export default function AccountPageContent() {
       const { data: addressData, error: addressQueryError } = addressResult;
       if (!addressQueryError) setAddresses((addressData ?? []) as OwnAddress[]);
     };
-    const { data: listener } = supabaseClient.auth.onAuthStateChange((event, session) => {
+    const { data: listener } = supabaseClient.auth.onAuthStateChange(async (event, session) => {
       if (!mounted) return;
       if (event === 'PASSWORD_RECOVERY') setMode('update');
       if (session?.user && wasEmailConfirmed(session.user.id)) setNotice(confirmationMessage);
-      setUser(session?.user ?? null);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
       setReady(true);
+      if (currentUser) {
+        try {
+          const r = await getAdminRole(supabaseClient, currentUser.id);
+          if (r === 'owner' || r === 'super_admin') {
+            setCachedRole(currentUser.id, r);
+            router.replace(SUPER_ADMIN_PATH);
+            return;
+          } else if (r === 'admin') {
+            setCachedRole(currentUser.id, r);
+            router.replace(SIMPLE_ADMIN_PATH);
+            return;
+          } else {
+            clearCachedRole();
+          }
+        } catch {
+          // If role fetch fails, proceed with customer account flow
+        }
+      } else {
+        clearCachedRole();
+      }
       const nextUserId = session?.user.id ?? null;
       if (loadedUserId === nextUserId) return;
       loadedUserId = nextUserId;
@@ -516,7 +538,7 @@ export default function AccountPageContent() {
       clearTimeout(loadTimer);
       listener.subscription.unsubscribe();
     };
-  }, []);
+  }, [router]);
 
   function switchMode(nextMode: Mode) {
     setMode(nextMode);
@@ -631,8 +653,13 @@ export default function AccountPageContent() {
           return;
         }
         const destination = accountRole === 'owner' || accountRole === 'super_admin'
-          ? '/super-admin'
-          : accountRole === 'admin' ? '/admin' : '/compte';
+          ? SUPER_ADMIN_PATH
+          : accountRole === 'admin' ? SIMPLE_ADMIN_PATH : '/compte';
+        if (accountRole === 'owner' || accountRole === 'super_admin' || accountRole === 'admin') {
+          setCachedRole(data.user.id, accountRole);
+        } else {
+          clearCachedRole();
+        }
         router.replace(destination);
       } else if (mode === 'forgot') {
         const { error: authError } = await supabase.auth.resetPasswordForEmail(email, {
@@ -668,6 +695,7 @@ export default function AccountPageContent() {
   async function handleSignOut() {
     if (!supabase) return;
     setError('');
+    clearCachedRole();
     const { error: authError } = await supabase.auth.signOut();
     if (authError) setError(authError.message);
     else {
