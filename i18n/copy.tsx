@@ -1,10 +1,18 @@
-import { cloneElement, isValidElement, type ReactNode, type ReactElement } from 'react';
+import { Children, cloneElement, isValidElement, type ReactNode, type ReactElement } from 'react';
 import de from '@/translations/de.json';
 import en from '@/translations/en.json';
 import { localizedPath, type Locale } from './routing';
 
 const dictionaries: Record<string, Record<string, string>> = { de, en };
-const phrases = Object.fromEntries(Object.entries(dictionaries).map(([locale, dictionary]) => [locale, Object.entries(dictionary).filter(([source]) => source.length >= 12).sort((a, b) => b[0].length - a[0].length)]));
+const phrases = Object.fromEntries(
+  Object.entries(dictionaries).map(([locale, dictionary]) => [
+    locale,
+    Object.entries(dictionary)
+      .filter(([source]) => source.length >= 12)
+      .sort((a, b) => b[0].length - a[0].length),
+  ])
+);
+
 export function translate(text: string, locale: Locale): string {
   if (locale === 'fr' || !text.trim()) return text;
   const clean = text.replace(/\s+/g, ' ').trim();
@@ -21,11 +29,14 @@ export function translate(text: string, locale: Locale): string {
 }
 
 const copyProps = new Set(['title', 'description', 'label', 'placeholder', 'alt', 'aria-label']);
+
 // Localize React output before rendering, on both the server and the client.
 // Product IDs, form values, event handlers, prices and customer records stay intact.
 export function localizeNode(node: ReactNode, locale: Locale): ReactNode {
   if (typeof node === 'string') return translate(node, locale);
-  if (Array.isArray(node)) return node.map(child => localizeNode(child, locale));
+  if (Array.isArray(node)) {
+    return Children.map(node, (child) => localizeNode(child, locale));
+  }
   if (!isValidElement(node)) return node;
   const element = node as ReactElement<Record<string, unknown>>;
   if (element.props['data-original-content']) return node;
@@ -34,6 +45,15 @@ export function localizeNode(node: ReactNode, locale: Locale): ReactNode {
     if (copyProps.has(name) && typeof value === 'string') props[name] = translate(value, locale);
     if (name === 'href' && typeof value === 'string') props[name] = localizedPath(value, locale);
   }
-  if ('children' in element.props) props.children = localizeNode(element.props.children as ReactNode, locale);
+  if ('children' in element.props) {
+    const raw = element.props.children;
+    if (typeof raw === 'string') {
+      props.children = translate(raw, locale);
+    } else if (Array.isArray(raw)) {
+      props.children = Children.map(raw, (child) => localizeNode(child, locale));
+    } else {
+      props.children = localizeNode(raw as ReactNode, locale);
+    }
+  }
   return cloneElement(element, props);
 }
