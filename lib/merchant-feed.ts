@@ -4,6 +4,14 @@ import de from '@/translations/de.json';
 const german: Record<string, string> = de;
 const namedBrands = ['EPH', 'TotalEnergies', 'HEIZFUXX', 'HELIOS', 'PROXIMA STAR', 'FireStixx', 'Giant Flames', 'ANTE', 'VERPELLET'];
 
+// One-time republication for images reported as unprocessed by Merchant Center.
+// Keep these URLs stable; match the source so future catalogue image edits win.
+const republishedImages: Record<string, string> = {
+  '/buches-chene.webp': '/merchant-images/buches-chene-20261012.webp',
+  '/bois-allumage.webp': '/merchant-images/bois-allumage-20261012.webp',
+  '/bois-chauffages-img-7.jpg': '/merchant-images/bois-chauffages-img-7-20261012.jpg',
+};
+
 function xml(value: string) {
   return value.replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f\ufffe\uffff]/g, '')
     .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
@@ -26,7 +34,8 @@ export function buildMerchantFeed(products: Product[], base: string) {
   for (const product of products) {
     const title = translation(product.name);
     const description = translation(product.description);
-    const image = absoluteUrl(product.gallery?.[0] ?? product.image, base);
+    const sourceImage = product.gallery?.[0] ?? product.image;
+    const image = absoluteUrl(republishedImages[sourceImage] ?? sourceImage, base);
     if (!Number.isSafeInteger(product.id) || product.id < 1 || !Number.isSafeInteger(product.priceAmount) || Number(product.priceAmount) <= 0) {
       omitted.push({ id: product.id, reason: 'missing valid ID or purchase price' }); continue;
     }

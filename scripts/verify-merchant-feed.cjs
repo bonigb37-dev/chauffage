@@ -27,6 +27,21 @@ const items=parseXml(original.xml);
 assert.equal(original.omitted.length,0);
 assert.equal(items.length,products.length);
 assert.equal(new Set(items.map(item=>item.id)).size,items.length);
+for (const [id, source, replacement] of [
+ ['5', 'buches-chene.webp', 'buches-chene-20261012.webp'],
+ ['14', 'bois-allumage.webp', 'bois-allumage-20261012.webp'],
+ ['67', 'bois-chauffages-img-7.jpg', 'bois-chauffages-img-7-20261012.jpg'],
+]) {
+ assert.equal(items.find(item=>item.id===id).image_link,base+'/merchant-images/'+replacement);
+ assert.deepEqual(fs.readFileSync('public/'+source),fs.readFileSync('public/merchant-images/'+replacement));
+ const product=products.find(p=>String(p.id)===id);
+ const edited=parseXml(buildMerchantFeed([{...product,image:'/new-photo.jpg',gallery:undefined}],base).xml);
+ assert.equal(edited[0].image_link,base+'/new-photo.jpg');
+}
+for (const item of items.filter(item=>!['5','14','67'].includes(item.id))) {
+ const product=products.find(p=>String(p.id)===item.id);
+ assert.equal(item.image_link,new URL(product.gallery?.[0]??product.image,base).href);
+}
 for(const item of items){const p=products.find(p=>String(p.id)===item.id);assert.equal(item.title,de[p.name]);assert.equal(item.description,de[p.description]);assert.equal(item.price,(p.priceAmount/100).toFixed(2)+' EUR');assert.equal(item.availability,p.stock===0?'out_of_stock':'in_stock');assert(item.link.startsWith(base+'/de/produits/'));assert(item.image_link.startsWith('https://'));assert(!item.gtin&&!item.mpn&&!item.identifier_exists);assert.equal(item.shipping,'0.00 EUR');assert(item.title.length<=150&&item.description.length<=5000);}
 const changed=mergeCatalog([{product_id:2,data:{priceAmount:12345,stock:0},is_deleted:false},{product_id:3,data:{},is_deleted:true}]);
 const changedItems=parseXml(buildMerchantFeed(changed,base).xml);
