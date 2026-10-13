@@ -133,7 +133,7 @@ export default function ProductCard({ p }: { p: Product }) {
                 <Image src={activeImage} alt={`${p.name} — photo ${imageIndex + 1}`} fill sizes="100vw" className="object-contain p-2 sm:p-4" />
               </div>
             </div>
-            <div className="flex flex-col gap-2 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6"><p className="min-w-0 text-xs leading-5 text-gray-600">{p.description}</p><Link href="/devis" onClick={() => setOpen(false)} className="inline-flex shrink-0 justify-center rounded-full bg-orange-500 px-4 py-2 text-xs font-bold text-white hover:bg-orange-600">Demander un devis</Link></div>
+            <div className="flex flex-col gap-2 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6"><p className="min-w-0 text-xs leading-5 text-gray-600">{p.description}</p></div>
           </div>
         </div>, document.body
       )}

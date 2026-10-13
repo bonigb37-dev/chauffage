@@ -66,7 +66,7 @@ export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
           <p>La livraison est prévue sous 2 à 4 jours ouvrables après réception effective du paiement. Signalez les restrictions d’accès avant de commander ; aucun supplément de transport ne sera imposé après validation.</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Link href="/devis" onClick={onClose} className="inline-flex items-center justify-center rounded-full bg-orange-600 px-6 py-3 font-bold text-white transition hover:bg-orange-700">Vérifier les modalités de livraison</Link>
+          <Link href="/services" onClick={onClose} className="inline-flex items-center justify-center rounded-full bg-orange-600 px-6 py-3 font-bold text-white transition hover:bg-orange-700">Vérifier les modalités de livraison</Link>
           <button type="button" onClick={onClose} className="rounded-full border border-stone-300 px-6 py-3 font-bold text-gray-800 hover:border-orange-500">Fermer</button>
         </div>
       </div>

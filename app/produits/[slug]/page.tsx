@@ -127,7 +127,7 @@ export default async function ProductDetailPage({ params }: Props) {
             </dl>
             <p className="mt-6 text-3xl font-black text-gray-950">{product.price}</p>
             <DeliveryInformation />
-            <div className="mt-6 flex flex-wrap gap-3"><ProductDetailAddButton product={product} /><Link href="/devis" className="inline-flex items-center rounded-full border border-stone-300 px-6 py-3 font-bold text-gray-800 hover:border-orange-500 hover:text-orange-700">Demander un devis</Link></div>
+            <div className="mt-6 flex flex-wrap gap-3"><ProductDetailAddButton product={product} /></div>
           </div>
         </article>
 

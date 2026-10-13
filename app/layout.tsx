@@ -22,7 +22,7 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata() { return localizeMetadata(await ({
   metadataBase: new URL(siteUrl),
   title: 'Bren-nholz — Granulés, bois de chauffage & briquettes',
-  description: 'Découvrez nos granulés de bois, bûches, briquettes et produits d’allumage. Catalogue et demande de devis.',
+  description: 'Découvrez nos granulés de bois, bûches, briquettes et produits d’allumage. Catalogue et commande en ligne.',
 })); }
 
 export const viewport: Viewport = {

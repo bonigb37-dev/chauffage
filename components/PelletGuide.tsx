@@ -646,12 +646,7 @@ export default function PelletGuide() {
               <span style={{ color: '#ea580c' }}>Voir tous les granulés de bois</span>
               <ArrowRight size={18} style={{ color: '#ea580c' }} />
             </Link>
-            <Link
-              href="/devis"
-              className="inline-flex items-center gap-2 rounded-full bg-gray-950 px-8 py-4 font-bold text-white transition hover:bg-gray-900"
-            >
-              Demander un devis gratuit
-            </Link>
+
           </div>
         </div>
       </section>

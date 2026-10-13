@@ -4,7 +4,6 @@ import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
-
 import { useEffect, useRef, useState } from 'react';
 import Link from '@/i18n/navigation';
 import { usePathname, useRouter } from '@/i18n/navigation';
@@ -14,7 +13,6 @@ import {
   ArrowRight,
   ChevronDown,
   CircleUserRound,
-  FileText,
   Flame,
   Heart,
   LogOut,
@@ -343,14 +341,6 @@ export default function Navbar() {
               </span>
             </div>
 
-            {/* Primary CTA: Demander un devis */}
-            <Link
-              href="/devis"
-              className="ml-2 inline-flex items-center gap-1.5 bg-[#FF6B00] hover:bg-[#E85D00] text-white font-bold text-sm px-5 py-2.5 rounded-full shadow-md shadow-orange-500/20 transition-all duration-200 active:scale-[0.98] shrink-0"
-            >
-              <span>Demander un devis</span>
-              <ArrowRight size={15} />
-            </Link>
           </div>
 
           {/* MOBILE RIGHT ACTIONS (< 768px) */}
@@ -577,16 +567,6 @@ export default function Navbar() {
                   >
                     <ShoppingBag size={16} />
                     <span>Mes commandes</span>
-                    <ArrowRight size={14} className="ml-auto text-gray-400" />
-                  </Link>
-
-                  <Link
-                    href="/devis"
-                    onClick={() => setAccountOpen(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-orange-50 hover:text-[#FF6B00] font-medium transition"
-                  >
-                    <FileText size={16} />
-                    <span>Mes devis</span>
                     <ArrowRight size={14} className="ml-auto text-gray-400" />
                   </Link>
 
@@ -861,16 +841,6 @@ export default function Navbar() {
             </nav>
           </div>
 
-          {/* Bottom Mobile CTA */}
-          <div className="pt-6 border-t border-white/10 space-y-3">
-            <Link
-              href="/devis"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full bg-[#FF6B00] hover:bg-[#E85D00] text-white font-bold text-base py-4 rounded-xl text-center block shadow-lg shadow-orange-950/50 transition active:scale-[0.99]"
-            >
-              Demander un devis →
-            </Link>
-          </div>
         </div>
       )}
 

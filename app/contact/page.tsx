@@ -87,14 +87,14 @@ export default function Contact() {
           <div className="rounded-2xl border border-stone-200 bg-white p-6 sm:p-7">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-orange-50 text-orange-700"><MessageCircle size={21}/></span>
             <h2 className="mt-5 text-xl font-black">Comment pouvons-nous vous aider ?</h2>
-            <p className="mt-3 text-sm leading-relaxed text-gray-600">Pour un suivi de commande, merci d’indiquer votre numéro de référence. Pour une demande de tarification de gros volume, privilégiez le formulaire de devis.</p>
+            <p className="mt-3 text-sm leading-relaxed text-gray-600">Pour un suivi de commande, merci d’indiquer votre numéro de référence. Pour toute question sur les produits, utilisez ce formulaire.</p>
           </div>
 
           <div className="rounded-2xl bg-gray-950 p-6 text-white sm:p-7">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/10 text-orange-300"><Boxes size={21}/></span>
-            <h2 className="mt-5 text-xl font-black">Besoin d’un devis tarifaire ?</h2>
-            <p className="mt-3 text-sm leading-relaxed text-stone-300">Obtenez un devis personnalisé pour vos palettes grâce à notre formulaire dédié. La livraison est incluse dans le prix des produits.</p>
-            <Link href="/devis" className="mt-5 inline-flex items-center gap-2 font-bold text-orange-400 hover:text-white">Accéder à la demande de devis <ArrowRight size={17}/></Link>
+            <h2 className="mt-5 text-xl font-black">Prêt à commander ?</h2>
+            <p className="mt-3 text-sm leading-relaxed text-stone-300">Choisissez vos produits dans notre catalogue. La livraison est incluse dans le prix des produits.</p>
+            <Link href="/produits" className="mt-5 inline-flex items-center gap-2 font-bold text-orange-400 hover:text-white">Voir les produits <ArrowRight size={17}/></Link>
           </div>
 
           <Link href="/faq" className="flex items-center gap-4 rounded-2xl border border-stone-200 p-5 transition hover:border-orange-300 hover:bg-orange-50/50">
