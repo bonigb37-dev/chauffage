@@ -3,7 +3,7 @@
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
-import { Star, ShieldCheck, Truck } from 'lucide-react';
+import { Star, Truck } from 'lucide-react';
 import { getTotalReviewsSummary } from '@/lib/reviews';
 
 export default function TopTrustBanner() {
@@ -52,19 +52,14 @@ export default function TopTrustBanner() {
             </span>
           </button>
 
-          <span className="flex items-center gap-2 whitespace-nowrap text-orange-100">
-            <Truck size={17} aria-hidden="true" className="shrink-0" />
-            {locale === 'de' ? 'Kostenlose Lieferung in Deutschland' : 'Livraison gratuite en Allemagne'}
+          <span className="flex items-center gap-1.5 whitespace-nowrap text-orange-100">
+            <Truck size={17} aria-hidden="true" className="shrink-0 text-amber-300" />
+            <span>
+              {locale === 'de'
+                ? 'Kostenlose Lieferung in Deutschland · Keine Zusatzkosten beim Spediteur'
+                : 'Livraison gratuite en Allemagne · Aucun frais supplémentaire à régler au transporteur'}
+            </span>
           </span>
-        </div>
-
-        {/* Trusted Guarantee Badge Style Icon */}
-        <div className="hidden sm:flex items-center gap-1.5 bg-orange-700/60 rounded-full px-2.5 py-1 text-xs text-orange-100 border border-orange-400/30 shrink-0">
-          <ShieldCheck size={15} className="text-amber-300 shrink-0" />
-          <span className="font-extrabold text-[11px] tracking-wide uppercase">
-            {locale === 'de' ? 'Garantierte Bewertungen' : 'Avis Vérifiés'}
-          </span>
-          <span className="grid h-4 w-4 place-items-center rounded-full bg-amber-400 text-orange-950 text-[10px] font-black">e</span>
         </div>
       </div>
     </aside>,
