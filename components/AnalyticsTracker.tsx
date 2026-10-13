@@ -74,15 +74,17 @@ export default function AnalyticsTracker() {
       send_to: measurementId, page_path: pathname,
       page_location: location.origin + pathname, page_title: document.title,
     });
-    const quoteConversion = (event: Event) => {
+    const commercialConversion = (event: Event) => {
       const detail = (event as CustomEvent<{ kind?: AnalyticsKind }>).detail;
-      if (detail?.kind !== 'quote_sent' || readConsent()?.mode !== consent?.mode) return;
+      if ((detail?.kind !== 'quote_sent' && detail?.kind !== 'order_sent') || readConsent()?.mode !== consent?.mode) return;
       if (navigator.doNotTrack === '1' || (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl) return;
       googleWindow.gtag?.('event', 'conversion', {
-        send_to: 'AW-18507175727/uJ_kCIPdp5sdEK-u9PhE',
+        send_to: detail.kind === 'order_sent'
+          ? 'AW-18507175727/rLf9CN75spsdEK-u9PhE'
+          : 'AW-18507175727/uJ_kCIPdp5sdEK-u9PhE',
       });
     };
-    window.addEventListener('bren-analytics-action', quoteConversion);
+    window.addEventListener('bren-analytics-action', commercialConversion);
     const stop = () => {
       googleWindow['ga-disable-GT-PJ5SK7JL'] = true;
       googleWindow['ga-disable-G-RF1N5XEVC2'] = true;
@@ -92,7 +94,7 @@ export default function AnalyticsTracker() {
       if (readConsent()?.mode !== consent?.mode) stop();
     }, 1000);
     return () => {
-      window.removeEventListener('bren-analytics-action', quoteConversion);
+      window.removeEventListener('bren-analytics-action', commercialConversion);
       clearInterval(expiryTimer); stop();
     };
   }, [pathname, ready, consent, blocked, access.verified, access.role]);
