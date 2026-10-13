@@ -16,7 +16,6 @@ import {
   Flame,
   Heart,
   LogOut,
-  MapPin,
   Menu,
   Search,
   Settings,
@@ -26,7 +25,6 @@ import {
   X,
 } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
-import DeliveryZonesModal from '@/components/DeliveryZonesModal';
 
 const links = [
   { label: 'Accueil', href: '/' },
@@ -53,7 +51,6 @@ export default function Navbar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProduitsOpen, setMobileProduitsOpen] = useState(false);
-  const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Refs for click outside
@@ -167,19 +164,11 @@ export default function Navbar() {
 
   return localizeNode((
     <>
-      {/* Top Banner for Delivery Zones */}
+      {/* Free delivery banner */}
       <div
         className="bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 py-2 px-4 text-center text-xs sm:text-sm font-bold text-white shadow-inner z-50 relative"
       >
-        <span>Livraison gratuite dans toute l’Allemagne, sans exception · Aucun frais supplémentaire à régler au transporteur · </span>
-        <button
-          type="button"
-          onClick={() => setDeliveryModalOpen(true)}
-          className="inline-flex items-center justify-center gap-2 rounded-sm font-bold transition hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        >
-          Consultez nos différentes zones de livraison à domicile en cliquant ici
-          <MapPin size={15} className="shrink-0" aria-hidden="true" />
-        </button>
+        <span>Livraison gratuite dans toute l’Allemagne, sans exception · Aucun frais supplémentaire à régler au transporteur</span>
       </div>
 
       {/* Main Sticky Navbar */}
@@ -844,11 +833,6 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* Delivery Zones Modal */}
-      <DeliveryZonesModal
-        isOpen={deliveryModalOpen}
-        onClose={() => setDeliveryModalOpen(false)}
-      />
     </>
   ), brenLocale);
 }
