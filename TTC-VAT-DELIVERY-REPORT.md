@@ -85,3 +85,11 @@ La liste ci-dessous couvre les fichiers modifiés, ajoutés et supprimés pour c
 - Ajouté : `reference/ttc-price-baseline.json`
 - Ajouté : `reference/ttc-orders-baseline.json`
 - Ajouté : `TTC-VAT-DELIVERY-REPORT.md`
+
+## Complément : contrôle des textes de livraison
+
+La FAQ confirme explicitement que la livraison est gratuite partout en Allemagne, sans exception. La rétractation annonce 0,00 € pour les nouvelles commandes tout en conservant le remboursement des anciens coûts d’envoi éventuellement payés. Les confirmations et l’administration utilisent des libellés de montant TTC et de livraison sans formulation suggérant un supplément. Les textes inutilisés de l’ancien calculateur ont été retirés des trois dictionnaires.
+
+Compilation de production réussie. `node scripts/verify-delivery-copy-browser.cjs http://localhost:3005` : 26 pages/sections contrôlées en FR et DE (accueil, catalogue, services, contact, FAQ, CGV, rétractation, livraison, guide, région Hessen et trois fiches produits). Aucune annonce de livraison payante ou calculée selon la distance ; gratuité sans exception dans la FAQ ; livraison à 0,00 € dans la rétractation. Les écritures de suivi sont interceptées.
+
+Fichiers concernés par ce complément : `app/retractation/page.tsx`, `components/AdminWorkspace.tsx`, `components/CheckoutSuccessContent.tsx`, `lib/faq.ts`, `translations/fr.json`, `translations/de.json`, `translations/en.json`, `scripts/verify-delivery-copy-browser.cjs` et ce rapport. Aucun prix, taux de TVA, frais enregistrés, image ou moyen de paiement n’a changé.

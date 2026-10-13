@@ -9,8 +9,8 @@ export const faqItems = [
     answer: 'Dès la réception de votre virement bancaire, votre commande est préparée et transmise à notre transporteur partenaire pour une livraison sous 2 à 4 jours ouvrables après réception effective du paiement. Vous recevez une confirmation par e-mail dès la prise en charge de votre palette.',
   },
   {
-    question: 'Combien coûtent les frais de livraison ?',
-    answer: 'La livraison est facturée 0,00 € pour toute commande livrée en Allemagne. Le total à payer correspond exactement à la somme des prix TTC des produits. Aucun paiement n’est à remettre au transporteur.',
+    question: 'La livraison est-elle gratuite en Allemagne ?',
+    answer: 'Oui, la livraison est gratuite pour toute commande livrée en Allemagne, sans exception. Le total à payer correspond exactement à la somme des prix TTC des produits. Aucun paiement n’est à remettre au transporteur.',
   },
   {
     question: 'Quels sont les délais de livraison et jours de passage ?',
