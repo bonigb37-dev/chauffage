@@ -18,7 +18,7 @@ Ces données proviennent des déclarations du commerçant ; aucun document d’i
 
 Les anciennes mentions du siège néerlandais, du KvK et des anciens représentants ont été retirées des pages publiques. Les mentions légales, conditions de vente et politique de confidentialité utilisent les informations déclarées ci-dessus. L’autorité de protection des données indiquée est désormais celle de Hesse.
 
-Les avis synthétiques, notes fictives, badge « Garantie Avis Vérifiés » et avis/notes sans source dans les données structurées ont été supprimés. Les visuels retouchés sont identifiés comme illustrations.
+Les avis synthétiques, notes fictives, badge « Garantie Avis Vérifiés » et avis/notes sans source dans les données structurées ont été supprimés. Le commerçant déclare que les photos représentent son entreprise et demande le retrait des mentions « illustration ». Ces mentions ont été retirées ; les retouches restent consignées dans les fichiers source.
 
 Les contrôles du catalogue portent sur 75 produits avec prix : concordance technique du flux et des pages, images accessibles et disponibilité affichée. Ils ne vérifient pas les stocks réels, les droits sur les photos, l’identité légale ni la capacité à respecter les engagements de livraison et de retour.
 
@@ -34,7 +34,7 @@ Le commerçant indique avoir demandé un examen le 13 octobre 2026 pour « Décl
 
 Bonjour,
 
-Mon site https://www.brennholz-direk.de a été corrigé après le signalement « Déclarations trompeuses ou déceptives ». Les coordonnées publiées sont désormais celles que je déclare pour mon activité en Allemagne : responsable Leslynes Moser, Aarstraße 5a, 35756 Mittenaar, TVA DE300812888. Les anciennes mentions néerlandaises ont été retirées. Les avis, notes et badges sans justificatif ont été supprimés ; les visuels retouchés sont signalés comme illustrations.
+Mon site https://www.brennholz-direk.de a été corrigé après le signalement « Déclarations trompeuses ou déceptives ». Les coordonnées publiées sont désormais celles que je déclare pour mon activité en Allemagne : responsable Leslynes Moser, Aarstraße 5a, 35756 Mittenaar, TVA DE300812888. Les anciennes mentions néerlandaises ont été retirées. Les avis, notes et badges sans justificatif ont été supprimés ; les mentions « illustration » ont été retirées des photos à ma demande, car je déclare qu’elles représentent mon entreprise.
 
 Mon premier examen a été demandé le 13 octobre 2026. Merci de préciser les points encore non conformes et les justificatifs nécessaires. Après concordance des données du compte avec mes documents officiels et le site, je souhaite demander un nouvel examen dès que mon compte sera éligible.
 

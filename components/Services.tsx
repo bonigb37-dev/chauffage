@@ -25,7 +25,6 @@ export default function Services() {
           </div>
           <div className="relative aspect-[1.7/1] min-w-0">
             <Image src="/delivery-truck-bren-nholz-20261013.png" alt="Camion personnalisé Bren-nholz — Leylines Park" fill sizes="(max-width: 1024px) 100vw, 55vw" className="object-contain drop-shadow-2xl" />
-            <p className="absolute inset-x-0 -bottom-5 text-center text-xs text-stone-300">Illustration de la livraison.</p>
           </div>
         </div>
         <div className="mt-12 grid gap-8 border-t border-white/15 pt-10 lg:grid-cols-[0.7fr_1.3fr]">
