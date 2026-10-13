@@ -54,8 +54,10 @@ export default function TopTrustBanner() {
 
           <span className="flex items-center gap-2 whitespace-nowrap text-orange-100">
             <Truck size={18} aria-hidden="true" className="shrink-0 text-amber-300" />
-            <span>
-              {locale === 'de' ? 'Kostenlose Lieferung in Deutschland' : 'Livraison gratuite en Allemagne'}
+            <span className="font-medium">
+              {locale === 'de'
+                ? 'Kostenlose Lieferung in Deutschland · Keine Zusatzkosten beim Spediteur'
+                : 'Livraison gratuite en Allemagne · Aucun frais supplémentaire à régler au transporteur'}
             </span>
           </span>
         </div>
