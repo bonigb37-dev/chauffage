@@ -9,7 +9,7 @@ export const storeConfig = {
   legalForm: 'Société de droit néerlandais, enregistrée auprès de la Chambre de commerce des Pays-Bas',
   registrationNumber: '34250234',
   legalRepresentatives: 'Joey van Wettum et Thijs Vorstman',
-  address: 'Franciscusweg 16, 1216SK Hilversum, Pays-Bas',
+  address: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
   warehouseAddress: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
   vatNumber: 'DE300812888',
   returnAddress: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',

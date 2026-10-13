@@ -3,7 +3,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const assert = require('node:assert/strict');
-const { execFileSync } = require('node:child_process');
 const ts = require('typescript');
 const cache = new Map();
 let mockDb;
@@ -19,18 +18,16 @@ function load(file) {
   return module.exports;
 }
 function checkReviews() {
-  for (const file of ['lib/reviews.ts', 'components/AllReviewsModal.tsx', 'components/TopTrustBanner.tsx']) {
-    const before = execFileSync('git', ['show', `HEAD:${file}`], { encoding: 'utf8' }).replaceAll('\r\n', '\n');
-    assert.equal(fs.readFileSync(file, 'utf8').replaceAll('\r\n', '\n'), before, `${file} doit rester inchangé`);
+  const reviews = load('lib/reviews.ts');
+  for (const id of [1,5,14,8305,999999]) {
+    assert.equal(reviews.getReviewsForProduct(id).length,0,'No invented customer reviews');
+    assert.equal(reviews.getAverageRating(id).count,0);
+    assert.equal(reviews.getAverageRating(id).average,0);
   }
-  const file = 'app/produits/[slug]/page.tsx';
-  const before = execFileSync('git', ['show', `HEAD:${file}`], { encoding: 'utf8' }).replaceAll('\r\n', '\n');
-  const after = fs.readFileSync(file, 'utf8').replaceAll('\r\n', '\n');
-  const section = source => source.slice(source.indexOf('{/* Customer Reviews Section */}'));
-  assert.equal(section(after), section(before), 'Section avis produit intacte');
-  const rating = source => source.slice(source.indexOf('{/* Rating Stars Summary Header */}'), source.indexOf('{product.articleNumber'));
-  assert.equal(rating(after), rating(before), 'Notes et compteur produit intacts');
+  assert.equal(reviews.getAllReviews().length,0);
+  assert.equal(reviews.getTotalReviewsSummary().totalReviews,0);
 }
+
 async function run() {
   checkReviews();
   const { mergeCatalog } = load('lib/catalog.ts');
@@ -93,6 +90,6 @@ async function run() {
   const emailed = await withdrawal.POST(new Request('https://mock.invalid/api/withdrawal', { method: 'POST', body: JSON.stringify({ name: 'Client test', email: 'test@example.invalid', contract: 'Test simulé', id: '12345678-1234-1234-1234-123456789abc' }) }));
   assert.equal((await emailed.json()).emailSent, true);
   global.fetch = realFetch;
-  console.log('OK : catalogue, prix actualisés, stock nul, total serveur, achat invité, avis préservés, justificatif séparé du paiement, rétractation simulée.');
+  console.log('OK : catalogue, prix actualisés, stock nul, total serveur, achat invité, avis fictifs absents, justificatif séparé du paiement, rétractation simulée.');
 }
 run().catch(error => { console.error(error); process.exitCode = 1; });

@@ -33,6 +33,7 @@ export default function LogisticsGallery() {
             />
           ))}
         </div>
+        <p className="mt-4 text-sm text-stone-600">Visuels d’illustration de la préparation et de la livraison.</p>
       </div>
     </section>
   ), brenLocale);
