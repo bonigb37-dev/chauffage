@@ -9,6 +9,7 @@ Flux : https://www.brennholz-direk.de/google-merchant.xml
 - Responsable : Leslynes Moser.
 - Siège : Aarstraße 5a, 35756 Mittenaar, Deutschland.
 - TVA : DE300812888.
+- Numéro d’enregistrement déclaré par le commerçant : 3425023476.
 - Téléphone : +49 176 68417729.
 - Courriel : kontakt@brennholz-direk.de.
 

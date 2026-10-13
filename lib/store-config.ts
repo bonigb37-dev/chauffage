@@ -7,7 +7,7 @@ export const storeConfig = {
   phoneHref: '+4917668417729',
   legalName: 'Leslynes Moser',
   legalForm: '',
-  registrationNumber: '',
+  registrationNumber: '3425023476',
   legalRepresentatives: 'Leslynes Moser',
   address: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
   warehouseAddress: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
