@@ -5,10 +5,9 @@ import { useLocale } from 'next-intl';
 
 
 import { useEffect, useMemo, useState } from 'react';
-import Link from '@/i18n/navigation';
 import { useSearchParams } from 'next/navigation';
 
-import { ArrowRight, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { Search, SlidersHorizontal } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import ProductCard from '@/components/ProductCard';
 
@@ -65,31 +64,6 @@ export default function ProductCatalog({ initialCategory = 'Tous les produits' }
           <span className="mr-1 hidden items-center gap-2 text-sm font-semibold text-gray-500 lg:inline-flex"><SlidersHorizontal size={16} /> Catégories</span>
           {categories.map((item) => <button key={item} type="button" onClick={() => setCategory(item)} aria-pressed={category === item} className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transition ${category === item ? 'bg-gray-950 text-white' : 'bg-gray-100 text-gray-600 hover:bg-orange-50 hover:text-orange-700'}`}>{item}</button>)}
         </div>
-      </div>
-
-      {/* Guide Callout Banner inside Product Catalog */}
-      <div className="mt-6 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 p-5 sm:p-6 text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-white/20 text-white backdrop-blur">
-            <Sparkles size={20} />
-          </div>
-          <div>
-            <h3 className="text-base sm:text-lg font-black leading-snug">
-              Besoin d’aide pour choisir votre quantité de granulés de bois ?
-            </h3>
-            <p className="text-xs sm:text-sm text-orange-100">
-              Estimez vos besoins et consultez les conseils de sélection et de stockage.
-            </p>
-          </div>
-        </div>
-        <Link
-          href="/guide-pellets"
-          className="shrink-0 inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-xs sm:text-sm font-black transition hover:bg-orange-50 shadow-sm"
-          style={{ color: '#ea580c' }}
-        >
-          <span style={{ color: '#ea580c' }}>Consulter le guide</span>
-          <ArrowRight size={16} style={{ color: '#ea580c' }} />
-        </Link>
       </div>
 
       <div className="mb-4 mt-5 flex items-center justify-between">
