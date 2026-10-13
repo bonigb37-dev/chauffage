@@ -3,7 +3,6 @@ import { localizeNode, translate } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
-
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
@@ -55,26 +54,26 @@ export default function ProductCatalog({ initialCategory = 'Tous les produits' }
 
   return localizeNode((
     <section className="container py-8 sm:py-10">
-      <div className="flex flex-col gap-5 rounded-3xl border border-stone-200 bg-white p-4 shadow-sm sm:p-6 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-5 rounded-3xl border border-[#E7E0D3] bg-white p-4 shadow-sm sm:p-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="relative w-full lg:max-w-sm">
           <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={19} />
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher un produit…" aria-label="Rechercher un produit" className="h-12 w-full rounded-full border border-gray-200 bg-gray-50 pl-11 pr-4 outline-none transition focus:border-orange-400 focus:bg-white focus:ring-4 focus:ring-orange-100" />
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher un produit…" aria-label="Rechercher un produit" className="h-12 w-full rounded-full border border-[#E7E0D3] bg-[#FAF8F3] pl-11 pr-4 outline-none transition focus:border-[#A54829] focus:bg-white focus:ring-4 focus:ring-[#A54829]/15" />
         </div>
         <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:flex-wrap lg:justify-end">
-          <span className="mr-1 hidden items-center gap-2 text-sm font-semibold text-gray-500 lg:inline-flex"><SlidersHorizontal size={16} /> Catégories</span>
-          {categories.map((item) => <button key={item} type="button" onClick={() => setCategory(item)} aria-pressed={category === item} className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transition ${category === item ? 'bg-gray-950 text-white' : 'bg-gray-100 text-gray-600 hover:bg-orange-50 hover:text-orange-700'}`}>{item}</button>)}
+          <span className="mr-1 hidden items-center gap-2 text-sm font-semibold text-[#57534e] lg:inline-flex"><SlidersHorizontal size={16} /> Catégories</span>
+          {categories.map((item) => <button key={item} type="button" onClick={() => setCategory(item)} aria-pressed={category === item} className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transition ${category === item ? 'bg-[#123524] text-white' : 'bg-[#F4F0E5] text-[#1c1917] hover:bg-[#A54829] hover:text-white'}`}>{item}</button>)}
         </div>
       </div>
 
       <div className="mb-4 mt-5 flex items-center justify-between">
-        <p className="text-sm font-medium text-gray-500">{visibleProducts.length} produit{visibleProducts.length > 1 ? 's' : ''}</p>
-        <p className="hidden text-sm text-gray-500 sm:block">Sélectionnez une photo pour l’agrandir</p>
+        <p className="text-sm font-medium text-[#57534e]">{visibleProducts.length} produit{visibleProducts.length > 1 ? 's' : ''}</p>
+        <p className="hidden text-sm text-[#57534e] sm:block">Sélectionnez une photo pour l’agrandir</p>
       </div>
-      <p className="mb-4 rounded-2xl border border-orange-100 bg-orange-50 px-4 py-3 text-sm leading-6 text-orange-950">Tous les prix affichés sont TTC. La TVA est déjà incluse et le total de commande correspond à la somme des prix TTC des produits.</p>
+      <p className="mb-4 rounded-2xl border border-[#E7E0D3] bg-[#F4F0E5] px-4 py-3 text-sm leading-6 text-[#123524]">Tous les prix affichés sont TTC. La TVA est déjà incluse et le total de commande correspond à la somme des prix TTC des produits.</p>
       {visibleProducts.length ? groupedProducts.map(([section, sectionProducts]) => <section key={section} className="mt-8 first:mt-0">
-        <div className="mb-5 max-w-3xl border-b border-stone-200 pb-3"><h2 className="text-2xl font-black text-gray-950 sm:text-3xl">{section}</h2><p className="mt-1 text-sm leading-6 text-gray-500">{sectionDescriptions[section]}</p></div>
+        <div className="mb-5 max-w-3xl border-b border-[#E7E0D3] pb-3"><h2 className="text-2xl font-black text-[#123524] sm:text-3xl">{section}</h2><p className="mt-1 text-sm leading-6 text-[#57534e]">{sectionDescriptions[section]}</p></div>
         <div className="grid items-stretch gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">{sectionProducts.map((product) => <div id={`produit-${product.id}`} key={product.id} className="h-full"><ProductCard p={product} /></div>)}</div>
-      </section>) : <div className="rounded-3xl border border-dashed border-gray-300 py-20 text-center"><h2 className="text-xl font-black">Aucun produit trouvé</h2><p className="mt-2 text-gray-500">Essayez un autre terme ou choisissez une autre catégorie.</p></div>}
+      </section>) : <div className="rounded-3xl border border-dashed border-[#E7E0D3] bg-[#FAF8F3] py-20 text-center"><h2 className="text-xl font-black text-[#123524]">Aucun produit trouvé</h2><p className="mt-2 text-[#57534e]">Essayez un autre terme ou choisissez une autre catégorie.</p></div>}
     </section>
   ), brenLocale);
 }
