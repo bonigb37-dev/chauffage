@@ -763,3 +763,14 @@ select:-webkit-autofill:focus {
 @media (prefers-reduced-motion: reduce) { .hero-fire-photo, .hero-fire-glow { animation: none; } }
 
 @media (prefers-reduced-motion: reduce) { .hero-fire-video { display: none; } }
+
+/* Compact delivery links: explicit colors override the global anchor inheritance. */
+.delivery-regions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin:0; padding:0; list-style:none; }
+.delivery-regions li { min-width:0; }
+.delivery-regions .delivery-region-link { display:flex; align-items:center; justify-content:space-between; gap:6px; height:100%; min-height:44px; padding:8px 10px; border:1px solid #e7e5e4; border-radius:10px; background:#fafaf9; color:#1c1917; font-size:12px; font-weight:700; line-height:16px; transition:background .15s,border-color .15s; }
+.delivery-region-link span { color:#1c1917; overflow-wrap:anywhere; }
+.delivery-regions .delivery-region-link:hover { background:#ffedd5; border-color:#fdba74; color:#1c1917; }
+.delivery-region-link:focus-visible { outline:2px solid #fb923c; outline-offset:3px; }
+.delivery-region-arrow { flex-shrink:0; width:14px; height:14px; color:#c2410c; }
+@media (min-width:640px) { .delivery-regions { grid-template-columns:repeat(3,minmax(0,1fr)); } .delivery-regions .delivery-region-link { min-height:48px; padding:8px 12px; font-size:13px; line-height:17px; } }
+@media (min-width:1280px) { .delivery-regions { grid-template-columns:repeat(4,minmax(0,1fr)); } }
