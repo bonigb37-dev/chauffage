@@ -3,6 +3,7 @@ import { localizeMetadata } from '@/lib/seo';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import TopTrustBanner from '@/components/TopTrustBanner';
+import AllReviewsModal from '@/components/AllReviewsModal';
 import Footer from '@/components/Footer';
 import SupportHelpButton from '@/components/SupportHelpButton';
 import { CartProvider } from '@/components/CartProvider';
@@ -48,6 +49,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
               {children}
               <Footer />
               <SupportHelpButton />
+              <AllReviewsModal />
             </RoleAccessGuard>
           </ActionLoadingProvider>
         </CartProvider>
