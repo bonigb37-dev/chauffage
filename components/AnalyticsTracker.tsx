@@ -29,6 +29,7 @@ export default function AnalyticsTracker() {
   useEffect(() => {
     const tagId = 'GT-PJ5SK7JL';
     const measurementId = 'G-RF1N5XEVC2';
+    const adsId = 'AW-18507175727';
     const googleWindow = window as typeof window & {
       dataLayer?: IArguments[];
       gtag?: (...args: unknown[]) => void;
@@ -59,6 +60,7 @@ export default function AnalyticsTracker() {
       googleWindow.gtag('js', new Date());
       googleWindow.gtag('config', tagId, { send_page_view: false });
       googleWindow.gtag('config', measurementId, { send_page_view: false });
+      googleWindow.gtag('config', adsId, { allow_ad_personalization_signals: false });
     }
     googleWindow.gtag('consent', 'update', { analytics_storage: 'granted' });
     if (!document.getElementById('google-tag')) {
