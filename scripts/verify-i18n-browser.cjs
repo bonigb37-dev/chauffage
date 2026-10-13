@@ -63,11 +63,11 @@ async function run() {
 
   mockRequest=async({requestId})=>send('Fetch.fulfillRequest',{requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'application/json'}],body:Buffer.from('{"tracked":false}').toString('base64')});
   await send('Fetch.enable',{patterns:[{urlPattern:'*/api/cart-drafts*'},{urlPattern:'*/api/analytics*'}]});
-  for (const locale of ['de','fr','en']) {
+  for (const locale of ['de']) {
     await visit('/'+locale);
     assert.equal(await evaluate('document.documentElement.lang'),locale);
     console.log(locale+' home: '+await evaluate("document.querySelector('h1').innerText"));
-    assert.equal(await evaluate("document.querySelectorAll('link[rel=alternate][hreflang]').length"),4);
+    assert.equal(await evaluate("document.querySelectorAll('link[rel=alternate][hreflang]').length"),2);
     await visit('/'+locale+'/produits/2-granules-eph-premium-dinplus-enplus-a1-palette');
     assert(await evaluate("!!document.querySelector('script[type=\"application/ld+json\"]')"));
     await evaluate("[...document.querySelectorAll('button')].find(b=>/In den Warenkorb|Ajouter au panier|Add to cart/.test(b.textContent)).click()");
@@ -86,11 +86,12 @@ async function run() {
   assert.equal(await evaluate("[...document.querySelectorAll('button')].filter(b=>['DE','FR','EN'].includes(b.textContent.trim())).length"),0);
   await evaluate("document.cookie='bren_locale=en; Path=/; SameSite=Lax'");
   await send('Network.enable');
-  for(const [language,expected] of [['fr-FR','fr'],['en-US','en'],['de-DE','de'],['it-IT','de']]){await send('Network.setExtraHTTPHeaders',{headers:{'Accept-Language':language}});await visit('/');assert.equal(await evaluate('location.pathname'),'/'+expected);assert.equal(await evaluate('document.documentElement.lang'),expected);}
-  await visit('/en/panier');assert(await evaluate("document.body.innerText.includes('EPH')"));
+  for(const [language,expected] of [['fr-FR','de'],['en-US','de'],['de-DE','de'],['it-IT','de']]){await send('Network.setExtraHTTPHeaders',{headers:{'Accept-Language':language}});await visit('/');assert.equal(await evaluate('location.pathname'),'/'+expected);assert.equal(await evaluate('document.documentElement.lang'),expected);}
+  await visit('/en/panier');assert.equal(await evaluate('location.pathname'),'/de/panier');assert.equal(await evaluate('document.documentElement.lang'),'de');assert(await evaluate("document.body.innerText.includes('EPH')"));
+  await visit('/fr/produits?search=EPH#catalogue');assert.equal(await evaluate('location.pathname'),'/de/produits');assert.equal(await evaluate('location.search'),'?search=EPH');assert.equal(await evaluate('location.hash'),'#catalogue');
   assert.equal(errors.length,0,errors.join(', '));
   assert.equal(cspViolations.length,0,cspViolations.join(', '));
-  console.log('PASS three locales, product/cart/checkout/auth/forms, automatic browser language and German fallback, old manual cookie ignored, cart retained, no JS/CSP errors. No order or email submitted.');
+  console.log('PASS German-only product/cart/checkout/auth/forms, browser languages and old cookies ignored, legacy URL redirects retain query/fragment/cart, no JS/CSP errors. No order or email submitted.');
 }
 
 run().catch((error) => { console.error(error); process.exitCode = 1; }).finally(async () => {

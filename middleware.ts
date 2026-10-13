@@ -4,12 +4,12 @@ export function middleware(request: NextRequest) {
   const incomingPath = request.nextUrl.pathname;
   const pageRequest = !incomingPath.startsWith('/api/') && !/\.[a-z0-9]+$/i.test(incomingPath);
   const prefix = incomingPath.split('/')[1];
-  const locale = isLocale(prefix) ? prefix : detectLocale(undefined, request.headers.get('accept-language'));
+  const locale = 'de';
   if (pageRequest && !isLocale(prefix)) {
     const target = request.nextUrl.clone();
-    target.pathname = `/${locale}${incomingPath === '/' ? '' : incomingPath}`;
-    const redirect = NextResponse.redirect(target);
-    redirect.headers.set('Vary', 'Accept-Language, Cookie');
+    const cleanPath = stripLocale(incomingPath);
+    target.pathname = `/de${cleanPath === '/' ? '' : cleanPath}`;
+    const redirect = NextResponse.redirect(target, 308);
     redirect.headers.set('Cache-Control', 'private, no-store');
     return redirect;
   }
@@ -63,4 +63,4 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = { matcher: ['/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)'] };
-import { detectLocale, isLocale, stripLocale } from './i18n/routing';
+import { isLocale, stripLocale } from './i18n/routing';

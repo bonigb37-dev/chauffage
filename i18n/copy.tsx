@@ -1,12 +1,12 @@
 import { cloneElement, isValidElement, type ReactNode, type ReactElement } from 'react';
 import de from '@/translations/de.json';
-import en from '@/translations/en.json';
 import { localizedPath, type Locale } from './routing';
 
-const dictionaries: Record<string, Record<string, string>> = { de, en };
+const dictionaries: Record<string, Record<string, string>> = { de };
 const phrases = Object.fromEntries(Object.entries(dictionaries).map(([locale, dictionary]) => [locale, Object.entries(dictionary).filter(([source]) => source.length >= 12).sort((a, b) => b[0].length - a[0].length)]));
 export function translate(text: string, locale: Locale): string {
-  if (locale === 'fr' || !text.trim()) return text;
+  locale = 'de';
+  if (!text.trim()) return text;
   const clean = text.replace(/\s+/g, ' ').trim();
   const translation = Object.hasOwn(dictionaries[locale], clean) ? dictionaries[locale][clean] : undefined;
   if (translation !== undefined) return (text.match(/^\s*/)?.[0] ?? '') + translation + (text.match(/\s*$/)?.[0] ?? '');
