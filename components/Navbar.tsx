@@ -21,6 +21,7 @@ import {
   Settings,
   ShoppingBag,
   ShoppingCart,
+  Truck,
   User,
   X,
 } from 'lucide-react';
@@ -166,8 +167,9 @@ export default function Navbar() {
     <>
       {/* Free delivery banner */}
       <div
-        className="bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 py-2 px-4 text-center text-xs sm:text-sm font-bold text-white shadow-inner z-50 relative"
+        className="bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 py-2 px-4 text-center text-xs sm:text-sm font-bold text-white shadow-inner z-50 relative flex items-center justify-center gap-2"
       >
+        <Truck size={17} className="shrink-0 text-white" />
         <span>Livraison en Allemagne · Aucun frais supplémentaire à régler au transporteur</span>
       </div>
 
