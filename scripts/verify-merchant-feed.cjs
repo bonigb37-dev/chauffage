@@ -57,8 +57,9 @@ const escaped=parseXml(buildMerchantFeed([{...p,image:'/image.png?x=1&y=2'}],bas
 assert.equal(escaped[0].image_link,base+'/image.png?x=1&y=2');
 const reference = JSON.parse(fs.readFileSync('reference/brennholzwerk/catalogue.json','utf8'));
 const imported = products.filter(p => p.id >= 8301 && p.id <= 8322);
-const variants = reference.products.flatMap(p => p.variants.map(v => ({ product: p, variant: v })));
-assert.equal(imported.length,22);
+const variants = reference.products.flatMap(p => p.variants.filter(v => v.priceWithTax > 0).map(v => ({ product: p, variant: v })));
+assert.equal(imported.length,16);
+assert(imported.every(p => p.priceAmount > 0 && p.description.trim() && p.quantity.trim() && p.gallery.length));
 assert.equal(variants.length,imported.length);
 for (let i=0;i<imported.length;i++) {
  const p=imported[i], v=variants[i];
