@@ -83,13 +83,14 @@ export default function AboutPage() {
 
               <div className="relative h-[380px] sm:h-[480px] lg:h-[560px] w-full overflow-hidden rounded-[2.5rem] shadow-2xl border border-stone-200 bg-[#123524]">
                 <Image
-                  src="/3B.webp"
-                  alt="Un professionnel scie une grume de bois en forêt"
+                  src="/bb-hd.jpg"
+                  alt="Client satisfait profitant du confort du chauffage au bois à la maison"
                   fill
                   priority
                   quality={100}
+                  unoptimized
                   sizes="(max-width: 1024px) 100vw, 58vw"
-                  className="object-cover object-center transition duration-700 ease-out group-hover:scale-105 contrast-[1.04] saturate-[1.06] brightness-[1.01]"
+                  className="object-cover object-center transition duration-700 ease-out group-hover:scale-105 contrast-[1.05] saturate-[1.08] brightness-[1.02]"
                 />
 
                 {/* Top Floating Glassmorphism Badge */}
