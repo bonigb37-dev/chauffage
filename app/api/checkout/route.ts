@@ -7,6 +7,7 @@ import { products as catalog } from '@/lib/products';
 import { paymentProofToken } from '@/lib/payment-proof-token';
 import { mergeCatalog } from '@/lib/catalog';
 import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security';
+import { sendOrderConfirmationEmail } from '@/lib/order-email';
 
 export const runtime = 'nodejs';
 
@@ -162,6 +163,21 @@ export async function POST(request: Request) {
   if (cartDraftId) {
     try { await closeDraft(admin, cartDraftId, 'converted'); }
     catch { console.error('Cart draft cleanup unavailable after successful order'); }
+  }
+
+  // Service d'envoi de l'accusé de réception par e-mail au client
+  try {
+    const localeHeader = request.headers.get('accept-language')?.includes('de') ? 'de' : 'fr';
+    await sendOrderConfirmationEmail({
+      reference,
+      customer,
+      shipping,
+      totalCents,
+      lines: orderLines,
+      locale: localeHeader,
+    });
+  } catch (err) {
+    console.error('Order receipt email notification error:', err);
   }
 
   return NextResponse.json({ reference, orderId, totalCents, subtotalCents, delivery, vat, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey) }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
