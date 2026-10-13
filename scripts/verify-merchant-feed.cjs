@@ -22,6 +22,7 @@ const {mergeCatalog}=load('lib/catalog.ts');
 const de=JSON.parse(fs.readFileSync('translations/de.json','utf8'));
 const base='https://www.brennholz-direk.de';
 const products=mergeCatalog([]);
+assert(products.every(p => p.stock !== 0), "Current catalogue must be in stock");
 const original=buildMerchantFeed(products,base);
 const items=parseXml(original.xml);
 const noPrice = products.filter(p => !Number.isSafeInteger(p.priceAmount) || p.priceAmount <= 0);
@@ -64,7 +65,7 @@ assert.equal(variants.length,imported.length);
 for (let i=0;i<imported.length;i++) {
  const p=imported[i], v=variants[i];
  assert.equal(p.priceAmount,v.variant.priceWithTax || undefined);
- assert.deepEqual(p.gallery,v.product.images.map(a=>a.local));
+ assert.deepEqual(p.gallery,v.product.images.map(a=>a.publishedLocal ?? a.local));
  for(const image of p.gallery) assert(fs.statSync('public'+image).size>0);
  if (!p.priceAmount) assert(!items.some(item=>item.id===String(p.id)));
 }

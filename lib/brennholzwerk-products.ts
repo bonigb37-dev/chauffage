@@ -10,12 +10,12 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "33 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-ofenfertig-1.png",
+    "image": "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-ofenfertig-1.png",
+      "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-ofenfertig-2.jpg",
       "/brennholzwerk/buchenholz-ofenfertig-3.jpg",
-      "/brennholzwerk/buchenholz-ofenfertig-4.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-4-clean-20261013.png",
       "/brennholzwerk/buchenholz-ofenfertig-5.jpg"
     ],
     "articleNumber": "B-ofenfertig-33",
@@ -31,12 +31,12 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "50 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-ofenfertig-1.png",
+    "image": "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-ofenfertig-1.png",
+      "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-ofenfertig-2.jpg",
       "/brennholzwerk/buchenholz-ofenfertig-3.jpg",
-      "/brennholzwerk/buchenholz-ofenfertig-4.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-4-clean-20261013.png",
       "/brennholzwerk/buchenholz-ofenfertig-5.jpg"
     ],
     "articleNumber": "B-ofenfertig-50",
@@ -52,12 +52,12 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "25 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-ofenfertig-1.png",
+    "image": "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-ofenfertig-1.png",
+      "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-ofenfertig-2.jpg",
       "/brennholzwerk/buchenholz-ofenfertig-3.jpg",
-      "/brennholzwerk/buchenholz-ofenfertig-4.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-4-clean-20261013.png",
       "/brennholzwerk/buchenholz-ofenfertig-5.jpg"
     ],
     "articleNumber": "B-ofenfertig-25",
@@ -73,12 +73,12 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "20 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-ofenfertig-1.png",
+    "image": "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-ofenfertig-1.png",
+      "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-ofenfertig-2.jpg",
       "/brennholzwerk/buchenholz-ofenfertig-3.jpg",
-      "/brennholzwerk/buchenholz-ofenfertig-4.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-4-clean-20261013.png",
       "/brennholzwerk/buchenholz-ofenfertig-5.jpg"
     ],
     "articleNumber": "buchenscheitholz-ofenfertig-20cm",
@@ -94,9 +94,9 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "33 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Rindenarmes Premium-Buchenholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1.png",
+    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-premium-ofenfertig-1.png",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-premium-ofenfertig-2.jpg",
       "/brennholzwerk/buchenholz-premium-ofenfertig-3.jpg",
       "/brennholzwerk/buchenholz-premium-ofenfertig-4.jpg"
@@ -114,9 +114,9 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "50 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Rindenarmes Premium-Buchenholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1.png",
+    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-premium-ofenfertig-1.png",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-premium-ofenfertig-2.jpg",
       "/brennholzwerk/buchenholz-premium-ofenfertig-3.jpg",
       "/brennholzwerk/buchenholz-premium-ofenfertig-4.jpg"
@@ -134,9 +134,9 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "25 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Rindenarmes Premium-Buchenholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1.png",
+    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-premium-ofenfertig-1.png",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-premium-ofenfertig-2.jpg",
       "/brennholzwerk/buchenholz-premium-ofenfertig-3.jpg",
       "/brennholzwerk/buchenholz-premium-ofenfertig-4.jpg"
@@ -154,9 +154,9 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "20 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Rindenarmes Premium-Buchenholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1.png",
+    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-premium-ofenfertig-1.png",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-premium-ofenfertig-2.jpg",
       "/brennholzwerk/buchenholz-premium-ofenfertig-3.jpg",
       "/brennholzwerk/buchenholz-premium-ofenfertig-4.jpg"
@@ -174,9 +174,9 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "33 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1.png",
+    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-premium-vorgelagert-1.png",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-premium-vorgelagert-2.jpg",
       "/brennholzwerk/buchenholz-premium-vorgelagert-3.jpg",
       "/brennholzwerk/buchenholz-premium-vorgelagert-4.jpg"
@@ -194,9 +194,9 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "50 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1.png",
+    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-premium-vorgelagert-1.png",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-premium-vorgelagert-2.jpg",
       "/brennholzwerk/buchenholz-premium-vorgelagert-3.jpg",
       "/brennholzwerk/buchenholz-premium-vorgelagert-4.jpg"
@@ -214,9 +214,9 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "25 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1.png",
+    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-premium-vorgelagert-1.png",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-premium-vorgelagert-2.jpg",
       "/brennholzwerk/buchenholz-premium-vorgelagert-3.jpg",
       "/brennholzwerk/buchenholz-premium-vorgelagert-4.jpg"
@@ -234,9 +234,9 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "20 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1.png",
+    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-premium-vorgelagert-1.png",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-premium-vorgelagert-2.jpg",
       "/brennholzwerk/buchenholz-premium-vorgelagert-3.jpg",
       "/brennholzwerk/buchenholz-premium-vorgelagert-4.jpg"
@@ -254,12 +254,12 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "33 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Buchenscheitholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-vorgelagert-1.png",
+    "image": "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-vorgelagert-1.png",
+      "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-vorgelagert-2.jpg",
       "/brennholzwerk/buchenholz-vorgelagert-3.jpg",
-      "/brennholzwerk/buchenholz-vorgelagert-4.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-4-clean-20261013.png",
       "/brennholzwerk/buchenholz-vorgelagert-5.jpg"
     ],
     "articleNumber": "B-vorgelagert-33",
@@ -275,12 +275,12 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "50 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Buchenscheitholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-vorgelagert-1.png",
+    "image": "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-vorgelagert-1.png",
+      "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-vorgelagert-2.jpg",
       "/brennholzwerk/buchenholz-vorgelagert-3.jpg",
-      "/brennholzwerk/buchenholz-vorgelagert-4.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-4-clean-20261013.png",
       "/brennholzwerk/buchenholz-vorgelagert-5.jpg"
     ],
     "articleNumber": "B-vorgelagert-50",
@@ -296,12 +296,12 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "25 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Buchenscheitholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-vorgelagert-1.png",
+    "image": "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-vorgelagert-1.png",
+      "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-vorgelagert-2.jpg",
       "/brennholzwerk/buchenholz-vorgelagert-3.jpg",
-      "/brennholzwerk/buchenholz-vorgelagert-4.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-4-clean-20261013.png",
       "/brennholzwerk/buchenholz-vorgelagert-5.jpg"
     ],
     "articleNumber": "B-vorgelagert-25",
@@ -317,12 +317,12 @@ export const brennholzwerkProducts: Product[] = [
     "quantity": "20 cm - PackFix - 1,5 SRM",
     "price": "",
     "description": "Buchenscheitholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
-    "image": "/brennholzwerk/buchenholz-vorgelagert-1.png",
+    "image": "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
     "gallery": [
-      "/brennholzwerk/buchenholz-vorgelagert-1.png",
+      "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
       "/brennholzwerk/buchenholz-vorgelagert-2.jpg",
       "/brennholzwerk/buchenholz-vorgelagert-3.jpg",
-      "/brennholzwerk/buchenholz-vorgelagert-4.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-4-clean-20261013.png",
       "/brennholzwerk/buchenholz-vorgelagert-5.jpg"
     ],
     "articleNumber": "buchenscheitholz-vorgelagert-20cm",

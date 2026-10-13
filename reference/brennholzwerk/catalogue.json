@@ -108,7 +108,8 @@
       "images": [
         {
           "local": "/brennholzwerk/buchenholz-ofenfertig-1.png",
-          "source": "https://www.brennholzwerk.de/vendure-assets/preview/2a/buchenscheitholz__02__preview.png"
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/2a/buchenscheitholz__02__preview.png",
+          "publishedLocal": "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png"
         },
         {
           "local": "/brennholzwerk/buchenholz-ofenfertig-2.jpg",
@@ -120,7 +121,8 @@
         },
         {
           "local": "/brennholzwerk/buchenholz-ofenfertig-4.jpg",
-          "source": "https://www.brennholzwerk.de/vendure-assets/preview/1d/buchenholz-ofenfertig-03__02__preview.jpg"
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/1d/buchenholz-ofenfertig-03__02__preview.jpg",
+          "publishedLocal": "/brennholzwerk/buchenholz-ofenfertig-4-clean-20261013.png"
         },
         {
           "local": "/brennholzwerk/buchenholz-ofenfertig-5.jpg",
@@ -181,7 +183,8 @@
       "images": [
         {
           "local": "/brennholzwerk/buchenholz-premium-ofenfertig-1.png",
-          "source": "https://www.brennholzwerk.de/vendure-assets/preview/28/premium-auslege__02__preview.png"
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/28/premium-auslege__02__preview.png",
+          "publishedLocal": "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png"
         },
         {
           "local": "/brennholzwerk/buchenholz-premium-ofenfertig-2.jpg",
@@ -250,7 +253,8 @@
       "images": [
         {
           "local": "/brennholzwerk/buchenholz-premium-vorgelagert-1.png",
-          "source": "https://www.brennholzwerk.de/vendure-assets/preview/66/premium-auslege__preview.png"
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/66/premium-auslege__preview.png",
+          "publishedLocal": "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png"
         },
         {
           "local": "/brennholzwerk/buchenholz-premium-vorgelagert-2.jpg",
@@ -319,7 +323,8 @@
       "images": [
         {
           "local": "/brennholzwerk/buchenholz-vorgelagert-1.png",
-          "source": "https://www.brennholzwerk.de/vendure-assets/preview/2a/buchenscheitholz__02__preview.png"
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/2a/buchenscheitholz__02__preview.png",
+          "publishedLocal": "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png"
         },
         {
           "local": "/brennholzwerk/buchenholz-vorgelagert-2.jpg",
@@ -331,7 +336,8 @@
         },
         {
           "local": "/brennholzwerk/buchenholz-vorgelagert-4.jpg",
-          "source": "https://www.brennholzwerk.de/vendure-assets/preview/09/buchenholz-vorgelagert-03__02__preview.jpg"
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/09/buchenholz-vorgelagert-03__02__preview.jpg",
+          "publishedLocal": "/brennholzwerk/buchenholz-vorgelagert-4-clean-20261013.png"
         },
         {
           "local": "/brennholzwerk/buchenholz-vorgelagert-5.jpg",
@@ -415,5 +421,10 @@
         }
       ]
     }
-  ]
+  ],
+  "imageEdits": {
+    "date": "2026-10-13",
+    "purpose": "Remove reference-site branding while retaining product photographs",
+    "originalImagesPreserved": true
+  }
 }
