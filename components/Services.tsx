@@ -1,4 +1,5 @@
 ﻿import Image from 'next/image';
+import { deliveryRegions } from '@/lib/delivery-regions';
 import Link from '@/i18n/navigation';
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
@@ -6,7 +7,7 @@ import { useLocale } from 'next-intl';
 import { ArrowRight, Mail, Phone, Truck } from 'lucide-react';
 import { storeConfig, deliverySummary, deliveryAccess } from '@/lib/store-config';
 
-const regions = ['Baden-Württemberg', 'Bayern', 'Berlin', 'Brandenburg', 'Bremen', 'Hamburg', 'Hessen', 'Mecklenburg-Vorpommern', 'Niedersachsen', 'Nordrhein-Westfalen', 'Rheinland-Pfalz', 'Saarland', 'Sachsen', 'Sachsen-Anhalt', 'Schleswig-Holstein', 'Thüringen'];
+
 
 export default function Services() {
   const locale = useLocale() as Locale;
@@ -28,7 +29,7 @@ export default function Services() {
         </div>
         <div className="mt-12 grid gap-8 border-t border-white/15 pt-10 lg:grid-cols-[0.7fr_1.3fr]">
           <div><p className="text-sm font-bold uppercase tracking-widest text-orange-400">Régions</p><h3 className="mt-3 text-2xl font-black">Livraison dans les 16 Länder</h3><p className="mt-4 leading-7 text-stone-300">{deliveryAccess}</p></div>
-          <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{regions.map(region => <li key={region} className="flex items-center rounded-2xl border border-white/10 bg-white/95 px-4 py-4 text-sm font-bold text-stone-900">{region}</li>)}</ul>
+          <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{deliveryRegions.map(region => <li key={region.slug}><Link href={`/livraison/${region.slug}`} className="flex h-full items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/95 px-4 py-4 text-sm font-bold text-stone-900 transition hover:bg-orange-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-400">{region.name}<ArrowRight size={16} className="shrink-0 text-orange-600" /></Link></li>)}</ul>
         </div>
         <div className="mt-10 flex flex-col gap-5 rounded-2xl border border-white/15 bg-white/5 p-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
           <span className="font-bold">{storeConfig.name}</span>
