@@ -7,7 +7,7 @@ Flux : https://www.brennholz-direk.de/google-merchant.xml
 
 - Enseigne : Bren-nholz — Leylines Park.
 - Responsable : Leslynes Moser.
-- Siège : Aarstraße 5a, 35756 Mittenaar, Deutschland.
+- Siège : Aarstraße 5, 35756 Mittenaar, Deutschland.
 - TVA : DE300812888.
 - Numéro d’enregistrement déclaré par le commerçant : 3425023476.
 - Téléphone : +49 176 68417729.
@@ -25,7 +25,7 @@ Les contrôles du catalogue portent sur 75 produits avec prix : concordance tech
 
 ## Informations à aligner dans Merchant Center
 
-Paramètres → Infos sur l’entreprise → Modifier les infos sur l’entreprise : saisir les coordonnées correspondant réellement aux documents officiels et aux informations publiées sur le site. Adresse : Aarstraße 5a ; code postal 35756 ; ville Mittenaar ; pays Allemagne. Vérifier aussi l’identité du vendeur et le profil de paiement. Ces paramètres du compte Google n’ont pas été modifiés par Codex.
+Paramètres → Infos sur l’entreprise → Modifier les infos sur l’entreprise : saisir les coordonnées correspondant réellement aux documents officiels et aux informations publiées sur le site. Adresse : Aarstraße 5 ; code postal 35756 ; ville Mittenaar ; pays Allemagne. Vérifier aussi l’identité du vendeur et le profil de paiement. Ces paramètres du compte Google n’ont pas été modifiés par Codex.
 
 ## Examen en cours
 
@@ -35,7 +35,7 @@ Le commerçant indique avoir demandé un examen le 13 octobre 2026 pour « Décl
 
 Bonjour,
 
-Mon site https://www.brennholz-direk.de a été corrigé après le signalement « Déclarations trompeuses ou déceptives ». Les coordonnées publiées sont désormais celles que je déclare pour mon activité en Allemagne : responsable Leslynes Moser, Aarstraße 5a, 35756 Mittenaar, TVA DE300812888. Les anciennes mentions néerlandaises ont été retirées. Les avis, notes et badges sans justificatif ont été supprimés ; les mentions « illustration » ont été retirées des photos à ma demande, car je déclare qu’elles représentent mon entreprise.
+Mon site https://www.brennholz-direk.de a été corrigé après le signalement « Déclarations trompeuses ou déceptives ». Les coordonnées publiées sont désormais celles que je déclare pour mon activité en Allemagne : responsable Leslynes Moser, Aarstraße 5, 35756 Mittenaar, TVA DE300812888. Les anciennes mentions néerlandaises ont été retirées. Les avis, notes et badges sans justificatif ont été supprimés ; les mentions « illustration » ont été retirées des photos à ma demande, car je déclare qu’elles représentent mon entreprise.
 
 Mon premier examen a été demandé le 13 octobre 2026. Merci de préciser les points encore non conformes et les justificatifs nécessaires. Après concordance des données du compte avec mes documents officiels et le site, je souhaite demander un nouvel examen dès que mon compte sera éligible.
 

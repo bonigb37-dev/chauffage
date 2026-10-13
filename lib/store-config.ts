@@ -9,10 +9,10 @@ export const storeConfig = {
   legalForm: '',
   registrationNumber: '3425023476',
   legalRepresentatives: 'Leslynes Moser',
-  address: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
-  warehouseAddress: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
+  address: 'Aarstraße 5, 35756 Mittenaar, Deutschland',
+  warehouseAddress: 'Aarstraße 5, 35756 Mittenaar, Deutschland',
   vatNumber: 'DE300812888',
-  returnAddress: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
+  returnAddress: 'Aarstraße 5, 35756 Mittenaar, Deutschland',
   returnCosts: 'Les frais de retour sont pris en charge par Bren-nholz, y compris pour les palettes.',
   bankHolderRelationship: 'Ce compte est utilisé par la comptable pour encaisser les commandes de Bren-nholz.',
 };
