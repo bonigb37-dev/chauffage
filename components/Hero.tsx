@@ -1,5 +1,6 @@
 'use client';
 import BrandWordmark from '@/components/BrandWordmark';
+import { useEffect, useRef } from 'react';
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -14,17 +15,52 @@ export default function Hero() {
   const brenLocale = useLocale() as Locale;
 
   const reduceMotion = useReducedMotion();
+  const fireVideo = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const video = fireVideo.current;
+    if (!video) return;
+    video.muted = true;
+    video.defaultMuted = true;
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let visible = true;
+    const update = () => {
+      video.autoplay = !preference.matches;
+      if (preference.matches || document.hidden || !visible) video.pause();
+      else void video.play().catch(() => { /* The poster remains visible if autoplay is unavailable. */ });
+    };
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; update(); });
+    observer.observe(video);
+    document.addEventListener('visibilitychange', update);
+    preference.addEventListener('change', update);
+    update();
+    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update); preference.removeEventListener('change', update); video.pause(); };
+  }, []);
 
   return localizeNode((
     <section data-analytics-section="hero" className="relative isolate overflow-hidden bg-[#fffaf5]">
       <Image
-        src="/hero-feu-20261013.jpg"
+        src="/hero-fire-poster-20261013.jpg"
         alt=""
         fill
         priority
         sizes="100vw"
         aria-hidden="true"
         className="z-0 object-cover object-center"
+      />
+      <video
+        ref={fireVideo}
+        src="/hero-fire-loop-20261013.mp4"
+        poster="/hero-fire-poster-20261013.jpg"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+        tabIndex={-1}
+        disablePictureInPicture
+        disableRemotePlayback
+        className="hero-fire-video pointer-events-none absolute inset-0 z-0 h-full w-full object-cover object-center"
       />
       <div aria-hidden="true" className="absolute inset-0 z-[1] bg-[#fffaf5]/45 lg:bg-gradient-to-r lg:from-[#fffaf5]/90 lg:via-[#fffaf5]/45 lg:to-transparent" />
       <div className="container relative z-10 grid items-center gap-10 py-12 sm:gap-12 sm:py-16 lg:min-h-[680px] lg:grid-cols-2 lg:py-20">
