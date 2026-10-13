@@ -98,7 +98,6 @@
   "La création d’un compte est facultative. Elle permet l’authentification et l’accès aux fonctions de votre espace client. Nous enregistrons l’e-mail, le nom fourni lors de l’inscription et des informations d’activité des comptes connectés (première et dernière activité, nombre de connexions), pour administrer les comptes et sécuriser le service sur la base de notre intérêt légitime (article 6, paragraphe 1 f).": "La création d’un compte est facultative. Elle permet l’authentification et l’accès aux fonctions de votre espace client. Nous enregistrons l’e-mail, le nom fourni lors de l’inscription et des informations d’activité des comptes connectés (première et dernière activité, nombre de connexions), pour administrer les comptes et sécuriser le service sur la base de notre intérêt légitime (article 6, paragraphe 1 f).",
   "Les formulaires de contact et de devis collectent les coordonnées et le contenu que vous fournissez pour répondre à votre demande. Les justificatifs de virement servent uniquement à rapprocher un paiement de sa commande. Masquez les informations bancaires sans rapport avec celle-ci. Un justificatif ne constitue pas une confirmation de réception des fonds.": "Les formulaires de contact et de devis collectent les coordonnées et le contenu que vous fournissez pour répondre à votre demande. Les justificatifs de virement servent uniquement à rapprocher un paiement de sa commande. Masquez les informations bancaires sans rapport avec celle-ci. Un justificatif ne constitue pas une confirmation de réception des fonds.",
   "Prestataires et destinataires": "Prestataires et destinataires",
-  "Vercel assure l’hébergement du site et peut traiter des données techniques telles que l’adresse IP et les journaux de requêtes. Un prestataire technique fournit les services d’authentification des comptes, de base de données et de stockage privé des justificatifs. Les administrateurs habilités et la comptabilité accèdent aux données nécessaires à leurs missions. Le transporteur reçoit les coordonnées nécessaires à la livraison.": "Vercel assure l’hébergement du site et peut traiter des données techniques telles que l’adresse IP et les journaux de requêtes. Un prestataire technique fournit les services d’authentification des comptes, de base de données et de stockage privé des justificatifs. Les administrateurs habilités et la comptabilité accèdent aux données nécessaires à leurs missions. Le transporteur reçoit les coordonnées nécessaires à la livraison.",
   "Lorsque la recherche d’adresse est activée, la rue et la ville saisies sont transmises à Geoapify afin de proposer des adresses en Allemagne. Vous pouvez saisir votre adresse manuellement. Les données cartographiques proviennent notamment d’OpenStreetMap.": "Lorsque la recherche d’adresse est activée, la rue et la ville saisies sont transmises à Geoapify afin de proposer des adresses en Allemagne. Vous pouvez saisir votre adresse manuellement. Les données cartographiques proviennent notamment d’OpenStreetMap.",
   "Si le service d’accusé de réception par e-mail est configuré, Resend traite le nom, l’adresse e-mail et le contenu de votre déclaration de rétractation pour vous en envoyer une copie. Les régions d’hébergement, les sous-traitants ultérieurs et les garanties de transfert hors de l’Espace économique européen doivent être précisés par l’exploitant selon la configuration effective de ses prestataires. Aucun transfert ne dispense des garanties requises par le RGPD.": "Si le service d’accusé de réception par e-mail est configuré, Resend traite le nom, l’adresse e-mail et le contenu de votre déclaration de rétractation pour vous en envoyer une copie. Les régions d’hébergement, les sous-traitants ultérieurs et les garanties de transfert hors de l’Espace économique européen doivent être précisés par l’exploitant selon la configuration effective de ses prestataires. Aucun transfert ne dispense des garanties requises par le RGPD.",
   "Stockage dans votre navigateur": "Stockage dans votre navigateur",
@@ -111,7 +110,6 @@
   "Adressez votre demande à": "Adressez votre demande à",
   "ou via le": "ou via le",
   "formulaire de contact": "formulaire de contact",
-  "Autoriteit Persoonsgegevens aux Pays-Bas": "Autoriteit Persoonsgegevens aux Pays-Bas",
   "Devis pour vos combustibles bois | Bren-nholz": "Devis pour vos combustibles bois | Bren-nholz",
   "Demandez un devis pour vos palettes et volumes de bois de chauffage, granulés et briquettes. Indiquez les produits souhaités et votre adresse en Allemagne.": "Demandez un devis pour vos palettes et volumes de bois de chauffage, granulés et briquettes. Indiquez les produits souhaités et votre adresse en Allemagne.",
   "Impossible de joindre le serveur. Veuillez réessayer plus tard.": "Impossible de joindre le serveur. Veuillez réessayer plus tard.",
@@ -570,7 +568,6 @@
   "Raison sociale": "Raison sociale",
   "— enseigne": "— enseigne",
   "Forme juridique": "Forme juridique",
-  "Numéro d’enregistrement KvK (Pays-Bas)": "Numéro d’enregistrement KvK (Pays-Bas)",
   "Représentants légaux": "Représentants légaux",
   "Siège social": "Siège social",
   "Entrepôt et logistique en Allemagne": "Entrepôt et logistique en Allemagne",
@@ -1149,7 +1146,6 @@
   "Données personnelles et droit applicable": "Données personnelles et droit applicable",
   "Le traitement des données est décrit dans la politique de confidentialité, accessible ci-dessous. Le droit allemand s’applique, sans priver un consommateur des protections impératives qui lui seraient applicables. Les règles de compétence des juridictions restent celles prévues par la loi.": "Le traitement des données est décrit dans la politique de confidentialité, accessible ci-dessous. Le droit allemand s’applique, sans priver un consommateur des protections impératives qui lui seraient applicables. Les règles de compétence des juridictions restent celles prévues par la loi.",
   "Catalogue indisponible": "Catalogue indisponible",
-  "Société de droit néerlandais, enregistrée auprès de la Chambre de commerce des Pays-Bas": "Société de droit néerlandais, enregistrée auprès de la Chambre de commerce des Pays-Bas",
   "Aarstraße 5a, 35756 Mittenaar, Deutschland": "Aarstraße 5a, 35756 Mittenaar, Deutschland",
   "Les frais de retour sont pris en charge par Bren-nholz, y compris pour les palettes.": "Les frais de retour sont pris en charge par Bren-nholz, y compris pour les palettes.",
   "Ce compte est utilisé par la comptable pour encaisser les commandes de Bren-nholz.": "Ce compte est utilisé par la comptable pour encaisser les commandes de Bren-nholz.",
@@ -1442,5 +1438,7 @@
   "Dichte Buchenholz-Endstücke zur Gluterhaltung. Kammergetrocknet, unregelmäßige Größen. PackFix mit 1,5 SRM auf Palette.": "Morceaux irréguliers de hêtre séché en chambre pour maintenir les braises. PackFix de 1,5 SRM sur palette.",
   "Holzvergaser-Holz": "Holzvergaser-Holz",
   "Buchenholz für Holzvergaser, kammergetrocknet. Unterschiedlich große Stammendstücke, 1,5 SRM auf Palette. Aktuell nicht verfügbar.": "Bois de hêtre séché pour chaudière à gazéification, morceaux de tailles variables. Palette de 1,5 SRM. Actuellement indisponible.",
-  "Bois de hêtre": "Bois de hêtre"
+  "Bois de hêtre": "Bois de hêtre",
+  "Un prestataire technique fournit les services d’authentification des comptes, de base de données et de stockage privé des justificatifs. Les administrateurs habilités et la comptabilité accèdent aux données nécessaires à leurs missions. Le transporteur reçoit les coordonnées nécessaires à la livraison.": "Un prestataire technique fournit les services d’authentification des comptes, de base de données et de stockage privé des justificatifs. Les administrateurs habilités et la comptabilité accèdent aux données nécessaires à leurs missions. Le transporteur reçoit les coordonnées nécessaires à la livraison.",
+  "Mis à jour le 13 octobre 2026": "Mis à jour le 13 octobre 2026"
 }
