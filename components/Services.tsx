@@ -13,7 +13,7 @@ export default function Services() {
   const locale = useLocale() as Locale;
   return localizeNode((
     <section id="livraison" data-analytics-section="delivery" className="relative isolate scroll-mt-24 overflow-hidden bg-stone-950 py-16 text-white sm:py-24">
-      <Image src="/delivery-wood-background.png" alt="" aria-hidden="true" fill sizes="100vw" className="object-cover opacity-25" />
+      <Image src="/B5.jpg" alt="" aria-hidden="true" fill sizes="100vw" className="object-cover opacity-25" />
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-stone-950/95 via-stone-950/65 to-stone-950/35" />
       <div className="container relative">
         <div className="grid items-center gap-8 lg:grid-cols-[1fr_1.15fr]">

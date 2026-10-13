@@ -10,4 +10,4 @@ export async function generateMetadata() { return localizeMetadata(await (public
 import Hero from '@/components/Hero'; import ProductCategories from '@/components/ProductCategories'; import Products from '@/components/Products'; import Services from '@/components/Services'; import ContactCTA from '@/components/ContactCTA'; import LogisticsGallery from '@/components/LogisticsGallery';
 export default function Home(){
   const brenLocale = useLocale() as Locale;
-return localizeNode(<><main><Hero/><ProductCategories/><Products/><Services/><ContactCTA/><LogisticsGallery/></main></>, brenLocale)}
+return localizeNode(<><main><Hero/><ProductCategories/><Products/><LogisticsGallery/><Services/><ContactCTA/></main></>, brenLocale)}

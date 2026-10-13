@@ -4,11 +4,11 @@ import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 const scenes = [
   { title: 'Préparation du bois de chauffage', image: '/B1.webp' },
-  { title: 'Chargement des palettes de bois', image: '/B2.webp' },
+  { title: 'Chargement des palettes de bois', image: '/gallery-truck-loading-bren-nholz-20261013.png' },
   { title: 'Stock de bois au dépôt', image: '/B3.webp' },
   { title: 'Bois conditionné en filets', image: '/B4.webp' },
   { title: 'Stockage du bois sous abri', image: '/B5.jpg' },
-  { title: 'Livraison du bois par camion', image: '/B6.webp' },
+  { title: 'Livraison du bois par camion', image: '/gallery-truck-delivery-bren-nholz-20261013.png' },
 ];
 
 export default function LogisticsGallery() {
@@ -19,8 +19,8 @@ export default function LogisticsGallery() {
       <div className="logistics-gallery__inner">
         <div className="logistics-gallery__intro">
           <p className="logistics-gallery__eyebrow">Préparation & livraison</p>
-          <h2 id="logistics-gallery-title">La logistique des combustibles</h2>
-          <p>Un aperçu des étapes de stockage, de préparation et de livraison de nos produits.</p>
+          <h2 id="logistics-gallery-title">Aperçu de la préparation du bois de chauffage</h2>
+          <p>Voici comment votre bois de chauffage est produit – de la bûche à la livraison.</p>
         </div>
         <div className="logistics-gallery__photos">
           {scenes.map((scene) => (
