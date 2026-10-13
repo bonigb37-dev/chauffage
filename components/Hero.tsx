@@ -18,7 +18,7 @@ export default function Hero() {
   return localizeNode((
     <section data-analytics-section="hero" className="relative isolate overflow-hidden bg-[#fffaf5]">
       <Image
-        src="/BD.jpg"
+        src="/hero-feu-20261013.jpg"
         alt=""
         fill
         priority
@@ -118,13 +118,14 @@ export default function Hero() {
             </div>
             <div className="relative min-h-[430px] overflow-hidden rounded-[2rem] bg-orange-50">
               <Image
-                src="/BD.jpg"
+                src="/hero-feu-20261013.jpg"
                 alt="Bûches en feu dans un foyer de chauffage"
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
+                className="hero-fire-photo object-cover"
               />
+              <div aria-hidden="true" className="hero-fire-glow pointer-events-none absolute inset-0" />
             </div>
           </motion.div>
           <div className="absolute -bottom-3 left-2 rounded-2xl bg-white p-3 shadow-xl sm:-bottom-5 sm:-left-5 sm:p-4">

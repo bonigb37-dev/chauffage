@@ -754,3 +754,10 @@ select:-webkit-autofill:focus {
 .account-auth-container .account-alert-dark--config { background: #eff6ff; color: #1e40af; }
 
 .account-auth-container .account-alert-dark--success :is(p, button, svg) { color: #065f46; }
+
+/* A slow, seamless hearth ambience for the supplied fire photograph. */
+.hero-fire-photo { animation: hero-fire-breathe 16s ease-in-out infinite alternate; }
+.hero-fire-glow { background: radial-gradient(ellipse at 65% 65%, rgba(255, 126, 24, 0.22), transparent 70%); mix-blend-mode: screen; animation: hero-fire-warmth 5s ease-in-out infinite alternate; }
+@keyframes hero-fire-breathe { from { transform: scale(1); } to { transform: scale(1.07); } }
+@keyframes hero-fire-warmth { from { opacity: 0.25; } to { opacity: 0.65; } }
+@media (prefers-reduced-motion: reduce) { .hero-fire-photo, .hero-fire-glow { animation: none; } }
