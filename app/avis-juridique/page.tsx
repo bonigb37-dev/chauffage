@@ -5,7 +5,7 @@ import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 import { publicMetadata } from '@/lib/seo';
 
-export async function generateMetadata() { return localizeMetadata(await (publicMetadata("Avis juridique — Bren-nholz", "Identité de Leylines, exploitant de Bren-nholz : siège social, représentants, entrepôt en Allemagne, numéro KvK, TVA et coordonnées de contact.", "/avis-juridique"))); }
+export async function generateMetadata() { return localizeMetadata(await (publicMetadata("Avis juridique — Bren-nholz", "Informations de Bren-nholz — Leylines Park : responsable Leslynes Moser, siège en Allemagne, TVA et coordonnées de contact.", "/avis-juridique"))); }
 
 import LegalNotice from '@/components/LegalNotice';
 

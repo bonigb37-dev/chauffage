@@ -5,7 +5,7 @@ import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 import { publicMetadata } from '@/lib/seo';
 
-export async function generateMetadata() { return localizeMetadata(await (publicMetadata("À propos de Bren-nholz — Leylines Park : combustibles bois en Allemagne", "Découvrez Bren-nholz — Leylines Park, enseigne de Leylines, son catalogue de combustibles bois et ses informations de contact pour vos achats en Allemagne.", "/a-propos"))); }
+export async function generateMetadata() { return localizeMetadata(await (publicMetadata("À propos de Bren-nholz — Leylines Park : combustibles bois en Allemagne", "Découvrez Bren-nholz — Leylines Park, son catalogue de combustibles bois et ses informations de contact en Allemagne.", "/a-propos"))); }
 
 import Link from '@/i18n/navigation';
 import Image from 'next/image';

@@ -17,10 +17,10 @@ export default function LegalNotice() {
             <h2 data-original-content className="text-lg font-bold text-gray-950">{storeConfig.name}</h2>
             <dl className="mt-4 space-y-4 text-sm leading-6 text-gray-700">
               <div><dt className="font-semibold text-gray-950">Nom commercial :</dt><dd data-original-content>{storeConfig.name}</dd></div>
-              <div><dt className="font-semibold text-gray-950">Exploitant :</dt><dd data-original-content>{storeConfig.legalName}</dd></div>
-              <div><dt className="font-semibold text-gray-950">Forme juridique</dt><dd>{storeConfig.legalForm}</dd></div>
-              <div><dt className="font-semibold text-gray-950">Numéro d’enregistrement KvK (Pays-Bas)</dt><dd>{storeConfig.registrationNumber}</dd></div>
-              <div><dt className="font-semibold text-gray-950">Représentants légaux</dt><dd>{storeConfig.legalRepresentatives}</dd></div>
+              <div><dt className="font-semibold text-gray-950">Exploitant et responsable :</dt><dd data-original-content>{storeConfig.legalName}</dd></div>
+              {storeConfig.legalForm && <div><dt className="font-semibold text-gray-950">Forme juridique</dt><dd>{storeConfig.legalForm}</dd></div>}
+              {storeConfig.registrationNumber && <div><dt className="font-semibold text-gray-950">Numéro d’immatriculation</dt><dd>{storeConfig.registrationNumber}</dd></div>}
+              
               <div><dt className="font-semibold text-gray-950">Siège social</dt><dd><address className="not-italic">{storeConfig.address}</address></dd></div>
               <div><dt className="font-semibold text-gray-950">Entrepôt et logistique en Allemagne</dt><dd><address className="not-italic">{storeConfig.warehouseAddress}</address></dd></div>
               <div><dt className="font-semibold text-gray-950">Contact</dt><dd><a href={`mailto:${storeConfig.email}`} className="break-all text-orange-700 underline underline-offset-4">{storeConfig.email}</a></dd></div>
