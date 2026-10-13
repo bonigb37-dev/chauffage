@@ -5,7 +5,7 @@ import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 import { ArrowRight, Mail, Phone, Truck } from 'lucide-react';
-import { storeConfig, deliverySummary, deliveryAccess } from '@/lib/store-config';
+import { storeConfig, deliverySummary } from '@/lib/store-config';
 
 
 
@@ -28,7 +28,7 @@ export default function Services() {
           </div>
         </div>
         <div className="mt-12 grid gap-8 border-t border-white/15 pt-10 lg:grid-cols-[0.7fr_1.3fr]">
-          <div><p className="text-sm font-bold uppercase tracking-widest text-orange-400">Régions</p><h3 className="mt-3 text-2xl font-black">Livraison dans les 16 Länder</h3><p className="mt-4 leading-7 text-stone-300">{deliveryAccess}</p></div>
+          <div><p className="text-sm font-bold uppercase tracking-widest text-orange-400">Régions</p><h3 className="mt-3 text-2xl font-black">Livraison dans les 16 Länder</h3></div>
           <ul className="delivery-regions">{deliveryRegions.map(region => <li key={region.slug}><Link href={`/livraison/${region.slug}`} className="delivery-region-link"><span className="min-w-0 break-words [hyphens:auto]" lang="de">{region.name}</span><ArrowRight size={16} className="delivery-region-arrow" /></Link></li>)}</ul>
         </div>
         <div className="mt-10 flex flex-col gap-5 rounded-2xl border border-white/15 bg-white/5 p-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
