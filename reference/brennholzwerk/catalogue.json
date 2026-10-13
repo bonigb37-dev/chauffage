@@ -1,0 +1,419 @@
+{
+  "retrievedAt": "2026-10-13T14:04:51.778Z",
+  "products": [
+    {
+      "slug": "buchenholz-b-ware-ofenfertig",
+      "name": "Buchenscheitholz B-Ware, ofenfertig",
+      "url": "https://www.brennholzwerk.de/produkt/buchenholz-b-ware-ofenfertig",
+      "variants": [
+        {
+          "name": "25 cm - pro 1,5 SRM",
+          "priceWithTax": null,
+          "stockLevel": "OUT_OF_STOCK"
+        },
+        {
+          "name": "33 cm - pro 1,5 SRM",
+          "priceWithTax": null,
+          "stockLevel": "OUT_OF_STOCK"
+        }
+      ],
+      "images": [
+        {
+          "local": "/brennholzwerk/buchenholz-b-ware-ofenfertig-1.png",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/96/b-ware-holz__preview.png"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-b-ware-ofenfertig-2.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/ac/buchenholz-b-ware-ofenfertig-01__02__preview.jpg"
+        }
+      ]
+    },
+    {
+      "slug": "buchenholz-b-ware-vorgelagert",
+      "name": "Buchenscheitholz B-Ware, vorgelagert",
+      "url": "https://www.brennholzwerk.de/produkt/buchenholz-b-ware-vorgelagert",
+      "variants": [
+        {
+          "name": "25 cm - pro 1,5 SRM",
+          "priceWithTax": null,
+          "stockLevel": "OUT_OF_STOCK"
+        },
+        {
+          "name": "33 cm - pro 1,5 SRM",
+          "priceWithTax": null,
+          "stockLevel": "OUT_OF_STOCK"
+        }
+      ],
+      "images": [
+        {
+          "local": "/brennholzwerk/buchenholz-b-ware-vorgelagert-1.png",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/96/b-ware-holz__preview.png"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-b-ware-vorgelagert-2.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/52/buchenholz-b-ware-vorgelagert-01__02__preview.jpg"
+        }
+      ]
+    },
+    {
+      "slug": "buchenholz-ofenfertig",
+      "name": "Buchenscheitholz, ofenfertig",
+      "url": "https://www.brennholzwerk.de/produkt/buchenholz-ofenfertig",
+      "variants": [
+        {
+          "id": "104",
+          "name": "ca. 33 cm - pro 1,5 SRM",
+          "sku": "B-ofenfertig-33",
+          "priceWithTax": 19200,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "105",
+          "name": "ca. 50 cm - pro 1,5 SRM",
+          "sku": "B-ofenfertig-50",
+          "priceWithTax": 19200,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "103",
+          "name": "ca. 25 cm - pro 1,5 SRM",
+          "sku": "B-ofenfertig-25",
+          "priceWithTax": 19950,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "102",
+          "name": "ca. 20 cm - pro 1,5 SRM",
+          "sku": "buchenscheitholz-ofenfertig-20cm",
+          "priceWithTax": 21450,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        }
+      ],
+      "images": [
+        {
+          "local": "/brennholzwerk/buchenholz-ofenfertig-1.png",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/2a/buchenscheitholz__02__preview.png"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-ofenfertig-2.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/77/buchenholz-ofenfertig-01__02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-ofenfertig-3.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/85/buchenholz-ofenfertig-02__02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-ofenfertig-4.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/1d/buchenholz-ofenfertig-03__02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-ofenfertig-5.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/85/buchenholz-ofenfertig-04__02__preview.jpg"
+        }
+      ]
+    },
+    {
+      "slug": "buchenholz-premium-ofenfertig",
+      "name": "Buchenscheitholz Premium, ofenfertig",
+      "url": "https://www.brennholzwerk.de/produkt/buchenholz-premium-ofenfertig",
+      "variants": [
+        {
+          "id": "96",
+          "name": "ca. 33 cm - pro 1,5 SRM",
+          "sku": "buchenscheitholz-ofenfertig-premium-auslese-33cm",
+          "priceWithTax": 22500,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "97",
+          "name": "ca. 50 cm - pro 1,5 SRM",
+          "sku": "buchenscheitholz-ofenfertig-premium-auslese-50cm",
+          "priceWithTax": 22500,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "95",
+          "name": "ca. 25 cm - pro 1,5 SRM",
+          "sku": "buchenscheitholz-ofenfertig-premium-auslese-25cm",
+          "priceWithTax": 23250,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "94",
+          "name": "ca. 20 cm - pro 1,5 SRM",
+          "sku": "buchenscheitholz-ofenfertig-premium-auslese-20cm",
+          "priceWithTax": 24750,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        }
+      ],
+      "images": [
+        {
+          "local": "/brennholzwerk/buchenholz-premium-ofenfertig-1.png",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/28/premium-auslege__02__preview.png"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-premium-ofenfertig-2.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/64/buchenholz-premium-ofenfertig-02__02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-premium-ofenfertig-3.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/29/buchenholz-premium-ofenfertig-03__02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-premium-ofenfertig-4.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/c5/buchenholz-premium-ofenfertig-04__02__preview.jpg"
+        }
+      ]
+    },
+    {
+      "slug": "buchenholz-premium-vorgelagert",
+      "name": "Buchenscheitholz Premium, vorgelagert",
+      "url": "https://www.brennholzwerk.de/produkt/buchenholz-premium-vorgelagert",
+      "variants": [
+        {
+          "id": "100",
+          "name": "ca. 33 cm - pro 1,5 SRM",
+          "sku": "buchenscheitholz-vorgelagert-premium-auslese-33cm",
+          "priceWithTax": 19500,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "101",
+          "name": "ca. 50 cm - pro 1,5 SRM",
+          "sku": "buchenscheitholz-vorgelagert-premium-auslese-50cm",
+          "priceWithTax": 19500,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "99",
+          "name": "ca. 25 cm - pro 1,5 SRM",
+          "sku": "buchenscheitholz-vorgelagert-premium-auslese-25cm",
+          "priceWithTax": 20250,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "98",
+          "name": "ca. 20 cm - pro 1,5 SRM",
+          "sku": "buchenscheitholz-vorgelagert-premium-auslese-20cm",
+          "priceWithTax": 21750,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        }
+      ],
+      "images": [
+        {
+          "local": "/brennholzwerk/buchenholz-premium-vorgelagert-1.png",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/66/premium-auslege__preview.png"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-premium-vorgelagert-2.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/3d/buchenholz-premium-vorgelagert-02__02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-premium-vorgelagert-3.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/b0/buchenholz-premium-vorgelagert-03__02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-premium-vorgelagert-4.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/61/buchenholz-premium-vorgelagert-04__02__preview.jpg"
+        }
+      ]
+    },
+    {
+      "slug": "buchenholz-vorgelagert",
+      "name": "Buchenscheitholz, vorgelagert",
+      "url": "https://www.brennholzwerk.de/produkt/buchenholz-vorgelagert",
+      "variants": [
+        {
+          "id": "108",
+          "name": "ca. 33 cm - pro 1,5 SRM",
+          "sku": "B-vorgelagert-33",
+          "priceWithTax": 16200,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "109",
+          "name": "ca. 50 cm - pro 1,5 SRM",
+          "sku": "B-vorgelagert-50",
+          "priceWithTax": 16200,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "107",
+          "name": "ca. 25 cm - pro 1,5 SRM",
+          "sku": "B-vorgelagert-25",
+          "priceWithTax": 16950,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        },
+        {
+          "id": "106",
+          "name": "ca. 20 cm - pro 1,5 SRM",
+          "sku": "buchenscheitholz-vorgelagert-20cm",
+          "priceWithTax": 18450,
+          "currencyCode": "EUR",
+          "stockLevel": "IN_STOCK",
+          "taxRatePercent": 7,
+          "baseUnit": "SRM",
+          "baseQuantity": 1.5
+        }
+      ],
+      "images": [
+        {
+          "local": "/brennholzwerk/buchenholz-vorgelagert-1.png",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/2a/buchenscheitholz__02__preview.png"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-vorgelagert-2.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/ee/buchenholz-vorgelagert-01__02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-vorgelagert-3.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/b2/buchenholz-vorgelagert-02__02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-vorgelagert-4.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/09/buchenholz-vorgelagert-03__02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/buchenholz-vorgelagert-5.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/5a/buchenholz-vorgelagert-04__02__preview.jpg"
+        }
+      ]
+    },
+    {
+      "slug": "gluthalter",
+      "name": "Gluthalter",
+      "url": "https://www.brennholzwerk.de/produkt/gluthalter",
+      "variants": [
+        {
+          "name": "1,5 SRM",
+          "priceWithTax": null,
+          "stockLevel": "OUT_OF_STOCK"
+        }
+      ],
+      "images": [
+        {
+          "local": "/brennholzwerk/gluthalter-1.png",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/31/gluthalter__preview.png"
+        },
+        {
+          "local": "/brennholzwerk/gluthalter-2.png",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/b2/firefly_geminiflash_setze-dieses-produkt-aus-referenzbild-2-samt-palette-nichts-am-produkt-veraendern-in-833357__preview.png"
+        },
+        {
+          "local": "/brennholzwerk/gluthalter-3.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/d4/gluthalter-01__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/gluthalter-4.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/1e/gluthalter-02__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/gluthalter-5.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/3b/gluthalter-03__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/gluthalter-6.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/db/gluthalter-04__preview.jpg"
+        }
+      ]
+    },
+    {
+      "slug": "holzvergaser-holz",
+      "name": "Holzvergaser-Holz",
+      "url": "https://www.brennholzwerk.de/produkt/holzvergaser-holz",
+      "variants": [
+        {
+          "name": "1,5 SRM",
+          "priceWithTax": null,
+          "stockLevel": "OUT_OF_STOCK"
+        }
+      ],
+      "images": [
+        {
+          "local": "/brennholzwerk/holzvergaser-holz-1.png",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/ba/holzvergaser-holz__preview.png"
+        },
+        {
+          "local": "/brennholzwerk/holzvergaser-holz-2.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/b6/holzvergaser-holz-01__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/holzvergaser-holz-3.jpeg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/2c/holzvergaser-holz-02__preview.jpeg"
+        },
+        {
+          "local": "/brennholzwerk/holzvergaser-holz-4.jpeg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/3a/holzvergaser-holz-03__preview.jpeg"
+        },
+        {
+          "local": "/brennholzwerk/holzvergaser-holz-5.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/42/holzvergaser-holz-04__preview.jpg"
+        },
+        {
+          "local": "/brennholzwerk/holzvergaser-holz-6.jpg",
+          "source": "https://www.brennholzwerk.de/vendure-assets/preview/d0/holzvergaser-holz-05__preview.jpg"
+        }
+      ]
+    }
+  ]
+}

@@ -24,8 +24,9 @@ const base='https://www.brennholz-direk.de';
 const products=mergeCatalog([]);
 const original=buildMerchantFeed(products,base);
 const items=parseXml(original.xml);
-assert.equal(original.omitted.length,0);
-assert.equal(items.length,products.length);
+const noPrice = products.filter(p => !Number.isSafeInteger(p.priceAmount) || p.priceAmount <= 0);
+assert.deepEqual(original.omitted.map(p => p.id).sort((a,b)=>a-b), noPrice.map(p => p.id).sort((a,b)=>a-b));
+assert.equal(items.length,products.length-noPrice.length);
 assert.equal(new Set(items.map(item=>item.id)).size,items.length);
 for (const [id, source, replacement] of [
  ['5', 'buches-chene.webp', 'buches-chene-20261012.webp'],
@@ -48,12 +49,24 @@ const changedItems=parseXml(buildMerchantFeed(changed,base).xml);
 assert.equal(changedItems.find(item=>item.id==='2').price,'123.45 EUR');
 assert.equal(changedItems.find(item=>item.id==='2').availability,'out_of_stock');
 assert(!changedItems.some(item=>item.id==='3'));
-const p=products[0];
+const p=products.find(product=>product.priceAmount>0 && !product.gallery?.length);
 assert.equal(buildMerchantFeed([{...p,priceAmount:undefined}],base).count,0);
 assert.equal(buildMerchantFeed([{...p,name:'Untranslated new product'}],base).count,0);
 assert.equal(buildMerchantFeed([{...p,image:'javascript:alert(1)'}],base).count,0);
 const escaped=parseXml(buildMerchantFeed([{...p,image:'/image.png?x=1&y=2'}],base).xml);
 assert.equal(escaped[0].image_link,base+'/image.png?x=1&y=2');
+const reference = JSON.parse(fs.readFileSync('reference/brennholzwerk/catalogue.json','utf8'));
+const imported = products.filter(p => p.id >= 8301 && p.id <= 8322);
+const variants = reference.products.flatMap(p => p.variants.map(v => ({ product: p, variant: v })));
+assert.equal(imported.length,22);
+assert.equal(variants.length,imported.length);
+for (let i=0;i<imported.length;i++) {
+ const p=imported[i], v=variants[i];
+ assert.equal(p.priceAmount,v.variant.priceWithTax || undefined);
+ assert.deepEqual(p.gallery,v.product.images.map(a=>a.local));
+ for(const image of p.gallery) assert(fs.statSync('public'+image).size>0);
+ if (!p.priceAmount) assert(!items.some(item=>item.id===String(p.id)));
+}
 console.log('PASS '+items.length+' products: valid parsed XML, German copy, stable IDs, prices, stock/deletion overrides, escaping, invalid records omitted, no invented identifiers.');
 async function live(){const endpoint=process.argv[2];if(!endpoint)return;
  let liveItems;

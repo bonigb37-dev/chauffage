@@ -1,3 +1,4 @@
+import { brennholzwerkProducts } from '@/lib/brennholzwerk-products';
 ﻿export type Product = {
   id: number;
   name: string;
@@ -26,6 +27,7 @@ export function productPathSegment(product: Pick<Product, 'id' | 'name'>) {
 }
 
 const catalogItems: Product[] = [
+  ...brennholzwerkProducts,
   { id: 1, name: 'Granulés de bois – sac', type: 'Granulés', quantity: 'Sac de 15 kg', price: '7,68 €', description: 'Granulés de bois conditionnés en sac de 15 kg. Consultez les exigences de votre appareil avant utilisation.', image: '/pellets-sac.webp' },
   { id: 2, name: 'Granulés EPH Premium DINplus/ENplus A1 – palette', type: 'Granulés', quantity: '65 sacs en papier · 975 kg', price: '499,00 €', priceAmount: 49900, description: 'Une palette de 65 sacs papier, soit 975 kg de granulés EPH Premium certifiés DINplus et ENplus A1.', image: '/eph-premium-palette.webp', gallery: ['/eph-premium-palette.webp', '/eph-premium-sac.webp', '/eph-premium-detail.webp'], articleNumber: '10005-975', badge: 'Produit phare' },
   { id: 3, name: 'Granulés de bois ENplus A1 – sac', type: 'Granulés', quantity: 'Sac de 15 kg', price: '5,52 €', description: 'Des granulés conditionnés en sac de 15 kg pour un stockage et un usage pratiques.', image: '/pellets-sacs-clairs.webp' },
@@ -135,5 +137,5 @@ export const products: Product[] = catalogItems.map((product) => {
   else if (product.type === 'Bois de chauffage') section = 'Bois de chauffage';
   else if ([10, 11, 40, 43, 51, 52, 53, 54, 55, 60].includes(product.id)) section = 'Briquettes';
   else section = 'Bois d’allumage';
-  return { ...product, section, priceAmount, price: priceAmount === undefined ? 'Indisponible à la vente' : euroLabel.format(priceAmount / 100) };
+  return { ...product, section: product.section ?? section, priceAmount, price: priceAmount === undefined ? 'Indisponible à la vente' : euroLabel.format(priceAmount / 100) };
 });
