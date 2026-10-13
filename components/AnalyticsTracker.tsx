@@ -27,6 +27,78 @@ export default function AnalyticsTracker() {
   const [blocked, setBlocked] = useState(false);
   const account = access.user?.id;
   useEffect(() => {
+    const tagId = 'GT-PJ5SK7JL';
+    const measurementId = 'G-RF1N5XEVC2';
+    const adsId = 'AW-18507175727';
+    const googleWindow = window as typeof window & {
+      dataLayer?: IArguments[];
+      gtag?: (...args: unknown[]) => void;
+      'ga-disable-GT-PJ5SK7JL'?: boolean;
+      'ga-disable-G-RF1N5XEVC2'?: boolean;
+    };
+    const permitted = ready && !blocked && access.verified && !access.role
+      && !!analyticsPath(pathname) && !!consent && consent.mode !== 'declined'
+      && readConsent()?.mode === consent.mode;
+    googleWindow['ga-disable-GT-PJ5SK7JL'] = !permitted;
+    googleWindow['ga-disable-G-RF1N5XEVC2'] = !permitted;
+    if (!permitted) {
+      googleWindow.gtag?.('consent', 'update', { analytics_storage: 'denied' });
+      return;
+    }
+    if (!googleWindow.gtag) {
+      googleWindow.dataLayer = googleWindow.dataLayer || [];
+      googleWindow.gtag = function (...args: unknown[]) {
+        void args;
+        // Google tag expects an Arguments object for each queued command.
+        // eslint-disable-next-line prefer-rest-params
+        googleWindow.dataLayer!.push(arguments);
+      };
+      googleWindow.gtag('consent', 'default', {
+        analytics_storage: 'denied', ad_storage: 'denied',
+        ad_user_data: 'denied', ad_personalization: 'denied',
+      });
+      googleWindow.gtag('js', new Date());
+      googleWindow.gtag('config', tagId, { send_page_view: false });
+      googleWindow.gtag('config', measurementId, { send_page_view: false });
+      googleWindow.gtag('config', adsId, { allow_ad_personalization_signals: false });
+    }
+    googleWindow.gtag('consent', 'update', { analytics_storage: 'granted' });
+    if (!document.getElementById('google-tag')) {
+      const script = document.createElement('script');
+      script.id = 'google-tag';
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=' + tagId;
+      document.head.appendChild(script);
+    }
+    googleWindow.gtag('event', 'page_view', {
+      send_to: measurementId, page_path: pathname,
+      page_location: location.origin + pathname, page_title: document.title,
+    });
+    const commercialConversion = (event: Event) => {
+      const detail = (event as CustomEvent<{ kind?: AnalyticsKind }>).detail;
+      if ((detail?.kind !== 'quote_sent' && detail?.kind !== 'order_sent') || readConsent()?.mode !== consent?.mode) return;
+      if (navigator.doNotTrack === '1' || (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl) return;
+      googleWindow.gtag?.('event', 'conversion', {
+        send_to: detail.kind === 'order_sent'
+          ? 'AW-18507175727/rLf9CN75spsdEK-u9PhE'
+          : 'AW-18507175727/uJ_kCIPdp5sdEK-u9PhE',
+      });
+    };
+    window.addEventListener('bren-analytics-action', commercialConversion);
+    const stop = () => {
+      googleWindow['ga-disable-GT-PJ5SK7JL'] = true;
+      googleWindow['ga-disable-G-RF1N5XEVC2'] = true;
+      googleWindow.gtag?.('consent', 'update', { analytics_storage: 'denied' });
+    };
+    const expiryTimer = setInterval(() => {
+      if (readConsent()?.mode !== consent?.mode) stop();
+    }, 1000);
+    return () => {
+      window.removeEventListener('bren-analytics-action', commercialConversion);
+      clearInterval(expiryTimer); stop();
+    };
+  }, [pathname, ready, consent, blocked, access.verified, access.role]);
+  useEffect(() => {
     const saved = readConsent(); setConsent(saved); setLinked(saved?.mode === 'linked'); setReady(true); setOpen(!saved);
     setBlocked(navigator.doNotTrack === '1' || (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true);
     const settings = () => { const saved = readConsent(); setOpen(true); setCustomizing(true); setStatistics(!!saved && saved.mode !== 'declined'); setLinked(saved?.mode === 'linked'); };

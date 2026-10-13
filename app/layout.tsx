@@ -1,9 +1,8 @@
 import { localizeMetadata } from '@/lib/seo';
-﻿import type { Viewport } from 'next';
+import type { Viewport } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import TopTrustBanner from '@/components/TopTrustBanner';
-import AllReviewsModal from '@/components/AllReviewsModal';
 import Footer from '@/components/Footer';
 import SupportHelpButton from '@/components/SupportHelpButton';
 import { CartProvider } from '@/components/CartProvider';
@@ -22,7 +21,7 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata() { return localizeMetadata(await ({
   metadataBase: new URL(siteUrl),
   title: 'Bren-nholz — Granulés, bois de chauffage & briquettes',
-  description: 'Découvrez nos granulés de bois, bûches, briquettes et produits d’allumage. Catalogue et demande de devis.',
+  description: 'Découvrez nos granulés de bois, bûches, briquettes et produits d'allumage. Catalogue et commande en ligne.',
 })); }
 
 export const viewport: Viewport = {
@@ -49,7 +48,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
               {children}
               <Footer />
               <SupportHelpButton />
-              <AllReviewsModal />
             </RoleAccessGuard>
           </ActionLoadingProvider>
         </CartProvider>

@@ -17,13 +17,14 @@ import {
   Shield,
   ShieldCheck,
   ShoppingBag,
+  ShoppingCart,
   Users,
   X,
 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { SIMPLE_ADMIN_PATH, SUPER_ADMIN_PATH } from '@/components/RoleAccessGuard';
 
-export type TabType = 'overview' | 'orders' | 'contacts' | 'support' | 'products' | 'analytics' | 'users' | 'audit';
+export type TabType = 'overview' | 'orders' | 'contacts' | 'support' | 'products' | 'analytics' | 'cart-drafts' | 'users' | 'audit';
 export type Role = 'admin' | 'super_admin' | 'owner';
 
 interface AdminSidebarProps {
@@ -95,6 +96,12 @@ export default function AdminSidebar({
       id: 'analytics' as TabType,
       label: 'Statistiques Visiteurs',
       icon: BarChart3,
+      badge: null,
+    },
+    {
+      id: 'cart-drafts' as TabType,
+      label: 'Paniers abandonnés',
+      icon: ShoppingCart,
       badge: null,
     },
     ...(isSuperOrOwner

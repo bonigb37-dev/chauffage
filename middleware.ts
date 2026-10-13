@@ -15,7 +15,12 @@ export function middleware(request: NextRequest) {
   }
   const nonce = btoa(crypto.randomUUID());
   const development = process.env.NODE_ENV !== 'production';
-  const connections = ["'self'"];
+  const connections = ["'self'", 'https://www.googletagmanager.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com',
+    'https://www.googleadservices.com', 'https://googleads.g.doubleclick.net',
+    'https://pagead2.googlesyndication.com', 'https://www.google.com',
+    'https://www.google.de', 'https://ad.doubleclick.net',
+    'https://www.merchant-center-analytics.goog',
+  ];
   try {
     const configured = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? '');
     if (configured.protocol === 'https:' || (development && configured.hostname === 'localhost')) {
@@ -31,6 +36,7 @@ export function middleware(request: NextRequest) {
     "img-src 'self' data: blob: https:",
     "font-src 'self' data:",
     `connect-src ${connections.join(' ')}`,
+    "frame-src 'self' https://www.googletagmanager.com",
     "object-src 'none'", "base-uri 'self'", "frame-ancestors 'none'", "form-action 'self'",
     ...(!development ? ['upgrade-insecure-requests'] : []),
   ].join('; ');
@@ -50,7 +56,7 @@ export function middleware(request: NextRequest) {
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   if (!development) response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-  if (/^\/(api|admin|super-admin|bren-gate-9f4a|compte|commande)(\/|$)/.test(stripLocale(incomingPath))) {
+  if (/^\/(api|admin|super-admin|compte|commande)(\/|$)/.test(stripLocale(incomingPath))) {
     response.headers.set('Cache-Control', 'private, no-store');
   }
   return response;

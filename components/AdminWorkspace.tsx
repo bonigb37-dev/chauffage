@@ -41,6 +41,7 @@ import AdminConfirmModal, { type ConfirmVariant } from '@/components/AdminConfir
 import SupportMessenger from '@/components/SupportMessenger';
 import SupportNotifications from '@/components/SupportNotifications';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
+import CartDraftsPanel from '@/components/CartDraftsPanel';
 
 // Types
 export type Role = 'admin' | 'super_admin' | 'owner';
@@ -1988,6 +1989,21 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
             <div className="rounded-2xl bg-white border border-stone-200/80 shadow-sm p-4 sm:p-6 overflow-hidden">
               <AnalyticsDashboard />
             </div>
+          </div>
+        )}
+
+        {/* ======================================================= */}
+        {/* TAB: PANIERS ABANDONNÉS */}
+        {/* ======================================================= */}
+        {activeTab === 'cart-drafts' && (
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-2xl font-black text-zinc-950 tracking-tight">Paniers abandonnés</h1>
+              <p className="text-sm text-zinc-500 mt-1">
+                Commandes initiées mais non finalisées par les clients.
+              </p>
+            </div>
+            <CartDraftsPanel />
           </div>
         )}
 
