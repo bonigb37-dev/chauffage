@@ -19,7 +19,7 @@ export const storeConfig = {
 
 export const whatsappUrl = `https://wa.me/${storeConfig.phoneHref.replace(/\D/g, '')}`;
 
-export const deliverySummary = 'Livraison gratuite dans toute l’Allemagne, sans exception. Livraison sous 2 à 4 jours ouvrables après réception effective du paiement. Aucun paiement au transporteur.';
+export const deliverySummary = 'Les frais de livraison en Allemagne sont calculés selon la distance routière depuis Mittenaar et ajoutés avant la confirmation de commande. Livraison sous 2 à 4 jours ouvrables après réception effective du paiement. Aucun paiement au transporteur.';
 export const deliveryAccess = 'Pour les palettes, prévoyez un accès carrossable pour le camion et une zone de déchargement ferme, plane et accessible au transpalette. Le gravier, l’herbe et les fortes pentes ne permettent pas le déplacement de la palette. Signalez toute restriction d’accès avant de commander.';
 export const paymentInstructions = 'Merci pour votre commande. Pour procéder au règlement, effectuez votre virement en indiquant la référence de commande. Votre paiement sera confirmé après réception effective des fonds, puis votre commande sera préparée pour l’expédition.';
 export const beforeOrderPaymentInstructions = 'Après validation de votre commande, effectuez votre virement en indiquant la référence de commande dans le libellé. La préparation débutera après réception effective des fonds.';

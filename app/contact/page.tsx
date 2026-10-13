@@ -93,7 +93,7 @@ export default function Contact() {
           <div className="rounded-2xl bg-gray-950 p-6 text-white sm:p-7">
             <span className="grid h-11 w-11 place-items-center rounded-xl bg-white/10 text-orange-300"><Boxes size={21}/></span>
             <h2 className="mt-5 text-xl font-black">Prêt à commander ?</h2>
-            <p className="mt-3 text-sm leading-relaxed text-stone-300">Choisissez vos produits dans notre catalogue. La livraison est incluse dans le prix des produits.</p>
+            <p className="mt-3 text-sm leading-relaxed text-stone-300">Choisissez vos produits dans notre catalogue. Les frais de livraison s’ajoutent au prix des produits et sont calculés selon votre adresse.</p>
             <Link href="/produits" className="mt-5 inline-flex items-center gap-2 font-bold text-orange-400 hover:text-white">Voir les produits <ArrowRight size={17}/></Link>
           </div>
 

@@ -75,7 +75,7 @@ const guideDetails: GuideDetail[] = [
     ], tip: 'Votre historique de consommation constitue un point de départ plus précis qu’une estimation générale.' } },
   { id: 'conditions-livraison', category: 'livraison', title: 'Livraison des palettes et accès', summary: 'Vérifiez l’accès du camion et la zone de déchargement avant la commande.', badge: 'Livraison', icon: Truck,
     content: { subtitle: 'Préparer la réception de votre palette', points: [
-      'La livraison en Allemagne est incluse dans le prix des produits. Aucun paiement supplémentaire n’est demandé par le transporteur.',
+      'Les frais de livraison en Allemagne sont calculés selon la distance depuis Mittenaar. Aucun paiement supplémentaire n’est demandé par le transporteur.',
       'Le déchargement des palettes est prévu avec un hayon et un transpalette, en bordure de propriété.',
       'Le sol doit être ferme et plan. Le gravier, l’herbe et les fortes pentes ne permettent pas le déplacement au transpalette.',
       'Signalez les restrictions d’accès et vérifiez les modalités de réception avant de commander.'

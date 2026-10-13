@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products = await getServerCatalog();
-  const pages = ['', '/produits', '/guide-pellets', '/services', '/faq', '/a-propos', '/contact', '/avis-juridique', '/agb', '/datenschutz', '/retractation'];
+  const pages = ['', '/produits', '/guide-pellets', '/services', '/frais-livraison', '/faq', '/a-propos', '/contact', '/avis-juridique', '/agb', '/datenschutz', '/retractation'];
   const entries = [
     ...deliveryRegions.map(region => ({ url: `${siteUrl}/livraison/${region.slug}` })),
     ...pages.map((path) => ({ url: `${siteUrl}${path}` })),

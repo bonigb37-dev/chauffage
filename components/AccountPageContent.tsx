@@ -36,7 +36,7 @@ import { confirmationMessage, wasEmailConfirmed } from '@/lib/auth-link';
 import { useCart } from '@/components/CartProvider';
 
 type Mode = 'signin' | 'signup' | 'forgot' | 'update';
-type OwnOrder = { id: number; reference: string; created_at: string; total_cents: number; status: string; payment_status: string; items: unknown };
+type OwnOrder = {customer?: {delivery?: {feeCents:number;distanceKm:number}}; id: number; reference: string; created_at: string; total_cents: number; status: string; payment_status: string; items: unknown };
 type OwnAddress = { id: number; label: string; recipient_name: string; street: string; postal_code: string; city: string; country_code: string };
 
 export type ParsedError = {
@@ -467,7 +467,7 @@ export default function AccountPageContent() {
       if (!mounted) return;
       const [orderResult, addressResult] = await Promise.all([
         supabaseClient.from('order_requests')
-        .select('id, reference, created_at, total_cents, status, payment_status, items')
+        .select('id, reference, created_at, total_cents, status, payment_status, items, customer')
         .eq('user_id', userId)
         .order('created_at', { ascending: false })
         .limit(50),
@@ -759,6 +759,7 @@ export default function AccountPageContent() {
                             <b className="text-slate-900">{order.reference}</b>
                             <span className="text-slate-600">{new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' }).format(order.total_cents / 100)}</span>
                           </div>
+                          {order.customer?.delivery && <p className="mt-1 text-xs text-slate-600">Frais de livraison : {new Intl.NumberFormat(brenLocale,{style:'currency',currency:'EUR'}).format(order.customer.delivery.feeCents/100)}</p>}
                           <p className="mt-1 text-xs text-slate-500">
                             {new Intl.DateTimeFormat(brenLocale, { dateStyle: 'medium' }).format(new Date(order.created_at))} · {paymentStatusLabel(order.payment_status)} · {orderStatusLabels[order.status as keyof typeof orderStatusLabels] ?? order.status}
                           </p>

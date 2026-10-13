@@ -6,7 +6,7 @@ import { useLocale } from 'next-intl';
 import ProductsPageContent from '@/components/ProductsPageContent';
 import { publicMetadata } from '@/lib/seo';
 
-export async function generateMetadata() { return localizeMetadata(await (publicMetadata('Bois de chauffage, granulés et briquettes | Bren-nholz', 'Comparez les bûches, granulés de bois, briquettes et allume-feux par format et conditionnement. Livraison incluse en Allemagne.', '/produits'))); }
+export async function generateMetadata() { return localizeMetadata(await (publicMetadata('Bois de chauffage, granulés et briquettes | Bren-nholz', 'Comparez les bûches, granulés de bois, briquettes et allume-feux par format et conditionnement. Livraison en Allemagne, frais selon la distance.', '/produits'))); }
 
 export default function ProductsPage() {
   const brenLocale = useLocale() as Locale;

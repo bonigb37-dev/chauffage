@@ -42,8 +42,8 @@ export default function DeliveryZonesModal({ isOpen, onClose }: Props) {
         <div className="flex items-start justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3.5 py-1 text-xs font-bold uppercase tracking-wider"><Truck size={14} /> Livraison en Allemagne</span>
-            <h2 id="modal-delivery-title" className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">Livraison gratuite dans toute l’Allemagne, sans exception</h2>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-orange-100 sm:text-base">La livraison est incluse dans le prix de nos produits. Aucun frais supplémentaire n’est à régler au transporteur. Communiquez votre code postal allemand pour vérifier les conditions d’accès à votre adresse.</p>
+            <h2 id="modal-delivery-title" className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">Livraison en Allemagne · Frais calculés selon la distance</h2>
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-orange-100 sm:text-base">Les frais de livraison s’ajoutent au prix de nos produits. Aucun frais supplémentaire n’est à régler au transporteur. Communiquez votre code postal allemand pour vérifier les conditions d’accès à votre adresse.</p>
           </div>
           <button type="button" onClick={onClose} aria-label="Fermer la fenêtre" className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white/20 transition hover:bg-white/30"><X size={20} /></button>
         </div>

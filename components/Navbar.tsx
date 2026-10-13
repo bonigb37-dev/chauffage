@@ -168,7 +168,7 @@ export default function Navbar() {
       <div
         className="bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 py-2 px-4 text-center text-xs sm:text-sm font-bold text-white shadow-inner z-50 relative"
       >
-        <span>Livraison gratuite dans toute l’Allemagne, sans exception · Aucun frais supplémentaire à régler au transporteur</span>
+        <span>Livraison en Allemagne · Frais calculés selon la distance · Aucun frais supplémentaire à régler au transporteur</span>
       </div>
 
       {/* Main Sticky Navbar */}

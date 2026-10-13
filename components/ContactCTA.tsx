@@ -16,7 +16,7 @@ export default function ContactCTA() {
           <div>
             <p className="font-bold uppercase tracking-[.2em] text-orange-100">Un projet d&apos;approvisionnement ?</p>
             <h2 className="mt-3 max-w-2xl text-3xl font-black sm:text-5xl">Choisissez vos combustibles et commandez en ligne.</h2>
-            <p className="mt-4 max-w-xl text-orange-50">Consultez nos produits et ajoutez vos articles au panier. La livraison est incluse dans le prix des produits.</p>
+            <p className="mt-4 max-w-xl text-orange-50">Consultez nos produits et ajoutez vos articles au panier. Les frais de livraison s’ajoutent au prix des produits et sont calculés selon votre adresse.</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link

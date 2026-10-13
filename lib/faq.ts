@@ -10,7 +10,7 @@ export const faqItems = [
   },
   {
     question: 'Combien coûtent les frais de livraison ?',
-    answer: 'La livraison est gratuite dans toute l’Allemagne, sans exception. Aucun frais de transport ne s’ajoute au montant de votre commande et aucun paiement n’est à remettre au transporteur lors de la livraison.',
+    answer: 'Les frais de livraison dépendent de la distance routière depuis Mittenaar, des produits et des quantités. Calculez-les avec votre adresse avant de confirmer la commande. Aucun paiement n’est à remettre au transporteur.',
   },
   {
     question: 'Quels sont les délais de livraison et jours de passage ?',

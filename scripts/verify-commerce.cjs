@@ -47,15 +47,20 @@ async function run() {
   mockDb = { from: () => ({ select: () => ({ in: async () => ({ data: rows, error: null }) }) }), rpc: async (_, payload) => { rpcCalls++; rpcPayload = payload; return { data: 1, error: null }; } };
   const { POST } = load('app/api/checkout/route.ts');
   const customer = { firstName: 'Test', lastName: 'Client', street: 'Teststrasse 1', postalCode: '66663', city: 'Merzig', email: 'test@example.invalid' };
-  const request = (price = 49900, quantity = 1) => new Request('https://mock.invalid/api/checkout', { method: 'POST', body: JSON.stringify({ customer, acceptedTerms: true, items: [{ productId: 2, quantity, unitPriceCents: price }] }) });
+  let deliveryToken = 'invalid';
+  const request = (price = 49900, quantity = 1) => new Request('https://mock.invalid/api/checkout', { method: 'POST', body: JSON.stringify({ customer, deliveryToken, acceptedTerms: true, items: [{ productId: 2, quantity, unitPriceCents: price }] }) });
   assert.equal((await POST(request(40000))).status, 409); assert.equal(rpcCalls, 0);
   rows = [{ product_id: 2, is_deleted: false, data: { stock: 0 } }];
   assert.equal((await POST(request())).status, 409); assert.equal(rpcCalls, 0);
   rows = [{ product_id: 2, is_deleted: false, data: { priceAmount: 12345, stock: 3 } }];
+  const savedFetch=global.fetch;process.env.GEOAPIFY_API_KEY='mock-geocoding';
+  global.fetch=async url=>{const u=new URL(url);if(u.pathname.includes('routing'))return new Response(JSON.stringify({features:[{properties:{distance:60000}}]}));const origin=u.searchParams.get('text').includes('Aar');return new Response(JSON.stringify({results:[{country_code:'de',postcode:origin?'35756':'66663',street:origin?'Aarstrasse':'Teststrasse',housenumber:origin?'5':'1',lat:50.6,lon:8.3,formatted:'Test fixture'}]}));};
+  try {deliveryToken=(await load('lib/delivery-quote-server.ts').quoteDelivery(customer,[{productId:2,quantity:2}])).token;}finally{global.fetch=savedFetch;}
   const result = await POST(request(12345, 2)); assert.equal(result.status, 201);
-  assert.equal((await result.json()).totalCents, 24690);
+  const confirmed=await result.json();assert.equal(confirmed.totalCents, 32190);assert.equal(confirmed.subtotalCents,24690);assert.equal(confirmed.delivery.feeCents,7500);assert.equal(rpcPayload.p_customer.delivery.feeCents,7500);
   assert.equal(rpcPayload.p_items[0].unit_price_cents, 12345);
   assert.equal(rpcPayload.p_user_id, null, 'Achat sans compte');
+  deliveryToken+='x';assert.equal((await POST(request(12345,2))).status,409);assert.equal(rpcCalls,1,'Invalid quote cannot create another order');
   // Le justificatif peut écrire dans Storage, jamais dans les statuts de paiement.
   const proof = fs.readFileSync('app/api/payment-proof/route.ts', 'utf8');
   assert(!/\.update\(|\.rpc\(/.test(proof));
