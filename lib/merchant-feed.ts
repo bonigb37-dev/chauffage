@@ -1,4 +1,3 @@
-import { deliveryShippingClass } from '@/lib/delivery-pricing';
 import { productPathSegment, type Product } from '@/lib/products';
 import de from '@/translations/de.json';
 
@@ -59,8 +58,7 @@ export function buildMerchantFeed(products: Product[], base: string) {
       field('condition', 'new'),
       ...(type ? [field('product_type', type)] : []),
       ...(brand ? [field('brand', brand)] : []),
-      // Destination-based rates must be configured for these labels in Merchant Center.
-      field('shipping_label', deliveryShippingClass(product)),
+      '<g:shipping><g:country>DE</g:country><g:price>0.00 EUR</g:price></g:shipping>',
       // articleNumber is a shop SKU, not a verified manufacturer MPN or GTIN.
       // Missing identifiers do not prove that identifier_exists is false.
     ].join('\n')}\n</item>`);

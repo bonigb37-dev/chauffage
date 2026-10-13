@@ -53,14 +53,14 @@ async function run() {
   rows = [{ product_id: 2, is_deleted: false, data: { stock: 0 } }];
   assert.equal((await POST(request())).status, 409); assert.equal(rpcCalls, 0);
   rows = [{ product_id: 2, is_deleted: false, data: { priceAmount: 12345, stock: 3 } }];
-  const savedFetch=global.fetch;process.env.GEOAPIFY_API_KEY='mock-geocoding';
-  global.fetch=async url=>{const u=new URL(url);if(u.pathname.includes('routing'))return new Response(JSON.stringify({features:[{properties:{distance:60000}}]}));const origin=u.searchParams.get('text').includes('Aar');return new Response(JSON.stringify({results:[{country_code:'de',postcode:origin?'35756':'66663',street:origin?'Aarstrasse':'Teststrasse',housenumber:origin?'5':'1',lat:50.6,lon:8.3,formatted:'Test fixture'}]}));};
-  try {deliveryToken=(await load('lib/delivery-quote-server.ts').quoteDelivery(customer,[{productId:2,quantity:2}])).token;}finally{global.fetch=savedFetch;}
   const result = await POST(request(12345, 2)); assert.equal(result.status, 201);
-  const confirmed=await result.json();assert.equal(confirmed.totalCents, 32190);assert.equal(confirmed.subtotalCents,24690);assert.equal(confirmed.delivery.feeCents,7500);assert.equal(rpcPayload.p_customer.delivery.feeCents,7500);
-  assert.equal(rpcPayload.p_items[0].unit_price_cents, 12345);
-  assert.equal(rpcPayload.p_user_id, null, 'Achat sans compte');
-  deliveryToken+='x';assert.equal((await POST(request(12345,2))).status,409);assert.equal(rpcCalls,1,'Invalid quote cannot create another order');
+  const confirmed=await result.json();assert.equal(confirmed.totalCents,24690);assert.equal(confirmed.subtotalCents,24690);assert.equal(confirmed.delivery.feeCents,0);assert.equal(rpcPayload.p_customer.deliveryFeeCents,0);assert(!rpcPayload.p_customer.delivery);
+  assert.equal(rpcPayload.p_items[0].unit_price_cents,12345);assert.equal(rpcPayload.p_items[0].vat_rate,7);
+  assert.equal(rpcPayload.p_user_id,null,'Guest checkout');assert.deepEqual(confirmed.vat,load('lib/vat.ts').vatSummary([{product:{id:2,type:'Bois de chauffage'},grossCents:24690}]));
+  deliveryToken+='x';assert.equal((await POST(request(12345,2))).status,201,'Legacy shipping tokens are ignored; no routing required');assert.equal(rpcCalls,2);
+  const forged=await POST(new Request('https://mock.invalid/api/checkout',{method:'POST',body:JSON.stringify({customer:{...customer,deliveryFeeCents:9999,vat:{included:false}},deliveryFeeCents:9999,vatRate:99,acceptedTerms:true,items:[{productId:2,quantity:1,unitPriceCents:12345}]})}));assert.equal(forged.status,201);assert.equal((await forged.json()).totalCents,12345);assert.equal(rpcPayload.p_customer.deliveryFeeCents,0);assert.equal(rpcPayload.p_customer.vat.included,true);
+  const standard=updated.find(p=>p.id===17);const mixed=await POST(new Request('https://mock.invalid/api/checkout',{method:'POST',body:JSON.stringify({customer,acceptedTerms:true,items:[{productId:2,quantity:1,unitPriceCents:12345},{productId:17,quantity:2,unitPriceCents:standard.priceAmount}]})}));assert.equal(mixed.status,201);const mixedResult=await mixed.json();assert.equal(mixedResult.totalCents,12345+standard.priceAmount*2);assert.deepEqual(mixedResult.vat.breakdown.map(g=>g.rate),[7,19]);assert.equal(rpcPayload.p_items[1].vat_rate,19);assert.equal(mixedResult.vat.breakdown.reduce((a,g)=>a+g.grossCents,0),mixedResult.totalCents);
+  mockDb.auth={getUser:async()=>({data:{user:{id:'user-fixture'}},error:null})};const signedIn=await POST(new Request('https://mock.invalid/api/checkout',{method:'POST',headers:{authorization:'Bearer fixture'},body:JSON.stringify({customer,acceptedTerms:true,items:[{productId:2,quantity:1,unitPriceCents:12345}]})}));assert.equal(signedIn.status,201);assert.equal(rpcPayload.p_user_id,'user-fixture');mockDb.auth.getUser=async()=>({data:{user:null},error:{message:'expired'}});assert.equal((await POST(new Request('https://mock.invalid/api/checkout',{method:'POST',headers:{authorization:'Bearer expired'},body:JSON.stringify({customer,acceptedTerms:true,items:[{productId:2,quantity:1,unitPriceCents:12345}]})}))).status,401);
   // Le justificatif peut écrire dans Storage, jamais dans les statuts de paiement.
   const proof = fs.readFileSync('app/api/payment-proof/route.ts', 'utf8');
   assert(!/\.update\(|\.rpc\(/.test(proof));

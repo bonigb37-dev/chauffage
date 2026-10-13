@@ -10,7 +10,7 @@ export const faqItems = [
   },
   {
     question: 'Combien coûtent les frais de livraison ?',
-    answer: 'Les frais de livraison dépendent de la distance routière depuis Mittenaar, des produits et des quantités. Calculez-les avec votre adresse avant de confirmer la commande. Aucun paiement n’est à remettre au transporteur.',
+    answer: 'La livraison est facturée 0,00 € pour toute commande livrée en Allemagne. Le total à payer correspond exactement à la somme des prix TTC des produits. Aucun paiement n’est à remettre au transporteur.',
   },
   {
     question: 'Quels sont les délais de livraison et jours de passage ?',

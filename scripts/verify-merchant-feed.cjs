@@ -44,7 +44,7 @@ for (const item of items.filter(item=>!['5','14','67'].includes(item.id))) {
  const product=products.find(p=>String(p.id)===item.id);
  assert.equal(item.image_link,new URL(product.gallery?.[0]??product.image,base).href);
 }
-for(const item of items){const p=products.find(p=>String(p.id)===item.id);assert.equal(item.title,de[p.name]);assert.equal(item.description,de[p.description]);assert.equal(item.price,(p.priceAmount/100).toFixed(2)+' EUR');assert.equal(item.availability,p.stock===0?'out_of_stock':'in_stock');assert(item.link.startsWith(base+'/de/produits/'));assert(item.image_link.startsWith('https://'));assert(!item.gtin&&!item.mpn&&!item.identifier_exists);assert(!item.shipping,'No misleading free-shipping override');assert.equal(item.shipping_label,load('lib/delivery-pricing.ts').deliveryShippingClass(p));assert(item.title.length<=150&&item.description.length<=5000);}
+for(const item of items){const p=products.find(p=>String(p.id)===item.id);assert.equal(item.title,de[p.name]);assert.equal(item.description,de[p.description]);assert.equal(item.price,(p.priceAmount/100).toFixed(2)+' EUR');assert.equal(item.availability,p.stock===0?'out_of_stock':'in_stock');assert(item.link.startsWith(base+'/de/produits/'));assert(item.image_link.startsWith('https://'));assert(!item.gtin&&!item.mpn&&!item.identifier_exists);assert.equal(item.shipping,'0.00 EUR');assert(!item.shipping_label);assert(item.title.length<=150&&item.description.length<=5000);}
 const changed=mergeCatalog([{product_id:2,data:{priceAmount:12345,stock:0},is_deleted:false},{product_id:3,data:{},is_deleted:true}]);
 const changedItems=parseXml(buildMerchantFeed(changed,base).xml);
 assert.equal(changedItems.find(item=>item.id==='2').price,'123.45 EUR');
@@ -77,6 +77,7 @@ async function live(){const endpoint=process.argv[2];if(!endpoint)return;
   const url=new URL(item.link);const r=await fetch(endpoint+url.pathname);assert.equal(r.status,200);const html=await r.text();assert(html.includes('lang="de"'));
   const json=html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/)?.[1];assert(json,item.id+' structured data');const product=JSON.parse(json);
   assert.equal(item.title,product.name);assert.equal(item.description,product.description);assert.equal(item.price,product.offers.price+' '+product.offers.priceCurrency);
+  assert.equal(product.offers.priceSpecification.valueAddedTaxIncluded,true);assert.equal(product.offers.shippingDetails.shippingRate.value,'0.00');assert.equal(product.offers.shippingDetails.shippingDestination.addressCountry,'DE');
   assert.equal(item.availability,product.offers.availability.endsWith('/OutOfStock')?'out_of_stock':'in_stock');
   const image=new URL(item.image_link);const imageResponse=await fetch(endpoint+image.pathname+image.search,{method:'HEAD'});assert.equal(imageResponse.status,200,item.id+' image');assert(imageResponse.headers.get('content-type')?.startsWith('image/'));
  }

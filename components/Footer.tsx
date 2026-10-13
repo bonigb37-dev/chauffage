@@ -46,7 +46,7 @@ export default function Footer() {
             </div>
             <div className="flex items-start gap-3">
               <Truck size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
-              <Link href="/frais-livraison" className="leading-6 underline">Livraison en Allemagne · Frais calculés selon la distance</Link>
+              <Link href="/frais-livraison" className="leading-6 underline">Livraison en Allemagne</Link>
             </div>
             <div className="border-t border-white/10 pt-5">
               <p className="leading-6">Une question sur un produit ou votre commande ?</p>

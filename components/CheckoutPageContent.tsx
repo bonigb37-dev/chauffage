@@ -1,13 +1,14 @@
 'use client';
-import type { DeliveryQuote } from '@/lib/delivery-quote-server';
+import { vatLabel, vatSummary } from '@/lib/vat';
 import { emitAnalytics } from '@/lib/analytics';
 import { localizeNode } from '@/i18n/copy';
 import { localizedPath, type Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
 
-import { useState, useEffect, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import Image from 'next/image';
+import IncludedVatSummary from '@/components/IncludedVatSummary';
 import Link from '@/i18n/navigation';
 import { ArrowLeft, Landmark, ShieldCheck } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
@@ -27,15 +28,13 @@ export default function CheckoutPageContent() {
   const { stopLoading } = useActionLoading();
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState('');
-  const [delivery, setDelivery] = useState<{quote: DeliveryQuote; token: string} | null>(null);
-  const cartSignature = JSON.stringify(items);
-  useEffect(() => {setDelivery(null);}, [cartSignature]);
   const [differentShipping, setDifferentShipping] = useState(false);
   const lines = items.flatMap((line) => {
     const product = products.find((item) => item.id === line.productId);
     return product ? [{ ...line, product }] : [];
   });
   const total = lines.reduce((sum, line) => sum + (line.product.priceAmount ?? 0) * line.quantity, 0);
+  const taxSummary = vatSummary(lines.map(({product,quantity})=>({product,grossCents:(product.priceAmount??0)*quantity})));
   const hasUnpricedProduct = lines.some((line) => line.product.priceAmount === undefined);
 
   async function placeOrder(event: FormEvent<HTMLFormElement>) {
@@ -44,7 +43,7 @@ export default function CheckoutPageContent() {
     if (hasUnpricedProduct) { stopLoading(); setError('Un produit ne peut plus être commandé. Actualisez votre panier.'); return; }
     const formData = new FormData(event.currentTarget);
     const details = Object.fromEntries(formData.entries()) as Record<string, string>;
-    if (delivery && !formData.has('terms')) { stopLoading(); setError('Veuillez accepter les conditions de vente avant de continuer.'); return; }
+    if (!formData.has('terms')) { stopLoading(); setError('Veuillez accepter les conditions de vente avant de continuer.'); return; }
     if (differentShipping && ['shippingFirstName', 'shippingLastName', 'shippingStreet', 'shippingPostalCode', 'shippingCity'].some((key) => !details[key]?.trim())) {
       stopLoading();
       setError('Complétez les champs obligatoires de l’adresse de livraison.');
@@ -61,13 +60,6 @@ export default function CheckoutPageContent() {
       addressLine2: details.shippingAddressLine2, postalCode: details.shippingPostalCode, city: details.shippingCity,
     } : null;
     try {
-      if (!delivery) {
-        const response = await fetch('/api/delivery-quote', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({address:shipping ?? customer,items:lines.map(({product,quantity})=>({productId:product.id,quantity}))})});
-        const result = await response.json();
-        if (!response.ok) { setError(result.error==='delivery_address_not_found'?'Adresse introuvable : vérifiez la rue, le numéro et le code postal.':'Impossible de calculer la livraison. Vérifiez votre adresse ou réessayez plus tard.'); }
-        else { setDelivery(result); }
-        setStarting(false);stopLoading();return;
-      }
       const sessionResult = supabase ? await supabase.auth.getSession() : null;
       const token = sessionResult?.data.session?.access_token;
       if (sessionResult?.error) {
@@ -78,11 +70,10 @@ export default function CheckoutPageContent() {
       }
       const response = await fetch('/api/checkout', {
         method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
-        body: JSON.stringify({ items: lines.map(({ product, quantity }) => ({ productId: product.id, quantity, unitPriceCents: product.priceAmount })), customer, shipping, deliveryToken: delivery.token, acceptedTerms: true }),
+        body: JSON.stringify({ items: lines.map(({ product, quantity }) => ({ productId: product.id, quantity, unitPriceCents: product.priceAmount })), customer, shipping, acceptedTerms: true }),
       });
-      const result = await response.json() as { reference?: string; totalCents?: number; proofToken?: string; error?: string };
+      const result = await response.json() as { reference?: string; totalCents?: number; proofToken?: string; vat?: ReturnType<typeof vatSummary>; error?: string };
       if (!response.ok || !result.reference || typeof result.totalCents !== 'number') {
-        if(response.status===409)setDelivery(null);
         stopLoading();
         setError(result.error ?? 'La demande n’a pas pu être enregistrée. Réessayez plus tard.');
         setStarting(false);
@@ -92,7 +83,7 @@ export default function CheckoutPageContent() {
       emitAnalytics('order_sent');
       const confirmedTotal = result.totalCents;
       sessionStorage.setItem('thermopro-pending-order', JSON.stringify({
-        reference, proofToken: result.proofToken, total: confirmedTotal, delivery: delivery.quote, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
+        reference, proofToken: result.proofToken, total: confirmedTotal, delivery: {feeCents:0}, vat: result.vat, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
         customer: { firstName: details.firstName, lastName: details.lastName, email: details.email },
       }));
       window.location.assign(localizedPath(`/commande/succes?reference=${encodeURIComponent(reference)}`, brenLocale));
@@ -109,7 +100,7 @@ export default function CheckoutPageContent() {
   return localizeNode((
     <main className="min-h-[60vh] bg-[#fffbea]">
       <section className="border-b border-stone-200 bg-white py-8 sm:py-10"><div className="container"><Link href="/panier" className="inline-flex items-center gap-2 text-sm font-bold text-gray-500 hover:text-orange-600"><ArrowLeft size={16}/> Retour au panier</Link><p className="mt-6 text-sm font-bold uppercase tracking-[.18em] text-orange-600">Paiement par virement</p><h1 className="mt-2 text-3xl font-black sm:text-4xl">Commande</h1></div></section>
-      <form onSubmit={placeOrder} onChange={(e) => {if(e.target.getAttribute('name') !== 'terms')setDelivery(null);}} className="container grid gap-8 py-9 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-12">
+      <form onSubmit={placeOrder} className="container grid gap-8 py-9 lg:grid-cols-[minmax(0,1fr)_420px] lg:py-12">
         <div className="space-y-8">
           <section className="rounded-2xl border border-stone-200 bg-white p-5 sm:p-8">
             <h2 className="border-b border-stone-200 pb-4 font-serif text-2xl font-bold">Données de facturation</h2>
@@ -141,10 +132,11 @@ export default function CheckoutPageContent() {
             <PaymentMethods compact />
           </section>
         </div>
-        <aside className="h-fit rounded-2xl border-2 border-stone-200 bg-white p-5 sm:p-7 lg:sticky lg:top-6"><div className="flex items-center gap-2"><ShieldCheck className="text-orange-600" size={19}/><h2 className="font-serif text-2xl font-bold">Votre commande</h2></div><div className="mt-6 flex justify-between border-b border-stone-200 pb-3 font-semibold text-gray-600"><span>Produit</span><span>Sous-total</span></div><div className="divide-y divide-stone-200">{lines.map(({ product, quantity }) => <div key={product.id} className="flex gap-3 py-4"><div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-100"><Image src={product.image} alt="" fill sizes="64px" className="object-cover"/></div><div className="min-w-0 flex-1"><p className="text-sm font-semibold">{product.name}</p><p className="mt-1 text-xs text-gray-500">× {quantity}</p></div><b className="shrink-0 text-sm">{product.priceAmount === undefined ? 'Indisponible' : euro.format(product.priceAmount * quantity / 100)}</b></div>)}</div><div className="space-y-4 border-y border-stone-200 py-4 text-sm"><div className="flex justify-between text-gray-600"><span>Montant des produits</span><span>{hasUnpricedProduct ? 'Indisponible' : euro.format(total / 100)}</span></div><div className="flex justify-between gap-5 text-gray-600"><span>Livraison</span><span className="max-w-[190px] text-right">{delivery ? euro.format(delivery.quote.feeCents / 100) : 'À calculer selon votre adresse'}</span></div><div className="flex justify-between gap-4 pt-1 text-base font-black"><span>Total avec livraison</span><span className="text-right text-sm text-orange-700">{hasUnpricedProduct ? 'Indisponible' : delivery ? euro.format((total + delivery.quote.feeCents) / 100) : 'À calculer'}</span></div></div>
+        <aside className="h-fit rounded-2xl border-2 border-stone-200 bg-white p-5 sm:p-7 lg:sticky lg:top-6"><div className="flex items-center gap-2"><ShieldCheck className="text-orange-600" size={19}/><h2 className="font-serif text-2xl font-bold">Votre commande</h2></div><div className="mt-6 flex justify-between border-b border-stone-200 pb-3 font-semibold text-gray-600"><span>Produit</span><span>Sous-total</span></div><div className="divide-y divide-stone-200">{lines.map(({ product, quantity }) => <div key={product.id} className="flex gap-3 py-4"><div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-100"><Image src={product.image} alt="" fill sizes="64px" className="object-cover"/></div><div className="min-w-0 flex-1"><p className="text-sm font-semibold">{product.name}</p><p className="mt-1 text-xs text-gray-500">× {quantity}</p><p data-original-content className="text-xs text-gray-500">{vatLabel(product,brenLocale)}</p></div><b className="shrink-0 text-sm">{product.priceAmount === undefined ? 'Indisponible' : euro.format(product.priceAmount * quantity / 100)}</b></div>)}</div><div className="space-y-4 border-y border-stone-200 py-4 text-sm"><div className="flex justify-between text-gray-600"><span>Montant des produits</span><span>{hasUnpricedProduct ? 'Indisponible' : euro.format(total / 100)}</span></div><div className="flex justify-between gap-5 text-gray-600"><span>Livraison</span><span className="max-w-[190px] text-right">{euro.format(0)}</span></div><div className="flex justify-between gap-4 pt-1 text-base font-black"><span>Total TTC</span><span className="text-right text-sm text-orange-700">{hasUnpricedProduct ? 'Indisponible' : euro.format(total / 100)}</span></div></div>
+          <IncludedVatSummary summary={taxSummary} locale={brenLocale}/>
           {error && <p role="alert" className="mt-4 rounded-xl bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
-          <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-gray-600"><input required={Boolean(delivery)} name="terms" type="checkbox" className="mt-1 h-4 w-4 accent-orange-600"/><span>Je confirme l’exactitude de mes informations et j’accepte les <a href="/agb" className="font-semibold text-orange-600 underline">conditions de vente</a> et j’ai pris connaissance du <a href="/retractation" className="font-semibold text-orange-600 underline">droit de rétractation</a> et de la <a href="/datenschutz" className="font-semibold text-orange-600 underline">politique de confidentialité</a>. *</span></label>
-          <button type="submit" disabled={starting || hasUnpricedProduct} className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 py-4 font-bold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-gray-300">{starting ? 'Validation…' : delivery ? 'Commander avec obligation de paiement' : 'Calculer la livraison avant de commander'}</button>
+          <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-gray-600"><input required name="terms" type="checkbox" className="mt-1 h-4 w-4 accent-orange-600"/><span>Je confirme l’exactitude de mes informations et j’accepte les <a href="/agb" className="font-semibold text-orange-600 underline">conditions de vente</a> et j’ai pris connaissance du <a href="/retractation" className="font-semibold text-orange-600 underline">droit de rétractation</a> et de la <a href="/datenschutz" className="font-semibold text-orange-600 underline">politique de confidentialité</a>. *</span></label>
+          <button type="submit" disabled={starting || hasUnpricedProduct} className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 py-4 font-bold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-gray-300">{starting ? 'Validation…' : 'Commander avec obligation de paiement'}</button>
         </aside>
       </form>
     </main>

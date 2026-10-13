@@ -1,3 +1,4 @@
+import { vatLabel } from '@/lib/vat';
 
 import { translate, localizeNode } from '@/i18n/copy';
 import { localizedPath, type Locale } from '@/i18n/routing';
@@ -59,6 +60,8 @@ export default async function ProductDetailPage({ params }: Props) {
       itemCondition: 'https://schema.org/NewCondition',
       priceCurrency: 'EUR',
       price: (product.priceAmount / 100).toFixed(2),
+      priceSpecification: {'@type':'UnitPriceSpecification', price:(product.priceAmount/100).toFixed(2),priceCurrency:'EUR',valueAddedTaxIncluded:true},
+      shippingDetails: {'@type':'OfferShippingDetails',shippingRate:{'@type':'MonetaryAmount',value:'0.00',currency:'EUR'},shippingDestination:{'@type':'DefinedRegion',addressCountry:'DE'}},
       availability: product.stock === 0 ? 'https://schema.org/OutOfStock' : 'https://schema.org/InStock',
     } : undefined,
   };
@@ -107,7 +110,7 @@ export default async function ProductDetailPage({ params }: Props) {
               <div><dt className="text-xs font-bold uppercase tracking-wide text-gray-500">Conditionnement</dt><dd className="mt-1 font-semibold">{product.quantity}</dd></div>
               <div><dt className="text-xs font-bold uppercase tracking-wide text-gray-500">Disponibilité</dt><dd className={`mt-1 flex items-center gap-2 ${product.stock === 0 ? 'text-red-700' : 'text-green-600'}`}>{product.stock !== 0 && <Check size={24} strokeWidth={3} aria-hidden="true" />}{product.stock === 0 ? 'Rupture de stock' : 'En stock'}</dd></div>
             </dl>
-            <p className="mt-6 text-3xl font-black text-gray-950">{product.price}</p>
+            <p className="mt-6 text-3xl font-black text-gray-950">{product.price}</p><p data-original-content className="mt-1 text-xs text-gray-500">{vatLabel(product,brenLocale)}</p>
             <DeliveryInformation />
             <div className="mt-6 flex flex-wrap gap-3"><ProductDetailAddButton product={product} /></div>
           </div>

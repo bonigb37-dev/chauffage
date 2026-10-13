@@ -1,4 +1,5 @@
 'use client';
+import { vatLabel } from '@/lib/vat';
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -193,6 +194,7 @@ export default function ProductCard({ p }: { p: Product }) {
             )}
           </div>
 
+          <p data-original-content className="text-[10px] leading-4 text-gray-500">{vatLabel(p,brenLocale)}</p>
           {/* Quantity Selector + Ajouter au Panier Button */}
           <div className="flex h-10 items-center gap-2">
             {/* Quantity Controls */}

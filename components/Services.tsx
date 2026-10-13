@@ -1,5 +1,4 @@
 ﻿import Image from 'next/image';
-import DeliveryPricingSection from '@/components/DeliveryPricingSection';
 import { deliveryRegions } from '@/lib/delivery-regions';
 import Link from '@/i18n/navigation';
 import { localizeNode } from '@/i18n/copy';
@@ -13,7 +12,6 @@ import { storeConfig, deliverySummary, deliveryAccess } from '@/lib/store-config
 export default function Services() {
   const locale = useLocale() as Locale;
   return localizeNode((
-    <>
     <section id="livraison" data-analytics-section="delivery" className="relative isolate scroll-mt-24 overflow-hidden bg-stone-950 py-16 text-white sm:py-24">
       <Image src="/B5.jpg" alt="" aria-hidden="true" fill sizes="100vw" className="object-cover opacity-25" />
       <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-stone-950/95 via-stone-950/65 to-stone-950/35" />
@@ -41,7 +39,5 @@ export default function Services() {
         </div>
       </div>
     </section>
-    <DeliveryPricingSection />
-    </>
   ), locale);
 }

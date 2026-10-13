@@ -1,4 +1,4 @@
-import { readDeliveryQuote } from '@/lib/delivery-quote-server';
+import { vatSummary, vatRateForProduct } from '@/lib/vat';
 import { draftId, closeDraft } from '@/lib/cart-drafts-server';
 import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
@@ -97,8 +97,9 @@ export async function POST(request: Request) {
 
   const overrideById = new Map((overrides ?? []).map((row) => [row.product_id, row] as const));
   const resolvedCatalog = mergeCatalog(overrides ?? []);
-  const orderLines: { product_id: number; name: string; quantity: number; unit_price_cents: number }[] = [];
+  const orderLines: { product_id: number; name: string; quantity: number; unit_price_cents: number; vat_rate: 7 | 19 | null }[] = [];
   let totalCents = 0;
+  const vatLines: Parameters<typeof vatSummary>[0] = [];
   for (const [productId, quantity] of quantities) {
     const base = catalog.find((product) => product.id === productId);
     const override = overrideById.get(productId);
@@ -122,17 +123,14 @@ export async function POST(request: Request) {
     const unitPrice = priceValue as number;
     totalCents += unitPrice * quantity;
     if (!Number.isSafeInteger(totalCents) || totalCents > 2_000_000_000) return error('Le montant de la commande dépasse la limite autorisée.', 400);
-    orderLines.push({ product_id: productId, name, quantity, unit_price_cents: unitPrice });
+    const product = resolvedCatalog.find(p => p.id === productId)!;
+    vatLines.push({product,grossCents:unitPrice * quantity});
+    orderLines.push({ product_id: productId, name, quantity, unit_price_cents: unitPrice, vat_rate: vatRateForProduct(product) });
   }
 
   const subtotalCents = totalCents;
-  let delivery;
-  try {
-    if (typeof input.deliveryToken !== 'string') return error('Calculez les frais de livraison avant de confirmer la commande.', 409);
-    delivery = readDeliveryQuote(input.deliveryToken, shipping ?? customer, [...quantities].map(([productId, quantity]) => ({productId, quantity})));
-  } catch { return error('Le calcul de livraison a expiré ou le panier a changé. Recalculez les frais.', 409); }
-  totalCents += delivery.feeCents;
-  if (!Number.isSafeInteger(totalCents) || totalCents > 2_000_000_000) return error('Le montant de la commande dépasse la limite autorisée.', 400);
+  const delivery = { feeCents: 0 };
+  const vat = vatSummary(vatLines);
   let userId: string | null = null;
   const token = request.headers.get('authorization')?.match(/^Bearer\s+(.+)$/i)?.[1];
   if (token) {
@@ -148,7 +146,7 @@ export async function POST(request: Request) {
   const reference = `TP-${randomUUID().replaceAll('-', '').slice(0, 12).toUpperCase()}`;
   const { data: orderId, error: createError } = await admin.rpc('create_order_request_atomic', {
     p_reference: reference,
-    p_customer: {...customer, delivery: {feeCents: delivery.feeCents, distanceKm: delivery.distanceKm, pallets: delivery.pallets, localCents: delivery.localCents, palletCents: delivery.palletCents}},
+    p_customer: {...customer, deliveryFeeCents: 0, vat},
     p_shipping: shipping,
     p_items: orderLines,
     p_total_cents: totalCents,
@@ -166,5 +164,5 @@ export async function POST(request: Request) {
     catch { console.error('Cart draft cleanup unavailable after successful order'); }
   }
 
-  return NextResponse.json({ reference, orderId, totalCents, subtotalCents, delivery, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey) }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
+  return NextResponse.json({ reference, orderId, totalCents, subtotalCents, delivery, vat, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey) }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
 }

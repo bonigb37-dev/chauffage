@@ -1,0 +1,769 @@
+[
+  {
+    "id": 8305,
+    "priceAmount": 19200,
+    "name": "Buchenscheitholz, ofenfertig - 33 cm",
+    "description": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-ofenfertig-2.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-3.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-4-clean-20261013.png",
+      "/brennholzwerk/buchenholz-ofenfertig-5.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8306,
+    "priceAmount": 19200,
+    "name": "Buchenscheitholz, ofenfertig - 50 cm",
+    "description": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-ofenfertig-2.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-3.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-4-clean-20261013.png",
+      "/brennholzwerk/buchenholz-ofenfertig-5.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8307,
+    "priceAmount": 19950,
+    "name": "Buchenscheitholz, ofenfertig - 25 cm",
+    "description": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-ofenfertig-2.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-3.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-4-clean-20261013.png",
+      "/brennholzwerk/buchenholz-ofenfertig-5.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8308,
+    "priceAmount": 21450,
+    "name": "Buchenscheitholz, ofenfertig - 20 cm",
+    "description": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-ofenfertig-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-ofenfertig-2.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-3.jpg",
+      "/brennholzwerk/buchenholz-ofenfertig-4-clean-20261013.png",
+      "/brennholzwerk/buchenholz-ofenfertig-5.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8309,
+    "priceAmount": 22500,
+    "name": "Buchenscheitholz Premium, ofenfertig - 33 cm",
+    "description": "Rindenarmes Premium-Buchenholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-2.jpg",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-3.jpg",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-4.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8310,
+    "priceAmount": 22500,
+    "name": "Buchenscheitholz Premium, ofenfertig - 50 cm",
+    "description": "Rindenarmes Premium-Buchenholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-2.jpg",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-3.jpg",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-4.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8311,
+    "priceAmount": 23250,
+    "name": "Buchenscheitholz Premium, ofenfertig - 25 cm",
+    "description": "Rindenarmes Premium-Buchenholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-2.jpg",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-3.jpg",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-4.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8312,
+    "priceAmount": 24750,
+    "name": "Buchenscheitholz Premium, ofenfertig - 20 cm",
+    "description": "Rindenarmes Premium-Buchenholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-premium-ofenfertig-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-2.jpg",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-3.jpg",
+      "/brennholzwerk/buchenholz-premium-ofenfertig-4.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8313,
+    "priceAmount": 19500,
+    "name": "Buchenscheitholz Premium, vorgelagert - 33 cm",
+    "description": "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-2.jpg",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-3.jpg",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-4.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8314,
+    "priceAmount": 19500,
+    "name": "Buchenscheitholz Premium, vorgelagert - 50 cm",
+    "description": "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-2.jpg",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-3.jpg",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-4.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8315,
+    "priceAmount": 20250,
+    "name": "Buchenscheitholz Premium, vorgelagert - 25 cm",
+    "description": "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-2.jpg",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-3.jpg",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-4.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8316,
+    "priceAmount": 21750,
+    "name": "Buchenscheitholz Premium, vorgelagert - 20 cm",
+    "description": "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-premium-vorgelagert-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-2.jpg",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-3.jpg",
+      "/brennholzwerk/buchenholz-premium-vorgelagert-4.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8317,
+    "priceAmount": 16200,
+    "name": "Buchenscheitholz, vorgelagert - 33 cm",
+    "description": "Buchenscheitholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-vorgelagert-2.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-3.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-4-clean-20261013.png",
+      "/brennholzwerk/buchenholz-vorgelagert-5.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8318,
+    "priceAmount": 16200,
+    "name": "Buchenscheitholz, vorgelagert - 50 cm",
+    "description": "Buchenscheitholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-vorgelagert-2.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-3.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-4-clean-20261013.png",
+      "/brennholzwerk/buchenholz-vorgelagert-5.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8319,
+    "priceAmount": 16950,
+    "name": "Buchenscheitholz, vorgelagert - 25 cm",
+    "description": "Buchenscheitholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-vorgelagert-2.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-3.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-4-clean-20261013.png",
+      "/brennholzwerk/buchenholz-vorgelagert-5.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 8320,
+    "priceAmount": 18450,
+    "name": "Buchenscheitholz, vorgelagert - 20 cm",
+    "description": "Buchenscheitholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
+    "image": "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
+    "gallery": [
+      "/brennholzwerk/buchenholz-vorgelagert-1-clean-20261013.png",
+      "/brennholzwerk/buchenholz-vorgelagert-2.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-3.jpg",
+      "/brennholzwerk/buchenholz-vorgelagert-4-clean-20261013.png",
+      "/brennholzwerk/buchenholz-vorgelagert-5.jpg"
+    ],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 1,
+    "priceAmount": 768,
+    "name": "Granulés de bois – sac",
+    "description": "Granulés de bois conditionnés en sac de 15 kg. Consultez les exigences de votre appareil avant utilisation.",
+    "image": "/pellets-sac.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 2,
+    "priceAmount": 49900,
+    "name": "Granulés EPH Premium DINplus/ENplus A1 – palette",
+    "description": "Une palette de 65 sacs papier, soit 975 kg de granulés EPH Premium certifiés DINplus et ENplus A1.",
+    "image": "/eph-premium-palette.webp",
+    "gallery": [
+      "/eph-premium-palette.webp",
+      "/eph-premium-sac.webp",
+      "/eph-premium-detail.webp"
+    ],
+    "type": "Granulés"
+  },
+  {
+    "id": 3,
+    "priceAmount": 552,
+    "name": "Granulés de bois ENplus A1 – sac",
+    "description": "Des granulés conditionnés en sac de 15 kg pour un stockage et un usage pratiques.",
+    "image": "/pellets-sacs-clairs.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 4,
+    "priceAmount": 448,
+    "name": "Granulés de bois économiques – sac",
+    "description": "Un sac de granulés de bois pour les appareils compatibles avec cette qualité.",
+    "image": "/pellets.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 5,
+    "priceAmount": 20700,
+    "name": "Bûches de chêne sèches",
+    "description": "Bûches de chêne fendues, séchées et prêtes à l’emploi dans un foyer adapté.",
+    "image": "/buches-chene.webp",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 7,
+    "priceAmount": 22000,
+    "name": "Bûches de bouleau sèches",
+    "description": "Bûches de bouleau fendues et séchées, présentées sur palette.",
+    "image": "/buches-bouleau.webp",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 10,
+    "priceAmount": 54900,
+    "name": "Briquettes Pini-Kay (origine Pays-Bas) – palette",
+    "description": "Briquettes Pini-Kay à combustion régulière, conditionnées en palette complète. À utiliser dans un appareil compatible.",
+    "image": "/briquettes-hexagonales.webp",
+    "gallery": [],
+    "type": "Briquettes"
+  },
+  {
+    "id": 11,
+    "priceAmount": 341,
+    "name": "Briquettes RUF – paquet",
+    "description": "Briquettes de bois RUF conditionnées en paquet de 10 kg, à conserver au sec.",
+    "image": "/briquettes-packs.webp",
+    "gallery": [],
+    "type": "Briquettes"
+  },
+  {
+    "id": 13,
+    "priceAmount": 1460,
+    "name": "Bûchettes d’allumage sèches",
+    "description": "Des bûchettes sèches pour préparer l’allumage du foyer.",
+    "image": "/bois-allumage-buchettes.webp",
+    "gallery": [],
+    "type": "Bois d’allumage"
+  },
+  {
+    "id": 14,
+    "priceAmount": 730,
+    "name": "Bois d’allumage en sac",
+    "description": "Des bûchettes rangées dans un sac pratique à conserver au sec.",
+    "image": "/bois-allumage.webp",
+    "gallery": [],
+    "type": "Bois d’allumage"
+  },
+  {
+    "id": 15,
+    "priceAmount": 1460,
+    "name": "Bûchettes en filet",
+    "description": "Un filet compact de bois d’allumage à garder près du foyer.",
+    "image": "/bois-allumage-filet.webp",
+    "gallery": [],
+    "type": "Bois d’allumage"
+  },
+  {
+    "id": 16,
+    "priceAmount": 490,
+    "name": "Allume-feux en laine de bois",
+    "description": "Des allume-feux en laine de bois pour démarrer le feu.",
+    "image": "/allume-feux-laine-bois.webp",
+    "gallery": [],
+    "type": "Bois d’allumage"
+  },
+  {
+    "id": 17,
+    "priceAmount": 490,
+    "name": "Cubes allume-feux",
+    "description": "Des cubes d’allumage à conserver au sec près du foyer.",
+    "image": "/allume-feux-cubes.webp",
+    "gallery": [],
+    "type": "Bois d’allumage"
+  },
+  {
+    "id": 18,
+    "priceAmount": 29600,
+    "name": "Granulés de bois économiques",
+    "description": "Palette de 66 sacs de granulés de bois, soit 990 kg au total.",
+    "image": "/pellets-vrac.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 19,
+    "priceAmount": 420,
+    "name": "Bûches de bois compressé",
+    "description": "Des bûches densifiées proposées en paquet pratique.",
+    "image": "/buches-compressees.webp",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 20,
+    "priceAmount": 375,
+    "name": "Bûches densifiées rondes",
+    "description": "Un format rond de bois compressé à utiliser dans un foyer compatible.",
+    "image": "/buches-compressees-rondes.webp",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 21,
+    "priceAmount": 35900,
+    "name": "Granulés ENplus A1 – palette",
+    "description": "Granulés de résineux ENplus A1 conditionnés sur palette, pour les appareils compatibles.",
+    "image": "/pellets-palette.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 25,
+    "priceAmount": 44900,
+    "name": "Granulés TotalEnergies Premium ENplus A1",
+    "description": "Granulés de résineux TotalEnergies en sacs de 15 kg. Palette adaptée aux poêles et chaudières compatibles ENplus A1.",
+    "image": "/pellets-totalenergies.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 26,
+    "priceAmount": 38600,
+    "name": "Granulés HEIZFUXX Blue ENplus A1",
+    "description": "Granulés de résineux certifiés ENplus A1, conditionnés en 65 sacs sur palette.",
+    "image": "/pellets-heizfuxx-blue.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 27,
+    "priceAmount": 10500,
+    "name": "Granulés DINplus – palette petit format",
+    "description": "Format compact de granulés de bois certifiés DINplus et ENplus A1. Une option pratique pour compléter le stock.",
+    "image": "/pellets-dinplus-300.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 28,
+    "priceAmount": 21900,
+    "name": "Granulés HELIOS DINplus / ENplus A1",
+    "description": "Granulés HELIOS en palette, 100 % résineux, pour poêles et chaudières compatibles.",
+    "image": "/pellets-helios.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 30,
+    "priceAmount": 25200,
+    "name": "Granulés PROXIMA STAR Premium",
+    "description": "Granulés de résineux PROXIMA STAR conditionnés en palette, pour poêles, inserts et chaudières compatibles.",
+    "image": "/pellets-proxima-star.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 36,
+    "priceAmount": 25900,
+    "name": "Bois de hêtre écorcé – palette filetée",
+    "description": "Bûches de hêtre de première qualité, écorcées et fendues, livrées sur palette en filet. Bois prêt à brûler.",
+    "image": "/bois-chauffage.webp",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 40,
+    "priceAmount": 59900,
+    "name": "Briquettes rondes de hêtre – palette",
+    "description": "Briquettes rondes en hêtre, conditionnées en paquets de 10 kg. Stocker au sec et vérifier la compatibilité de l’appareil.",
+    "image": "/briquettes-beech-premium.jpg",
+    "gallery": [],
+    "type": "Briquettes"
+  },
+  {
+    "id": 43,
+    "priceAmount": 59900,
+    "name": "Briquettes Biomac Extra – braise longue durée",
+    "description": "Briquettes de nuit Biomac fabriquées à partir d’écorce lavée et séchée. Elles sont conçues pour maintenir les braises plusieurs heures ; vérifier les consignes de l’appareil.",
+    "image": "/briquettes-biomac-palette.jpg",
+    "gallery": [],
+    "type": "Briquettes"
+  },
+  {
+    "id": 49,
+    "priceAmount": 48900,
+    "name": "Granulés FireStixx Premium DINplus / ENplus A1",
+    "description": "Granulés FireStixx Premium certifiés DINplus et ENplus A1, en sacs de 15 kg sur palette.",
+    "image": "/pellets-firestixx-palette.jpg",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 48,
+    "priceAmount": 26900,
+    "name": "Bois de chêne sec – bûches de 33 cm",
+    "description": "Bûches de chêne fendues en longueur de 33 cm, présentées sur palette filetée pour le stockage et la manutention.",
+    "image": "/buches-filet.webp",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 51,
+    "priceAmount": 51900,
+    "name": "Briquettes RUF – palette",
+    "description": "Briquettes de bois RUF rectangulaires, conditionnées en 96 paquets de 10 kg, soit 960 kg au total. À conserver au sec.",
+    "image": "/briquettes-ruf.webp",
+    "gallery": [],
+    "type": "Briquettes"
+  },
+  {
+    "id": 52,
+    "priceAmount": 58900,
+    "name": "Briquettes Pini-Kay importées – palette",
+    "description": "Briquettes Pini-Kay avec canaux d’aération, proposées en palette complète.",
+    "image": "/briquettes-hexagonales.webp",
+    "gallery": [],
+    "type": "Briquettes"
+  },
+  {
+    "id": 53,
+    "priceAmount": 29900,
+    "name": "Briquettes RUF – demi-palette",
+    "description": "Un conditionnement intermédiaire de briquettes RUF, plus facile à stocker qu’une palette complète.",
+    "image": "/briquettes-packs.webp",
+    "gallery": [],
+    "type": "Briquettes"
+  },
+  {
+    "id": 54,
+    "priceAmount": 30900,
+    "name": "Briquettes Pini-Kay – demi-palette",
+    "description": "Le format demi-palette des briquettes Pini-Kay d’origine néerlandaise, à conserver dans un endroit sec.",
+    "image": "/briquettes-hexagonales.webp",
+    "gallery": [],
+    "type": "Briquettes"
+  },
+  {
+    "id": 55,
+    "priceAmount": 33900,
+    "name": "Briquettes rondes de hêtre – demi-palette",
+    "description": "Briquettes rondes de hêtre en format demi-palette, pour un stockage plus compact.",
+    "image": "/briquettes-beech-premium.jpg",
+    "gallery": [],
+    "type": "Briquettes"
+  },
+  {
+    "id": 56,
+    "priceAmount": 56900,
+    "name": "Granulés Giant Flames – palette",
+    "description": "Granulés de bois ENplus A1 conditionnés en sacs de 15 kg. Livraison en Allemagne avec frais calculés selon la distance.",
+    "image": "/pellets-palette.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 57,
+    "priceAmount": 30900,
+    "name": "Granulés Giant Flames – demi-palette",
+    "description": "Format demi-palette de granulés de bois, adapté aux besoins de stockage plus limités.",
+    "image": "/pellets-sacs-clairs.webp",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 58,
+    "priceAmount": 44900,
+    "name": "Bois de chêne séché au four – filets",
+    "description": "Bûches de chêne fendues et séchées en chambre, prêtes à l’emploi. Le conditionnement en filets facilite le rangement.",
+    "image": "/buches-filet.webp",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 59,
+    "priceAmount": 48900,
+    "name": "Bois de hêtre séché au four – palette",
+    "description": "Bûches de hêtre fendues et séchées en chambre, livrées en palette pour un usage immédiat.",
+    "image": "/bois-chauffage.webp",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 60,
+    "priceAmount": 46900,
+    "name": "Briquettes Giant Flames – palette",
+    "description": "Briquettes de bois Giant Flames en petits paquets individuels.",
+    "image": "/briquettes-packs.webp",
+    "gallery": [],
+    "type": "Briquettes"
+  },
+  {
+    "id": 61,
+    "priceAmount": 9600,
+    "name": "Bois de chauffage mi-sec en vrac – 25 cm",
+    "description": "Bois de chauffage mi-sec en vrac, longueur 25 cm, essences variées (chêne, charme, hêtre).",
+    "image": "/bois-chauffages-img-1.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 62,
+    "priceAmount": 8900,
+    "name": "Bois de chauffage mi-sec en vrac – 33 ou 50 cm",
+    "description": "Bois de chauffage mi-sec en vrac, longueurs au choix de 33 ou 50 cm, en différentes essences.",
+    "image": "/bois-chauffages-img-2.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 63,
+    "priceAmount": 20600,
+    "name": "Bois de chauffage sec en Big Bag – 25 cm",
+    "description": "Bois de chauffage prêt à brûler conditionné en Big Bag pour un stockage propre et pratique.",
+    "image": "/bois-chauffages-img-3.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 64,
+    "priceAmount": 16320,
+    "name": "Bois de chauffage sec en Big Bag – 33 cm",
+    "description": "Bûches de 33 cm séchées à cœur présentées dans un Big Bag robuste et facile à déplacer.",
+    "image": "/bois-chauffages-img-4.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 65,
+    "priceAmount": 12480,
+    "name": "Bois de chauffage sec en Big Bag – 50 cm",
+    "description": "Format 50 cm sec en Big Bag, idéal pour les grands foyers, chaudières et inserts.",
+    "image": "/bois-chauffages-img-5.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 66,
+    "priceAmount": 9900,
+    "name": "Bois de chauffage sec en vrac – 25 cm",
+    "description": "Bûches de 25 cm séchées, prêtes pour allumage rapide et feu vif dans poêle ou foyer fermé.",
+    "image": "/bois-chauffages-img-6.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 67,
+    "priceAmount": 9200,
+    "name": "Bois de chauffage sec en vrac – 33 cm",
+    "description": "Bois dur séché en vrac, découpe 33 cm pour une excellente tenue du feu.",
+    "image": "/bois-chauffages-img-7.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 68,
+    "priceAmount": 9200,
+    "name": "Bois de chauffage sec en vrac – 50 cm",
+    "description": "Bûches de 50 cm séchées pour inserts et chaudières, fort pouvoir calorifique.",
+    "image": "/bois-chauffages-img-8.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 69,
+    "priceAmount": 36000,
+    "name": "Bois de chauffage sec sur palette – 25 cm",
+    "description": "Palette de bois de chauffage sec calibré à 25 cm, empilé avec soin.",
+    "image": "/bois-chauffages-img-9.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 70,
+    "priceAmount": 27300,
+    "name": "Bois de chauffage sec sur palette – 33 cm",
+    "description": "Palette de bois sec rangé en bûches de 33 cm d’essences feuillus dures.",
+    "image": "/bois-chauffages-img-10.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 71,
+    "priceAmount": 24150,
+    "name": "Bois de chauffage sec sur palette – 50 cm",
+    "description": "Palette complète de 50 cm sec, livraison propre et manipulation simplifiée.",
+    "image": "/bois-chauffages-img-11.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 72,
+    "priceAmount": 500,
+    "name": "Filet de bûches de bois 33 cm (6 à 8 pièces)",
+    "description": "Petit filet individuel de bûches de 33 cm pour un appoint rapide au coin du feu.",
+    "image": "/bois-chauffages-img-12.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 73,
+    "priceAmount": 599,
+    "name": "Granulés de bois ANTE DIN+ et EN+ – sac de 15 kg",
+    "description": "Granulés de bois ANTE certifiés DIN+ et EN+ A1 pour poêles et chaudières.",
+    "image": "/bois-chauffages-img-13.jpg",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 74,
+    "priceAmount": 38935,
+    "name": "Granulés de bois ANTE DIN+ et EN+ – palette complète",
+    "description": "Palette complète de granulés ANTE résineux haute qualité.",
+    "image": "/bois-chauffages-img-14.jpg",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 75,
+    "priceAmount": 52900,
+    "name": "Granulés de bois VERPELLET PELLETS – palette",
+    "description": "Granulés de bois VERPELLET PELLETS 100 % résineux certifiés en palette.",
+    "image": "/bois-chauffages-img-17.png",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 76,
+    "priceAmount": 688,
+    "name": "Granulés de bois VERPELLET PELLETS – sac de 15 kg",
+    "description": "Sac individuel de 15 kg de granulés VERPELLET PELLETS.",
+    "image": "/bois-chauffages-img-18.png",
+    "gallery": [],
+    "type": "Granulés"
+  },
+  {
+    "id": 77,
+    "priceAmount": 650,
+    "name": "Allume-feu écologique en laine de bois",
+    "description": "Allume-feux écologiques à base de laine de bois et de cire naturelle.",
+    "image": "/bois-chauffages-img-19.jpg",
+    "gallery": [],
+    "type": "Bois d’allumage"
+  },
+  {
+    "id": 78,
+    "priceAmount": 295,
+    "name": "Allume-feu sans pétrole",
+    "description": "Allume-feux naturels sans dérivé de pétrole, sans odeur.",
+    "image": "/bois-chauffages-img-20.jpg",
+    "gallery": [],
+    "type": "Bois d’allumage"
+  },
+  {
+    "id": 79,
+    "priceAmount": 450,
+    "name": "Filet de bois allume-feu",
+    "description": "Filet de bûchettes de bois sec très fines pour allumage facile.",
+    "image": "/bois-chauffages-img-21.jpg",
+    "gallery": [],
+    "type": "Bois d’allumage"
+  },
+  {
+    "id": 80,
+    "priceAmount": 34900,
+    "name": "Bois de chauffage Chêne & Hêtre sec en box (2 stères)",
+    "description": "Bois dur chêne et hêtre écorcé et rangé en box palette prêt à brûler.",
+    "image": "/bois-chauffages-img-9.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 81,
+    "priceAmount": 25900,
+    "name": "Bûches de Hêtre séchées sur palette (1,5 stère – 33 cm)",
+    "description": "Palette de hêtre pur séchée à moins de 20 % d’humidité.",
+    "image": "/bois-chauffages-img-10.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  },
+  {
+    "id": 82,
+    "priceAmount": 31900,
+    "name": "Bûches de Chêne Pur séchées sur palette (2 stères – 50 cm)",
+    "description": "Palette de grandes bûches de chêne 50 cm séchées en chambre.",
+    "image": "/bois-chauffages-img-11.jpg",
+    "gallery": [],
+    "type": "Bois de chauffage"
+  }
+]

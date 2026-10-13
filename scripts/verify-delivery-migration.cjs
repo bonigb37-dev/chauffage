@@ -8,7 +8,7 @@ create table public.order_requests(id bigint generated always as identity primar
 create table public.order_request_lines(id bigint generated always as identity primary key,order_request_id bigint,product_id integer,product_name text,quantity integer,unit_price_cents integer);
 insert into product_overrides(product_id,data) values (1,'{"stock":10}');`);
 await db.exec(fs.readFileSync('supabase-delivery.sql','utf8'));
-const items=JSON.stringify([{product_id:1,name:'Test product',quantity:2,unit_price_cents:10000}]);
+const items=JSON.stringify([{product_id:1,name:'Test product',quantity:2,unit_price_cents:10000,vat_rate:7}]);
 async function order(ref,customer,total){return db.query('select public.create_order_request_atomic($1,$2::jsonb,null,$3::jsonb,$4,null) as id',[ref,JSON.stringify(customer),items,total]);}
 await order('TP-AAAAAAAAAAAA',{firstName:'Test',delivery:{feeCents:4500,distanceKm:60}},24500);
 let rows=(await db.query('select total_cents,customer from order_requests')).rows;assert.equal(rows[0].total_cents,24500);assert.equal(rows[0].customer.delivery.feeCents,4500);
@@ -17,5 +17,6 @@ await assert.rejects(order('TP-BBBBBBBBBBBB',{delivery:{feeCents:4500,distanceKm
 assert.equal((await db.query("select (data->>'stock')::int as stock from product_overrides")).rows[0].stock,8,'Rejected order restores stock');
 await assert.rejects(order('TP-CCCCCCCCCCCC',{delivery:{feeCents:-1,distanceKm:60}},20000),/invalid_delivery/);
 await order('TP-DDDDDDDDDDDD',{firstName:'Legacy'},20000);rows=(await db.query('select total_cents,customer from order_requests order by id')).rows;assert.equal(rows.length,2);assert.equal(rows[1].total_cents,20000);assert.equal(rows[0].total_cents,24500);
-console.log('PASS isolated SQL: separate delivery metadata, product-plus-delivery totals, invalid fees rejected, mismatches roll back stock, legacy calls unchanged. No remote migration applied.');
+await order('TP-EEEEEEEEEEEE',{firstName:'New TTC',deliveryFeeCents:0,vat:{included:true,breakdown:[{grossCents:20000,netCents:18692,vatCents:1308,rate:7}]}},20000);rows=(await db.query('select total_cents,customer from order_requests order by id')).rows;assert.equal(rows[2].total_cents,20000);assert.equal(rows[2].customer.deliveryFeeCents,0);assert.equal(rows[2].customer.vat.breakdown[0].vatCents,1308);assert.equal(rows[0].total_cents,24500,'Old shipping charge preserved');assert.equal((await db.query('select items from order_requests order by id desc limit 1')).rows[0].items[0].vat_rate,7);
+console.log('PASS isolated SQL: new TTC orders with zero shipping and included VAT, old delivery metadata preserved; separate delivery metadata, product-plus-delivery totals, invalid fees rejected, mismatches roll back stock, legacy calls unchanged. No remote migration applied.');
 }finally{await db.close();}})().catch(e=>{console.error(e.message);process.exitCode=1});
