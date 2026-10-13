@@ -28,15 +28,18 @@ export default function AnalyticsTracker() {
   const account = access.user?.id;
   useEffect(() => {
     const tagId = 'GT-PJ5SK7JL';
+    const measurementId = 'G-RF1N5XEVC2';
     const googleWindow = window as typeof window & {
       dataLayer?: IArguments[];
       gtag?: (...args: unknown[]) => void;
       'ga-disable-GT-PJ5SK7JL'?: boolean;
+      'ga-disable-G-RF1N5XEVC2'?: boolean;
     };
     const permitted = ready && !blocked && access.verified && !access.role
       && !!analyticsPath(pathname) && !!consent && consent.mode !== 'declined'
       && readConsent()?.mode === consent.mode;
     googleWindow['ga-disable-GT-PJ5SK7JL'] = !permitted;
+    googleWindow['ga-disable-G-RF1N5XEVC2'] = !permitted;
     if (!permitted) {
       googleWindow.gtag?.('consent', 'update', { analytics_storage: 'denied' });
       return;
@@ -55,6 +58,7 @@ export default function AnalyticsTracker() {
       });
       googleWindow.gtag('js', new Date());
       googleWindow.gtag('config', tagId, { send_page_view: false });
+      googleWindow.gtag('config', measurementId, { send_page_view: false });
     }
     googleWindow.gtag('consent', 'update', { analytics_storage: 'granted' });
     if (!document.getElementById('google-tag')) {
@@ -65,11 +69,12 @@ export default function AnalyticsTracker() {
       document.head.appendChild(script);
     }
     googleWindow.gtag('event', 'page_view', {
-      send_to: tagId, page_path: pathname,
+      send_to: measurementId, page_path: pathname,
       page_location: location.origin + pathname, page_title: document.title,
     });
     const stop = () => {
       googleWindow['ga-disable-GT-PJ5SK7JL'] = true;
+      googleWindow['ga-disable-G-RF1N5XEVC2'] = true;
       googleWindow.gtag?.('consent', 'update', { analytics_storage: 'denied' });
     };
     const expiryTimer = setInterval(() => {
