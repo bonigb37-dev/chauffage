@@ -46,7 +46,7 @@ export default function Footer() {
             </div>
             <div className="flex items-start gap-3">
               <Truck size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-orange-400" />
-              <p className="leading-6">Livraison incluse en Allemagne</p>
+              <p className="leading-6">Livraison gratuite dans toute l’Allemagne, sans exception</p>
             </div>
             <div className="border-t border-white/10 pt-5">
               <p className="leading-6">Une question sur un produit ou votre commande ?</p>

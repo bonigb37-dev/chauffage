@@ -10,7 +10,7 @@ export const faqItems = [
   },
   {
     question: 'Combien coûtent les frais de livraison ?',
-    answer: 'La livraison en Allemagne est incluse dans le prix de nos produits. Aucun frais de transport ne s’ajoute au montant de votre commande et aucun paiement n’est à remettre au transporteur lors de la livraison.',
+    answer: 'La livraison est gratuite dans toute l’Allemagne, sans exception. Aucun frais de transport ne s’ajoute au montant de votre commande et aucun paiement n’est à remettre au transporteur lors de la livraison.',
   },
   {
     question: 'Quels sont les délais de livraison et jours de passage ?',
