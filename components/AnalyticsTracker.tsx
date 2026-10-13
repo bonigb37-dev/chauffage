@@ -74,6 +74,15 @@ export default function AnalyticsTracker() {
       send_to: measurementId, page_path: pathname,
       page_location: location.origin + pathname, page_title: document.title,
     });
+    const quoteConversion = (event: Event) => {
+      const detail = (event as CustomEvent<{ kind?: AnalyticsKind }>).detail;
+      if (detail?.kind !== 'quote_sent' || readConsent()?.mode !== consent?.mode) return;
+      if (navigator.doNotTrack === '1' || (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl) return;
+      googleWindow.gtag?.('event', 'conversion', {
+        send_to: 'AW-18507175727/uJ_kCIPdp5sdEK-u9PhE',
+      });
+    };
+    window.addEventListener('bren-analytics-action', quoteConversion);
     const stop = () => {
       googleWindow['ga-disable-GT-PJ5SK7JL'] = true;
       googleWindow['ga-disable-G-RF1N5XEVC2'] = true;
@@ -82,7 +91,10 @@ export default function AnalyticsTracker() {
     const expiryTimer = setInterval(() => {
       if (readConsent()?.mode !== consent?.mode) stop();
     }, 1000);
-    return () => { clearInterval(expiryTimer); stop(); };
+    return () => {
+      window.removeEventListener('bren-analytics-action', quoteConversion);
+      clearInterval(expiryTimer); stop();
+    };
   }, [pathname, ready, consent, blocked, access.verified, access.role]);
   useEffect(() => {
     const saved = readConsent(); setConsent(saved); setLinked(saved?.mode === 'linked'); setReady(true); setOpen(!saved);
