@@ -3,11 +3,12 @@ import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 const scenes = [
-  { title: 'Préparation en entrepôt', position: '0%' },
-  { title: 'Palettes prêtes à partir', position: '25%' },
-  { title: 'Combustibles soigneusement conditionnés', position: '50%' },
-  { title: 'Chargement pour la livraison', position: '75%' },
-  { title: 'Manutention au dépôt', position: '100%' },
+  { title: 'Préparation du bois de chauffage', image: '/B1.webp' },
+  { title: 'Chargement des palettes de bois', image: '/B2.webp' },
+  { title: 'Stock de bois au dépôt', image: '/B3.webp' },
+  { title: 'Bois conditionné en filets', image: '/B4.webp' },
+  { title: 'Stockage du bois sous abri', image: '/B5.jpg' },
+  { title: 'Livraison du bois par camion', image: '/B6.webp' },
 ];
 
 export default function LogisticsGallery() {
@@ -28,7 +29,7 @@ export default function LogisticsGallery() {
               className="logistics-gallery__photo"
               role="img"
               aria-label={scene.title}
-              style={{ backgroundPosition: `${scene.position} center` }}
+              style={{ backgroundImage: `url("${scene.image}")` }}
             />
           ))}
         </div>
