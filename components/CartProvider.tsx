@@ -4,7 +4,7 @@ import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { products as initialProducts, type Product } from '@/lib/products';
 import { supabase } from '@/lib/supabase';
 import { mergeCatalog } from '@/lib/catalog';
@@ -29,6 +29,8 @@ const storageKey = 'thermopro-cart-v1';
 export function CartProvider({ children, initialCatalog = initialProducts }: { children: React.ReactNode; initialCatalog?: Product[] }) {
   const brenLocale = useLocale() as Locale;
 
+  const syncQueue = useRef<Promise<void>>(Promise.resolve());
+  const [authRevision, setAuthRevision] = useState(0);
   const [items, setItems] = useState<CartLine[]>([]);
   const [ready, setReady] = useState(false);
   const [products, setProducts] = useState<Product[]>(initialCatalog);
@@ -93,6 +95,37 @@ export function CartProvider({ children, initialCatalog = initialProducts }: { c
       try { window.sessionStorage.setItem(storageKey, saved); } catch { /* Keep the in-memory cart available for this visit. */ }
     }
   }, [items, ready]);
+
+  useEffect(() => {
+    const listener = supabase?.auth.onAuthStateChange(() => setAuthRevision(n => n + 1));
+    return () => listener?.data.subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!ready || !catalogReady) return;
+    let sent = false;
+    const sync = () => {
+      if (sent) return;
+      sent = true;
+      syncQueue.current = syncQueue.current.catch(() => {}).then(async () => {
+        const session = await supabase?.auth.getSession();
+        const token = session?.data.session?.access_token;
+        const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+        if (token) headers.Authorization = 'Bearer ' + token;
+        // Cart tracking is operational and never gates local cart interaction.
+        for (let attempt = 0; attempt < 3; attempt++) {
+          try {
+            const result = await fetch('/api/cart-drafts', { method: 'POST', headers, credentials: 'same-origin', keepalive: true, signal: AbortSignal.timeout(12000), body: JSON.stringify({ items }) });
+            if (result.ok || (result.status < 500 && result.status !== 429)) return;
+          } catch { /* Retry transient transport failures without interrupting shopping. */ }
+          if (attempt < 2) await new Promise(resolve => window.setTimeout(resolve, 2000 * (attempt + 1)));
+        }
+      }).catch(() => { /* Preserve shopping when tracking is unavailable. */ });
+    };
+    const timer = window.setTimeout(sync, 400);
+    window.addEventListener('pagehide', sync);
+    return () => { window.clearTimeout(timer); window.removeEventListener('pagehide', sync); };
+  }, [items, ready, catalogReady, authRevision]);
 
   const addItem = useCallback((productId: number, quantityToAdd: number = 1) => {
     if (products.some(product => product.id === productId && product.stock !== 0)) emitAnalytics('cart_add', `product-${productId}`);

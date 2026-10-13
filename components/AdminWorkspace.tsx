@@ -1,4 +1,5 @@
 'use client';
+import CartDraftsPanel from '@/components/CartDraftsPanel';
 import { localizeNode, translate } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -79,7 +80,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   const [bankForm, setBankForm] = useState('');
   const [productForm, setProductForm] = useState<Product>(() => emptyProduct(siteData.products));
   const [editingProduct, setEditingProduct] = useState(false);
-  const [activeView, setActiveView] = useState<'workspace' | 'messages' | 'statistics'>('workspace');
+  const [activeView, setActiveView] = useState<'workspace' | 'messages' | 'statistics' | 'carts'>('workspace');
 
   useEffect(() => {
     const syncHash = () => {
@@ -374,6 +375,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
         <button type="button" aria-pressed={activeView === 'workspace'} onClick={() => { setActiveView('workspace'); window.history.replaceState(null, '', window.location.pathname + window.location.search); }} className={`rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'workspace' ? 'bg-gray-950 text-white' : 'text-gray-600 hover:bg-stone-100'}`}>{supportInboxCopy[brenLocale].workspace}</button>
         <button type="button" aria-pressed={activeView === 'messages'} onClick={() => { setActiveView('messages'); window.history.replaceState(null, '', '#support-messages'); }} className={`flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'messages' ? 'bg-orange-600 text-white' : 'text-gray-600 hover:bg-orange-50'}`}>{supportCopy[brenLocale].inbox}<SupportUnreadBadge /></button>
         <button type="button" aria-pressed={activeView === 'statistics'} onClick={() => { setActiveView('statistics'); window.history.replaceState(null, '', '#site-statistics'); }} className={`rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'statistics' ? 'bg-orange-600 text-white' : 'text-gray-600 hover:bg-orange-50'}`}>{analyticsCopy[brenLocale].title}</button>
+        <button type="button" aria-pressed={activeView === 'carts'} onClick={() => setActiveView('carts')} className={`rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'carts' ? 'bg-orange-600 text-white' : 'text-gray-600 hover:bg-orange-50'}`}>{brenLocale === 'de' ? 'Offene Warenkörbe' : brenLocale === 'en' ? 'Uncompleted carts' : 'Paniers non validés'}</button>
       </nav>}
       <div className={activeView !== 'workspace' && !loading && canSeeWorkspace && (!superAdminOnly || canSeeSuperAdmin) ? 'hidden' : ''}>
       {loading ? <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Vérification de l’accès...</div>
@@ -385,6 +387,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
 
       </div>
       {activeView === 'messages' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportMessenger admin />}
+      {activeView === 'carts' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <CartDraftsPanel />}
       {activeView === 'statistics' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <AnalyticsDashboard />}
       {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
       {notice && <p role="status" className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">{notice}</p>}

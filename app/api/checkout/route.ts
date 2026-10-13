@@ -1,3 +1,4 @@
+import { draftId, closeDraft } from '@/lib/cart-drafts-server';
 import { randomUUID } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
@@ -148,6 +149,12 @@ export async function POST(request: Request) {
     if (createError.message.includes('insufficient_stock')) return error('Le stock vient de changer. Actualisez le panier et réessayez.', 409);
     if (createError.message.includes('product_unavailable')) return error('Un produit de votre panier n’est plus disponible.', 409);
     return error('La commande n’a pas pu être enregistrée. Vérifiez que la migration Supabase commerce a été appliquée.', 503);
+  }
+
+  const cartDraftId = draftId(request);
+  if (cartDraftId) {
+    try { await closeDraft(admin, cartDraftId, 'converted'); }
+    catch { console.error('Cart draft cleanup unavailable after successful order'); }
   }
 
   return NextResponse.json({ reference, orderId, totalCents, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey) }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
