@@ -15,7 +15,7 @@ export function middleware(request: NextRequest) {
   }
   const nonce = btoa(crypto.randomUUID());
   const development = process.env.NODE_ENV !== 'production';
-  const connections = ["'self'"];
+  const connections = ["'self'", 'https://www.googletagmanager.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com'];
   try {
     const configured = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? '');
     if (configured.protocol === 'https:' || (development && configured.hostname === 'localhost')) {
