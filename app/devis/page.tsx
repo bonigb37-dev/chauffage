@@ -70,7 +70,14 @@ Précisions: ${details}`;
 
       if (!response.ok) {
         stopLoading();
-        setError('Une erreur est survenue lors de l’enregistrement de votre demande de devis.');
+        const apiMessages: Record<number, string> = {
+          400: 'Vérifiez les informations saisies, notamment le code postal allemand (5 chiffres).',
+          403: 'Cette demande a été refusée. Rechargez la page du site et réessayez.',
+          413: 'Votre demande est trop longue. Raccourcissez les remarques.',
+          429: 'Trop de demandes ont été envoyées. Patientez 10 minutes avant de réessayer.',
+          503: 'Le service de devis est temporairement indisponible. Réessayez plus tard.',
+        };
+        setError(apiMessages[response.status] ?? 'Une erreur est survenue lors de l’enregistrement de votre demande de devis.');
         return;
       }
 
@@ -189,7 +196,7 @@ Précisions: ${details}`;
             {/* Adresse et livraison en Allemagne */}
             <div className="grid gap-4 sm:grid-cols-3">
               <label className="sm:col-span-2 text-xs font-bold text-gray-700">Adresse de livraison en Allemagne *<input required name="address" autoComplete="street-address" className={inputClass} placeholder="Straße und Hausnummer" /></label>
-              <label className="text-xs font-bold text-gray-700">Code postal (PLZ) *<input required name="postalCode" autoComplete="postal-code" className={inputClass} placeholder="PLZ (Ex. 80331)" /></label>
+              <label className="text-xs font-bold text-gray-700">Code postal (PLZ) *<input required name="postalCode" pattern="[0-9]{5}" maxLength={5} inputMode="numeric" autoComplete="postal-code" className={inputClass} placeholder="PLZ (Ex. 80331)" /></label>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">

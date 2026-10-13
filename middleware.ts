@@ -19,6 +19,7 @@ export function middleware(request: NextRequest) {
     'https://www.googleadservices.com', 'https://googleads.g.doubleclick.net',
     'https://pagead2.googlesyndication.com', 'https://www.google.com',
     'https://www.google.de', 'https://ad.doubleclick.net',
+    'https://www.merchant-center-analytics.goog',
   ];
   try {
     const configured = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? '');
