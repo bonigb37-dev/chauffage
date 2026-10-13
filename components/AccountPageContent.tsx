@@ -428,6 +428,7 @@ export default function AccountPageContent() {
   const [user, setUser] = useState<User | null>(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
@@ -693,16 +694,18 @@ export default function AccountPageContent() {
 
 
   async function handleSignOut() {
-    if (!supabase) return;
+    if (!supabase || signingOut) return;
+    setSigningOut(true);
     setError('');
     clearCachedRole();
     const { error: authError } = await supabase.auth.signOut();
-    if (authError) setError(authError.message);
-    else {
+    if (authError) {
+      setError(authError.message);
+      setSigningOut(false);
+    } else {
       setUser(null);
       setMode('signin');
-      setNotice('Vous êtes déconnecté.');
-      router.refresh();
+      router.push('/produits');
     }
   }
 
@@ -831,10 +834,14 @@ export default function AccountPageContent() {
                 </Link>
                 <button
                   type="button"
-                  className="w-full bg-white/70 hover:bg-orange-50 border border-orange-100 hover:border-orange-200 text-slate-600 hover:text-slate-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 text-sm"
+                  disabled={signingOut}
+                  className="w-full bg-white/70 hover:bg-orange-50 border border-orange-100 hover:border-orange-200 text-slate-600 hover:text-slate-900 font-semibold py-3 px-6 rounded-xl transition-all duration-200 text-sm flex items-center justify-center gap-2 disabled:opacity-60"
                   onClick={handleSignOut}
                 >
-                  Se déconnecter
+                  {signingOut
+                    ? <><LoaderCircle size={16} className="animate-spin" /> Déconnexion…</>
+                    : 'Se déconnecter'
+                  }
                 </button>
               </div>
             </div>

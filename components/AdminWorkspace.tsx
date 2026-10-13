@@ -374,7 +374,12 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     };
 
     supabase.auth.getSession().then(({ data }) => refresh(data.session?.user ?? null));
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        clearCachedRole();
+        router.replace('/compte');
+        return;
+      }
       void refresh(session?.user ?? null);
     });
 
@@ -382,7 +387,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       active = false;
       listener.subscription.unsubscribe();
     };
-  }, [loadData]);
+  }, [loadData, router]);
 
   // 3. Actions: Update Order / Contact status
   async function handleUpdateStatus(

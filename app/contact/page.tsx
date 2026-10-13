@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -6,7 +6,7 @@ import { useLocale } from 'next-intl';
 
 import { FormEvent, useState } from 'react';
 import Link from '@/i18n/navigation';
-import { ArrowRight, Boxes, CircleHelp, Mail, MessageCircle, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Boxes, CircleHelp, Loader2, Mail, MessageCircle, ShieldCheck } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
 import { supabase } from '@/lib/supabase';
 import { storeConfig } from '@/lib/store-config';
@@ -132,7 +132,10 @@ export default function Contact() {
             {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-900">{error}</p>}
 
             <button type="submit" disabled={sending} className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-5 py-4 font-bold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-60">
-              {sending ? 'Envoi du message…' : 'Envoyer mon message'} {!sending && <ArrowRight size={18}/>}
+              {sending
+                ? <><Loader2 size={18} className="animate-spin shrink-0" /> Envoi du message…</>
+                : <> Envoyer mon message <ArrowRight size={18} /></>
+              }
             </button>
           </form>
         </section>

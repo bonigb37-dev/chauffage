@@ -8,7 +8,7 @@ import { useLocale } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import Image from 'next/image';
 import Link from '@/i18n/navigation';
-import { ArrowLeft, Landmark, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Landmark, Loader2, ShieldCheck } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import DeliveryInformation from '@/components/DeliveryInformation';
 import PaymentMethods from '@/components/PaymentMethods';
@@ -22,8 +22,8 @@ export default function CheckoutPageContent() {
   const brenLocale = useLocale() as Locale;
   const euro = new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' });
 
-  const { items, ready, products } = useCart();
-  const { stopLoading } = useActionLoading();
+  const { items, ready, products, clearCart } = useCart();
+  const { triggerLoading, stopLoading } = useActionLoading();
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState('');
   const [differentShipping, setDifferentShipping] = useState(false);
@@ -48,6 +48,7 @@ export default function CheckoutPageContent() {
     }
     setStarting(true);
     setError('');
+    triggerLoading(30000, 'Sécurisation et enregistrement de votre commande…');
     const customer = {
       firstName: details.firstName, lastName: details.lastName, street: details.street, addressLine2: details.addressLine2,
       postalCode: details.postalCode, city: details.city, phone: details.phone, email: details.email,
@@ -83,6 +84,7 @@ export default function CheckoutPageContent() {
         reference, proofToken: result.proofToken, total: confirmedTotal, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
         customer: { firstName: details.firstName, lastName: details.lastName, email: details.email },
       }));
+      clearCart();
       window.location.assign(localizedPath(`/commande/succes?reference=${encodeURIComponent(reference)}`, brenLocale));
     } catch {
       stopLoading();
@@ -132,7 +134,10 @@ export default function CheckoutPageContent() {
         <aside className="h-fit rounded-2xl border-2 border-stone-200 bg-white p-5 sm:p-7 lg:sticky lg:top-6"><div className="flex items-center gap-2"><ShieldCheck className="text-orange-600" size={19}/><h2 className="font-serif text-2xl font-bold">Votre commande</h2></div><div className="mt-6 flex justify-between border-b border-stone-200 pb-3 font-semibold text-gray-600"><span>Produit</span><span>Sous-total</span></div><div className="divide-y divide-stone-200">{lines.map(({ product, quantity }) => <div key={product.id} className="flex gap-3 py-4"><div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-stone-100"><Image src={product.image} alt="" fill sizes="64px" className="object-cover"/></div><div className="min-w-0 flex-1"><p className="text-sm font-semibold">{product.name}</p><p className="mt-1 text-xs text-gray-500">× {quantity}</p></div><b className="shrink-0 text-sm">{product.priceAmount === undefined ? 'Indisponible' : euro.format(product.priceAmount * quantity / 100)}</b></div>)}</div><div className="space-y-4 border-y border-stone-200 py-4 text-sm"><div className="flex justify-between text-gray-600"><span>Montant des produits</span><span>{hasUnpricedProduct ? 'Indisponible' : euro.format(total / 100)}</span></div><div className="flex justify-between gap-5 text-gray-600"><span>Livraison</span><span className="max-w-[190px] text-right">Incluse dans le prix des produits</span></div><div className="flex justify-between gap-4 pt-1 text-base font-black"><span>Total, livraison incluse</span><span className="text-right text-sm text-orange-700">{hasUnpricedProduct ? 'Indisponible' : euro.format(total / 100)}</span></div></div>
           {error && <p role="alert" className="mt-4 rounded-xl bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
           <label className="mt-6 flex items-start gap-3 text-sm leading-6 text-gray-600"><input required name="terms" type="checkbox" className="mt-1 h-4 w-4 accent-orange-600"/><span>Je confirme l’exactitude de mes informations et j’accepte les <a href="/agb" className="font-semibold text-orange-600 underline">conditions de vente</a> et j’ai pris connaissance du <a href="/retractation" className="font-semibold text-orange-600 underline">droit de rétractation</a> et de la <a href="/datenschutz" className="font-semibold text-orange-600 underline">politique de confidentialité</a>. *</span></label>
-          <button type="submit" disabled={starting || hasUnpricedProduct} className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 py-4 font-bold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-gray-300">{starting ? 'Validation…' : 'Commander avec obligation de paiement'}</button>
+          <button type="submit" disabled={starting || hasUnpricedProduct} className="mt-5 flex w-full items-center justify-center gap-2 rounded-lg bg-orange-600 px-5 py-4 font-bold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-gray-300">
+            {starting && <Loader2 size={18} className="animate-spin shrink-0" />}
+            {starting ? 'Validation en cours…' : 'Commander avec obligation de paiement'}
+          </button>
         </aside>
       </form>
     </main>

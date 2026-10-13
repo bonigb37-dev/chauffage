@@ -7,7 +7,7 @@ import { useLocale } from 'next-intl';
 
 import { FormEvent, useState } from 'react';
 import Link from '@/i18n/navigation';
-import { ArrowRight, Calculator, CheckCircle2, FileText, MapPin, PhoneCall, ShieldCheck, Truck } from 'lucide-react';
+import { ArrowRight, Calculator, CheckCircle2, FileText, Loader2, MapPin, PhoneCall, ShieldCheck, Truck } from 'lucide-react';
 import FaqSection from '@/components/FaqSection';
 import { useActionLoading } from '@/components/ActionLoadingProvider';
 import { supabase } from '@/lib/supabase';
@@ -226,7 +226,10 @@ Précisions: ${details}`;
             {error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-900">{error}</p>}
 
             <button type="submit" disabled={sending} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-600 px-6 py-4 text-base font-extrabold text-white transition hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-60 shadow-lg shadow-orange-600/20">
-              {sending ? 'Envoi de votre demande…' : 'Demander mon devis gratuit (Deutschland)'} {!sending && <ArrowRight size={19} />}
+              {sending
+                ? <><Loader2 size={19} className="animate-spin shrink-0" /> Envoi de votre demande…</>
+                : <>Demander mon devis gratuit (Deutschland) <ArrowRight size={19} /></>
+              }
             </button>
           </form>
         </section>

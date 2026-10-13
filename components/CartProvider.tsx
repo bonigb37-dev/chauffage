@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -122,7 +122,11 @@ export function CartProvider({ children, initialCatalog = initialProducts }: { c
     setItems((current) => current.filter((line) => line.productId !== productId));
   }, []);
 
-  const clearCart = useCallback(() => setItems([]), []);
+  const clearCart = useCallback(() => {
+    setItems([]);
+    try { window.localStorage.setItem(storageKey, '[]'); } catch { /* ignore */ }
+    try { window.sessionStorage.setItem(storageKey, '[]'); } catch { /* ignore */ }
+  }, []);
   const value = useMemo(() => ({
     items,
     itemCount: items.reduce((sum, line) => sum + line.quantity, 0),

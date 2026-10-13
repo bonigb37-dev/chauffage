@@ -17,6 +17,7 @@ import {
   FileText,
   Flame,
   Heart,
+  Loader2,
   LogOut,
   MapPin,
   Menu,
@@ -53,6 +54,7 @@ export default function Navbar() {
   const [accountOpen, setAccountOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProduitsOpen, setMobileProduitsOpen] = useState(false);
   const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
@@ -78,11 +80,16 @@ export default function Navbar() {
   }, []);
 
   async function handleSignOut() {
-    if (!supabase) return;
-    await supabase.auth.signOut();
-    setUser(null);
-    setAccountOpen(false);
-    router.refresh();
+    if (!supabase || signingOut) return;
+    setSigningOut(true);
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      setAccountOpen(false);
+      router.push('/produits');
+    } catch {
+      setSigningOut(false);
+    }
   }
 
   function handleSearchSubmit(e: React.FormEvent) {
@@ -606,10 +613,16 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={handleSignOut}
-                  className="w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-xl text-red-600 hover:bg-red-50 font-medium text-sm transition"
+                  disabled={signingOut}
+                  aria-busy={signingOut}
+                  aria-label={signingOut ? 'Déconnexion en cours…' : 'Se déconnecter'}
+                  className="w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-xl text-red-600 hover:bg-red-50 font-medium text-sm transition disabled:opacity-60"
                 >
-                  <LogOut size={16} />
-                  <span>Se déconnecter</span>
+                  {signingOut
+                    ? <Loader2 size={16} className="animate-spin" />
+                    : <LogOut size={16} />
+                  }
+                  <span aria-hidden="true">{signingOut ? 'Déconnexion…' : 'Se déconnecter'}</span>
                 </button>
               </>
             ) : (

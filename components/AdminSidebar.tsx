@@ -144,19 +144,16 @@ export default function AdminSidebar({
         }`}
         aria-label="Navigation principale"
       >
-        {/* Subtle Hearth / Fireplace ambient background glowing behind the lower section */}
-        <div className="absolute -bottom-6 inset-x-0 h-80 pointer-events-none select-none overflow-hidden z-0">
+        {/* Fond d'ambiance bois ardent uniforme sur toute la barre latérale */}
+        <div className="absolute inset-0 pointer-events-none select-none overflow-hidden z-0">
           <Image
-            src="/sidebar-fireplace.webp"
+            src="/bois-ardent.png"
             alt=""
-            width={680}
-            height={600}
-            className="w-full h-full object-cover object-bottom opacity-25 mix-blend-screen"
+            fill
+            sizes="270px"
+            className="object-cover object-center opacity-20 mix-blend-screen"
             priority={false}
           />
-          {/* Smooth radial & linear dark gradient fade masks */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#101820] via-[#101820]/75 to-[#101820]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#101820] via-transparent to-transparent opacity-90" />
         </div>
 
         {/* Scrollable Upper Section: Brand, Profile, Navigation */}
@@ -285,7 +282,7 @@ export default function AdminSidebar({
         </div>
 
         {/* 4. Bottom Area: Utilities & Branding Signature */}
-        <div className="relative z-10 mt-auto px-4 pt-3 pb-4 border-t border-white/[0.08] space-y-2 bg-[#101820]/90 backdrop-blur-md">
+        <div className="relative z-10 mt-auto px-4 pt-3 pb-4 border-t border-white/[0.08] space-y-2 bg-transparent">
           {/* Action Links */}
           <div className="space-y-0.5">
 
