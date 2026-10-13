@@ -16,7 +16,7 @@ assert.equal(localizedPath('https://example.com','de'),'https://example.com');
 const base=process.argv[2];
 async function run(){
  if(!base){console.log('PASS locale detection and safe localized routing');return;}
- for(const [headers,expected] of [[{'accept-language':'fr-FR'},'fr'],[{'accept-language':'en-US'},'en'],[{'accept-language':'it-IT'},'de'],[{'accept-language':'de',cookie:'bren_locale=en'},'en']]){
+ for(const [headers,expected] of [[{'accept-language':'fr-FR'},'fr'],[{'accept-language':'en-US'},'en'],[{'accept-language':'it-IT'},'de'],[{'accept-language':'de',cookie:'bren_locale=en'},'de']]){
   const r=await fetch(base+'/',{headers,redirect:'manual'});assert.equal(r.status,307);assert.equal(new URL(r.headers.get('location'),base).pathname,'/'+expected);
  }
  const paths=['','/produits','/produits/categorie/granules-de-bois','/produits/2-granules-eph-premium-dinplus-enplus-a1-palette','/guide-pellets','/services','/faq','/a-propos','/contact','/devis','/avis-juridique','/agb','/datenschutz','/retractation','/compte','/panier','/commande'];
@@ -31,6 +31,6 @@ async function run(){
   console.log('PASS '+locale+': '+paths.length+' pages, lang/canonical/hreflang/CSP');
  }
  const sitemap=await (await fetch(base+'/sitemap.xml')).text();for(const locale of ['de','fr','en'])assert(sitemap.includes('https://www.brennholz-direk.de/'+locale+'/produits/'));
- console.log('PASS language redirects, preference priority and multilingual sitemap. Read-only HTTP tests.');
+ console.log('PASS language redirects, browser preference and multilingual sitemap. Read-only HTTP tests.');
 }
 run().catch(e=>{console.error(e);process.exitCode=1;});

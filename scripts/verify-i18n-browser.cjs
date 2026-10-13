@@ -46,10 +46,11 @@ async function run() {
     return result.result.value;
   }
   async function visit(url) {
+    const beforeErrors=errors.length;
     await send('Page.navigate', { url: `${base}${url}` });
     for (let attempt = 0; attempt < 60; attempt++) {
       await pause(250);
-      if (await evaluate("document.readyState === 'complete' && !!document.querySelector('h1, h2') && !document.body.innerText.includes('Vérification de votre accès')")) { await pause(2000); return; }
+      if (await evaluate("document.readyState === 'complete' && !!document.querySelector('h1, h2') && !document.body.innerText.includes('Vérification de votre accès')")) { await pause(2000); if(errors.length>beforeErrors)console.error('Runtime error on '+url); return; }
     }
     throw new Error(`Page non rendue : ${url} : ${await evaluate('document.body.innerText.slice(0,500)')} ; ${errors.join(', ')}`);
   }
@@ -60,6 +61,8 @@ async function run() {
     await send('Page.addScriptToEvaluateOnNewDocument', { source: "document.addEventListener('securitypolicyviolation', e => window.__reportCsp(e.effectiveDirective));" });
   }
 
+  mockRequest=async({requestId})=>send('Fetch.fulfillRequest',{requestId,responseCode:200,responseHeaders:[{name:'Content-Type',value:'application/json'}],body:Buffer.from('{"tracked":false}').toString('base64')});
+  await send('Fetch.enable',{patterns:[{urlPattern:'*/api/cart-drafts*'},{urlPattern:'*/api/analytics*'}]});
   for (const locale of ['de','fr','en']) {
     await visit('/'+locale);
     assert.equal(await evaluate('document.documentElement.lang'),locale);
@@ -79,16 +82,15 @@ async function run() {
   }
   await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 2, mobile: true });
   await visit('/de');
-  assert(await evaluate("[...document.querySelectorAll('button')].filter(b=>['DE','FR','EN'].includes(b.textContent)).every(b=>{const r=b.getBoundingClientRect();return r.width>0&&r.left>=0&&r.right<=innerWidth})"), 'Mobile language selector visible');
-  await evaluate("[...document.querySelectorAll('button')].find(b=>b.textContent==='EN').click()");
-  await pause(2500);
-  assert.equal(await evaluate('location.pathname'),'/en');
-  assert(await evaluate("document.cookie.includes('bren_locale=en')"));
-  await visit('/');assert.equal(await evaluate('location.pathname'),'/en');
+  assert.equal(await evaluate("document.querySelectorAll('nav[aria-label=\"Language / Sprache / Langue\"]').length"),0,'Language selector removed');
+  assert.equal(await evaluate("[...document.querySelectorAll('button')].filter(b=>['DE','FR','EN'].includes(b.textContent.trim())).length"),0);
+  await evaluate("document.cookie='bren_locale=en; Path=/; SameSite=Lax'");
+  await send('Network.enable');
+  for(const [language,expected] of [['fr-FR','fr'],['en-US','en'],['de-DE','de'],['it-IT','de']]){await send('Network.setExtraHTTPHeaders',{headers:{'Accept-Language':language}});await visit('/');assert.equal(await evaluate('location.pathname'),'/'+expected);assert.equal(await evaluate('document.documentElement.lang'),expected);}
   await visit('/en/panier');assert(await evaluate("document.body.innerText.includes('EPH')"));
   assert.equal(errors.length,0,errors.join(', '));
   assert.equal(cspViolations.length,0,cspViolations.join(', '));
-  console.log('PASS three locales, product/cart/checkout/auth/forms, manual choice persisted, cart retained, no JS/CSP errors. No order or email submitted.');
+  console.log('PASS three locales, product/cart/checkout/auth/forms, automatic browser language and German fallback, old manual cookie ignored, cart retained, no JS/CSP errors. No order or email submitted.');
 }
 
 run().catch((error) => { console.error(error); process.exitCode = 1; }).finally(async () => {

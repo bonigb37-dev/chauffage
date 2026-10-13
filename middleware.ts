@@ -4,7 +4,7 @@ export function middleware(request: NextRequest) {
   const incomingPath = request.nextUrl.pathname;
   const pageRequest = !incomingPath.startsWith('/api/') && !/\.[a-z0-9]+$/i.test(incomingPath);
   const prefix = incomingPath.split('/')[1];
-  const locale = isLocale(prefix) ? prefix : detectLocale(request.cookies.get('bren_locale')?.value, request.headers.get('accept-language'));
+  const locale = isLocale(prefix) ? prefix : detectLocale(undefined, request.headers.get('accept-language'));
   if (pageRequest && !isLocale(prefix)) {
     const target = request.nextUrl.clone();
     target.pathname = `/${locale}${incomingPath === '/' ? '' : incomingPath}`;
