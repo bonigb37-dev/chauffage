@@ -17,11 +17,14 @@ import PaymentMethods from '@/components/PaymentMethods';
 import AddressAutocomplete from '@/components/AddressAutocomplete';
 import { useActionLoading } from '@/components/ActionLoadingProvider';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from '@/i18n/navigation';
+import { savePendingOrder } from '@/lib/pending-order';
 
 const inputClass = 'mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3 text-base text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-orange-500 focus:ring-2 focus:ring-orange-100';
 
 export default function CheckoutPageContent() {
   const brenLocale = useLocale() as Locale;
+  const router = useRouter();
   const euro = new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' });
 
   const { items, ready, products } = useCart();
@@ -82,11 +85,11 @@ export default function CheckoutPageContent() {
       const reference = result.reference;
       emitAnalytics('order_sent');
       const confirmedTotal = result.totalCents;
-      sessionStorage.setItem('thermopro-pending-order', JSON.stringify({
+      savePendingOrder({
         reference, proofToken: result.proofToken, total: confirmedTotal, delivery: {feeCents:0}, vat: result.vat, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
         customer: { firstName: details.firstName, lastName: details.lastName, email: details.email },
-      }));
-      window.location.assign(localizedPath(`/commande/succes?reference=${encodeURIComponent(reference)}`, brenLocale));
+      });
+      router.push(localizedPath(`/commande/succes?reference=${encodeURIComponent(reference)}`, brenLocale));
     } catch {
       stopLoading();
       setError('La demande n’a pas pu être enregistrée. Vérifiez votre connexion puis réessayez.');
