@@ -909,14 +909,14 @@ export default function AccountPageContent() {
                       Email
                     </label>
                     <div className="relative flex items-center">
-                      <Mail size={17} className="absolute left-3 text-slate-500 pointer-events-none" />
+                      <Mail size={17} className="absolute left-3.5 text-slate-500 pointer-events-none z-10" />
                       <input
                         autoComplete="email"
                         name="email"
                         type="email"
                         placeholder="votre@email.com"
                         required
-                        className="account-input-field"
+                        className="account-input-field pl-11"
                       />
                     </div>
                   </div>
@@ -939,7 +939,7 @@ export default function AccountPageContent() {
                       )}
                     </div>
                     <div className="relative flex items-center">
-                      <LockKeyhole size={17} className="absolute left-3 text-slate-500 pointer-events-none" />
+                      <LockKeyhole size={17} className="absolute left-3.5 text-slate-500 pointer-events-none z-10" />
                       <input
                         autoComplete={mode === 'signup' || mode === 'update' ? 'new-password' : 'current-password'}
                         name="password"
@@ -947,10 +947,10 @@ export default function AccountPageContent() {
                         placeholder={mode === 'signup' ? '8 caractères minimum' : 'Votre mot de passe'}
                         minLength={8}
                         required
-                        className="account-input-field pr-10"
+                        className="account-input-field pl-11 pr-10"
                       />
                       <button
-                        className="absolute right-3 text-slate-600 hover:text-slate-900 transition p-1"
+                        className="absolute right-3 text-slate-600 hover:text-slate-900 transition p-1 z-10"
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
@@ -967,7 +967,7 @@ export default function AccountPageContent() {
                       Confirmer le mot de passe
                     </label>
                     <div className="relative flex items-center">
-                      <LockKeyhole size={17} className="absolute left-3 text-slate-500 pointer-events-none" />
+                      <LockKeyhole size={17} className="absolute left-3.5 text-slate-500 pointer-events-none z-10" />
                       <input
                         autoComplete="new-password"
                         name="confirmPassword"
@@ -975,7 +975,7 @@ export default function AccountPageContent() {
                         placeholder="Saisissez à nouveau le mot de passe"
                         minLength={8}
                         required
-                        className="account-input-field pr-10"
+                        className="account-input-field pl-11 pr-10"
                       />
                     </div>
                   </div>
