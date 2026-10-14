@@ -26,8 +26,8 @@ export default function Services() {
           </div>
         </div>
         <div className="mt-12 grid gap-8 border-t border-white/20 pt-10 lg:grid-cols-[0.7fr_1.3fr]">
-          <div><p className="text-sm font-bold uppercase tracking-widest text-[#F4F0E5]">Régions</p><h3 className="mt-3 text-2xl font-black text-white">Livraison dans les 16 Länder</h3></div>
-          <ul className="delivery-regions">{deliveryRegions.map(region => <li key={region.slug}><Link href={`/livraison/${region.slug}`} className="delivery-region-link"><span className="min-w-0 break-words [hyphens:auto]" lang="de">{region.name}</span><ArrowRight size={16} className="delivery-region-arrow" /></Link></li>)}</ul>
+          <div><p className="text-sm font-bold uppercase tracking-widest text-[#F4F0E5]">Regionen</p><h3 className="mt-3 text-2xl font-black text-white">Lieferung in alle 16 Bundesländer</h3></div>
+          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">{deliveryRegions.map(region => <li key={region.slug}><Link href={`/livraison/${region.slug}`} className="flex h-full min-h-12 items-center justify-between gap-2 rounded-xl bg-white px-3 py-3 text-xs font-semibold !text-stone-900 transition hover:bg-orange-50 sm:text-sm"><span className="min-w-0 break-words [hyphens:auto]" lang="de">{region.name}</span><ArrowRight size={16} className="shrink-0 text-orange-600" /></Link></li>)}</ul>
         </div>
         <div className="mt-10 flex flex-col gap-5 rounded-2xl border border-white/20 bg-white/10 p-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between text-white">
           <span className="font-bold">{storeConfig.name}</span>
