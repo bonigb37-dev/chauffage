@@ -172,9 +172,9 @@ export default function PelletGuide() {
   );
 
   return localizeNode((
-    <div className="bg-[#F4F0E5] text-gray-900 pb-20">
+    <div className="bg-[#F5F7F8] text-gray-900 pb-20">
       {/* Header Banner */}
-      <section className="brand-promotion bg-[#A54829] text-white py-16 sm:py-20">
+      <section className="brand-promotion bg-[#123524] text-white py-16 sm:py-20">
         <div className="container max-w-5xl">
           <div className="inline-flex items-center gap-2 rounded-full bg-orange-500/20 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-orange-400 border border-orange-500/30 mb-6">
             <Flame size={15} className="text-orange-400 fill-orange-400" />
@@ -318,7 +318,7 @@ export default function PelletGuide() {
           </div>
 
           {/* Dynamic Result Banner */}
-          <div className="mt-8 rounded-2xl bg-[#A54829] p-6 sm:p-8 text-white shadow-lg">
+          <div className="mt-8 rounded-2xl bg-[#123524] p-6 sm:p-8 text-white shadow-lg">
             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur">

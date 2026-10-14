@@ -167,7 +167,7 @@ export default function Navbar() {
     <>
       {/* Free delivery banner with truck icon in Terracotta background */}
       <div
-        className="bg-[#A54829] py-2 px-4 text-center text-xs sm:text-sm font-bold text-white shadow-inner z-50 relative flex items-center justify-center gap-2"
+        className="bg-[#123524] py-2 px-4 text-center text-xs sm:text-sm font-bold text-white shadow-inner z-50 relative flex items-center justify-center gap-2"
       >
         <Truck size={17} className="shrink-0 text-white" />
         <span>Livraison en Allemagne · Aucun frais supplémentaire à régler au transporteur</span>
@@ -176,27 +176,27 @@ export default function Navbar() {
       {/* Main Sticky Navbar */}
       <header
         ref={navRef}
-        className={`sticky top-0 z-50 bg-white transition-all duration-200 border-b border-[#E7E0D3] ${
+        className={`sticky top-0 z-50 bg-white transition-all duration-200 border-b border-[#E2E8F0] ${
           isScrolled ? 'shadow-md py-2.5' : 'py-3.5 sm:py-4'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* LEFT: Logo Bren-nholz */}
           <Link
             href="/"
             aria-label="Bren-nholz — Leylines Park, accueil"
-            className="flex items-center gap-2.5 font-black text-xl tracking-tight text-[#1c1917] shrink-0 group"
+            className="flex items-center gap-1.5 sm:gap-2.5 font-black text-sm sm:text-xl tracking-tight text-[#1f2937] shrink-0 group"
           >
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#A54829] text-white shadow-md shadow-[#A54829]/25 group-hover:bg-[#8c3b20] transition-colors">
+            <span className="grid h-7 w-7 sm:h-10 sm:w-10 place-items-center rounded-xl bg-[#123524] text-white shadow-md shadow-[#123524]/25 group-hover:bg-[#1b4d35] transition-colors">
               <Flame size={22} strokeWidth={2.2} fill="currentColor" />
             </span>
-            <span className="font-extrabold text-xl tracking-tight text-[#1c1917]">
-              <BrandWordmark hyphenClass="text-[#A54829]" />
+            <span className="font-extrabold text-sm sm:text-xl tracking-tight text-[#1f2937]">
+              <BrandWordmark hyphenClass="text-[#123524]" />
             </span>
           </Link>
 
           {/* CENTER: Desktop Main Navigation */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-base font-medium text-[#1c1917]">
+          <nav className="hidden xl:flex items-center gap-6 lg:gap-8 text-base font-medium text-[#1f2937]">
             {links.map((link) => {
               const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
 
@@ -207,18 +207,18 @@ export default function Navbar() {
                       type="button"
                       onClick={() => setMegaMenuOpen(!megaMenuOpen)}
                       className={`flex items-center gap-1.5 py-2 font-medium text-base transition-colors ${
-                        isActive || megaMenuOpen ? 'text-[#A54829]' : 'text-[#1c1917] hover:text-[#A54829]'
+                        isActive || megaMenuOpen ? 'text-[#123524]' : 'text-[#1f2937] hover:text-[#123524]'
                       }`}
                       aria-expanded={megaMenuOpen}
                     >
                       <span>{link.label}</span>
                       <ChevronDown
                         size={16}
-                        className={`transition-transform duration-200 ${megaMenuOpen ? 'rotate-180 text-[#A54829]' : 'text-[#57534e]'}`}
+                        className={`transition-transform duration-200 ${megaMenuOpen ? 'rotate-180 text-[#123524]' : 'text-[#475569]'}`}
                       />
                     </button>
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#A54829] rounded-full" />
+                      <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#123524] rounded-full" />
                     )}
                   </div>
                 );
@@ -229,13 +229,13 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     className={`py-2 font-medium text-base transition-colors ${
-                      isActive ? 'text-[#A54829]' : 'text-[#1c1917] hover:text-[#A54829]'
+                      isActive ? 'text-[#123524]' : 'text-[#1f2937] hover:text-[#123524]'
                     }`}
                   >
                     {link.label}
                   </Link>
                   {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#A54829] rounded-full" />
+                    <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#123524] rounded-full" />
                   )}
                 </div>
               );
@@ -243,19 +243,19 @@ export default function Navbar() {
           </nav>
 
           {/* RIGHT: Desktop Actions */}
-          <div className="hidden md:flex items-center gap-2 lg:gap-3">
+          <div className="hidden xl:flex items-center gap-2 lg:gap-3">
             {/* Search Button */}
             <div className="relative group">
               <button
                 type="button"
                 onClick={() => setSearchOpen(!searchOpen)}
-                className="p-2.5 rounded-xl text-[#1c1917] hover:text-[#A54829] hover:bg-[#F4F0E5] transition flex items-center justify-center relative"
+                className="p-2.5 rounded-xl text-[#1f2937] hover:text-[#123524] hover:bg-[#F5F7F8] transition flex items-center justify-center relative"
                 aria-label="Rechercher des produits"
                 aria-expanded={searchOpen}
                 aria-controls="product-search-panel"
               >
                 <Search size={20} />
-                <span className="absolute top-1 right-1 text-[9px] font-extrabold text-[#57534e] bg-[#F4F0E5] px-1 rounded border border-[#E7E0D3] pointer-events-none">
+                <span className="absolute top-1 right-1 text-[9px] font-extrabold text-[#475569] bg-[#F5F7F8] px-1 rounded border border-[#E2E8F0] pointer-events-none">
                   ⌘K
                 </span>
               </button>
@@ -268,7 +268,7 @@ export default function Navbar() {
             <div className="relative group">
               <Link
                 href="/produits"
-                className="relative p-2.5 rounded-xl text-[#1c1917] hover:text-[#A54829] hover:bg-[#F4F0E5] transition flex items-center justify-center"
+                className="relative p-2.5 rounded-xl text-[#1f2937] hover:text-[#123524] hover:bg-[#F5F7F8] transition flex items-center justify-center"
                 aria-label="Mes favoris"
               >
                 <Heart size={20} />
@@ -287,7 +287,7 @@ export default function Navbar() {
                   setAccountOpen(false);
                   setMegaMenuOpen(false);
                 }}
-                className="relative p-2.5 rounded-xl text-[#1c1917] hover:text-[#A54829] hover:bg-[#F4F0E5] transition flex items-center justify-center"
+                className="relative p-2.5 rounded-xl text-[#1f2937] hover:text-[#123524] hover:bg-[#F5F7F8] transition flex items-center justify-center"
                 aria-label={
                   totalCartItemsCount > 0
                     ? `Panier, ${totalCartItemsCount} article${totalCartItemsCount > 1 ? 's' : ''}`
@@ -296,7 +296,7 @@ export default function Navbar() {
               >
                 <ShoppingCart size={20} />
                 {totalCartItemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#A54829] px-1 text-[11px] font-black text-white ring-2 ring-white shadow-sm">
+                  <span className="absolute -top-1 -right-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#123524] px-1 text-[11px] font-black text-white ring-2 ring-white shadow-sm">
                     {totalCartItemsCount}
                   </span>
                 )}
@@ -315,7 +315,7 @@ export default function Navbar() {
                   setCartOpen(false);
                   setMegaMenuOpen(false);
                 }}
-                className="relative p-2.5 rounded-xl text-[#1c1917] hover:text-[#A54829] hover:bg-[#F4F0E5] transition flex items-center justify-center"
+                className="relative p-2.5 rounded-xl text-[#1f2937] hover:text-[#123524] hover:bg-[#F5F7F8] transition flex items-center justify-center"
                 aria-label="Espace compte client"
               >
                 <CircleUserRound size={21} />
@@ -337,12 +337,12 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* MOBILE RIGHT ACTIONS (< 768px) */}
-          <div className="flex items-center gap-1 sm:gap-1.5 md:hidden">
+          {/* MOBILE RIGHT ACTIONS (compact layout) */}
+          <div className="flex items-center gap-0 sm:gap-1.5 xl:hidden">
             <button
               type="button"
               onClick={() => setSearchOpen(!searchOpen)}
-              className="p-2 rounded-xl text-[#1c1917] hover:bg-[#F4F0E5] transition"
+              className="min-h-10 p-1 sm:p-2 rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] transition"
               aria-label="Recherche"
               aria-expanded={searchOpen}
               aria-controls="product-search-panel"
@@ -352,7 +352,7 @@ export default function Navbar() {
 
             <Link
               href="/produits"
-              className="relative p-2 rounded-xl text-[#1c1917] hover:bg-[#F4F0E5] transition"
+              className="relative min-h-10 p-1 sm:p-2 rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] transition"
               aria-label="Mes favoris"
             >
               <Heart size={20} />
@@ -364,12 +364,12 @@ export default function Navbar() {
                 setCartOpen(!cartOpen);
                 setAccountOpen(false);
               }}
-              className="relative p-2 rounded-xl text-[#1c1917] hover:bg-[#F4F0E5] transition"
+              className="relative min-h-10 p-1 sm:p-2 rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] transition"
               aria-label="Voir le panier"
             >
               <ShoppingCart size={20} />
               {totalCartItemsCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#A54829] px-1 text-[10px] font-black text-white shadow-sm">
+                <span className="absolute -top-0.5 -right-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#123524] px-1 text-[10px] font-black text-white shadow-sm">
                   {totalCartItemsCount}
                 </span>
               )}
@@ -377,7 +377,7 @@ export default function Navbar() {
 
             <Link
               href="/compte"
-              className="relative p-2 rounded-xl text-[#1c1917] hover:bg-[#F4F0E5] transition"
+              className="relative min-h-10 p-1 sm:p-2 rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] transition"
               aria-label="Mon compte"
             >
               <CircleUserRound size={21} />
@@ -389,7 +389,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-[#1c1917] hover:bg-[#F4F0E5] transition"
+              className="min-h-10 p-1 sm:p-2 rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] transition"
               aria-label={mobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -400,7 +400,7 @@ export default function Navbar() {
         {/* MEGA MENU PRODUITS */}
         {megaMenuOpen && (
           <div
-            className="hidden md:block absolute top-full left-0 right-0 bg-white border-b border-[#E7E0D3] shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200"
+            className="hidden xl:block absolute top-full left-0 right-0 bg-white border-b border-[#E2E8F0] shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-200"
             onMouseLeave={() => setMegaMenuOpen(false)}
           >
             <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-12 gap-8">
@@ -414,7 +414,7 @@ export default function Navbar() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
 
                 <div className="relative z-10">
-                  <span className="inline-block px-2.5 py-1 rounded-md bg-[#A54829] text-[11px] font-bold uppercase tracking-wider text-white mb-2">
+                  <span className="inline-block px-2.5 py-1 rounded-md bg-[#123524] text-[11px] font-bold uppercase tracking-wider text-white mb-2">
                     Bren-nholz Qualité
                   </span>
                   <p className="text-lg font-bold leading-snug text-white drop-shadow-sm">
@@ -425,7 +425,7 @@ export default function Navbar() {
                 <Link
                   href="/produits"
                   onClick={() => setMegaMenuOpen(false)}
-                  className="relative z-10 inline-flex items-center gap-2 text-sm font-bold text-[#F4F0E5] hover:text-white transition mt-4"
+                  className="relative z-10 inline-flex items-center gap-2 text-sm font-bold text-[#F5F7F8] hover:text-white transition mt-4"
                 >
                   <span>Voir tous les produits</span>
                   <ArrowRight size={16} />
@@ -433,7 +433,7 @@ export default function Navbar() {
               </div>
 
               <div className="col-span-4 space-y-4">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-[#123524] border-b border-[#E7E0D3] pb-2">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-[#123524] border-b border-[#E2E8F0] pb-2">
                   Bois de chauffage
                 </h3>
                 <ul className="space-y-3 text-sm">
@@ -441,37 +441,37 @@ export default function Navbar() {
                     <Link
                       href="/produits/categorie/bois-de-chauffage"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="group flex items-center justify-between text-[#57534e] hover:text-[#A54829] font-medium transition"
+                      className="group flex items-center justify-between text-[#475569] hover:text-[#123524] font-medium transition"
                     >
                       <span>Bûches de chêne & hêtre</span>
-                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#A54829]" />
+                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#123524]" />
                     </Link>
                   </li>
                   <li>
                     <Link
                       href="/produits/categorie/granules-de-bois"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="group flex items-center justify-between text-[#57534e] hover:text-[#A54829] font-medium transition"
+                      className="group flex items-center justify-between text-[#475569] hover:text-[#123524] font-medium transition"
                     >
                       <span>Granulés / Pellets DIN+</span>
-                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#A54829]" />
+                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#123524]" />
                     </Link>
                   </li>
                   <li>
                     <Link
                       href="/produits/categorie/briquettes-de-bois"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="group flex items-center justify-between text-[#57534e] hover:text-[#A54829] font-medium transition"
+                      className="group flex items-center justify-between text-[#475569] hover:text-[#123524] font-medium transition"
                     >
                       <span>Bois compressé & Briquettes</span>
-                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#A54829]" />
+                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#123524]" />
                     </Link>
                   </li>
                 </ul>
               </div>
 
               <div className="col-span-4 space-y-4">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-[#123524] border-b border-[#E7E0D3] pb-2">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-[#123524] border-b border-[#E2E8F0] pb-2">
                   Guides & Conseils
                 </h3>
                 <ul className="space-y-3 text-sm">
@@ -479,20 +479,20 @@ export default function Navbar() {
                     <Link
                       href="/guide-granules"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="group flex items-center justify-between text-[#57534e] hover:text-[#A54829] font-medium transition"
+                      className="group flex items-center justify-between text-[#475569] hover:text-[#123524] font-medium transition"
                     >
-                      <span className="font-semibold text-[#1c1917]">Guide de sélection des granulés</span>
-                      <ArrowRight size={14} className="text-[#A54829]" />
+                      <span className="font-semibold text-[#1f2937]">Guide de sélection des granulés</span>
+                      <ArrowRight size={14} className="text-[#123524]" />
                     </Link>
                   </li>
                   <li>
                     <Link
                       href="/produits/categorie/bois-allumage"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="group flex items-center justify-between text-[#57534e] hover:text-[#A54829] font-medium transition"
+                      className="group flex items-center justify-between text-[#475569] hover:text-[#123524] font-medium transition"
                     >
                       <span>Allume-feu naturel & Accessoires</span>
-                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#A54829]" />
+                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#123524]" />
                     </Link>
                   </li>
                 </ul>
@@ -503,28 +503,28 @@ export default function Navbar() {
 
         {/* ACCOUNT DROPDOWN */}
         {accountOpen && (
-          <div className="absolute top-full right-4 sm:right-16 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-[#E7E0D3] p-4 z-50 animate-in fade-in zoom-in-95 duration-150">
+          <div className="absolute top-full right-4 sm:right-16 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-[#E2E8F0] p-4 z-50 animate-in fade-in zoom-in-95 duration-150">
             {user ? (
               <>
-                <div className="flex items-center gap-3 pb-3 border-b border-[#E7E0D3]">
-                  <div className="w-10 h-10 rounded-full bg-[#F4F0E5] text-[#A54829] font-black flex items-center justify-center text-base border border-[#E7E0D3] shrink-0">
+                <div className="flex items-center gap-3 pb-3 border-b border-[#E2E8F0]">
+                  <div className="w-10 h-10 rounded-full bg-[#F5F7F8] text-[#123524] font-black flex items-center justify-center text-base border border-[#E2E8F0] shrink-0">
                     {user.email?.[0].toUpperCase() ?? 'A'}
                   </div>
                   <div className="overflow-hidden">
-                    <p className="font-bold text-[#1c1917] text-sm truncate">
+                    <p className="font-bold text-[#1f2937] text-sm truncate">
                       {user.user_metadata?.full_name || user.email?.split('@')[0] || 'Client'}
                     </p>
-                    <p className="text-xs text-[#57534e] truncate">{user.email}</p>
+                    <p className="text-xs text-[#475569] truncate">{user.email}</p>
                   </div>
                 </div>
 
-                <div className="py-2 space-y-1 text-sm text-[#1c1917]">
-                  <Link href="/panier" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#F4F0E5] hover:text-[#A54829] font-medium transition"><ShoppingCart size={16} /><span>Mon panier ({itemCount})</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
-                  <Link href="/compte" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#F4F0E5] hover:text-[#A54829] font-medium transition"><User size={16} /><span>Mon profil</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
-                  <Link href="/compte" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#F4F0E5] hover:text-[#A54829] font-medium transition"><ShoppingBag size={16} /><span>Mes commandes</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
+                <div className="py-2 space-y-1 text-sm text-[#1f2937]">
+                  <Link href="/panier" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] hover:text-[#123524] font-medium transition"><ShoppingCart size={16} /><span>Mon panier ({itemCount})</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
+                  <Link href="/compte" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] hover:text-[#123524] font-medium transition"><User size={16} /><span>Mon profil</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
+                  <Link href="/compte" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] hover:text-[#123524] font-medium transition"><ShoppingBag size={16} /><span>Mes commandes</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
                 </div>
 
-                <hr className="my-1 border-[#E7E0D3]" />
+                <hr className="my-1 border-[#E2E8F0]" />
 
                 <button
                   type="button"
@@ -537,9 +537,9 @@ export default function Navbar() {
               </>
             ) : (
               <div className="space-y-3 py-1">
-                <div className="text-center pb-2 border-b border-[#E7E0D3]">
-                  <p className="font-bold text-[#1c1917] text-base">Espace Client</p>
-                  <p className="text-xs text-[#57534e] mt-0.5">Connectez-vous pour suivre vos commandes & devis</p>
+                <div className="text-center pb-2 border-b border-[#E2E8F0]">
+                  <p className="font-bold text-[#1f2937] text-base">Espace Client</p>
+                  <p className="text-xs text-[#475569] mt-0.5">Connectez-vous pour suivre vos commandes & devis</p>
                 </div>
 
                 <Link
@@ -553,7 +553,7 @@ export default function Navbar() {
                 <Link
                   href="/compte?mode=signup"
                   onClick={() => setAccountOpen(false)}
-                  className="w-full bg-[#F4F0E5] hover:bg-[#e7e0d3] text-[#1c1917] font-semibold py-2.5 px-4 rounded-xl text-center block text-sm transition"
+                  className="w-full bg-[#F5F7F8] hover:bg-[#E2E8F0] text-[#1f2937] font-semibold py-2.5 px-4 rounded-xl text-center block text-sm transition"
                 >
                   Créer un compte
                 </Link>
@@ -564,9 +564,9 @@ export default function Navbar() {
 
         {/* MINI PANIER DROPDOWN */}
         {cartOpen && (
-          <div className="absolute top-full right-2 sm:right-12 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-[#E7E0D3] p-5 z-50 animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E7E0D3]">
-              <h3 className="font-bold text-[#1c1917] text-base">
+          <div className="absolute top-full right-2 sm:right-12 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-[#E2E8F0] p-5 z-50 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+              <h3 className="font-bold text-[#1f2937] text-base">
                 Votre panier ({totalCartItemsCount})
               </h3>
               <button
@@ -584,28 +584,28 @@ export default function Navbar() {
                 displayCartItems.map((item, index) => (
                   <div key={index} className="flex items-center justify-between text-sm py-1 border-b border-stone-100 last:border-0">
                     <div className="flex items-center gap-3">
-                      <span className="w-8 h-8 rounded-lg bg-[#F4F0E5] text-[#A54829] flex items-center justify-center font-bold text-xs shrink-0">
+                      <span className="w-8 h-8 rounded-lg bg-[#F5F7F8] text-[#123524] flex items-center justify-center font-bold text-xs shrink-0">
                         {item.quantity}×
                       </span>
-                      <span className="font-semibold text-[#1c1917] line-clamp-1">{item.title}</span>
+                      <span className="font-semibold text-[#1f2937] line-clamp-1">{item.title}</span>
                     </div>
-                    <span className="font-bold text-[#1c1917] shrink-0">
+                    <span className="font-bold text-[#1f2937] shrink-0">
                       {item.price.includes('€') ? item.price : item.price === 'Sur devis' ? item.price : `${item.price} €`}
                     </span>
                   </div>
                 ))
               ) : (
-                <p className="py-6 text-center text-sm font-medium text-[#57534e]">
+                <p className="py-6 text-center text-sm font-medium text-[#475569]">
                   Votre panier est vide.
                 </p>
               )}
             </div>
 
-            <div className="pt-3 border-t border-[#E7E0D3] space-y-3">
+            <div className="pt-3 border-t border-[#E2E8F0] space-y-3">
               {displayCartItems.length > 0 && (
-                <div className="flex items-center justify-between font-bold text-base text-[#1c1917]">
+                <div className="flex items-center justify-between font-bold text-base text-[#1f2937]">
                   <span>Total</span>
-                  <span className="text-[#A54829] text-lg">{totalCartPrice} €</span>
+                  <span className="text-[#123524] text-lg">{totalCartPrice} €</span>
                 </div>
               )}
 
@@ -622,7 +622,7 @@ export default function Navbar() {
 
         {/* SEARCH OVERLAY */}
         {searchOpen && (
-          <div id="product-search-panel" className="absolute top-full left-0 right-0 bg-white border-b border-[#E7E0D3] shadow-xl p-4 z-50 animate-in fade-in slide-in-from-top-1">
+          <div id="product-search-panel" className="absolute top-full left-0 right-0 bg-white border-b border-[#E2E8F0] shadow-xl p-4 z-50 animate-in fade-in slide-in-from-top-1">
             <form onSubmit={handleSearchSubmit} className="max-w-3xl mx-auto flex items-center gap-3">
               <Search size={20} className="text-gray-400 shrink-0" />
               <input
@@ -632,7 +632,7 @@ export default function Navbar() {
                 placeholder="Rechercher des produits (ex: bûches de chêne, granulés, allume-feu...)"
                 aria-label="Nom du produit à rechercher"
                 autoFocus
-                className="w-full text-sm font-medium text-[#1c1917] bg-transparent border-0 focus:outline-none focus:ring-0"
+                className="w-full text-sm font-medium text-[#1f2937] bg-transparent border-0 focus:outline-none focus:ring-0"
               />
               <button
                 type="submit"
@@ -664,11 +664,11 @@ export default function Navbar() {
                 aria-label="Bren-nholz — Leylines Park, accueil"
                 className="flex items-center gap-2.5 font-black text-xl tracking-tight text-white"
               >
-                <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#A54829] text-white shadow-md">
+                <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#123524] text-white shadow-md">
                   <Flame size={20} strokeWidth={2.2} fill="currentColor" />
                 </span>
                 <span className="font-extrabold text-xl tracking-tight text-white">
-                  <BrandWordmark hyphenClass="text-[#F4F0E5]" />
+                  <BrandWordmark hyphenClass="text-[#F5F7F8]" />
                 </span>
               </Link>
 
@@ -687,7 +687,7 @@ export default function Navbar() {
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block py-3 px-2 rounded-xl transition ${
-                  pathname === '/' ? 'text-[#F4F0E5] bg-white/10' : 'text-stone-200 hover:text-white'
+                  pathname === '/' ? 'text-[#F5F7F8] bg-white/10' : 'text-stone-200 hover:text-white'
                 }`}
               >
                 Accueil
@@ -702,7 +702,7 @@ export default function Navbar() {
                   <span>Produits</span>
                   <ChevronDown
                     size={20}
-                    className={`transition-transform duration-200 ${mobileProduitsOpen ? 'rotate-180 text-[#F4F0E5]' : ''}`}
+                    className={`transition-transform duration-200 ${mobileProduitsOpen ? 'rotate-180 text-[#F5F7F8]' : ''}`}
                   />
                 </button>
 
@@ -737,7 +737,7 @@ export default function Navbar() {
                 href="/guide-granules"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block py-3 px-2 rounded-xl transition ${
-                  pathname === '/guide-granules' ? 'text-[#F4F0E5] bg-white/10' : 'text-stone-200 hover:text-white'
+                  pathname === '/guide-granules' ? 'text-[#F5F7F8] bg-white/10' : 'text-stone-200 hover:text-white'
                 }`}
               >
                 Guide Pellets
@@ -747,7 +747,7 @@ export default function Navbar() {
                 href="/a-propos"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block py-3 px-2 rounded-xl transition ${
-                  pathname === '/a-propos' ? 'text-[#F4F0E5] bg-white/10' : 'text-stone-200 hover:text-white'
+                  pathname === '/a-propos' ? 'text-[#F5F7F8] bg-white/10' : 'text-stone-200 hover:text-white'
                 }`}
               >
                 À propos
@@ -757,7 +757,7 @@ export default function Navbar() {
                 href="/contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block py-3 px-2 rounded-xl transition ${
-                  pathname === '/contact' ? 'text-[#F4F0E5] bg-white/10' : 'text-stone-200 hover:text-white'
+                  pathname === '/contact' ? 'text-[#F5F7F8] bg-white/10' : 'text-stone-200 hover:text-white'
                 }`}
               >
                 Contact
@@ -768,7 +768,7 @@ export default function Navbar() {
               <Link
                 href="/devis"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block text-center py-3.5 px-4 rounded-xl bg-[#A54829] font-extrabold text-white text-base shadow-md"
+                className="block text-center py-3.5 px-4 rounded-xl bg-[#123524] font-extrabold text-white text-base shadow-md"
               >
                 Demander un devis
               </Link>

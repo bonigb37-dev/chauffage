@@ -52,7 +52,7 @@ export default function ProductHeroShowcase() {
   return localizeNode((
     <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
       {/* Glow background effect */}
-      <div className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-r from-[#A54829]/30 to-[#123524]/20 blur-2xl transition-all duration-700" />
+      <div className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-r from-[#123524]/30 to-[#123524]/20 blur-2xl transition-all duration-700" />
 
       {/* Main card */}
       <div className="relative aspect-[1.12/1] overflow-hidden rounded-[2.5rem] bg-[#123524] shadow-2xl border border-stone-800">
@@ -110,8 +110,8 @@ export default function ProductHeroShowcase() {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#A54829]">
-                  <Flame size={14} className="fill-[#A54829] text-[#A54829]" />
+                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#123524]">
+                  <Flame size={14} className="fill-[#123524] text-[#123524]" />
                   {current.badge}
                 </p>
                 <p className="mt-1 font-black text-[#123524] text-sm sm:text-base truncate">
@@ -133,7 +133,7 @@ export default function ProductHeroShowcase() {
               type="button"
               onClick={() => setIndex(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === index ? 'w-8 bg-[#A54829]' : 'w-2 bg-white/60 hover:bg-white'
+                i === index ? 'w-8 bg-[#123524]' : 'w-2 bg-white/60 hover:bg-white'
               }`}
               aria-label={`Aller à la diapositive ${i + 1}`}
             />

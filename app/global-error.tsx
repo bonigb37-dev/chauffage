@@ -3,7 +3,7 @@
 export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <html lang="de">
-      <body style={{ margin: 0, background: '#FAF8F3', color: '#1c1917', fontFamily: 'Arial, sans-serif' }}>
+      <body style={{ margin: 0, background: '#FAFBFC', color: '#1f2937', fontFamily: 'Arial, sans-serif' }}>
         <main style={{ maxWidth: 720, margin: '0 auto', padding: '80px 24px', textAlign: 'center' }}>
           <h1>Diese Seite ist vorübergehend nicht verfügbar.</h1>
           <p>Bitte versuchen Sie es erneut. Bei Fragen helfen wir Ihnen gerne weiter.</p>

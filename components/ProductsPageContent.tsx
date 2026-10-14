@@ -24,7 +24,7 @@ export default async function ProductsPageContent({ categorySlug }: { categorySl
   const category = productCategories.find((item) => item.slug === categorySlug);
   return localizeNode((
     <main>
-      <section className="relative overflow-hidden bg-[#F4F0E5]">
+      <section className="relative overflow-hidden bg-[#F5F7F8]">
         <div className="container grid min-h-[380px] items-center gap-8 py-10 lg:grid-cols-[1fr_0.9fr] lg:py-12">
           <div className="relative z-10 max-w-2xl">
             <h1 className="text-4xl font-black leading-tight tracking-tight text-gray-950 sm:text-6xl">{category?.title ?? 'Catalogue de bois de chauffage, granulés et briquettes'}</h1>

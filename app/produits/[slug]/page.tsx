@@ -63,31 +63,31 @@ export default async function ProductDetailPage({ params }: Props) {
   };
 
   return localizeNode((
-    <main className="min-h-[65vh] bg-[#F4F0E5] py-8 sm:py-12 text-[#1c1917]">
+    <main className="min-h-[65vh] bg-[#F5F7F8] py-8 sm:py-12 text-[#1f2937]">
       <script nonce={nonce} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
       <div className="container">
-        <nav aria-label="Fil d’Ariane" className="mb-6 text-sm text-[#57534e]">
-          <Link href="/produits" className="hover:text-[#A54829]">Produits</Link>
+        <nav aria-label="Fil d’Ariane" className="mb-6 text-sm text-[#475569]">
+          <Link href="/produits" className="hover:text-[#123524]">Produits</Link>
           <span aria-hidden="true"> / </span>
           <span className="text-[#123524] font-bold">{product.name}</span>
         </nav>
 
-        <article className="grid gap-8 rounded-3xl border border-[#E7E0D3] bg-white p-5 shadow-sm sm:p-8 lg:grid-cols-2 lg:gap-12">
-          <div className="relative min-h-[300px] overflow-hidden rounded-2xl bg-[#FAF8F3] sm:min-h-[480px]">
+        <article className="grid gap-8 rounded-3xl border border-[#E2E8F0] bg-white p-5 shadow-sm sm:p-8 lg:grid-cols-2 lg:gap-12">
+          <div className="relative min-h-[300px] overflow-hidden rounded-2xl bg-[#FAFBFC] sm:min-h-[480px]">
             <Image src={product.image} alt={product.name} fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-contain p-4" />
           </div>
           <div className="flex flex-col justify-center">
-            <p className="text-sm font-bold uppercase tracking-widest text-[#A54829]">{product.type}</p>
+            <p className="text-sm font-bold uppercase tracking-widest text-[#123524]">{product.type}</p>
             <h1 className="mt-2 text-3xl font-black leading-tight text-[#123524] sm:text-4xl">{product.name}</h1>
 
-            {product.articleNumber && <p className="mt-2 text-sm text-[#57534e]">N° d’article : {product.articleNumber}</p>}
-            <p className="mt-5 leading-7 text-[#1c1917]">{product.description}</p>
+            {product.articleNumber && <p className="mt-2 text-sm text-[#475569]">N° d’article : {product.articleNumber}</p>}
+            <p className="mt-5 leading-7 text-[#1f2937]">{product.description}</p>
 
-            <dl className="mt-6 grid gap-3 border-y border-[#E7E0D3] py-5 sm:grid-cols-2">
-              <div><dt className="text-xs font-bold uppercase tracking-wide text-[#57534e]">Conditionnement</dt><dd className="mt-1 font-semibold text-[#123524]">{product.quantity}</dd></div>
-              <div><dt className="text-xs font-bold uppercase tracking-wide text-[#57534e]">Disponibilité</dt><dd className={`mt-1 flex items-center gap-2 ${product.stock === 0 ? 'text-red-700' : 'text-emerald-700 font-bold'}`}>{product.stock !== 0 && <Check size={24} strokeWidth={3} aria-hidden="true" />}{product.stock === 0 ? 'Rupture de stock' : 'En stock'}</dd></div>
+            <dl className="mt-6 grid gap-3 border-y border-[#E2E8F0] py-5 sm:grid-cols-2">
+              <div><dt className="text-xs font-bold uppercase tracking-wide text-[#475569]">Conditionnement</dt><dd className="mt-1 font-semibold text-[#123524]">{product.quantity}</dd></div>
+              <div><dt className="text-xs font-bold uppercase tracking-wide text-[#475569]">Disponibilité</dt><dd className={`mt-1 flex items-center gap-2 ${product.stock === 0 ? 'text-red-700' : 'text-emerald-700 font-bold'}`}>{product.stock !== 0 && <Check size={24} strokeWidth={3} aria-hidden="true" />}{product.stock === 0 ? 'Rupture de stock' : 'En stock'}</dd></div>
             </dl>
-            <p className="mt-6 text-3xl font-black text-[#123524]">{product.price}</p><p data-original-content className="mt-1 text-xs text-[#57534e]">{vatLabel(product,brenLocale)}</p>
+            <p className="mt-6 text-3xl font-black text-[#123524]">{product.price}</p><p data-original-content className="mt-1 text-xs text-[#475569]">{vatLabel(product,brenLocale)}</p>
             <DeliveryInformation />
             <div className="mt-6 flex flex-wrap gap-3"><ProductDetailAddButton product={product} /></div>
           </div>
