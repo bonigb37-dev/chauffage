@@ -1,16 +1,18 @@
 'use client';
 import IncludedVatSummary from '@/components/IncludedVatSummary';
-import type {vatSummary} from '@/lib/vat';
+import type { vatSummary } from '@/lib/vat';
 import CartDraftsPanel from '@/components/CartDraftsPanel';
 import { localizeNode, translate } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
-
 import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import Link from '@/i18n/navigation';
 import { useRouter } from '@/i18n/navigation';
-import { LoaderCircle, RefreshCw, Trash2 } from 'lucide-react';
+import {
+  LoaderCircle, RefreshCw, Trash2, LayoutDashboard, MessageSquare,
+  BarChart3, ShoppingCart, LogOut, Menu, X, Flame
+} from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import { useCart } from '@/components/CartProvider';
@@ -46,7 +48,7 @@ function emptyProduct(products: Product[]): Product { return { id: Math.max(0, .
 function StatusSelect({ value, onChange, disabled, order = false }: { value: RequestStatus; onChange: (status: RequestStatus) => void; disabled: boolean; order?: boolean }) {
   const brenLocale = useLocale() as Locale;
 
-  return localizeNode(<select value={value} disabled={disabled} onChange={(event) => onChange(event.target.value as RequestStatus)} className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm font-semibold text-gray-800 disabled:opacity-50">
+  return localizeNode(<select value={value} disabled={disabled} onChange={(event) => onChange(event.target.value as RequestStatus)} className="rounded-xl border border-stone-200 bg-white px-3 py-2 text-xs font-mono font-bold text-zinc-900 shadow-2xs focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FF6B00]/20 disabled:opacity-50">
     {Object.entries(order ? orderStatusLabels : statusLabels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}
   </select>, brenLocale);
 }
@@ -83,6 +85,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   const [productForm, setProductForm] = useState<Product>(() => emptyProduct(siteData.products));
   const [editingProduct, setEditingProduct] = useState(false);
   const [activeView, setActiveView] = useState<'workspace' | 'messages' | 'statistics' | 'carts'>('workspace');
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const syncHash = () => {
@@ -364,77 +367,481 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
 
   const canSeeWorkspace = role === 'admin' || role === 'super_admin' || role === 'owner';
   const canSeeSuperAdmin = role === 'super_admin' || role === 'owner';
+  const userInitials = user?.email ? user.email.slice(0, 2).toUpperCase() : 'AD';
 
-  return localizeNode(<main className="min-h-[70vh] bg-[#fffaf5] py-10 sm:py-14">
-    <div className="container max-w-6xl">
-      <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
-        <div><p className="text-sm font-bold uppercase tracking-[.18em] text-orange-600">Bren-nholz · administration</p><h1 className="mt-2 text-3xl font-black text-gray-950 sm:text-4xl">{superAdminOnly ? (role === 'owner' ? 'Administration Owner' : 'Super administration') : 'Espace administrateur'}</h1></div>
-        {user && <div className="flex flex-wrap items-center gap-3"><div className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm text-gray-600">{user.email}</div><button type="button" onClick={() => void handleSignOut()} disabled={signingOut} className="rounded-lg bg-gray-950 px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50">{signingOut ? 'Déconnexion...' : 'Se déconnecter'}</button></div>}
+  const navContent = (
+    <div className="flex flex-col justify-between h-full p-5 relative z-10 text-slate-200">
+      <div>
+        {/* Brand Header */}
+        <div className="flex items-center gap-3 pb-6 border-b border-white/10">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF6B00] to-[#E65A00] flex items-center justify-center shadow-[0_0_20px_rgba(255,107,0,0.4)] border border-orange-400/30 shrink-0">
+            <Flame className="w-5 h-5 text-white animate-pulse" />
+          </div>
+          <div>
+            <h1 className="text-white font-black text-lg tracking-tight leading-none">BRENNHOLZ</h1>
+            <p className="text-[11px] text-[#9AA4AF] font-bold uppercase tracking-widest mt-1">Industrial Admin</p>
+          </div>
+        </div>
+
+        {/* Status Indicator */}
+        <div className="mt-5 mb-6 flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#17212B] border border-white/[0.08]">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          </span>
+          <span className="text-xs text-emerald-400 font-bold tracking-tight">Espace sécurisé &amp; actif</span>
+        </div>
+
+        {/* Navigation Section */}
+        <nav className="space-y-1.5" aria-label="Menu principal administration">
+          <button
+            type="button"
+            aria-pressed={activeView === 'workspace'}
+            onClick={() => { setActiveView('workspace'); window.history.replaceState(null, '', window.location.pathname + window.location.search); setMobileOpen(false); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
+              activeView === 'workspace'
+                ? 'bg-gradient-to-r from-[#FF6B00] to-[#E65A00] text-white shadow-md shadow-[#FF6B00]/25'
+                : 'text-[#9AA4AF] hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <LayoutDashboard className="w-5 h-5 shrink-0" />
+            <span>{supportInboxCopy[brenLocale].workspace}</span>
+          </button>
+
+          <button
+            type="button"
+            aria-pressed={activeView === 'messages'}
+            onClick={() => { setActiveView('messages'); window.history.replaceState(null, '', '#support-messages'); setMobileOpen(false); }}
+            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
+              activeView === 'messages'
+                ? 'bg-gradient-to-r from-[#FF6B00] to-[#E65A00] text-white shadow-md shadow-[#FF6B00]/25'
+                : 'text-[#9AA4AF] hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <MessageSquare className="w-5 h-5 shrink-0" />
+              <span>{supportCopy[brenLocale].inbox}</span>
+            </div>
+            <SupportUnreadBadge />
+          </button>
+
+          <button
+            type="button"
+            aria-pressed={activeView === 'statistics'}
+            onClick={() => { setActiveView('statistics'); window.history.replaceState(null, '', '#site-statistics'); setMobileOpen(false); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
+              activeView === 'statistics'
+                ? 'bg-gradient-to-r from-[#FF6B00] to-[#E65A00] text-white shadow-md shadow-[#FF6B00]/25'
+                : 'text-[#9AA4AF] hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <BarChart3 className="w-5 h-5 shrink-0" />
+            <span>{analyticsCopy[brenLocale].title}</span>
+          </button>
+
+          <button
+            type="button"
+            aria-pressed={activeView === 'carts'}
+            onClick={() => { setActiveView('carts'); setMobileOpen(false); }}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
+              activeView === 'carts'
+                ? 'bg-gradient-to-r from-[#FF6B00] to-[#E65A00] text-white shadow-md shadow-[#FF6B00]/25'
+                : 'text-[#9AA4AF] hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <ShoppingCart className="w-5 h-5 shrink-0" />
+            <span>{brenLocale === 'de' ? 'Offene Warenkörbe' : brenLocale === 'en' ? 'Uncompleted carts' : 'Paniers non validés'}</span>
+          </button>
+        </nav>
       </div>
 
-      {!loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportNotifications />}
-      {!loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <nav data-original-content aria-label={supportInboxCopy[brenLocale].workspace} className="mt-6 flex flex-wrap gap-2 rounded-xl border border-stone-200 bg-white p-2">
-        <button type="button" aria-pressed={activeView === 'workspace'} onClick={() => { setActiveView('workspace'); window.history.replaceState(null, '', window.location.pathname + window.location.search); }} className={`rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'workspace' ? 'bg-gray-950 text-white' : 'text-gray-600 hover:bg-stone-100'}`}>{supportInboxCopy[brenLocale].workspace}</button>
-        <button type="button" aria-pressed={activeView === 'messages'} onClick={() => { setActiveView('messages'); window.history.replaceState(null, '', '#support-messages'); }} className={`flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'messages' ? 'bg-orange-600 text-white' : 'text-gray-600 hover:bg-orange-50'}`}>{supportCopy[brenLocale].inbox}<SupportUnreadBadge /></button>
-        <button type="button" aria-pressed={activeView === 'statistics'} onClick={() => { setActiveView('statistics'); window.history.replaceState(null, '', '#site-statistics'); }} className={`rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'statistics' ? 'bg-orange-600 text-white' : 'text-gray-600 hover:bg-orange-50'}`}>{analyticsCopy[brenLocale].title}</button>
-        <button type="button" aria-pressed={activeView === 'carts'} onClick={() => setActiveView('carts')} className={`rounded-lg px-4 py-3 text-sm font-bold transition ${activeView === 'carts' ? 'bg-orange-600 text-white' : 'text-gray-600 hover:bg-orange-50'}`}>{brenLocale === 'de' ? 'Offene Warenkörbe' : brenLocale === 'en' ? 'Uncompleted carts' : 'Paniers non validés'}</button>
-      </nav>}
-      <div className={activeView !== 'workspace' && !loading && canSeeWorkspace && (!superAdminOnly || canSeeSuperAdmin) ? 'hidden' : ''}>
-      {loading ? <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Vérification de l’accès...</div>
-        : !user ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Connexion requise</h2><p className="mt-2 text-gray-600">Connectez-vous avec votre compte administrateur pour continuer.</p><Link href="/compte" className="mt-5 inline-flex rounded-xl bg-orange-600 px-5 py-3 font-bold text-white">Se connecter</Link></section>
-          : superAdminOnly && !canSeeSuperAdmin ? <section className="mt-8 rounded-2xl border border-stone-200 bg-white p-8"><h2 className="text-xl font-bold">Page indisponible</h2><p className="mt-2 text-gray-600">Cette page n’est pas accessible avec ce compte.</p></section>
-            : !canSeeWorkspace ? <section className="mt-8 rounded-2xl border border-red-200 bg-white p-8"><h2 className="text-xl font-bold text-red-800">Accès administrateur requis</h2><p className="mt-2 text-gray-600">Ce compte n’a pas de rôle administrateur.</p></section>
-              : superAdminOnly ? <><Link href="/admin" className="mt-7 inline-flex rounded-lg border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold">Ouvrir l’espace boutique</Link><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} ordersOnly /><SuperAdminPanel roles={roles} userId={user.id} currentRole={role} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} /><AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /><AuditPanel audit={audit} /></>
-                : <><AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} />{siteData.ready && !detailsLoading ? <ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} /> : <div className="mt-8 flex items-center gap-3 rounded-2xl bg-white p-8 text-gray-600"><LoaderCircle className="animate-spin"/> Chargement des produits et des informations de paiement...</div>}<AccountRegistrationPanel accounts={accounts} /><ActivityPanel activities={activities} /></>}
+      {/* User Profile Card */}
+      {user && (
+        <div className="mt-8 pt-4 border-t border-white/10">
+          <div className="bg-[#17212B] border border-white/[0.08] rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-2xs">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-9 h-9 rounded-lg bg-zinc-950 border border-orange-500/40 text-orange-400 flex items-center justify-center font-mono font-black text-xs shrink-0 shadow-xs">
+                {userInitials}
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-bold text-white truncate">{user.email}</p>
+                <div className="mt-0.5">
+                  <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                    role === 'owner' ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white' :
+                    role === 'super_admin' ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white' :
+                    'bg-zinc-800 text-orange-400 border border-orange-500/30'
+                  }`}>
+                    {role === 'owner' ? 'Owner' : role === 'super_admin' ? 'Super-Admin' : 'Admin'}
+                  </span>
+                </div>
+              </div>
+            </div>
 
-      </div>
-      {activeView === 'messages' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportMessenger admin />}
-      {activeView === 'carts' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <CartDraftsPanel />}
-      {activeView === 'statistics' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <AnalyticsDashboard />}
-      {error && <p role="alert" className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-800">{error}</p>}
-      {notice && <p role="status" className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm leading-6 text-emerald-900">{notice}</p>}
-      <button type="button" onClick={() => void loadData(user)} className="mt-8 flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900"><RefreshCw size={15}/> Actualiser les données</button>
+            <button
+              type="button"
+              onClick={() => void handleSignOut()}
+              disabled={signingOut}
+              title="Se déconnecter"
+              className="p-2 text-[#9AA4AF] hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors shrink-0 disabled:opacity-50"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
-  </main>, brenLocale);
+  );
+
+  return localizeNode(
+    <div className="min-h-screen bg-[#F8FAFC] text-zinc-900 flex flex-col lg:flex-row font-sans">
+      {/* Mobile Top Header */}
+      <header className="lg:hidden bg-[#101820] text-white px-4 py-3 flex items-center justify-between border-b border-white/10 sticky top-0 z-40">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#FF6B00] to-[#E65A00] flex items-center justify-center shadow-[0_0_15px_rgba(255,107,0,0.4)]">
+            <Flame className="w-4 h-4 text-white" />
+          </div>
+          <div>
+            <h1 className="font-black text-sm tracking-tight leading-none text-white">BRENNHOLZ</h1>
+            <p className="text-[9px] text-[#9AA4AF] font-bold uppercase tracking-widest mt-0.5">Admin Workspace</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="p-2 rounded-xl bg-[#17212B] border border-white/10 text-white hover:bg-white/10 transition-colors"
+        >
+          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </header>
+
+      {/* Mobile Sidebar Overlay Drawer */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex">
+          <div className="fixed inset-0 bg-zinc-950/80 backdrop-blur-xs" onClick={() => setMobileOpen(false)} />
+          <div className="relative w-[270px] bg-[#101820] h-full shadow-2xl flex flex-col z-10 overflow-y-auto">
+            <div className="absolute inset-0 bg-[radial-gradient(#FF6B00_1px,transparent_1px)] [background-size:16px_16px] opacity-10 mix-blend-screen pointer-events-none" />
+            {navContent}
+          </div>
+        </div>
+      )}
+
+      {/* Desktop Executive Dark Engine Sidebar (270px width) */}
+      <aside className="hidden lg:block w-[270px] shrink-0 bg-[#101820] sticky top-0 h-screen border-r border-white/10 overflow-y-auto z-30">
+        <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-[#FF6B00]/15 to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(#FF6B00_1px,transparent_1px)] [background-size:16px_16px] opacity-10 mix-blend-screen pointer-events-none" />
+        {navContent}
+      </aside>
+
+      {/* Main Workspace Area (Clean Industrial background #F8FAFC) */}
+      <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 space-y-6 bg-[#F8FAFC]">
+        {/* Top Header Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-4 bg-white border border-stone-200/90 rounded-2xl p-5 shadow-2xs">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider text-[#FF6B00]">
+              Brennholz · Administration Industrielle
+            </p>
+            <h1 className="mt-1 text-2xl sm:text-3xl font-black text-zinc-950 tracking-tight">
+              {superAdminOnly
+                ? (role === 'owner' ? 'Administration Owner' : 'Super Administration')
+                : 'Console Administrateur'}
+            </h1>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => void loadData(user)}
+              className="inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-800 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-all"
+            >
+              <RefreshCw className="w-3.5 h-3.5 text-orange-600" />
+              <span>Actualiser</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Main Notifications / Error messages */}
+        {!loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportNotifications />}
+
+        {error && (
+          <div role="alert" className="rounded-2xl border border-red-200 bg-red-50/80 p-4 text-sm font-semibold text-red-900 shadow-2xs">
+            {error}
+          </div>
+        )}
+        {notice && (
+          <div role="status" className="rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 text-sm font-semibold text-emerald-900 shadow-2xs">
+            {notice}
+          </div>
+        )}
+
+        {/* View Switcher Container */}
+        <div className={activeView !== 'workspace' && !loading && canSeeWorkspace && (!superAdminOnly || canSeeSuperAdmin) ? 'hidden' : 'space-y-6'}>
+          {loading ? (
+            <div className="flex items-center gap-3 rounded-2xl border border-stone-200/90 bg-white p-8 text-zinc-600 shadow-2xs">
+              <LoaderCircle className="w-5 h-5 animate-spin text-[#FF6B00]" />
+              <span className="font-semibold text-sm">Vérification des accréditations en cours...</span>
+            </div>
+          ) : !user ? (
+            <section className="rounded-2xl border border-stone-200/90 bg-white p-8 shadow-2xs">
+              <h2 className="text-xl font-black text-zinc-950 tracking-tight">Connexion requise</h2>
+              <p className="mt-2 text-sm text-stone-600">Connectez-vous avec votre compte administrateur pour accéder au poste de commande.</p>
+              <Link href="/compte" className="mt-5 inline-flex rounded-xl bg-zinc-950 px-5 py-3 text-sm font-bold text-white shadow-xs hover:bg-zinc-800 transition-all">
+                Se connecter
+              </Link>
+            </section>
+          ) : superAdminOnly && !canSeeSuperAdmin ? (
+            <section className="rounded-2xl border border-stone-200/90 bg-white p-8 shadow-2xs">
+              <h2 className="text-xl font-black text-zinc-950 tracking-tight">Accès restreint</h2>
+              <p className="mt-2 text-sm text-stone-600">Cette section nécessite une accréditation Super-Admin ou Owner.</p>
+            </section>
+          ) : !canSeeWorkspace ? (
+            <section className="rounded-2xl border border-red-200 bg-white p-8 shadow-2xs">
+              <h2 className="text-xl font-black text-red-800 tracking-tight">Accès administrateur requis</h2>
+              <p className="mt-2 text-sm text-stone-600">Ce compte ne dispose pas des privilèges administrateur requis.</p>
+            </section>
+          ) : superAdminOnly ? (
+            <>
+              <Link href="/admin" className="inline-flex rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-900 shadow-2xs hover:bg-stone-50 transition-all">
+                Ouvrir l’espace boutique
+              </Link>
+              <AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} ordersOnly />
+              <SuperAdminPanel roles={roles} userId={user.id} currentRole={role} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} />
+              <AccountRegistrationPanel accounts={accounts} />
+              <ActivityPanel activities={activities} />
+              <AuditPanel audit={audit} />
+            </>
+          ) : (
+            <>
+              <AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} />
+              {siteData.ready && !detailsLoading ? (
+                <ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} />
+              ) : (
+                <div className="flex items-center gap-3 rounded-2xl border border-stone-200/90 bg-white p-8 text-zinc-600 shadow-2xs">
+                  <LoaderCircle className="w-5 h-5 animate-spin text-[#FF6B00]" />
+                  <span className="font-semibold text-sm">Chargement du catalogue et des configurations...</span>
+                </div>
+              )}
+              <AccountRegistrationPanel accounts={accounts} />
+              <ActivityPanel activities={activities} />
+            </>
+          )}
+        </div>
+
+        {activeView === 'messages' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportMessenger admin />}
+        {activeView === 'carts' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <CartDraftsPanel />}
+        {activeView === 'statistics' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <AnalyticsDashboard />}
+      </div>
+    </div>,
+    brenLocale
+  );
 }
 
 function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTransfer, archiveReady, showArchived, onArchive, onArchiveView, orderOffset, onOrderPage, ordersOnly = false }: { archiveReady: boolean; showArchived: boolean; onArchive: (id: number, archived: boolean) => void; onArchiveView: (archived: boolean) => void; orderOffset: number; onOrderPage: (offset: number) => void; ordersOnly?: boolean; contacts: ContactRow[]; orders: OrderRow[]; workingId: string; onStatusChange: (table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) => void; onConfirmTransfer: (id: number) => void }) {
   const brenLocale = useLocale() as Locale;
 
   return localizeNode(<>
-    {!ordersOnly && <div className="mt-8 grid gap-4 sm:grid-cols-3">
-      {[['Demandes de contact', contacts.length], ['Demandes de commande', orders.length], ['À traiter', contacts.filter((item) => item.status !== 'done').length + orders.filter((item) => item.status !== 'done').length]].map(([label, count]) => <article key={label} className="rounded-2xl border border-stone-200 bg-white p-5"><p className="text-sm font-semibold text-gray-500">{label}</p><p className="mt-2 text-3xl font-black text-gray-950">{count}</p></article>)}
-    </div>}
-    <section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
-      <h2 className="text-xl font-black lg:text-2xl">Demandes de commande</h2>
-      <div data-original-content className="mt-3 flex flex-wrap gap-2">{[false,true].map(archived => <button key={String(archived)} type="button" disabled={!!workingId || (archived && !archiveReady)} aria-pressed={showArchived === archived} onClick={() => onArchiveView(archived)} className={`rounded-lg px-4 py-2 text-sm font-bold disabled:opacity-50 ${showArchived === archived ? 'bg-gray-950 text-white' : 'border border-stone-300 bg-white text-gray-700'}`}>{archived ? orderArchiveCopy[brenLocale].archives : orderArchiveCopy[brenLocale].active}</button>)}</div>
-      <p data-original-content className="mt-3 text-xs leading-5 text-gray-500">{archiveReady ? orderArchiveCopy[brenLocale].note : orderArchiveCopy[brenLocale].setup}</p>
-      {orders.length === 0 ? <p data-original-content className="mt-4 text-gray-500">{orderArchiveCopy[brenLocale].empty}</p> : <div className="mt-3 space-y-3">{orders.map((order) => {
-        const customer = order.customer ?? {};
-        const delivery = typeof customer.deliveryFeeCents==='number' ? {feeCents:customer.deliveryFeeCents} as Record<string,unknown> : customer.delivery && typeof customer.delivery === 'object' ? customer.delivery as Record<string, unknown> : null;
-        const items = Array.isArray(order.items) ? order.items as Array<Record<string, unknown>> : [];
-        return <article key={order.id} className="min-w-0 break-words rounded-xl border border-stone-200 p-4 text-base sm:p-5 lg:p-6">
-          <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-black">{order.reference}</p><p className="mt-1 text-sm text-gray-500">{date(order.created_at, brenLocale)}</p></div><StatusSelect order value={order.status} disabled={!!workingId || showArchived} onChange={(status) => void onStatusChange('order_requests', order.id, status)} /></div>
-          <p className="mt-3 break-all font-semibold"><span data-original-content>{text(customer.firstName)} {text(customer.lastName)}</span> · <a href={`mailto:${text(customer.email)}`} className="text-orange-700 underline">{text(customer.email)}</a></p>
-          <div className="mt-2 grid gap-3 text-sm text-gray-600 sm:grid-cols-2"><p><b className="text-gray-800">Facturation :</b><br/>{text(customer.street)} {text(customer.addressLine2)}<br/>{text(customer.postalCode)} {text(customer.city)} {text(customer.state)}</p>{order.shipping && <p><b className="text-gray-800">Livraison :</b><br/>{text(order.shipping.street)} {text(order.shipping.addressLine2)}<br/>{text(order.shipping.postalCode)} {text(order.shipping.city)} {text(order.shipping.state)}</p>}</div>
-          <ul className="mt-2 space-y-1 text-sm text-gray-600">{items.map((item, index) => <li key={`${order.id}-${index}`}>{text(item.name)} × {Number(item.quantity) || 0}</li>)}</ul>
-          {Boolean(customer.vat) && typeof customer.vat==='object' && <IncludedVatSummary summary={customer.vat as ReturnType<typeof vatSummary>} locale={brenLocale}/>}
-          {delivery && typeof delivery.feeCents === 'number' && <p className="mt-2 text-sm text-gray-600">Livraison : {new Intl.NumberFormat(brenLocale, {style:'currency',currency:'EUR'}).format(delivery.feeCents / 100)}{typeof delivery.distanceKm==='number' && <> · <span data-original-content>{delivery.distanceKm.toFixed(1)} km</span></>}</p>}
-          <p className="mt-2 text-sm font-bold text-gray-900">Montant de la commande : {new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' }).format(order.total_cents / 100)}</p>
-          <div data-original-content className="mt-3"><button type="button" disabled={!!workingId || !archiveReady} onClick={() => onArchive(order.id, !showArchived)} className="inline-flex items-center gap-2 rounded-lg border border-stone-300 px-3 py-2 text-sm font-bold text-gray-700 hover:border-orange-400 disabled:opacity-50"><Trash2 size={15} aria-hidden="true"/>{showArchived ? orderArchiveCopy[brenLocale].restore : orderArchiveCopy[brenLocale].remove}</button></div>
-          <AdminPaymentProof reference={order.reference} />
-          <div className="mt-2 flex flex-wrap items-center gap-3"><span className={`rounded-full px-3 py-1 text-xs font-bold ${order.payment_status === 'confirmed' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>{paymentStatusLabel(order.payment_status)}</span>{order.payment_status !== 'confirmed' && <button type="button" disabled={!!workingId || showArchived} onClick={() => onConfirmTransfer(order.id)} className="rounded-lg bg-gray-950 px-3 py-2 text-xs font-bold text-white disabled:opacity-50">{workingId === `payment-${order.id}` ? 'Vérification…' : 'Confirmer le virement reçu'}</button>}</div>
-        </article>;
-      })}</div>}
-      <div data-original-content className="mt-4 flex flex-wrap items-center justify-between gap-3"><button type="button" disabled={orderOffset === 0 || !!workingId} onClick={() => onOrderPage(Math.max(0,orderOffset-100))} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-40">{analyticsCopy[brenLocale].previous}</button><span className="text-xs text-gray-500">{orders.length ? orderOffset+1 : 0}–{orderOffset+orders.length}</span><button type="button" disabled={orders.length<100 || !!workingId} onClick={() => onOrderPage(orderOffset+100)} className="rounded-lg border px-3 py-2 text-sm disabled:opacity-40">{orderArchiveCopy[brenLocale].more}</button></div>
+    {!ordersOnly && (
+      <div className="grid gap-4 sm:grid-cols-3">
+        {[
+          ['Demandes de contact', contacts.length, 'Demandes e-mail et formulaires client'],
+          ['Demandes de commande', orders.length, 'Commandes passées via la boutique'],
+          ['En attente de traitement', contacts.filter((item) => item.status !== 'done').length + orders.filter((item) => item.status !== 'done').length, 'Dossiers nécessitant une action'],
+        ].map(([label, count, sub]) => (
+          <article key={String(label)} className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs flex flex-col justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#FF6B00]">{String(label)}</p>
+              <p className="mt-2 text-4xl font-black text-zinc-950 tracking-tight font-mono">{String(count)}</p>
+            </div>
+            <p className="mt-4 text-xs font-medium text-stone-500 border-t border-stone-100 pt-3">{String(sub)}</p>
+          </article>
+        ))}
+      </div>
+    )}
+
+    {/* Demandes de commande Panel */}
+    <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 pb-4">
+        <div>
+          <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Demandes de commande</h2>
+          <p className="text-xs text-stone-500 font-medium mt-1">Gestion des commandes clients et statut des règlements</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {[false, true].map(archived => (
+            <button
+              key={String(archived)}
+              type="button"
+              disabled={!!workingId || (archived && !archiveReady)}
+              aria-pressed={showArchived === archived}
+              onClick={() => onArchiveView(archived)}
+              className={`rounded-xl px-4 py-2 text-xs font-bold transition-all shadow-2xs disabled:opacity-50 ${
+                showArchived === archived
+                  ? 'bg-zinc-950 text-white'
+                  : 'border border-stone-200 bg-white text-zinc-700 hover:bg-stone-50'
+              }`}
+            >
+              {archived ? orderArchiveCopy[brenLocale].archives : orderArchiveCopy[brenLocale].active}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {orders.length === 0 ? (
+        <p className="mt-6 text-sm font-medium text-stone-500 bg-stone-50 p-6 rounded-xl border border-stone-200/80 text-center">
+          {orderArchiveCopy[brenLocale].empty}
+        </p>
+      ) : (
+        <div className="mt-6 space-y-4">
+          {orders.map((order) => {
+            const customer = order.customer ?? {};
+            const delivery = typeof customer.deliveryFeeCents === 'number' ? { feeCents: customer.deliveryFeeCents } as Record<string, unknown> : customer.delivery && typeof customer.delivery === 'object' ? customer.delivery as Record<string, unknown> : null;
+            const items = Array.isArray(order.items) ? order.items as Array<Record<string, unknown>> : [];
+            const isConfirmed = order.payment_status === 'confirmed';
+
+            return (
+              <article key={order.id} className="rounded-2xl border border-stone-200/90 bg-white p-5 lg:p-6 shadow-2xs hover:border-stone-300 transition-all">
+                <div className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-stone-100">
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-sm font-black text-zinc-950 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200 shadow-2xs">
+                      {order.reference}
+                    </span>
+                    <span className="text-xs font-semibold text-stone-500 font-mono">
+                      {date(order.created_at, brenLocale)}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <StatusSelect order value={order.status} disabled={!!workingId || showArchived} onChange={(status) => void onStatusChange('order_requests', order.id, status)} />
+                  </div>
+                </div>
+
+                <div className="mt-4 grid gap-4 text-sm sm:grid-cols-2">
+                  <div>
+                    <p className="font-bold text-zinc-950 text-base">
+                      <span>{text(customer.firstName)} {text(customer.lastName)}</span>
+                    </p>
+                    <a href={`mailto:${text(customer.email)}`} className="text-[#FF6B00] font-semibold underline text-xs">
+                      {text(customer.email)}
+                    </a>
+
+                    <div className="mt-3 text-xs text-stone-600 space-y-1">
+                      <p><b className="text-zinc-900 font-bold uppercase tracking-wider text-[10px]">Facturation :</b></p>
+                      <p>{text(customer.street)} {text(customer.addressLine2)}</p>
+                      <p>{text(customer.postalCode)} {text(customer.city)} {text(customer.state)}</p>
+                    </div>
+                  </div>
+
+                  <div className="bg-[#F8FAFC] p-4 rounded-xl border border-stone-100 flex flex-col justify-between">
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-2">Articles commandés</p>
+                      <ul className="space-y-1 text-xs font-medium text-stone-800">
+                        {items.map((item, index) => (
+                          <li key={`${order.id}-${index}`} className="flex justify-between gap-2">
+                            <span>{text(item.name)}</span>
+                            <span className="font-mono font-bold text-zinc-950">× {Number(item.quantity) || 0}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="mt-3 pt-3 border-t border-stone-200/80 flex items-center justify-between">
+                      <span className="text-xs font-bold text-stone-600">Montant Total :</span>
+                      <span className="text-lg font-black text-zinc-950 font-mono">
+                        {new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' }).format(order.total_cents / 100)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {Boolean(customer.vat) && typeof customer.vat === 'object' && <IncludedVatSummary summary={customer.vat as ReturnType<typeof vatSummary>} locale={brenLocale}/>}
+                {delivery && typeof delivery.feeCents === 'number' && (
+                  <p className="mt-3 text-xs font-semibold text-stone-600 bg-stone-50 p-2.5 rounded-lg border border-stone-200/60">
+                    Livraison : {new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' }).format(delivery.feeCents / 100)}
+                    {typeof delivery.distanceKm === 'number' && <> · <span>{delivery.distanceKm.toFixed(1)} km</span></>}
+                  </p>
+                )}
+
+                <div className="mt-4 pt-4 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-mono font-bold ${
+                      isConfirmed ? 'bg-emerald-500/10 text-emerald-800 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-900 border border-amber-500/20'
+                    }`}>
+                      <span className={`w-2 h-2 rounded-full ${isConfirmed ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                      {paymentStatusLabel(order.payment_status)}
+                    </span>
+
+                    {!isConfirmed && (
+                      <button
+                        type="button"
+                        disabled={!!workingId || showArchived}
+                        onClick={() => onConfirmTransfer(order.id)}
+                        className="rounded-xl bg-zinc-950 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 disabled:opacity-50 transition-all"
+                      >
+                        {workingId === `payment-${order.id}` ? 'Vérification…' : 'Confirmer le virement reçu'}
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <AdminPaymentProof reference={order.reference} />
+                    <button
+                      type="button"
+                      disabled={!!workingId || !archiveReady}
+                      onClick={() => onArchive(order.id, !showArchived)}
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-stone-200 bg-white px-3 py-1.5 text-xs font-bold text-stone-700 hover:border-red-300 hover:bg-red-50 hover:text-red-700 disabled:opacity-50 transition-all shadow-2xs"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>{showArchived ? orderArchiveCopy[brenLocale].restore : orderArchiveCopy[brenLocale].remove}</span>
+                    </button>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      )}
+
+      <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-between gap-3">
+        <button type="button" disabled={orderOffset === 0 || !!workingId} onClick={() => onOrderPage(Math.max(0, orderOffset - 100))} className="rounded-xl border border-stone-200 bg-white px-4 py-2 text-xs font-bold text-zinc-800 shadow-2xs hover:bg-stone-50 disabled:opacity-40">
+          {analyticsCopy[brenLocale].previous}
+        </button>
+        <span className="text-xs font-mono font-bold text-stone-500">
+          {orders.length ? orderOffset + 1 : 0}–{orderOffset + orders.length}
+        </span>
+        <button type="button" disabled={orders.length < 100 || !!workingId} onClick={() => onOrderPage(orderOffset + 100)} className="rounded-xl border border-stone-200 bg-white px-4 py-2 text-xs font-bold text-zinc-800 shadow-2xs hover:bg-stone-50 disabled:opacity-40">
+          {orderArchiveCopy[brenLocale].more}
+        </button>
+      </div>
     </section>
-    {!ordersOnly && <section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
-      <h2 id="contact-requests" className="scroll-mt-32 text-xl font-black lg:text-2xl">Demandes de contact</h2>
-      {contacts.length === 0 ? <p className="mt-4 text-gray-500">Aucune demande de contact pour le moment.</p> : <div tabIndex={0} className="mt-3 space-y-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600">{contacts.map((item) => <article key={item.id} className="min-w-0 break-words rounded-xl border border-stone-200 p-4 text-base">
-        <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="font-black"><span data-original-content>{item.name}</span> · {subjectLabels[item.subject] ?? item.subject}</p><p className="mt-1 text-sm text-gray-500">{date(item.created_at, brenLocale)} · <a className="text-orange-700 underline" href={`mailto:${item.email}`}>{item.email}</a>{item.phone ? ` · ${item.phone}` : ''}{item.postal_code ? ` · ${item.postal_code}` : ''}</p></div><StatusSelect value={item.status} disabled={workingId === `contact_requests-${item.id}`} onChange={(status) => void onStatusChange('contact_requests', item.id, status)} /></div>
-        <p data-original-content className="mt-3 whitespace-pre-wrap text-sm leading-6 text-gray-700">{item.message}</p>
-      </article>)}</div>}
-    </section>}
+
+    {!ordersOnly && (
+      <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
+        <h2 id="contact-requests" className="scroll-mt-32 text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Demandes de contact</h2>
+        {contacts.length === 0 ? (
+          <p className="mt-4 text-sm font-medium text-stone-500 bg-stone-50 p-6 rounded-xl border border-stone-200/80 text-center">Aucune demande de contact reçue pour le moment.</p>
+        ) : (
+          <div tabIndex={0} className="mt-4 space-y-3">
+            {contacts.map((item) => (
+              <article key={item.id} className="rounded-2xl border border-stone-200/90 bg-white p-5 shadow-2xs hover:border-stone-300 transition-all">
+                <div className="flex flex-wrap items-start justify-between gap-3 pb-3 border-b border-stone-100">
+                  <div>
+                    <p className="font-bold text-zinc-950 text-base">
+                      <span>{item.name}</span> · <span className="text-xs uppercase font-mono font-bold text-[#FF6B00]">{subjectLabels[item.subject] ?? item.subject}</span>
+                    </p>
+                    <p className="mt-1 text-xs text-stone-500 font-mono">
+                      {date(item.created_at, brenLocale)} · <a className="text-[#FF6B00] underline font-semibold" href={`mailto:${item.email}`}>{item.email}</a>
+                      {item.phone ? ` · ${item.phone}` : ''}{item.postal_code ? ` · ${item.postal_code}` : ''}
+                    </p>
+                  </div>
+                  <StatusSelect value={item.status} disabled={workingId === `contact_requests-${item.id}`} onChange={(status) => void onStatusChange('contact_requests', item.id, status)} />
+                </div>
+                <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-stone-700 bg-[#F8FAFC] p-4 rounded-xl border border-stone-100 font-sans">
+                  {item.message}
+                </p>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+    )}
   </>, brenLocale);
 }
 
@@ -446,60 +853,209 @@ function SuperAdminPanel({ roles, userId, currentRole, newRole, setNewRole, targ
 
   const visibleRoles = roles.filter((entry) => currentRole === 'owner' || entry.role !== 'owner');
   const roleGroups: { role: Role; title: string }[] = [
-    ...(currentRole === 'owner' ? [{ role: 'owner' as const, title: 'Propriétaires' }] : []),
-    { role: 'super_admin', title: 'Super administrateurs' },
+    ...(currentRole === 'owner' ? [{ role: 'owner' as const, title: 'Propriétaires (Owner)' }] : []),
+    { role: 'super_admin', title: 'Super Administrateurs' },
     { role: 'admin', title: 'Administrateurs' },
   ];
+
   return localizeNode(<>
-    <section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
-      <h2 className="text-xl font-black lg:text-2xl">Attribuer un rôle</h2>
-      <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-600">Saisissez l’adresse e-mail d’un utilisateur ayant déjà créé son compte sur le site. Pour des accès indépendants, utilisez un compte et une adresse e-mail différents pour chaque administrateur.</p>
+    <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
+      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Attribuer ou modifier un rôle</h2>
+      <p className="mt-1 text-xs text-stone-500 font-medium max-w-3xl">
+        Saisissez l’adresse e-mail d’un compte utilisateur inscrit pour lui attribuer des privilèges d’administration.
+      </p>
       <form onSubmit={onSubmit} className="mt-5 grid gap-4 sm:grid-cols-[1fr_190px_auto]">
-        <label className="text-sm font-semibold text-gray-700">Adresse e-mail utilisateur<input required type="email" value={targetUserId} onChange={(event) => setTargetUserId(event.target.value)} placeholder="utilisateur@exemple.com" className="mt-2 w-full rounded-lg border border-stone-300 px-4 py-3 text-sm" /></label>
-        <label className="text-sm font-semibold text-gray-700">Rôle<select value={newRole} onChange={(event) => setNewRole(event.target.value as Role)} className="mt-2 w-full rounded-lg border border-stone-300 bg-white px-4 py-3"><option value="admin">Administrateur</option><option value="super_admin">Super administrateur</option>{currentRole === 'owner' && <option value="owner">Owner</option>}</select></label>
-        <button type="submit" disabled={saving} className="self-end rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-60">{saving ? 'Enregistrement...' : 'Enregistrer'}</button>
+        <label className="text-xs font-bold uppercase tracking-wider text-stone-600">
+          Adresse e-mail de l’utilisateur
+          <input required type="email" value={targetUserId} onChange={(event) => setTargetUserId(event.target.value)} placeholder="administrateur@exemple.com" className="mt-2 w-full rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FF6B00]/20 outline-none" />
+        </label>
+        <label className="text-xs font-bold uppercase tracking-wider text-stone-600">
+          Rôle à attribuer
+          <select value={newRole} onChange={(event) => setNewRole(event.target.value as Role)} className="mt-2 w-full rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FF6B00]/20 outline-none">
+            <option value="admin">Administrateur</option>
+            <option value="super_admin">Super administrateur</option>
+            {currentRole === 'owner' && <option value="owner">Owner</option>}
+          </select>
+        </label>
+        <button type="submit" disabled={saving} className="self-end rounded-xl bg-zinc-950 px-6 py-3 text-sm font-bold text-white shadow-xs hover:bg-zinc-800 disabled:opacity-60 transition-all">
+          {saving ? 'Enregistrement...' : 'Enregistrer le rôle'}
+        </button>
       </form>
     </section>
+
     {roleGroups.map((group) => {
       const entries = visibleRoles.filter((entry) => entry.role === group.role);
-      return <section key={group.role} className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
-      <h2 className="text-xl font-black lg:text-2xl">{group.title}</h2>
-      {entries.length === 0 ? <p className="mt-4 text-gray-500">Aucun compte dans cette catégorie.</p> : <div tabIndex={0} className="mt-3  rounded-lg border border-stone-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600"><table className="w-full table-fixed break-words text-left text-xs sm:text-sm lg:text-base"><thead className="bg-stone-50"><tr className="border-b text-gray-500"><th className="px-1 py-2 sm:px-2">UUID utilisateur</th><th className="px-1 py-2 sm:px-2">Rôle</th><th className="px-1 py-2 sm:px-2">Ajouté le</th><th className="px-1 py-2 text-right sm:px-2">Action</th></tr></thead><tbody className="">{entries.map((entry) => <tr key={entry.user_id} className="border-b last:border-0"><td data-label={translate("UUID utilisateur", brenLocale)} className="min-w-0 break-words break-all px-1 py-2 sm:px-2 md:py-3 font-mono text-[11px] sm:text-xs md:text-sm">{entry.user_id}</td><td data-label={translate("Rôle", brenLocale)} className="min-w-0 break-words px-1 py-2 sm:px-2 md:py-3 font-bold">{entry.role === 'owner' ? 'Owner' : entry.role === 'super_admin' ? 'Super admin' : 'Admin'}</td><td data-label={translate("Ajouté le", brenLocale)} className="min-w-0 break-words px-1 py-2 sm:px-2 md:py-3 text-gray-500">{date(entry.created_at, brenLocale)}</td><td data-label={translate("Action", brenLocale)} className="min-w-0 break-words py-2 text-right md:py-3"><button type="button" disabled={entry.user_id === userId || workingId === entry.user_id} onClick={() => void onRemove(entry.user_id)} title={entry.user_id === userId ? 'Vous ne pouvez pas retirer votre propre accès ici.' : 'Retirer les droits'} className="inline-flex min-h-10 flex-wrap items-center justify-center gap-1 rounded-lg border border-red-200 px-1 py-2 text-xs font-semibold sm:px-3 sm:text-sm text-red-700 disabled:cursor-not-allowed disabled:opacity-40"><Trash2 size={15}/> Retirer</button></td></tr>)}</tbody></table></div>}
-    </section>;
+      return (
+        <section key={group.role} className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
+          <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">{group.title}</h2>
+          {entries.length === 0 ? (
+            <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Aucun compte dans cette catégorie.</p>
+          ) : (
+            <div tabIndex={0} className="mt-4 overflow-x-auto rounded-xl border border-stone-200">
+              <table className="w-full text-left text-xs sm:text-sm">
+                <thead className="bg-[#F9FAFB] text-stone-500 uppercase tracking-wider text-[11px] font-bold border-b border-stone-200">
+                  <tr>
+                    <th className="px-4 py-3">UUID Utilisateur</th>
+                    <th className="px-4 py-3">Rôle</th>
+                    <th className="px-4 py-3">Créé le</th>
+                    <th className="px-4 py-3 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-100">
+                  {entries.map((entry) => (
+                    <tr key={entry.user_id} className="hover:bg-orange-50/40 transition-colors">
+                      <td className="px-4 py-3 font-mono text-xs font-bold text-zinc-900 break-all">{entry.user_id}</td>
+                      <td className="px-4 py-3 font-bold">
+                        <span className="bg-stone-100 text-stone-800 border border-stone-200 px-2.5 py-1 rounded-md text-xs font-mono">
+                          {entry.role === 'owner' ? 'Owner' : entry.role === 'super_admin' ? 'Super Admin' : 'Admin'}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-stone-500 font-mono text-xs">{date(entry.created_at, brenLocale)}</td>
+                      <td className="px-4 py-3 text-right">
+                        <button
+                          type="button"
+                          disabled={entry.user_id === userId || workingId === entry.user_id}
+                          onClick={() => void onRemove(entry.user_id)}
+                          className="inline-flex items-center gap-1 rounded-xl border border-red-200 bg-white px-3 py-1.5 text-xs font-bold text-red-700 hover:bg-red-50 disabled:opacity-40 transition-all shadow-2xs"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" /> Retirer
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      );
     })}
   </>, brenLocale);
 }
 
 function ActivityPanel({ activities }: { activities: ActivityRow[] }) {
   const brenLocale = useLocale() as Locale;
-
   const onlineCutoff = Date.now() - 2 * 60_000;
-  return localizeNode(<section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
-    <h2 className="text-xl font-black lg:text-2xl">Activité des comptes</h2>
-    <p className="mt-2 text-sm text-gray-500">Un compte est marqué actif si sa dernière présence remonte à moins de deux minutes.</p>
-    {activities.length === 0 ? <p className="mt-4 text-gray-500">Aucune connexion enregistrée.</p> : <div tabIndex={0} className="mt-3  rounded-lg border border-stone-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600"><table className="w-full table-fixed break-words text-left text-xs sm:text-sm lg:text-base"><thead className="bg-stone-50"><tr className="border-b text-gray-500"><th className="px-1 py-2 sm:px-2">Compte</th><th className="px-1 py-2 sm:px-2">État</th><th className="px-1 py-2 sm:px-2">Dernière activité</th><th className="px-1 py-2 sm:px-2">Connexions</th></tr></thead><tbody className="">{activities.map((entry) => <tr key={entry.user_id} className="border-b last:border-0"><td data-label={translate("Compte", brenLocale)} className="min-w-0 break-words px-1 py-2 sm:px-2 md:py-3">{entry.email ?? entry.user_id}</td><td data-label={translate("État", brenLocale)} className="min-w-0 break-words px-1 py-2 sm:px-2 md:py-3"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${new Date(entry.last_seen_at).getTime() > onlineCutoff ? 'bg-emerald-50 text-emerald-800' : 'bg-stone-100 text-stone-600'}`}>{new Date(entry.last_seen_at).getTime() > onlineCutoff ? 'En ligne' : 'Hors ligne'}</span></td><td data-label={translate("Dernière activité", brenLocale)} className="min-w-0 break-words px-1 py-2 sm:px-2 md:py-3 text-gray-600">{date(entry.last_seen_at, brenLocale)}</td><td data-label={translate("Connexions", brenLocale)} className="min-w-0 break-words py-2">{entry.sign_in_count}</td></tr>)}</tbody></table></div>}
-  </section>, brenLocale);
+
+  return localizeNode(
+    <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
+      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Activité récente des comptes</h2>
+      <p className="mt-1 text-xs text-stone-500 font-medium">
+        Un compte est marqué en ligne s’il a été actif durant les 2 dernières minutes.
+      </p>
+      {activities.length === 0 ? (
+        <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Aucune activité enregistrée.</p>
+      ) : (
+        <div tabIndex={0} className="mt-4 overflow-x-auto rounded-xl border border-stone-200">
+          <table className="w-full text-left text-xs sm:text-sm">
+            <thead className="bg-[#F9FAFB] text-stone-500 uppercase tracking-wider text-[11px] font-bold border-b border-stone-200">
+              <tr>
+                <th className="px-4 py-3">Compte</th>
+                <th className="px-4 py-3">Statut</th>
+                <th className="px-4 py-3">Dernière activité</th>
+                <th className="px-4 py-3">Connexions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-stone-100">
+              {activities.map((entry) => {
+                const isOnline = new Date(entry.last_seen_at).getTime() > onlineCutoff;
+                return (
+                  <tr key={entry.user_id} className="hover:bg-orange-50/40 transition-colors">
+                    <td className="px-4 py-3 font-semibold text-zinc-900">{entry.email ?? entry.user_id}</td>
+                    <td className="px-4 py-3">
+                      <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold font-mono ${
+                        isOnline ? 'bg-emerald-500/10 text-emerald-800 border border-emerald-500/20' : 'bg-stone-100 text-stone-600 border border-stone-200'
+                      }`}>
+                        <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-500 animate-ping' : 'bg-stone-400'}`} />
+                        {isOnline ? 'En ligne' : 'Hors ligne'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-stone-600 font-mono text-xs">{date(entry.last_seen_at, brenLocale)}</td>
+                    <td className="px-4 py-3 font-mono font-bold text-zinc-900">{entry.sign_in_count}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>,
+    brenLocale
+  );
 }
 
 function AccountRegistrationPanel({ accounts }: { accounts: ClientAccountRow[] }) {
   const brenLocale = useLocale() as Locale;
 
-  return localizeNode(<section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
-    <h2 className="text-xl font-black lg:text-2xl">Comptes inscrits</h2>
-    <p className="mt-2 text-sm text-gray-500">Les inscriptions effectuées sur le site apparaissent ici, même avant leur première connexion confirmée.</p>
-    {accounts.length === 0 ? <p className="mt-4 text-gray-500">Aucune inscription trouvée. Vérifiez que le script SQL de l’administration a été exécuté dans le projet Supabase utilisé par le site.</p> : <div tabIndex={0} className="mt-3  rounded-lg border border-stone-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600"><table className="w-full table-fixed break-words text-left text-xs sm:text-sm lg:text-base"><thead className="bg-stone-50"><tr className="border-b text-gray-500"><th className="px-1 py-2 sm:px-2">Nom</th><th className="px-1 py-2 sm:px-2">Adresse e-mail</th><th className="px-1 py-2 sm:px-2">Inscrit le</th><th className="px-1 py-2 sm:px-2">UUID</th></tr></thead><tbody className="">{accounts.map((account) => <tr key={account.user_id} className="border-b last:border-0"><td data-label={translate("Nom", brenLocale)} className="min-w-0 break-words px-1 py-2 sm:px-2 md:py-3"><span data-original-content>{account.full_name || '—'}</span></td><td data-label={translate("Adresse e-mail", brenLocale)} className="min-w-0 break-words px-1 py-2 sm:px-2 md:py-3">{account.email || '—'}</td><td data-label={translate("Inscrit le", brenLocale)} className="min-w-0 break-words px-1 py-2 sm:px-2 md:py-3 text-gray-600">{date(account.created_at, brenLocale)}</td><td data-label={translate("UUID", brenLocale)} className="min-w-0 break-words break-all py-2 font-mono text-xs md:py-3 md:text-sm">{account.user_id}</td></tr>)}</tbody></table></div>}
-  </section>, brenLocale);
+  return localizeNode(
+    <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
+      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Comptes client inscrits</h2>
+      <p className="mt-1 text-xs text-stone-500 font-medium">Liste des clients enregistrés sur la plateforme.</p>
+      {accounts.length === 0 ? (
+        <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Aucune inscription trouvée.</p>
+      ) : (
+        <div tabIndex={0} className="mt-4 overflow-x-auto rounded-xl border border-stone-200">
+          <table className="w-full text-left text-xs sm:text-sm">
+            <thead className="bg-[#F9FAFB] text-stone-500 uppercase tracking-wider text-[11px] font-bold border-b border-stone-200">
+              <tr>
+                <th className="px-4 py-3">Nom</th>
+                <th className="px-4 py-3">E-mail</th>
+                <th className="px-4 py-3">Inscrit le</th>
+                <th className="px-4 py-3">UUID</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-stone-100">
+              {accounts.map((account) => (
+                <tr key={account.user_id} className="hover:bg-orange-50/40 transition-colors">
+                  <td className="px-4 py-3 font-bold text-zinc-900">{account.full_name || '—'}</td>
+                  <td className="px-4 py-3 text-stone-700">{account.email || '—'}</td>
+                  <td className="px-4 py-3 text-stone-500 font-mono text-xs">{date(account.created_at, brenLocale)}</td>
+                  <td className="px-4 py-3 font-mono text-xs text-stone-600 break-all">{account.user_id}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>,
+    brenLocale
+  );
 }
 
 function AuditPanel({ audit }: { audit: AuditRow[] }) {
   const brenLocale = useLocale() as Locale;
-
   const actionNames: Record<string, string> = { insert: 'Création', update: 'Modification', delete: 'Suppression' };
-  return localizeNode(<section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
-    <h2 className="text-xl font-black lg:text-2xl">Journal des actions</h2>
-    <p className="mt-2 text-sm text-gray-500">Journal privé des changements faits dans l’administration.</p>
-    {audit.length === 0 ? <p className="mt-4 text-gray-500">Aucune action enregistrée.</p> : <div tabIndex={0} className="mt-3 space-y-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600">{audit.map((entry) => <article key={entry.id} className="rounded-xl border border-stone-200 p-4"><div className="flex flex-wrap justify-between gap-2"><b>{actionNames[entry.action] ?? entry.action} · {entry.entity}</b><time className="text-sm text-gray-500">{date(entry.created_at, brenLocale)}</time></div><p className="mt-1 text-sm text-gray-600">Compte : {entry.actor_user_id ?? 'système'} · identifiant : {entry.entity_id ?? '—'} · rôle : {entry.actor_role ?? 'aucun'}</p><details className="mt-3"><summary className="cursor-pointer text-sm font-semibold text-orange-700">Afficher les valeurs enregistrées</summary><pre data-original-content className="mt-2 whitespace-pre-wrap break-all rounded-lg bg-stone-50 p-3 text-xs leading-5">{JSON.stringify(entry.details, null, 2)}</pre></details></article>)}</div>}
-  </section>, brenLocale);
+
+  return localizeNode(
+    <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
+      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Journal d’audit administratif</h2>
+      <p className="mt-1 text-xs text-stone-500 font-medium">Historique des modifications effectuées sur la console.</p>
+      {audit.length === 0 ? (
+        <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Aucune action enregistrée dans le journal.</p>
+      ) : (
+        <div tabIndex={0} className="mt-4 space-y-3">
+          {audit.map((entry) => (
+            <article key={entry.id} className="rounded-xl border border-stone-200/80 bg-[#F8FAFC] p-4 text-xs shadow-2xs">
+              <div className="flex flex-wrap justify-between gap-2 font-bold text-zinc-900">
+                <span>{actionNames[entry.action] ?? entry.action} · <span className="font-mono text-[#FF6B00]">{entry.entity}</span></span>
+                <time className="text-stone-500 font-mono font-normal">{date(entry.created_at, brenLocale)}</time>
+              </div>
+              <p className="mt-1 text-stone-600 font-mono">
+                Auteur : {entry.actor_user_id ?? 'Système'} · ID Entité : {entry.entity_id ?? '—'}
+              </p>
+              <details className="mt-2">
+                <summary className="cursor-pointer text-xs font-bold text-[#FF6B00] hover:underline">Afficher les détails JSON</summary>
+                <pre className="mt-2 whitespace-pre-wrap break-all rounded-lg bg-white p-3 font-mono text-[11px] border border-stone-200">
+                  {JSON.stringify(entry.details, null, 2)}
+                </pre>
+              </details>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>,
+    brenLocale
+  );
 }
 
 function ProductAdminPanel({ products, product, setProduct, editing, setEditing, saving, onSave, onDelete, onBankSave, bankForm, setBankForm }: {
@@ -507,30 +1063,115 @@ function ProductAdminPanel({ products, product, setProduct, editing, setEditing,
   onSave: (event: FormEvent<HTMLFormElement>) => void; onDelete: (id: number | number[]) => void; onBankSave: (event: FormEvent<HTMLFormElement>) => Promise<boolean>; bankForm: string; setBankForm: (value: string) => void;
 }) {
   const brenLocale = useLocale() as Locale;
-
   const [bankSaved, setBankSaved] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const selectedProducts = products.filter((item) => selectedIds.includes(item.id));
   const allSelected = products.length > 0 && selectedProducts.length === products.length;
-  const input = 'mt-1 w-full rounded-lg border border-stone-300 px-3 py-2.5 text-sm';
+  const inputClass = 'mt-1.5 w-full rounded-xl border border-stone-300 bg-white px-3.5 py-2.5 text-sm font-medium focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FF6B00]/20 outline-none transition-all';
+
   return localizeNode(<>
-    <section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6">
-      <h2 className="text-xl font-black lg:text-2xl">Catalogue et stock</h2>
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-stone-50 p-3">
-        <label className="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" checked={allSelected} disabled={saving || products.length === 0} ref={(element) => { if (element) element.indeterminate = selectedProducts.length > 0 && !allSelected; }} onChange={(event) => setSelectedIds(event.target.checked ? products.map((item) => item.id) : [])} className="h-5 w-5 accent-orange-600" />Tout sélectionner</label>
-        <span className="text-sm text-gray-600">{selectedProducts.length} produit(s) sélectionné(s)</span>
-        <button type="button" disabled={saving || selectedProducts.length === 0} onClick={() => onDelete(selectedProducts.map((item) => item.id))} className="rounded-lg bg-red-600 px-4 py-2 text-sm font-bold text-white disabled:opacity-50">{saving ? 'Veuillez patienter...' : 'Supprimer la sélection'}</button>
+    <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-stone-100">
+        <div>
+          <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Catalogue &amp; Stocks</h2>
+          <p className="text-xs text-stone-500 font-medium">Gérez la disponibilité des produits et les tarifs</p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <label className="flex items-center gap-2 text-xs font-bold text-stone-700 cursor-pointer">
+            <input type="checkbox" checked={allSelected} disabled={saving || products.length === 0} ref={(element) => { if (element) element.indeterminate = selectedProducts.length > 0 && !allSelected; }} onChange={(event) => setSelectedIds(event.target.checked ? products.map((item) => item.id) : [])} className="h-4 w-4 rounded accent-[#FF6B00]" />
+            Tout sélectionner
+          </label>
+          <span className="text-xs font-mono font-bold text-stone-500">({selectedProducts.length} sélec.)</span>
+          <button type="button" disabled={saving || selectedProducts.length === 0} onClick={() => onDelete(selectedProducts.map((item) => item.id))} className="rounded-xl bg-red-600 px-4 py-2 text-xs font-bold text-white shadow-2xs hover:bg-red-700 disabled:opacity-50 transition-all">
+            {saving ? 'Patientez...' : 'Supprimer'}
+          </button>
+        </div>
       </div>
-      <div tabIndex={0} role="region" aria-label="Catalogue et stock" className="mt-4  rounded-xl border border-stone-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600">
-        <table className="w-full table-fixed break-words text-left text-xs sm:text-sm lg:text-base">
-          <thead className="hidden md:table-header-group sticky top-0 z-10 bg-stone-50 text-gray-600"><tr><th scope="col" className="w-10 px-3 py-2"><span className="sr-only">Tout sélectionner</span></th><th scope="col" className="px-3 py-2 font-semibold">Nom</th><th scope="col" className="px-3 py-2 font-semibold">Prix · Stock</th><th scope="col" className="px-3 py-2 text-right md:py-3 font-semibold">Action</th></tr></thead>
-          <tbody className="">{products.map((item) => <tr key={item.id} className="border-t border-stone-200 hover:bg-orange-50/50"><td data-label={translate("Tout sélectionner", brenLocale)} className="min-w-0 break-words px-3 py-2"><input type="checkbox" aria-label={`${translate('Sélectionner', brenLocale)} ${item.name}`} checked={selectedIds.includes(item.id)} disabled={saving} onChange={(event) => setSelectedIds((current) => event.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))} className="h-5 w-5 accent-orange-600" /></td><td data-label={translate("Nom", brenLocale)} className="min-w-0 break-words px-2 py-2 font-semibold md:py-3">{item.name}</td><td data-label={translate("Prix · Stock", brenLocale)} className="min-w-0 break-words px-3 py-2"><span className="font-semibold">{item.price}</span><p className="mt-0.5 text-xs text-gray-500">{item.stock === 0 ? 'Rupture de stock' : item.stock !== undefined ? `${item.stock} ${translate('en stock', brenLocale)}` : item.availability ?? 'Stock non suivi'}</p></td><td data-label={translate("Action", brenLocale)} className="min-w-0 break-words px-3 py-2"><div className="flex flex-col items-end justify-end gap-1 sm:flex-row sm:gap-2"><button type="button" disabled={saving} onClick={() => { setProduct({ ...item, priceAmount: item.priceAmount ?? 0, stock: item.stock ?? -1 }); setEditing(true); document.getElementById('catalog-product-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="min-h-10 rounded-lg border px-3 py-2 text-xs font-bold disabled:opacity-50">Modifier</button><button type="button" disabled={saving} onClick={() => onDelete(item.id)} className="min-h-10 rounded-lg border border-red-200 px-3 py-2 text-xs font-bold text-red-700 disabled:opacity-50">Supprimer</button></div></td></tr>)}</tbody>
+
+      <div tabIndex={0} role="region" aria-label="Catalogue produits" className="mt-4 overflow-x-auto rounded-xl border border-stone-200">
+        <table className="w-full text-left text-xs sm:text-sm">
+          <thead className="bg-[#F9FAFB] text-stone-500 uppercase tracking-wider text-[11px] font-bold border-b border-stone-200">
+            <tr>
+              <th scope="col" className="w-10 px-3 py-3"><span className="sr-only">Sélectionner</span></th>
+              <th scope="col" className="px-3 py-3">Produit</th>
+              <th scope="col" className="px-3 py-3">Prix &amp; Stock</th>
+              <th scope="col" className="px-3 py-3 text-right">Action</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-stone-100">
+            {products.map((item) => (
+              <tr key={item.id} className="hover:bg-orange-50/40 transition-colors">
+                <td className="px-3 py-3">
+                  <input type="checkbox" aria-label={`Sélectionner ${item.name}`} checked={selectedIds.includes(item.id)} disabled={saving} onChange={(event) => setSelectedIds((current) => event.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))} className="h-4 w-4 rounded accent-[#FF6B00]" />
+                </td>
+                <td className="px-3 py-3 font-bold text-zinc-950">
+                  <div className="flex items-center gap-3">
+                    <span className="font-mono text-xs text-stone-500 bg-stone-100 px-2 py-0.5 rounded border border-stone-200">#{item.id}</span>
+                    <span>{item.name}</span>
+                  </div>
+                </td>
+                <td className="px-3 py-3">
+                  <span className="font-bold text-zinc-950 font-mono">{item.price}</span>
+                  <p className="text-[11px] font-medium text-stone-500 mt-0.5">
+                    {item.stock === 0 ? 'Rupture de stock' : item.stock !== undefined ? `${item.stock} en stock` : item.availability ?? 'Stock non suivi'}
+                  </p>
+                </td>
+                <td className="px-3 py-3 text-right">
+                  <div className="flex items-center justify-end gap-2">
+                    <button type="button" disabled={saving} onClick={() => { setProduct({ ...item, priceAmount: item.priceAmount ?? 0, stock: item.stock ?? -1 }); setEditing(true); document.getElementById('catalog-product-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="rounded-xl border border-stone-200 bg-white px-3 py-1.5 text-xs font-bold text-zinc-800 hover:bg-stone-50 shadow-2xs">
+                      Modifier
+                    </button>
+                    <button type="button" disabled={saving} onClick={() => onDelete(item.id)} className="rounded-xl border border-red-200 bg-white px-3 py-1.5 text-xs font-bold text-red-700 hover:bg-red-50 shadow-2xs">
+                      Supprimer
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
-      <form id="catalog-product-form" onSubmit={onSave} className="scroll-mt-24 mt-6 rounded-xl bg-stone-50 p-3 sm:p-4"><h3 className="text-lg font-bold">{editing ? 'Modifier le produit sélectionné' : 'Ajouter un produit'}</h3><div className="mt-4 grid gap-4 sm:grid-cols-2"><label className="text-sm font-semibold">ID produit<input required type="number" min="1" value={product.id} onChange={(e) => setProduct({ ...product, id: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Nom<input required value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Catégorie<input required value={product.type} onChange={(e) => setProduct({ ...product, type: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Conditionnement<input required value={product.quantity} onChange={(e) => setProduct({ ...product, quantity: e.target.value })} className={input} /></label><label className="text-sm font-semibold">Prix en centimes (0 = sur devis)<input type="number" min="0" value={product.priceAmount ?? 0} onChange={(e) => setProduct({ ...product, priceAmount: Number(e.target.value) })} className={input} /></label><label className="text-sm font-semibold">Stock (-1 non suivi, 0 rupture)<input required type="number" min="-1" value={product.stock ?? -1} onChange={(e) => { const stock = Number(e.target.value); setProduct({ ...product, stock, availability: stock < 0 ? (product.availability === 'Rupture de stock' ? undefined : product.availability) : stock === 0 ? 'Rupture de stock' : 'En stock' }); }} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Image (chemin dans /public, ex. /pellets.webp)<input required value={product.image} onChange={(e) => setProduct({ ...product, image: e.target.value })} className={input} /></label><label className="text-sm font-semibold sm:col-span-2">Description<textarea required rows={3} value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} className={input} /></label></div><div className="mt-4 flex flex-wrap gap-3"><button type="submit" disabled={saving} className="rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement...' : 'Enregistrer le produit'}</button>{editing && <button type="button" onClick={() => { setEditing(false); setProduct(emptyProduct(products)); }} className="rounded-lg border px-5 py-3 font-bold">Nouveau produit</button>}</div></form>
+
+      <form id="catalog-product-form" onSubmit={onSave} className="scroll-mt-24 mt-6 rounded-2xl bg-[#F8FAFC] border border-stone-200 p-5 shadow-2xs">
+        <h3 className="text-lg font-black text-zinc-950 tracking-tight">{editing ? 'Modifier le produit sélectionné' : 'Ajouter un nouveau produit'}</h3>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">ID Produit (numérique)<input required type="number" min="1" value={product.id} onChange={(e) => setProduct({ ...product, id: Number(e.target.value) })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Nom du produit<input required value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Catégorie<input required value={product.type} onChange={(e) => setProduct({ ...product, type: e.target.value })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Conditionnement<input required value={product.quantity} onChange={(e) => setProduct({ ...product, quantity: e.target.value })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Prix en centimes (ex: 49900 = 499.00€)<input type="number" min="0" value={product.priceAmount ?? 0} onChange={(e) => setProduct({ ...product, priceAmount: Number(e.target.value) })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Stock (-1 = non suivi, 0 = rupture)<input required type="number" min="-1" value={product.stock ?? -1} onChange={(e) => { const stock = Number(e.target.value); setProduct({ ...product, stock, availability: stock < 0 ? (product.availability === 'Rupture de stock' ? undefined : product.availability) : stock === 0 ? 'Rupture de stock' : 'En stock' }); }} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600 sm:col-span-2">Image Principale (chemin local ex. /pellets.webp)<input required value={product.image} onChange={(e) => setProduct({ ...product, image: e.target.value })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600 sm:col-span-2">Description complète<textarea required rows={3} value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} className={inputClass} /></label>
+        </div>
+        <div className="mt-5 flex flex-wrap gap-3">
+          <button type="submit" disabled={saving} className="rounded-xl bg-zinc-950 px-6 py-3 text-sm font-bold text-white shadow-xs hover:bg-zinc-800 disabled:opacity-50 transition-all">
+            {saving ? 'Enregistrement...' : 'Enregistrer le produit'}
+          </button>
+          {editing && (
+            <button type="button" onClick={() => { setEditing(false); setProduct(emptyProduct(products)); }} className="rounded-xl border border-stone-300 bg-white px-6 py-3 text-sm font-bold text-zinc-800 hover:bg-stone-50 transition-all shadow-2xs">
+              Réinitialiser
+            </button>
+          )}
+        </div>
+      </form>
     </section>
-    <section className="mt-5 min-w-0 rounded-xl border border-stone-200 bg-white p-4 sm:p-5 lg:p-6"><h2 className="text-xl font-black lg:text-2xl">Coordonnées de virement</h2><form onSubmit={async (event) => { setBankSaved(false); setBankSaved(await onBankSave(event)); }} className="mt-4"><label className="text-sm font-semibold">Informations bancaires affichées aux clients<textarea rows={5} value={bankForm} disabled={saving} onChange={(e) => { setBankSaved(false); setBankForm(e.target.value); }} placeholder="Bénéficiaire, IBAN, BIC et référence à indiquer..." className={input} /></label><button type="submit" disabled={saving} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white disabled:opacity-50">{saving ? 'Enregistrement...' : 'Enregistrer'}</button>{bankSaved && <p role="status" className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">Les coordonnées bancaires ont été sauvegardées avec succès.</p>}</form></section>
+
+    <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
+      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Coordonnées de virement bancaire</h2>
+      <form onSubmit={async (event) => { setBankSaved(false); setBankSaved(await onBankSave(event)); }} className="mt-4">
+        <label className="text-xs font-bold uppercase tracking-wider text-stone-600">
+          Informations RIB &amp; Instructions affichées lors du paiement
+          <textarea rows={5} value={bankForm} disabled={saving} onChange={(e) => { setBankSaved(false); setBankForm(e.target.value); }} placeholder="Bénéficiaire, IBAN, BIC et référence obligatoire à indiquer..." className={inputClass} />
+        </label>
+        <div className="mt-4 flex items-center gap-4">
+          <button type="submit" disabled={saving} className="rounded-xl bg-zinc-950 px-6 py-3 text-sm font-bold text-white shadow-xs hover:bg-zinc-800 disabled:opacity-50 transition-all">
+            {saving ? 'Enregistrement...' : 'Enregistrer le RIB'}
+          </button>
+          {bankSaved && <p role="status" className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200">Enregistré avec succès.</p>}
+        </div>
+      </form>
+    </section>
   </>, brenLocale);
 }
-
-
