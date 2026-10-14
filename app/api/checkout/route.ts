@@ -30,19 +30,19 @@ export async function POST(request: Request) {
   const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !publishableKey || !serviceRoleKey) {
-    return error('Le service de commande n’est pas configuré. Contactez l’entreprise.', 503);
+    return error('Der Bestellservice ist derzeit nicht verfügbar. Bitte kontaktieren Sie uns.', 503);
   }
 
   let input: unknown;
   try {
     input = await readLimitedJson(request, 32_000);
   } catch (cause) {
-    if (cause instanceof BodyLimitError) return error('La demande de commande est trop longue.', 413);
-    return error('La demande de commande est invalide.', 400);
+    if (cause instanceof BodyLimitError) return error('Die Bestellanfrage ist zu umfangreich.', 413);
+    return error('Die Bestellanfrage ist ungültig.', 400);
   }
 
   if (!isRecord(input) || input.acceptedTerms !== true || !Array.isArray(input.items) || input.items.length < 1 || input.items.length > 50 || !isRecord(input.customer)) {
-    return error('Vérifiez les produits, les coordonnées et l’acceptation des conditions.', 400);
+    return error('Bitte überprüfen Sie die ausgewählten Artikel, Ihre Kontaktdaten und die Zustimmung zu den AGB.', 400);
   }
 
   const customer = {
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
     email: cleanText(input.customer.email, 254).toLowerCase(),
   };
   if (!customer.firstName || !customer.lastName || !customer.street || !/^\d{5}$/.test(customer.postalCode) || !customer.city || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customer.email)) {
-    return error('Renseignez un nom, une adresse allemande complète, un code postal à cinq chiffres et un e-mail valide.', 400);
+    return error('Bitte geben Sie einen vollständigen Namen, eine gültige deutsche Adresse mit 5-stelliger PLZ und eine gültige E-Mail-Adresse an.', 400);
   }
 
   const shippingInput = isRecord(input.shipping) ? input.shipping : null;
@@ -71,22 +71,22 @@ export async function POST(request: Request) {
     state: cleanText(shippingInput.state, 100),
   } : null;
   if (shipping && (!shipping.firstName || !shipping.lastName || !shipping.street || !/^\d{5}$/.test(shipping.postalCode) || !shipping.city)) {
-    return error('Renseignez complètement l’adresse de livraison.', 400);
+    return error('Bitte geben Sie die Lieferadresse vollständig an.', 400);
   }
 
   const quantities = new Map<number, number>();
   const expectedPrices = new Map<number, number>();
   for (const item of input.items) {
     if (!isRecord(item) || !Number.isSafeInteger(item.productId) || !Number.isSafeInteger(item.quantity)) {
-      return error('Un produit ou une quantité est invalide.', 400);
+      return error('Ein Artikel oder eine Mengenbezeichnung ist ungültig.', 400);
     }
     const productId = item.productId as number;
     const quantity = item.quantity as number;
     if (productId < 1 || quantity < 1 || quantity > 100 || quantities.has(productId)) {
-      return error('Chaque produit doit apparaître une seule fois et avec une quantité valide.', 400);
+      return error('Jeder Artikel darf nur einmal im Warenkorb mit einer gültigen Menge vorkommen.', 400);
     }
     quantities.set(productId, quantity);
-    if (!Number.isSafeInteger(item.unitPriceCents) || Number(item.unitPriceCents) <= 0) return error('Actualisez le panier pour vérifier les prix avant de commander.', 409);
+    if (!Number.isSafeInteger(item.unitPriceCents) || Number(item.unitPriceCents) <= 0) return error('Bitte aktualisieren Sie den Warenkorb, um die Preise vor der Bestellung zu überprüfen.', 409);
     expectedPrices.set(productId, item.unitPriceCents as number);
   }
 
@@ -94,7 +94,7 @@ export async function POST(request: Request) {
   const ids = [...quantities.keys()];
   const { data: overrides, error: overrideError } = await admin.from('product_overrides')
     .select('product_id,data,is_deleted').in('product_id', ids);
-  if (overrideError) return error('Impossible de vérifier le catalogue. Réessayez plus tard.', 503);
+  if (overrideError) return error('Der Katalog konnte nicht überprüft werden. Bitte versuchen Sie es später erneut.', 503);
 
   const overrideById = new Map((overrides ?? []).map((row) => [row.product_id, row] as const));
   const resolvedCatalog = mergeCatalog(overrides ?? []);
@@ -104,26 +104,26 @@ export async function POST(request: Request) {
   for (const [productId, quantity] of quantities) {
     const base = catalog.find((product) => product.id === productId);
     const override = overrideById.get(productId);
-    if (override?.is_deleted) return error('Un produit de votre panier n’est plus disponible.', 409);
+    if (override?.is_deleted) return error('Ein Artikel aus Ihrem Warenkorb ist leider nicht mehr verfügbar.', 409);
     const data = isRecord(override?.data) ? override.data : {};
-    if (!base && !override) return error('Un produit de votre panier n’existe plus.', 409);
+    if (!base && !override) return error('Ein Artikel aus Ihrem Warenkorb existiert nicht mehr.', 409);
 
     const name = cleanText(data.name, 200) || base?.name || '';
     const priceValue = resolvedCatalog.find((product) => product.id === productId)?.priceAmount;
     if (!Number.isSafeInteger(priceValue) || (priceValue as number) <= 0) {
-      return error(`« ${name} » n’est pas disponible à la vente. Actualisez votre panier.`, 409);
+      return error(`„${name}“ steht derzeit nicht zum Verkauf. Bitte aktualisieren Sie Ihren Warenkorb.`, 409);
     }
-    if (expectedPrices.get(productId) !== priceValue) return error('Un prix a changé. Actualisez votre panier et vérifiez le nouveau total avant de commander.', 409);
+    if (expectedPrices.get(productId) !== priceValue) return error('Ein Preis hat sich geändert. Bitte aktualisieren Sie Ihren Warenkorb vor der Bestellung.', 409);
     const stockValue = Object.hasOwn(data, 'stock') ? data.stock : base?.stock;
     if (typeof stockValue === 'number' && (!Number.isSafeInteger(stockValue) || stockValue < 0)) {
-      return error(`Le stock de « ${name} » doit être corrigé dans l’administration.`, 409);
+      return error(`Der Lagerbestand von „${name}“ muss korrigiert werden.`, 409);
     }
     if (typeof stockValue === 'number' && quantity > stockValue) {
-      return error(`Stock insuffisant pour « ${name} » : ${stockValue} unité(s) disponible(s).`, 409);
+      return error(`Unzureichender Lagerbestand für „${name}“: nur noch ${stockValue} Einheit(en) verfügbar.`, 409);
     }
     const unitPrice = priceValue as number;
     totalCents += unitPrice * quantity;
-    if (!Number.isSafeInteger(totalCents) || totalCents > 2_000_000_000) return error('Le montant de la commande dépasse la limite autorisée.', 400);
+    if (!Number.isSafeInteger(totalCents) || totalCents > 2_000_000_000) return error('Der Bestellwert übersteigt das zulässige Limit.', 400);
     const product = resolvedCatalog.find(p => p.id === productId)!;
     vatLines.push({product,grossCents:unitPrice * quantity});
     orderLines.push({ product_id: productId, name, quantity, unit_price_cents: unitPrice, vat_rate: vatRateForProduct(product) });
@@ -140,7 +140,7 @@ export async function POST(request: Request) {
       global: { headers: { Authorization: `Bearer ${token}` } },
     });
     const { data, error: authError } = await authClient.auth.getUser();
-    if (authError || !data.user) return error('Votre session a expiré. Reconnectez-vous puis réessayez.', 401);
+    if (authError || !data.user) return error('Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.', 401);
     userId = data.user.id;
   }
 
@@ -154,9 +154,9 @@ export async function POST(request: Request) {
     p_user_id: userId,
   });
   if (createError) {
-    if (createError.message.includes('insufficient_stock')) return error('Le stock vient de changer. Actualisez le panier et réessayez.', 409);
-    if (createError.message.includes('product_unavailable')) return error('Un produit de votre panier n’est plus disponible.', 409);
-    return error('La commande n’a pas pu être enregistrée. Vérifiez que la migration Supabase commerce a été appliquée.', 503);
+    if (createError.message.includes('insufficient_stock')) return error('Der Lagerbestand hat sich soeben geändert. Bitte aktualisieren Sie den Warenkorb.', 409);
+    if (createError.message.includes('product_unavailable')) return error('Ein Artikel aus Ihrem Warenkorb ist nicht mehr verfügbar.', 409);
+    return error('Die Bestellung konnte nicht gespeichert werden. Bitte versuchen Sie es später erneut.', 503);
   }
 
   const cartDraftId = draftId(request);

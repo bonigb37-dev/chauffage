@@ -6,8 +6,23 @@ export type PendingOrder = {
   reference: string;
   proofToken?: string;
   total: number;
-  items: { name: string; quantity: number }[];
-  customer: { firstName: string; lastName: string; email: string };
+  orderDate?: string;
+  items: { name: string; quantity: number; unitPriceCents?: number }[];
+  customer: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    street?: string;
+    postalCode?: string;
+    city?: string;
+  };
+  shipping?: {
+    firstName: string;
+    lastName: string;
+    street?: string;
+    postalCode?: string;
+    city?: string;
+  } | null;
 };
 
 const storageKey = 'thermopro-pending-order';

@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 
-export const confirmationMessage = 'Votre adresse e-mail a été confirmée. Bienvenue chez Bren-nholz, votre compte est maintenant actif.';
+export const confirmationMessage = 'Ihre E-Mail-Adresse wurde erfolgreich bestätigt. Willkommen bei Bren-nholz, Ihr Kundenkonto ist jetzt aktiv.';
 export function readAuthLink(url: string) {
   const parsed = new URL(url);
   const hash = new URLSearchParams(parsed.hash.slice(1));

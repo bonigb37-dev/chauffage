@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { useState, type FormEvent } from 'react';
 import { useLocale } from 'next-intl';
 import Link from '@/i18n/navigation';
@@ -11,7 +11,7 @@ const copy = {
  en: { back: 'Back to delivery areas', title: 'Delivery in', intro: 'Find your city or view your delivery address on the map.', cities: 'Examples of cities served', note: 'We deliver to all municipalities in this region. These cities are examples; your town is covered even if it is not listed.', search: 'Your city or delivery address', placeholder: 'City, postcode or street and house number', map: 'View on Google Maps', mapNote: 'The map opens in a new tab. This form does not store your address.', buy: 'Choose my products', conditions: 'Delivery conditions' },
 };
 export default function DeliveryRegionContent({ region }: { region: DeliveryRegion }) {
- const locale = useLocale() as keyof typeof copy, c = copy[locale] ?? copy.fr;
+ const locale = useLocale() as keyof typeof copy, c = copy[locale] ?? copy.de;
  const [query, setQuery] = useState('');
  function showAddress(event: FormEvent<HTMLFormElement>) {
    event.preventDefault(); if (query.trim().length < 2) return;

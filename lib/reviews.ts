@@ -38,9 +38,6 @@ export const reviewsData: Record<number, Review[]> = {
   51: [
     { id: 'r51-1', author: 'Heiko T.', location: 'Bremen', rating: 5, date: '27.02.2026', title: 'Gute RUF Briketts', comment: 'Kompakt gestapelt auf Palette. Hohe Wärmeabgabe.', verified: true },
   ],
-  61: [
-    { id: 'r61-1', author: 'Matthias K.', location: 'Karlsruhe', rating: 5, date: '01.03.2026', title: 'Schüttgut Brennholz 25cm', comment: 'Gute Hartholzmischung, schnelle Anlieferung.', verified: true },
-  ],
   69: [
     { id: 'r69-1', author: 'Uwe H.', location: 'Ulm', rating: 5, date: '03.03.2026', title: 'Gute Palette gestapelt', comment: 'Sauber gestapeltes Eichenholz 25 cm, sofort einsatzbereit.', verified: true },
   ],

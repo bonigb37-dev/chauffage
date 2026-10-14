@@ -49,7 +49,7 @@ export default function CheckoutPageContent() {
     if (!formData.has('terms')) { stopLoading(); setError('Veuillez accepter les conditions de vente avant de continuer.'); return; }
     if (differentShipping && ['shippingFirstName', 'shippingLastName', 'shippingStreet', 'shippingPostalCode', 'shippingCity'].some((key) => !details[key]?.trim())) {
       stopLoading();
-      setError('Complétez les champs obligatoires de l’adresse de livraison.');
+      setError('Bitte füllen Sie alle Pflichtfelder der Lieferadresse aus.');
       return;
     }
     setStarting(true);
@@ -67,7 +67,7 @@ export default function CheckoutPageContent() {
       const token = sessionResult?.data.session?.access_token;
       if (sessionResult?.error) {
         stopLoading();
-        setError('Votre session ne peut pas être vérifiée. Reconnectez-vous puis réessayez.');
+        setError('Ihre Sitzung konnte nicht überprüft werden. Bitte melden Sie sich erneut an.');
         setStarting(false);
         return;
       }
@@ -78,7 +78,7 @@ export default function CheckoutPageContent() {
       const result = await response.json() as { reference?: string; totalCents?: number; proofToken?: string; vat?: ReturnType<typeof vatSummary>; error?: string };
       if (!response.ok || !result.reference || typeof result.totalCents !== 'number') {
         stopLoading();
-        setError(result.error ?? 'La demande n’a pas pu être enregistrée. Réessayez plus tard.');
+        setError(result.error ?? 'Die Bestellung konnte nicht aufgenommen werden. Bitte versuchen Sie es später erneut.');
         setStarting(false);
         return;
       }
@@ -86,13 +86,33 @@ export default function CheckoutPageContent() {
       emitAnalytics('order_sent');
       const confirmedTotal = result.totalCents;
       savePendingOrder({
-        reference, proofToken: result.proofToken, total: confirmedTotal, delivery: {feeCents:0}, vat: result.vat, items: lines.map(({ product, quantity }) => ({ name: product.name, quantity })),
-        customer: { firstName: details.firstName, lastName: details.lastName, email: details.email },
+        reference,
+        proofToken: result.proofToken,
+        total: confirmedTotal,
+        orderDate: new Date().toLocaleDateString('de-DE'),
+        delivery: { feeCents: 0 },
+        vat: result.vat,
+        items: lines.map(({ product, quantity }) => ({ name: product.name, quantity, unitPriceCents: product.priceAmount })),
+        customer: {
+          firstName: details.firstName,
+          lastName: details.lastName,
+          email: details.email,
+          street: details.street,
+          postalCode: details.postalCode,
+          city: details.city,
+        },
+        shipping: shipping ? {
+          firstName: shipping.firstName,
+          lastName: shipping.lastName,
+          street: shipping.street,
+          postalCode: shipping.postalCode,
+          city: shipping.city,
+        } : null,
       });
       router.push(localizedPath(`/commande/succes?reference=${encodeURIComponent(reference)}`, brenLocale));
     } catch {
       stopLoading();
-      setError('La demande n’a pas pu être enregistrée. Vérifiez votre connexion puis réessayez.');
+      setError('Die Bestellung konnte nicht aufgenommen werden. Bitte prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.');
       setStarting(false);
     }
   }

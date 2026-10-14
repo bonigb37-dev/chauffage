@@ -2,6 +2,7 @@ import 'server-only';
 import nodemailer from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { storeConfig } from '@/lib/store-config';
+import { generateInvoicePdf } from '@/lib/invoice-pdf';
 
 export type OrderEmailData = {
   reference: string;
@@ -260,6 +261,19 @@ https://www.brennholz-direk.de
 </body>
 </html>`;
 
+  let pdfBuffer: Buffer | null = null;
+  try {
+    pdfBuffer = await generateInvoicePdf({
+      reference: data.reference,
+      customer: data.customer,
+      shipping: data.shipping,
+      totalCents: data.totalCents,
+      lines: data.lines,
+    });
+  } catch (pdfErr) {
+    console.error('Invoice PDF generation error for email:', pdfErr);
+  }
+
   // 1. Primary: SMTP via Hostinger
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
     try {
@@ -288,6 +302,15 @@ https://www.brennholz-direk.de
         subject,
         text: textDe,
         html: htmlDe,
+        ...(pdfBuffer ? {
+          attachments: [
+            {
+              filename: `Rechnung-${data.reference}.pdf`,
+              content: pdfBuffer,
+              contentType: 'application/pdf',
+            },
+          ],
+        } : {}),
       });
 
       console.log(`Order confirmation email sent successfully via SMTP to ${customerEmail} (${data.reference})`);
@@ -316,6 +339,14 @@ https://www.brennholz-direk.de
           text: textDe,
           html: htmlDe,
           reply_to: storeConfig.email,
+          ...(pdfBuffer ? {
+            attachments: [
+              {
+                filename: `Rechnung-${data.reference}.pdf`,
+                content: pdfBuffer.toString('base64'),
+              },
+            ],
+          } : {}),
         }),
         signal: AbortSignal.timeout(10000),
       });

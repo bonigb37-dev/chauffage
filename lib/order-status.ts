@@ -1,4 +1,4 @@
-export const orderStatusLabels = { new: 'Commande enregistrée', in_progress: 'Préparation', done: 'Expédiée' };
+export const orderStatusLabels = { new: 'Bestellung eingegangen', in_progress: 'In Vorbereitung', done: 'Versendet' };
 export function paymentStatusLabel(status: string) {
-  return ({ pending: 'Paiement en attente', confirmed: 'Paiement reçu', failed: 'Paiement non reçu', refunded: 'Remboursé' } as Record<string, string>)[status] ?? 'Paiement en attente';
+  return ({ pending: 'Zahlung ausstehend', confirmed: 'Zahlung erhalten', failed: 'Zahlung nicht eingegangen', refunded: 'Erstattet' } as Record<string, string>)[status] ?? 'Zahlung ausstehend';
 }
