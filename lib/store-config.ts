@@ -13,12 +13,12 @@ export const storeConfig = {
   warehouseAddress: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
   vatNumber: 'DE300812888',
   returnAddress: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
-  returnCosts: 'Les frais de retour sont pris en charge par Bren-nholz, y compris pour les palettes.',
+  returnCosts: 'Die Rücksendekosten werden von Brennholz-direk übernommen, auch für Palettenware.',
 };
 
 export const whatsappUrl = `https://wa.me/${storeConfig.phoneHref.replace(/\D/g, '')}`;
 
-export const deliverySummary = 'Aucun supplément de livraison n’est facturé pour les commandes livrées en Allemagne. Livraison sous 2 à 4 jours ouvrables après réception effective du paiement. Aucun paiement au transporteur.';
+export const deliverySummary = 'Für Lieferungen innerhalb Deutschlands fallen keine zusätzlichen Versandkosten an. Die Lieferung erfolgt innerhalb von 2 bis 4 Werktagen nach tatsächlichem Zahlungseingang. Keine Barzahlung beim Spediteur.';
 export const bankTransferInstructions = 'Bitte überweisen Sie den Betrag anhand der folgenden Bankverbindung auf den unten angegebenen Namen unserer Buchhalterin. Geben Sie Ihre Bestellreferenz als Verwendungszweck an und laden Sie anschließend den Zahlungsbeleg hoch.';
-export const paymentInstructions = 'Merci pour votre commande. Pour procéder au règlement, effectuez votre virement en indiquant la référence de commande. Votre paiement sera confirmé après réception effective des fonds, puis votre commande sera préparée pour l’expédition.';
-export const beforeOrderPaymentInstructions = 'Après validation de votre commande, effectuez votre virement en indiquant la référence de commande dans le libellé. La préparation débutera après réception effective des fonds.';
+export const paymentInstructions = 'Vielen Dank für Ihre Bestellung. Um die Zahlung durchzuführen, überweisen Sie bitte den Betrag unter Angabe Ihrer Bestellnummer. Nach Zahlungseingang wird Ihre Bestellung umgehend für den Versand vorbereitet.';
+export const beforeOrderPaymentInstructions = 'Nach Bestätigung Ihrer Bestellung überweisen Sie bitte den Betrag unter Angabe der Bestellreferenz im Verwendungszweck. Die Vorbereitung beginnt nach tatsächlichem Zahlungseingang.';

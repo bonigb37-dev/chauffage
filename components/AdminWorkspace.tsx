@@ -10,8 +10,9 @@ import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import Link from '@/i18n/navigation';
 import { useRouter } from '@/i18n/navigation';
 import {
-  LoaderCircle, RefreshCw, Trash2, LayoutDashboard, MessageSquare,
-  BarChart3, ShoppingCart, LogOut, Menu, X, Flame
+  LoaderCircle, RefreshCw, Trash2, LayoutDashboard,
+  BarChart3, ShoppingCart, LogOut, Menu, X, Flame,
+  ChevronRight, Package, MessageCircle, Mail, Layers, Users, Crown,
 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
@@ -19,8 +20,7 @@ import { useCart } from '@/components/CartProvider';
 import type { Product } from '@/lib/products';
 import AdminPaymentProof from '@/components/AdminPaymentProof';
 import SupportMessenger from '@/components/SupportMessenger';
-import SupportNotifications, { SupportUnreadBadge } from '@/components/SupportNotifications';
-import { supportCopy, supportInboxCopy } from '@/lib/support-copy';
+import SupportNotifications from '@/components/SupportNotifications';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
 import { analyticsCopy } from '@/lib/analytics-copy';
 import { orderArchiveCopy } from '@/lib/order-archive-copy';
@@ -86,17 +86,20 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   const [editingProduct, setEditingProduct] = useState(false);
   const [activeView, setActiveView] = useState<'workspace' | 'messages' | 'statistics' | 'carts'>('workspace');
   const [mobileOpen, setMobileOpen] = useState(false);
-
+  const [activeNavItem, setActiveNavItem] = useState<string>(superAdminOnly ? 'users' : 'workspace');
   useEffect(() => {
     const syncHash = () => {
       const messages = window.location.hash === '#support-messages';
       const statistics = window.location.hash === '#site-statistics';
       setActiveView(messages ? 'messages' : statistics ? 'statistics' : 'workspace');
+      if (messages) setActiveNavItem('support');
+      else if (statistics) setActiveNavItem('statistics');
+      else if (!superAdminOnly) setActiveNavItem('workspace');
       requestAnimationFrame(() => document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ block: 'start' }));
     };
     syncHash();
-    const showMessages = () => setActiveView('messages');
-    const showWorkspace = () => { setActiveView('workspace'); requestAnimationFrame(() => document.getElementById('contact-requests')?.scrollIntoView({ block: 'start' })); };
+    const showMessages = () => { setActiveView('messages'); setActiveNavItem('support'); };
+    const showWorkspace = () => { setActiveView('workspace'); setActiveNavItem('contacts'); requestAnimationFrame(() => document.getElementById('contact-requests')?.scrollIntoView({ block: 'start' })); };
     window.addEventListener('hashchange', syncHash);
     window.addEventListener('popstate', syncHash);
     window.addEventListener('bren-admin-messages', showMessages);
@@ -107,7 +110,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       window.removeEventListener('bren-admin-messages', showMessages);
       window.removeEventListener('bren-admin-workspace', showWorkspace);
     };
-  }, []);
+  }, [superAdminOnly]);
 
   useEffect(() => {
     if (!editingProduct && !productForm.name) setProductForm(emptyProduct(siteData.products));
@@ -367,130 +370,203 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
 
   const canSeeWorkspace = role === 'admin' || role === 'super_admin' || role === 'owner';
   const canSeeSuperAdmin = role === 'super_admin' || role === 'owner';
-  const userInitials = user?.email ? user.email.slice(0, 2).toUpperCase() : 'AD';
+  const userFullName = accounts.find(a => a.user_id === user?.id)?.full_name?.trim() ?? null;
+  const userInitials = userFullName
+    ? userFullName.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase()
+    : user?.email ? user.email.slice(0, 2).toUpperCase() : 'AD';
+  const pendingOrdersCount = orders.filter(o => o.status !== 'done').length;
+  const newContactsCount = contacts.filter(c => c.status === 'new').length;
+
+  const navBtnClass = (active: boolean) =>
+    `w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+      active
+        ? 'bg-gradient-to-r from-[#FF6B00] to-[#E65A00] text-white shadow-md shadow-[#FF6B00]/25'
+        : 'text-[#9AA4AF] hover:text-white hover:bg-white/10'
+    }`;
 
   const navContent = (
-    <div className="flex flex-col justify-between h-full p-5 relative z-10 text-slate-200">
-      <div>
-        {/* Brand Header */}
-        <div className="flex items-center gap-3 pb-6 border-b border-white/10">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF6B00] to-[#E65A00] flex items-center justify-center shadow-[0_0_20px_rgba(255,107,0,0.4)] border border-orange-400/30 shrink-0">
-            <Flame className="w-5 h-5 text-white animate-pulse" />
-          </div>
-          <div>
-            <h1 className="text-white font-black text-lg tracking-tight leading-none">BRENNHOLZ</h1>
-            <p className="text-[11px] text-[#9AA4AF] font-bold uppercase tracking-widest mt-1">Industrial Admin</p>
-          </div>
+    <div className="flex flex-col h-full p-5 relative z-10 text-slate-200">
+
+      {/* ── Brand ── */}
+      <div className="flex items-center gap-3 pb-5 border-b border-white/10 shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#FF6B00] to-[#E65A00] flex items-center justify-center shadow-[0_0_20px_rgba(255,107,0,0.4)] border border-orange-400/30 shrink-0">
+          <Flame className="w-5 h-5 text-white" />
         </div>
-
-        {/* Status Indicator */}
-        <div className="mt-5 mb-6 flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#17212B] border border-white/[0.08]">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-          </span>
-          <span className="text-xs text-emerald-400 font-bold tracking-tight">Espace sécurisé &amp; actif</span>
+        <div>
+          <h1 className="text-white font-black text-lg tracking-tight leading-none">
+            Bren<span className="text-[#FF6B00]">·</span>holz
+          </h1>
+          <p className="text-[11px] text-[#9AA4AF] font-semibold mt-0.5">Console de Direction</p>
         </div>
-
-        {/* Navigation Section */}
-        <nav className="space-y-1.5" aria-label="Menu principal administration">
-          <button
-            type="button"
-            aria-pressed={activeView === 'workspace'}
-            onClick={() => { setActiveView('workspace'); window.history.replaceState(null, '', window.location.pathname + window.location.search); setMobileOpen(false); }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
-              activeView === 'workspace'
-                ? 'bg-gradient-to-r from-[#FF6B00] to-[#E65A00] text-white shadow-md shadow-[#FF6B00]/25'
-                : 'text-[#9AA4AF] hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <LayoutDashboard className="w-5 h-5 shrink-0" />
-            <span>{supportInboxCopy[brenLocale].workspace}</span>
-          </button>
-
-          <button
-            type="button"
-            aria-pressed={activeView === 'messages'}
-            onClick={() => { setActiveView('messages'); window.history.replaceState(null, '', '#support-messages'); setMobileOpen(false); }}
-            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
-              activeView === 'messages'
-                ? 'bg-gradient-to-r from-[#FF6B00] to-[#E65A00] text-white shadow-md shadow-[#FF6B00]/25'
-                : 'text-[#9AA4AF] hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <div className="flex items-center gap-3">
-              <MessageSquare className="w-5 h-5 shrink-0" />
-              <span>{supportCopy[brenLocale].inbox}</span>
-            </div>
-            <SupportUnreadBadge />
-          </button>
-
-          <button
-            type="button"
-            aria-pressed={activeView === 'statistics'}
-            onClick={() => { setActiveView('statistics'); window.history.replaceState(null, '', '#site-statistics'); setMobileOpen(false); }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
-              activeView === 'statistics'
-                ? 'bg-gradient-to-r from-[#FF6B00] to-[#E65A00] text-white shadow-md shadow-[#FF6B00]/25'
-                : 'text-[#9AA4AF] hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <BarChart3 className="w-5 h-5 shrink-0" />
-            <span>{analyticsCopy[brenLocale].title}</span>
-          </button>
-
-          <button
-            type="button"
-            aria-pressed={activeView === 'carts'}
-            onClick={() => { setActiveView('carts'); setMobileOpen(false); }}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
-              activeView === 'carts'
-                ? 'bg-gradient-to-r from-[#FF6B00] to-[#E65A00] text-white shadow-md shadow-[#FF6B00]/25'
-                : 'text-[#9AA4AF] hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <ShoppingCart className="w-5 h-5 shrink-0" />
-            <span>{brenLocale === 'de' ? 'Offene Warenkörbe' : brenLocale === 'en' ? 'Uncompleted carts' : 'Paniers non validés'}</span>
-          </button>
-        </nav>
       </div>
 
-      {/* User Profile Card */}
+      {/* ── Carte profil ── */}
       {user && (
-        <div className="mt-8 pt-4 border-t border-white/10">
-          <div className="bg-[#17212B] border border-white/[0.08] rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-2xs">
-            <div className="flex items-center gap-3 min-w-0">
-              <div className="w-9 h-9 rounded-lg bg-zinc-950 border border-orange-500/40 text-orange-400 flex items-center justify-center font-mono font-black text-xs shrink-0 shadow-xs">
-                {userInitials}
-              </div>
-              <div className="min-w-0">
-                <p className="text-xs font-bold text-white truncate">{user.email}</p>
-                <div className="mt-0.5">
-                  <span className={`text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
-                    role === 'owner' ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white' :
-                    role === 'super_admin' ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white' :
-                    'bg-zinc-800 text-orange-400 border border-orange-500/30'
-                  }`}>
-                    {role === 'owner' ? 'Owner' : role === 'super_admin' ? 'Super-Admin' : 'Admin'}
-                  </span>
-                </div>
-              </div>
+        <div className="mt-4 rounded-xl bg-[#17212B]/80 border border-white/[0.08] p-3 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-zinc-900 border border-orange-500/40 text-orange-400 flex items-center justify-center font-mono font-black text-sm shrink-0">
+              {userInitials}
             </div>
-
-            <button
-              type="button"
-              onClick={() => void handleSignOut()}
-              disabled={signingOut}
-              title="Se déconnecter"
-              className="p-2 text-[#9AA4AF] hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors shrink-0 disabled:opacity-50"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
+            <div className="min-w-0">
+              <p className="text-sm font-bold text-white truncate">
+                {userFullName ?? user.email?.split('@')[0] ?? 'Admin'}
+              </p>
+              <p className="text-[11px] text-[#9AA4AF] truncate">{user.email}</p>
+            </div>
+          </div>
+          <div className="mt-3 flex items-center justify-between">
+            <span className="text-[11px] text-[#9AA4AF] font-medium">Accréditation</span>
+            <span className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border ${
+              role === 'owner'
+                ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                : role === 'super_admin'
+                ? 'bg-orange-500/20 text-orange-300 border-orange-500/40'
+                : 'bg-zinc-800/80 text-orange-400 border-orange-500/30'
+            }`}>
+              <Crown className="w-2.5 h-2.5" />
+              {role === 'owner' ? 'Owner' : role === 'super_admin' ? 'Super Admin' : 'Admin'}
+            </span>
           </div>
         </div>
       )}
+
+      {/* ── Navigation ── */}
+      <div className="mt-5 flex-1 min-h-0 overflow-y-auto">
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[#9AA4AF]/70 px-1 mb-2.5">Navigation</p>
+        <nav className="space-y-0.5" aria-label="Menu principal administration">
+
+          {[
+            {
+              id: 'workspace', label: 'Vue d\'ensemble', icon: LayoutDashboard,
+              badge: null as number | null, show: true,
+              action: () => {
+                setActiveNavItem('workspace'); setActiveView('workspace');
+                window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                setMobileOpen(false);
+              },
+            },
+            {
+              id: 'orders', label: 'Commandes & Vir.', icon: Package,
+              badge: pendingOrdersCount || null, show: true,
+              action: () => {
+                setActiveNavItem('orders'); setActiveView('workspace');
+                window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                setMobileOpen(false);
+              },
+            },
+            {
+              id: 'support', label: 'Support Client', icon: MessageCircle,
+              badge: null as number | null, show: true,
+              action: () => {
+                setActiveNavItem('support'); setActiveView('messages');
+                window.history.replaceState(null, '', '#support-messages');
+                setMobileOpen(false);
+              },
+            },
+            {
+              id: 'contacts', label: 'Messages & Devis', icon: Mail,
+              badge: newContactsCount || null, show: !superAdminOnly,
+              action: () => {
+                setActiveNavItem('contacts'); setActiveView('workspace');
+                window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                setMobileOpen(false);
+                requestAnimationFrame(() => document.getElementById('contact-requests')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+              },
+            },
+            {
+              id: 'catalogue', label: 'Catalogue & Stocks', icon: Layers,
+              badge: null as number | null, show: !superAdminOnly,
+              action: () => {
+                setActiveNavItem('catalogue'); setActiveView('workspace');
+                window.history.replaceState(null, '', window.location.pathname + window.location.search);
+                setMobileOpen(false);
+                requestAnimationFrame(() => document.getElementById('catalog-product-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+              },
+            },
+            {
+              id: 'statistics', label: 'Statistiques Visiteurs', icon: BarChart3,
+              badge: null as number | null, show: true,
+              action: () => {
+                setActiveNavItem('statistics'); setActiveView('statistics');
+                window.history.replaceState(null, '', '#site-statistics');
+                setMobileOpen(false);
+              },
+            },
+            {
+              id: 'carts', label: 'Paniers abandonnés', icon: ShoppingCart,
+              badge: null as number | null, show: true,
+              action: () => { setActiveNavItem('carts'); setActiveView('carts'); setMobileOpen(false); },
+            },
+          ].filter(item => item.show).map(({ id, label, icon: Icon, badge, action }) => {
+            const isActive = activeNavItem === id;
+            return (
+              <button key={id} type="button" aria-pressed={isActive} onClick={action} className={navBtnClass(isActive)}>
+                <span className="flex items-center gap-3 min-w-0">
+                  <Icon className="w-[18px] h-[18px] shrink-0" />
+                  <span className="truncate">{label}</span>
+                </span>
+                <span className="flex items-center gap-1.5 shrink-0 ml-1">
+                  {badge !== null && (
+                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${isActive ? 'bg-white/25 text-white' : 'bg-[#FF6B00] text-white'}`}>
+                      {badge > 99 ? '99+' : badge}
+                    </span>
+                  )}
+                  {isActive && <ChevronRight className="w-4 h-4 opacity-80" />}
+                </span>
+              </button>
+            );
+          })}
+
+          {/* Utilisateurs & Accès — super admin / owner seulement */}
+          {canSeeSuperAdmin && (
+            superAdminOnly ? (
+              <button type="button" aria-pressed className={navBtnClass(true)}>
+                <span className="flex items-center gap-3 min-w-0">
+                  <Users className="w-[18px] h-[18px] shrink-0" />
+                  <span className="truncate">Utilisateurs & Accès</span>
+                </span>
+                <ChevronRight className="w-4 h-4 opacity-80 shrink-0" />
+              </button>
+            ) : (
+              <Link
+                href="/super-admin"
+                onClick={() => { setActiveNavItem('users'); setMobileOpen(false); }}
+                className={navBtnClass(activeNavItem === 'users')}
+              >
+                <span className="flex items-center gap-3 min-w-0">
+                  <Users className="w-[18px] h-[18px] shrink-0" />
+                  <span className="truncate">Utilisateurs & Accès</span>
+                </span>
+                {activeNavItem === 'users' && <ChevronRight className="w-4 h-4 opacity-80 shrink-0" />}
+              </Link>
+            )
+          )}
+        </nav>
+      </div>
+
+      {/* ── Actions bas de sidebar ── */}
+      <div className="mt-4 pt-4 border-t border-white/10 space-y-0.5 shrink-0">
+        <button
+          type="button"
+          onClick={() => void loadData(user)}
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-[#9AA4AF] hover:text-white hover:bg-white/10 transition-all"
+        >
+          <RefreshCw className="w-[18px] h-[18px] shrink-0" />
+          <span>Actualiser</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => void handleSignOut()}
+          disabled={signingOut}
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-[#9AA4AF] hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50"
+        >
+          <LogOut className="w-[18px] h-[18px] shrink-0" />
+          <span>{signingOut ? 'Déconnexion...' : 'Déconnexion'}</span>
+        </button>
+      </div>
     </div>
   );
+
 
   return localizeNode(
     <div className="min-h-screen bg-[#F8FAFC] text-zinc-900 flex flex-col lg:flex-row font-sans">
@@ -518,15 +594,25 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="fixed inset-0 bg-zinc-950/80 backdrop-blur-xs" onClick={() => setMobileOpen(false)} />
-          <div className="relative w-[270px] bg-[#101820] h-full shadow-2xl flex flex-col z-10 overflow-y-auto">
+          <div
+            className="relative w-[270px] h-full shadow-2xl flex flex-col z-10 overflow-y-auto"
+            style={{ backgroundImage: "url('/BD.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+          >
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-[#101820]/88 pointer-events-none" />
             <div className="absolute inset-0 bg-[radial-gradient(#FF6B00_1px,transparent_1px)] [background-size:16px_16px] opacity-10 mix-blend-screen pointer-events-none" />
             {navContent}
           </div>
         </div>
       )}
 
-      {/* Desktop Executive Dark Engine Sidebar (270px width) */}
-      <aside className="hidden lg:block w-[270px] shrink-0 bg-[#101820] sticky top-0 h-screen border-r border-white/10 overflow-y-auto z-30">
+      {/* Desktop Sidebar */}
+      <aside
+        className="hidden lg:block w-[270px] shrink-0 sticky top-0 h-screen border-r border-white/10 overflow-y-auto z-30"
+        style={{ backgroundImage: "url('/BD.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-[#101820]/88 pointer-events-none" />
         <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-[#FF6B00]/15 to-transparent pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(#FF6B00_1px,transparent_1px)] [background-size:16px_16px] opacity-10 mix-blend-screen pointer-events-none" />
         {navContent}

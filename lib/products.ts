@@ -21,9 +21,15 @@ import { brennholzwerkProducts } from '@/lib/brennholzwerk-products';
   volumePriceQuantity?: number;
 };
 
-export function productPathSegment(product: Pick<Product, 'id' | 'name'>) {
-  const nameSlug = product.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  return `${product.id}-${nameSlug || 'produkt'}`;
+export function productPathSegment(product?: Partial<Pick<Product, 'id' | 'name'>>) {
+  const nameStr = typeof product?.name === 'string' ? product.name : '';
+  const nameSlug = nameStr
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  return `${product?.id ?? 0}-${nameSlug || 'produkt'}`;
 }
 
 const catalogItems: Product[] = [
@@ -56,14 +62,12 @@ const catalogItems: Product[] = [
   { id: 49, name: 'Granulés FireStixx Premium DINplus / ENplus A1', type: 'Granulés', quantity: '66 sacs de 15 kg · 990 kg', price: '', description: 'Granulés FireStixx Premium certifiés DINplus et ENplus A1, en sacs de 15 kg sur palette.', image: '/pellets-firestixx-palette.jpg', marketReferenceUrl: 'https://www.herrnegger.com/shop/produkt/holzpellets-premium-firestixx-66-x-15-kg/', imageSourceUrl: 'https://shop.firestixx.org/media/image/a2/6b/fc/FireStixx-Holzpellets-Sackware-15-kg-Palette_600x600.jpg' },
   { id: 48, name: 'Bois de chêne sec – bûches de 33 cm', type: 'Bois de chauffage', quantity: 'Palette filetée · env. 1,6 m³', price: '', description: 'Bûches de chêne fendues en longueur de 33 cm, présentées sur palette filetée pour le stockage et la manutention.', image: '/buches-filet.webp' },
   { id: 51, name: 'Briquettes RUF – palette', type: 'Briquettes', quantity: '96 paquets de 10 kg · 960 kg', price: '', description: 'Briquettes de bois RUF rectangulaires, conditionnées en 96 paquets de 10 kg, soit 960 kg au total. À conserver au sec.', image: '/briquettes-ruf.webp', compareAtPriceAmount: 52900, volumePriceAmount: 48900, volumePriceQuantity: 5, badge: '−2 %', marketReferenceUrl: 'https://www.brennholzgigant.de/96-sacke-ruf-briketten' },
-  { id: 52, name: 'Briquettes Pini-Kay importées – palette', type: 'Briquettes', quantity: '96 sacs de 10 kg · 960 kg', price: '', description: 'Briquettes Pini-Kay avec canaux d’aération, proposées en palette complète.', image: '/bc-product-4.png', volumePriceAmount: 55900, volumePriceQuantity: 5, marketReferenceUrl: 'https://www.brennholzgigant.de/pini-kay-holzbriketts-96-sacke-von-10-kg' },
   { id: 53, name: 'Briquettes RUF – demi-palette', type: 'Briquettes', quantity: '48 paquets de 10 kg · 480 kg', price: '', description: 'Un conditionnement intermédiaire de briquettes RUF, plus facile à stocker qu’une palette complète.', image: '/B3.webp', marketReferenceUrl: 'https://www.brennholzgigant.de/96-sacke-ruf-briketten' },
   { id: 54, name: 'Briquettes Pini-Kay – demi-palette', type: 'Briquettes', quantity: '48 sacs de 10 kg · 480 kg', price: '', description: 'Le format demi-palette des briquettes Pini-Kay d’origine néerlandaise, à conserver dans un endroit sec.', image: '/B2.webp', marketReferenceUrl: 'https://www.brennholzgigant.de/giant-flames-pini-kay-holzbriketts-96-sacke-von-10-kg' },
   { id: 55, name: 'Briquettes rondes de hêtre – demi-palette', type: 'Briquettes', quantity: '48 paquets de 10 kg · 480 kg', price: '', description: 'Briquettes rondes de hêtre en format demi-palette, pour un stockage plus compact.', image: '/B5.jpg', marketReferenceUrl: 'https://www.brennholzgigant.de/runde-buche-brikettspallet-96-packungen-x-10-kg-960-kg' },
   { id: 56, name: 'Granulés Giant Flames – palette', type: 'Granulés', quantity: '65 sacs de 15 kg · 975 kg', price: '', description: 'Granulés de bois ENplus A1 conditionnés en sacs de 15 kg. Aucun supplément de livraison en Allemagne.', image: '/B6.webp', marketReferenceUrl: 'https://www.brennholzgigant.de/holzpellets' },
   { id: 57, name: 'Granulés Giant Flames – demi-palette', type: 'Granulés', quantity: '35 sacs de 15 kg · 525 kg', price: '', description: 'Format demi-palette de granulés de bois, adapté aux besoins de stockage plus limités.', image: '/B7.webp', marketReferenceUrl: 'https://www.brennholzgigant.de/holzpellets' },
   { id: 58, name: 'Bois de chêne séché au four – filets', type: 'Bois de chauffage', quantity: '88 filets · bûches de 25 cm · env. 2 m³ empilé', price: '', description: 'Bûches de chêne fendues et séchées en chambre, prêtes à l’emploi. Le conditionnement en filets facilite le rangement.', image: '/bc-filet-13833.jpg', compareAtPriceAmount: 51900, badge: '−13 %', marketReferenceUrl: 'https://www.brennholzgigant.de/88-netze-kammergetrocknetes-gespalten-eiche-brennholz-25cm' },
-  { id: 59, name: 'Bois de hêtre séché au four – palette', type: 'Bois de chauffage', quantity: 'Bûches de 33 cm · env. 2,6 m³ empilé', price: '', description: 'Bûches de hêtre fendues et séchées en chambre, livrées en palette pour un usage immédiat.', image: '/BD.jpg', marketReferenceUrl: 'https://www.brennholzgigant.de/palette-kammergetrocknetes-gespalten-buchen-brennholz-33cm' },
   { id: 60, name: 'Briquettes Giant Flames – palette', type: 'Briquettes', quantity: '190 paquets de 4,8 kg · 912 kg', price: '', description: 'Briquettes de bois Giant Flames en petits paquets individuels.', image: '/B4.webp', compareAtPriceAmount: 49900, badge: '−6 %', marketReferenceUrl: 'https://www.brennholzgigant.de/holzbriketts' },
 
   /* Produits officiels de bois-chauffages.com */
@@ -87,8 +91,6 @@ const catalogItems: Product[] = [
   { id: 78, name: 'Allume-feu sans pétrole', type: 'Bois d’allumage', quantity: 'Boîte d’allume-feux', price: '', description: 'Allume-feux naturels sans dérivé de pétrole, sans odeur.', image: '/bois-chauffages-img-20.jpg', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/allumage/' },
   { id: 79, name: 'Filet de bois allume-feu', type: 'Bois d’allumage', quantity: 'Filet de bois tendre', price: '', description: 'Filet de bûchettes de bois sec très fines pour allumage facile.', image: '/bois-chauffages-img-21.jpg', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/allumage/' },
   { id: 80, name: 'Bois de chauffage Chêne & Hêtre sec en box (2 stères)', type: 'Bois de chauffage', quantity: 'Box · 2 stères · 25 cm', price: '', description: 'Bois dur chêne et hêtre écorcé et rangé en box palette prêt à brûler.', image: '/bc-palette-0287.jpg', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/bois/' },
-  { id: 81, name: 'Bûches de Hêtre séchées sur palette (1,5 stère – 33 cm)', type: 'Bois de chauffage', quantity: 'Palette · 1,5 stère · 33 cm', price: '', description: 'Palette de hêtre pur séchée à moins de 20 % d’humidité.', image: '/bc-product-1.png', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/bois/' },
-  { id: 82, name: 'Bûches de Chêne Pur séchées sur palette (2 stères – 50 cm)', type: 'Bois de chauffage', quantity: 'Palette · 2 stères · 50 cm', price: '', description: 'Palette de grandes bûches de chêne 50 cm séchées en chambre.', image: '/bc-product-2.png', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/bois/' },
 ];
 
 const catalogPrices: Record<number, number> = {
@@ -98,8 +100,8 @@ const catalogPrices: Record<number, number> = {
   25: 44900, 26: 38600, 27: 10500, 28: 21900,
   30: 25200, 36: 25900, 40: 59900, 43: 59900,
   48: 26900, 49: 48900,
-  51: 51900, 52: 58900, 53: 29900, 54: 30900,
-  55: 33900, 56: 56900, 57: 30900, 58: 44900, 59: 48900, 60: 46900,
+  51: 51900, 53: 29900, 54: 30900,
+  55: 33900, 56: 56900, 57: 30900, 58: 44900, 60: 46900,
 
   /* Prix exacts du site bois-chauffages.com (en centimes d'euro) */
   61: 9600,
@@ -122,8 +124,6 @@ const catalogPrices: Record<number, number> = {
   78: 295,
   79: 450,
   80: 34900,
-  81: 25900,
-  82: 31900,
 };
 
 const euroLabel = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
@@ -135,7 +135,7 @@ export const products: Product[] = catalogItems.map((product) => {
   else if ([1, 3, 4, 27].includes(product.id)) section = 'Formats compacts';
   else if (product.type === 'Granulés') section = 'Autres granulés';
   else if (product.type === 'Bois de chauffage') section = 'Bois de chauffage';
-  else if ([10, 11, 40, 43, 51, 52, 53, 54, 55, 60].includes(product.id)) section = 'Briquettes';
+  else if ([10, 11, 40, 43, 51, 53, 54, 55, 60].includes(product.id)) section = 'Briquettes';
   else section = 'Bois d’allumage';
   return { ...product, section: product.section ?? section, priceAmount, price: priceAmount === undefined ? 'Indisponible à la vente' : euroLabel.format(priceAmount / 100) };
 });

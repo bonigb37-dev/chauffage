@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { localizeNode, translate } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -38,8 +38,12 @@ export default function ProductCatalog({ initialCategory = 'Tous les produits' }
   }, [products, requestedSearch, requestedCategory, initialCategory]);
   const visibleProducts = useMemo(() => products.filter((product) => {
     const matchesCategory = category === 'Tous les produits' || product.type === category || (category === 'Granulés' && product.type.startsWith('Granulés'));
-    const terms = [product.name, product.type, product.quantity, product.description].map(value => `${value} ${translate(value, brenLocale)}`).join(' ').toLocaleLowerCase(brenLocale);
-    return matchesCategory && terms.includes(query.trim().toLocaleLowerCase(brenLocale));
+    const terms = [product.name, product.type, product.quantity, product.description]
+      .filter((val): val is string => typeof val === 'string' && val.length > 0)
+      .map(value => `${value} ${translate(value, brenLocale)}`)
+      .join(' ')
+      .toLocaleLowerCase(brenLocale);
+    return matchesCategory && terms.includes((query || '').trim().toLocaleLowerCase(brenLocale));
   }), [products, category, query, brenLocale]);
   const groupedProducts = useMemo(() => {
     const grouped = new Map<string, typeof visibleProducts>();
@@ -54,26 +58,26 @@ export default function ProductCatalog({ initialCategory = 'Tous les produits' }
 
   return localizeNode((
     <section className="container py-8 sm:py-10">
-      <div className="flex flex-col gap-5 rounded-3xl border border-[#E2E8F0] bg-white p-4 shadow-sm sm:p-6 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-5 rounded-3xl border border-[#E6DCce] bg-white p-4 shadow-sm sm:p-6 lg:flex-row lg:items-center lg:justify-between">
         <div className="relative w-full lg:max-w-sm">
-          <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={19} />
-          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher un produit…" aria-label="Rechercher un produit" className="h-12 w-full rounded-full border border-[#E2E8F0] bg-[#FAFBFC] pl-11 pr-4 outline-none transition focus:border-[#123524] focus:bg-white focus:ring-4 focus:ring-[#123524]/15" />
+          <Search className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={19} />
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher un produit…" aria-label="Rechercher un produit" className="h-12 w-full rounded-full border border-[#E6DCce] bg-[#FAF6F0] pl-11 pr-4 outline-none transition text-[#1C1917] focus:border-[#A33D1E] focus:bg-white focus:ring-4 focus:ring-[#A33D1E]/15 placeholder:text-stone-400" />
         </div>
         <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:flex-wrap lg:justify-end">
-          <span className="mr-1 hidden items-center gap-2 text-sm font-semibold text-[#475569] lg:inline-flex"><SlidersHorizontal size={16} /> Catégories</span>
-          {categories.map((item) => <button key={item} type="button" onClick={() => setCategory(item)} aria-pressed={category === item} className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transition ${category === item ? 'bg-[#123524] text-white' : 'bg-[#F5F7F8] text-[#1f2937] hover:bg-[#123524] hover:text-white'}`}>{item}</button>)}
+          <span className="mr-1 hidden items-center gap-2 text-sm font-semibold text-[#6B5E55] lg:inline-flex"><SlidersHorizontal size={16} /> Catégories</span>
+          {categories.map((item) => <button key={item} type="button" onClick={() => setCategory(item)} aria-pressed={category === item} className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-bold transition ${category === item ? 'bg-[#A33D1E] text-white shadow-sm' : 'bg-[#F4EDE4] text-[#1C1917] hover:bg-[#A33D1E] hover:text-white'}`}>{item}</button>)}
         </div>
       </div>
 
       <div className="mb-4 mt-5 flex items-center justify-between">
-        <p className="text-sm font-medium text-[#475569]">{visibleProducts.length} {visibleProducts.length === 1 ? 'Produkt' : 'Produkte'}</p>
-        <p className="hidden text-sm text-[#475569] sm:block">Sélectionnez une photo pour l’agrandir</p>
+        <p className="text-sm font-medium text-[#6B5E55]">{visibleProducts.length} {visibleProducts.length === 1 ? 'Produkt' : 'Produkte'}</p>
+        <p className="hidden text-sm text-[#6B5E55] sm:block">Sélectionnez une photo pour l’agrandir</p>
       </div>
-      <p className="mb-4 rounded-2xl border border-[#E2E8F0] bg-[#F5F7F8] px-4 py-3 text-sm leading-6 text-[#123524]">Tous les prix affichés sont TTC. La TVA est déjà incluse et le total de commande correspond à la somme des prix TTC des produits.</p>
+      <p className="mb-4 rounded-2xl border border-[#E6DCce] bg-[#F4EDE4] px-4 py-3 text-sm leading-6 text-[#A33D1E] font-medium">Tous les prix affichés sont TTC. La TVA est déjà incluse et le total de commande correspond à la somme des prix TTC des produits.</p>
       {visibleProducts.length ? groupedProducts.map(([section, sectionProducts]) => <section key={section} className="mt-8 first:mt-0">
-        <div className="mb-5 max-w-3xl border-b border-[#E2E8F0] pb-3"><h2 className="text-2xl font-black text-[#123524] sm:text-3xl">{section}</h2><p className="mt-1 text-sm leading-6 text-[#475569]">{sectionDescriptions[section]}</p></div>
+        <div className="mb-5 max-w-3xl border-b border-[#E6DCce] pb-3"><h2 className="text-2xl font-black text-[#1C1917] sm:text-3xl">{section}</h2><p className="mt-1 text-sm leading-6 text-[#6B5E55]">{sectionDescriptions[section]}</p></div>
         <div className="grid items-stretch gap-3.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4">{sectionProducts.map((product) => <div id={`produit-${product.id}`} key={product.id} className="h-full"><ProductCard p={product} /></div>)}</div>
-      </section>) : <div className="rounded-3xl border border-dashed border-[#E2E8F0] bg-[#FAFBFC] py-20 text-center"><h2 className="text-xl font-black text-[#123524]">Aucun produit trouvé</h2><p className="mt-2 text-[#475569]">Essayez un autre terme ou choisissez une autre catégorie.</p></div>}
+      </section>) : <div className="rounded-3xl border border-dashed border-[#E6DCce] bg-[#FAF6F0] py-20 text-center"><h2 className="text-xl font-black text-[#A33D1E]">Aucun produit trouvé</h2><p className="mt-2 text-[#6B5E55]">Essayez un autre terme ou choisissez une autre catégorie.</p></div>}
     </section>
   ), brenLocale);
 }

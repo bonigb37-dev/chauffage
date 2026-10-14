@@ -30,7 +30,7 @@ export default function ProductDetailAddButton({ product }: { product: Product }
     <button
       type="button"
       onClick={handleClick}
-      className="inline-flex items-center gap-2 rounded-full bg-orange-600 px-6 py-3 font-bold text-white transition hover:bg-orange-700"
+      className="inline-flex items-center gap-2 rounded-full bg-[#009705] px-6 py-3 font-bold text-white transition hover:bg-[#008204] shadow-md"
     >
       {added ? (
         <>

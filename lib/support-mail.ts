@@ -1,5 +1,6 @@
 import 'server-only';
 import nodemailer from 'nodemailer';
+import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { storeConfig } from './store-config';
 
@@ -18,7 +19,7 @@ export function notificationContent(kind: string, locale: string) {
 export async function dispatchSupportMail(db: SupabaseClient, limit = 1) {
   if (!supportMailConfigured()) return { configured: false, sent: 0, failed: 0 };
   const port = Number(process.env.SMTP_PORT ?? 465);
-  const transport = nodemailer.createTransport({ host: process.env.SMTP_HOST, port, secure: port === 465, requireTLS: true, auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD }, connectionTimeout: 8000, greetingTimeout: 8000, socketTimeout: 10000, dnsTimeout: 5000, disableFileAccess: true, disableUrlAccess: true, logger: false, debug: false });
+  const transport = nodemailer.createTransport({ host: process.env.SMTP_HOST, port, secure: port === 465, auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD }, family: 4, connectionTimeout: 15000, greetingTimeout: 10000, socketTimeout: 20000, disableFileAccess: true, disableUrlAccess: true, logger: false, debug: false } as SMTPTransport.Options);
   let sent = 0, failed = 0;
   try {
     for (let i=0; i<Math.min(limit,3); i++) {

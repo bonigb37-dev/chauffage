@@ -247,178 +247,144 @@ function DarkFormAlert({
   ), brenLocale);
 }
 
-/* Background Animated Hearth Loop (Cinematic 14-second loop) */
+/* Background Animated Hearth Loop (Gathering logs -> Ignition -> Flames & Embers) */
 function BackgroundHearthLoop() {
   const brenLocale = useLocale() as Locale;
 
   return localizeNode((
-    <div className="bg-hearth-canvas" aria-hidden="true">
-      <div className="relative w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] md:w-[600px] md:h-[600px] flex items-center justify-center">
+    <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden" aria-hidden="true">
+      {/* Soft light aura */}
+      <div className="absolute w-[600px] h-[600px] rounded-full bg-orange-400/15 blur-[140px] animate-heat-glow z-0" />
+
+      {/* Hearth Fire SVG Scene (Soft ethereal presence in light theme) */}
+      <div className="relative w-[340px] h-[340px] sm:w-[500px] sm:h-[500px] z-0 flex items-center justify-center opacity-30 sm:opacity-40">
         <svg
-          className="w-full h-full relative z-10"
+          className="w-full h-full relative z-0"
           viewBox="0 0 300 300"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <radialGradient id="hearthRadialGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#f97316" stopOpacity="0.85" />
-              <stop offset="45%" stopColor="#ea580c" stopOpacity="0.35" />
+            <radialGradient id="hearthGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#f97316" stopOpacity="0.9" />
+              <stop offset="45%" stopColor="#ea580c" stopOpacity="0.4" />
               <stop offset="85%" stopColor="#9a3412" stopOpacity="0.1" />
               <stop offset="100%" stopColor="#08090b" stopOpacity="0" />
             </radialGradient>
 
-            <linearGradient id="logGrad1" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#854823" />
-              <stop offset="35%" stopColor="#542c13" />
-              <stop offset="70%" stopColor="#3d1d0a" />
-              <stop offset="100%" stopColor="#241004" />
+            <linearGradient id="logWood1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#9a5228" />
+              <stop offset="40%" stopColor="#633216" />
+              <stop offset="80%" stopColor="#3d1b09" />
+              <stop offset="100%" stopColor="#210a02" />
             </linearGradient>
 
-            <linearGradient id="logGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#965228" />
-              <stop offset="50%" stopColor="#5c3014" />
-              <stop offset="100%" stopColor="#311707" />
+            <linearGradient id="logWood2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#a35a2d" />
+              <stop offset="50%" stopColor="#693717" />
+              <stop offset="100%" stopColor="#381a09" />
             </linearGradient>
 
-            <linearGradient id="logGrad3" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#8d4c24" />
-              <stop offset="50%" stopColor="#542b12" />
-              <stop offset="100%" stopColor="#2b1305" />
+            <linearGradient id="logWood3" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#8d4b24" />
+              <stop offset="50%" stopColor="#572b12" />
+              <stop offset="100%" stopColor="#280e03" />
             </linearGradient>
 
-            <linearGradient id="flameOuter" x1="50%" y1="100%" x2="50%" y2="0%">
-              <stop offset="0%" stopColor="#b91c1c" />
-              <stop offset="30%" stopColor="#ea580c" />
-              <stop offset="70%" stopColor="#f97316" />
-              <stop offset="100%" stopColor="#fb923c" />
+            <linearGradient id="flameLayerOuter" x1="50%" y1="100%" x2="50%" y2="0%">
+              <stop offset="0%" stopColor="#dc2626" />
+              <stop offset="25%" stopColor="#ea580c" />
+              <stop offset="65%" stopColor="#f97316" />
+              <stop offset="100%" stopColor="#fdba74" />
             </linearGradient>
 
-            <linearGradient id="flameInner" x1="50%" y1="100%" x2="50%" y2="0%">
+            <linearGradient id="flameLayerInner" x1="50%" y1="100%" x2="50%" y2="0%">
               <stop offset="0%" stopColor="#ea580c" />
               <stop offset="50%" stopColor="#facc15" />
               <stop offset="100%" stopColor="#fef08a" />
             </linearGradient>
 
-            <linearGradient id="flameCore" x1="50%" y1="100%" x2="50%" y2="0%">
+            <linearGradient id="flameLayerCore" x1="50%" y1="100%" x2="50%" y2="0%">
               <stop offset="0%" stopColor="#fef08a" />
               <stop offset="100%" stopColor="#ffffff" />
             </linearGradient>
 
-            <filter id="hearthGlowBlur" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="18" />
+            <filter id="glowBlur" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="22" />
             </filter>
 
-            <filter id="sparkBlur" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="4" />
+            <filter id="coreSparkBlur" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3" />
             </filter>
           </defs>
 
-          {/* Ambient Glow */}
+          {/* Ambient Heat Aura */}
           <circle
             cx="150"
-            cy="170"
-            r="90"
-            fill="url(#hearthRadialGlow)"
-            className="bg-glow"
-            filter="url(#hearthGlowBlur)"
+            cy="185"
+            r="95"
+            fill="url(#hearthGlow)"
+            className="animate-heat-glow"
+            filter="url(#glowBlur)"
           />
 
-          {/* Log 1 (Base horizontal log) */}
-          <g className="bg-log-1">
-            <rect
-              x="60"
-              y="210"
-              width="180"
-              height="24"
-              rx="12"
-              fill="url(#logGrad1)"
-            />
-            <path
-              d="M85 218 H215 M95 225 H200"
-              stroke="#261004"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              opacity="0.65"
-            />
-            <ellipse cx="72" cy="222" rx="8" ry="10" fill="#a06035" />
-            <ellipse cx="72" cy="222" rx="4" ry="5.5" fill="#5e3318" />
+          {/* Log 1 (Left diagonal log) */}
+          <g className="animate-log-1">
+            <rect x="50" y="215" width="160" height="26" rx="13" fill="url(#logWood1)" transform="rotate(-15 130 228)" />
+            <ellipse cx="60" cy="223" rx="7" ry="10" fill="#a05e32" />
+            <ellipse cx="60" cy="223" rx="3.5" ry="5" fill="#583015" />
           </g>
 
-          {/* Log 2 (Left diagonal log) */}
-          <g className="bg-log-2">
-            <rect
-              x="70"
-              y="190"
-              width="160"
-              height="22"
-              rx="11"
-              fill="url(#logGrad2)"
-            />
-            <path
-              d="M92 197 H210 M105 204 H195"
-              stroke="#200a02"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              opacity="0.6"
-            />
-            <ellipse cx="82" cy="201" rx="7" ry="9" fill="#9c5b31" />
+          {/* Log 2 (Right diagonal log) */}
+          <g className="animate-log-2">
+            <rect x="90" y="215" width="160" height="26" rx="13" fill="url(#logWood2)" transform="rotate(15 170 228)" />
+            <ellipse cx="240" cy="223" rx="7" ry="10" fill="#9e5a2e" />
           </g>
 
-          {/* Log 3 (Right diagonal log) */}
-          <g className="bg-log-3">
-            <rect
-              x="70"
-              y="190"
-              width="160"
-              height="22"
-              rx="11"
-              fill="url(#logGrad3)"
-            />
-            <path
-              d="M92 197 H210 M105 204 H195"
-              stroke="#1f0902"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              opacity="0.6"
-            />
-            <ellipse cx="218" cy="201" rx="7" ry="9" fill="#95542b" />
+          {/* Log 3 (Base horizontal log) */}
+          <g className="animate-log-3">
+            <rect x="65" y="225" width="170" height="28" rx="14" fill="url(#logWood3)" />
+            <ellipse cx="78" cy="239" rx="8" ry="11" fill="#8d4d25" />
           </g>
 
-          {/* Spark starburst */}
-          <g className="bg-spark">
-            <circle cx="150" cy="180" r="12" fill="#fef08a" filter="url(#sparkBlur)" />
-            <path
-              d="M150 160 L153.5 176.5 L170 180 L153.5 183.5 L150 200 L146.5 183.5 L130 180 L146.5 176.5 Z"
-              fill="#ffffff"
-            />
-          </g>
+          {/* Fire Ignition & Burning Flame Container */}
+          <g className="animate-fire-ignite">
+            {/* Spark burst on ignition */}
+            <circle cx="150" cy="180" r="14" fill="#fef08a" filter="url(#coreSparkBlur)" />
 
-          {/* Dancing Flame */}
-          <g className="bg-flame">
-            <path
-              d="M150 65 C180 105 192 142 183 177 C174 207 126 207 117 177 C108 142 120 105 150 65 Z"
-              fill="url(#flameOuter)"
-            />
-            <path
-              d="M150 90 C170 120 177 147 171 172 C165 195 135 195 129 172 C123 147 130 120 150 90 Z"
-              fill="url(#flameInner)"
-            />
-            <path
-              d="M150 120 C160 138 165 156 160 170 C155 183 145 183 140 170 C135 156 140 138 150 120 Z"
-              fill="url(#flameCore)"
-            />
-          </g>
+            {/* Dancing Main Flame */}
+            <g className="animate-flame-main">
+              <path
+                d="M150 55 C185 100 198 142 188 180 C178 212 122 212 112 180 C102 142 115 100 150 55 Z"
+                fill="url(#flameLayerOuter)"
+              />
+            </g>
 
-          {/* Floating Embers */}
-          <circle cx="140" cy="125" r="3" fill="#facc15" className="bg-ember-1" />
-          <circle cx="162" cy="105" r="3.5" fill="#f97316" className="bg-ember-2" />
-          <circle cx="148" cy="80" r="2.5" fill="#fef08a" className="bg-ember-3" />
+            {/* Inner Flame */}
+            <g className="animate-flame-inner">
+              <path
+                d="M150 85 C172 118 180 148 174 175 C168 198 132 198 126 175 C120 148 128 118 150 85 Z"
+                fill="url(#flameLayerInner)"
+              />
+              <path
+                d="M150 115 C162 135 167 155 162 170 C157 184 143 184 138 170 C133 155 138 135 150 115 Z"
+                fill="url(#flameLayerCore)"
+              />
+            </g>
+
+            {/* Rising Embers & Floating Sparks */}
+            <circle cx="138" cy="120" r="3" fill="#facc15" className="animate-ember-1" />
+            <circle cx="165" cy="100" r="3.5" fill="#f97316" className="animate-ember-2" />
+            <circle cx="148" cy="75" r="2.5" fill="#fef08a" className="animate-ember-3" />
+            <circle cx="125" cy="140" r="2" fill="#fb923c" className="animate-ember-2" />
+            <circle cx="172" cy="130" r="2.5" fill="#fef08a" className="animate-ember-1" />
+          </g>
         </svg>
       </div>
     </div>
   ), brenLocale);
 }
+
 
 export default function AccountPageContent() {
   const brenLocale = useLocale() as Locale;
@@ -696,18 +662,18 @@ export default function AccountPageContent() {
 
       {/* Embedded Minimalist Header */}
       <header className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-5 sm:py-6 flex items-center justify-between">
-        <Link href="/" aria-label="Bren-nholz — Leylines Park, accueil" className="group flex items-center gap-2.5 font-black text-xl tracking-tight text-slate-900 transition">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500 text-white shadow-lg shadow-orange-500/30 group-hover:bg-orange-600 transition">
+        <Link href="/" aria-label="Bren-nholz — Leylines Park, accueil" className="group flex items-center gap-2.5 font-black text-xl tracking-tight text-slate-950 transition">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500 text-white shadow-md shadow-orange-500/25 group-hover:bg-orange-600 transition">
             <Flame size={23} strokeWidth={2.2} fill="currentColor" />
           </span>
-          <span className="text-slate-900 font-black tracking-tight text-xl">
+          <span className="text-slate-950 font-black tracking-tight text-xl">
             <BrandWordmark hyphenClass="text-orange-500" />
           </span>
         </Link>
 
         <Link
           href="/"
-          className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/70 hover:bg-orange-50 border border-orange-100 hover:border-orange-200 text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition backdrop-blur-md"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-stone-50 border border-stone-200 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-950 transition shadow-2xs"
         >
           <ArrowLeft size={15} />
           <span className="hidden sm:inline">Retour boutique</span>
@@ -716,8 +682,8 @@ export default function AccountPageContent() {
       </header>
 
       {/* Main Centered Content */}
-      <main className="relative z-20 flex-1 flex items-center justify-center px-4 sm:px-6 py-6 sm:py-10">
-        <div className="account-dark-glass-card">
+      <main className="relative z-20 flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
+        <div className="apple-liquid-glass-card">
           {!ready ? (
             <div className="py-12 flex flex-col items-center justify-center gap-3">
               <LoaderCircle className="animate-spin text-orange-500" size={28} />
@@ -818,14 +784,14 @@ export default function AccountPageContent() {
             <>
               {/* Segmented Auth Tabs (Connexion / Inscription) */}
               {(mode === 'signin' || mode === 'signup') && (
-                <div className="flex items-center p-1 bg-orange-50 rounded-2xl border border-orange-100 mb-6 backdrop-blur-md">
+                <div className="flex items-center p-1 bg-stone-100 rounded-2xl border border-stone-200/80 mb-6">
                   <button
                     type="button"
                     onClick={() => switchMode('signin')}
                     className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
                       mode === 'signin'
-                        ? 'bg-white text-slate-900 shadow-md border border-orange-200'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-white text-slate-950 shadow-xs border border-stone-200/60'
+                        : 'text-stone-500 hover:text-slate-900'
                     }`}
                   >
                     Connexion
@@ -835,8 +801,8 @@ export default function AccountPageContent() {
                     onClick={() => switchMode('signup')}
                     className={`flex-1 py-2.5 px-3 sm:px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 ${
                       mode === 'signup'
-                        ? 'bg-white text-slate-900 shadow-md border border-orange-200'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-white text-slate-950 shadow-xs border border-stone-200/60'
+                        : 'text-stone-500 hover:text-slate-900'
                     }`}
                   >
                     Inscription
@@ -846,10 +812,10 @@ export default function AccountPageContent() {
 
               {/* Header Title & Subtitle */}
               <div className="mb-6">
-                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-950 tracking-tight">
                   {heading}
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1.5 leading-relaxed">
+                <p className="text-xs sm:text-sm text-stone-600 mt-1.5 leading-relaxed font-medium">
                   {mode === 'signup'
                     ? 'Inscrivez-vous pour passer vos commandes facilement.'
                     : mode === 'forgot'
@@ -871,32 +837,32 @@ export default function AccountPageContent() {
                 {mode === 'signup' && (
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
                         Prénom
                       </label>
                       <div className="relative flex items-center">
-                        <UserRound size={17} className="absolute left-3 text-slate-500 pointer-events-none" />
+                        <UserRound size={17} className="absolute left-3.5 text-stone-400 pointer-events-none z-10" />
                         <input
                           autoComplete="given-name"
                           name="firstName"
                           placeholder="Max"
                           required
-                          className="account-input-field"
+                          className="account-input-field pl-11"
                         />
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
                         Nom
                       </label>
                       <div className="relative flex items-center">
-                        <UserRound size={17} className="absolute left-3 text-slate-500 pointer-events-none" />
+                        <UserRound size={17} className="absolute left-3.5 text-stone-400 pointer-events-none z-10" />
                         <input
                           autoComplete="family-name"
                           name="lastName"
                           placeholder="Müller"
                           required
-                          className="account-input-field"
+                          className="account-input-field pl-11"
                         />
                       </div>
                     </div>
@@ -905,11 +871,11 @@ export default function AccountPageContent() {
 
                 {mode !== 'update' && (
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
                       Email
                     </label>
                     <div className="relative flex items-center">
-                      <Mail size={17} className="absolute left-3.5 text-slate-500 pointer-events-none z-10" />
+                      <Mail size={17} className="absolute left-3.5 text-stone-400 pointer-events-none z-10" />
                       <input
                         autoComplete="email"
                         name="email"
@@ -925,13 +891,13 @@ export default function AccountPageContent() {
                 {mode !== 'forgot' && (
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
-                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
                         {mode === 'update' ? 'Nouveau mot de passe' : 'Mot de passe'}
                       </label>
                       {mode === 'signin' && (
                         <button
                           type="button"
-                          className="text-xs text-orange-700 hover:text-orange-700 hover:underline transition font-medium"
+                          className="text-xs text-orange-600 hover:text-orange-700 hover:underline transition font-bold"
                           onClick={() => switchMode('forgot')}
                         >
                           Mot de passe oublié ?
@@ -939,7 +905,7 @@ export default function AccountPageContent() {
                       )}
                     </div>
                     <div className="relative flex items-center">
-                      <LockKeyhole size={17} className="absolute left-3.5 text-slate-500 pointer-events-none z-10" />
+                      <LockKeyhole size={17} className="absolute left-3.5 text-stone-400 pointer-events-none z-10" />
                       <input
                         autoComplete={mode === 'signup' || mode === 'update' ? 'new-password' : 'current-password'}
                         name="password"
@@ -950,7 +916,7 @@ export default function AccountPageContent() {
                         className="account-input-field pl-11 pr-10"
                       />
                       <button
-                        className="absolute right-3 text-slate-600 hover:text-slate-900 transition p-1 z-10"
+                        className="absolute right-3 text-stone-400 hover:text-stone-700 transition p-1 z-10"
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
@@ -963,11 +929,11 @@ export default function AccountPageContent() {
 
                 {mode === 'signup' && (
                   <div className="space-y-1.5">
-                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
                       Confirmer le mot de passe
                     </label>
                     <div className="relative flex items-center">
-                      <LockKeyhole size={17} className="absolute left-3.5 text-slate-500 pointer-events-none z-10" />
+                      <LockKeyhole size={17} className="absolute left-3.5 text-stone-400 pointer-events-none z-10" />
                       <input
                         autoComplete="new-password"
                         name="confirmPassword"
@@ -981,10 +947,10 @@ export default function AccountPageContent() {
                   </div>
                 )}
 
-                {(needsConfirmationLink || mode === 'signup') && <button type="button" disabled={busy} onClick={resendConfirmation} className="text-sm font-bold text-orange-700 underline underline-offset-4 disabled:opacity-50">Demander un nouveau lien de confirmation</button>}
-                {mode === 'update' && (!user || recoveryLinkInvalid) && <div role="alert" className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm leading-6 text-amber-800">Ouvrez le lien de réinitialisation reçu par e-mail pour choisir un nouveau mot de passe.<button type="button" onClick={() => switchMode('forgot')} className="mt-2 block font-bold underline underline-offset-4">Demander un nouveau lien</button></div>}
+                {(needsConfirmationLink || mode === 'signup') && <button type="button" disabled={busy} onClick={resendConfirmation} className="text-sm font-bold text-orange-600 hover:text-orange-700 underline underline-offset-4 disabled:opacity-50">Demander un nouveau lien de confirmation</button>}
+                {mode === 'update' && (!user || recoveryLinkInvalid) && <div role="alert" className="rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm leading-6 text-amber-900">Ouvrez le lien de réinitialisation reçu par e-mail pour choisir un nouveau mot de passe.<button type="button" onClick={() => switchMode('forgot')} className="mt-2 block font-bold underline underline-offset-4">Demander un nouveau lien</button></div>}
                 <button
-                  className="w-full mt-2 bg-gradient-to-r from-orange-500 via-amber-600 to-orange-600 hover:from-orange-400 hover:to-amber-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-orange-950/40 hover:shadow-orange-900/60 transition-all duration-200 transform active:scale-[0.99] flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#fffaf5]"
+                  className="w-full mt-3 bg-[#A33D1E] hover:bg-[#832F15] text-white font-black py-3.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 transform active:scale-[0.99] flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed"
                   type="submit"
                   disabled={busy || (mode === 'update' && (!user || recoveryLinkInvalid))}
                 >
@@ -1008,14 +974,14 @@ export default function AccountPageContent() {
 
               {/* Mode Switches */}
               {(mode === 'signin' || mode === 'signup') && (
-                <div className="mt-6 text-center text-xs text-slate-600">
+                <div className="mt-6 text-center text-xs text-stone-600">
                   {mode === 'signin' ? (
                     <p>
                       Vous n&apos;avez pas de compte ?{' '}
                       <button
                         type="button"
                         onClick={() => switchMode('signup')}
-                        className="font-bold text-slate-900 hover:text-orange-700 transition underline underline-offset-2"
+                        className="font-bold text-slate-950 hover:text-orange-600 transition underline underline-offset-2"
                       >
                         Créer un compte
                       </button>
@@ -1026,7 +992,7 @@ export default function AccountPageContent() {
                       <button
                         type="button"
                         onClick={() => switchMode('signin')}
-                        className="font-bold text-slate-900 hover:text-orange-700 transition underline underline-offset-2"
+                        className="font-bold text-slate-950 hover:text-orange-600 transition underline underline-offset-2"
                       >
                         Se connecter
                       </button>
@@ -1039,7 +1005,7 @@ export default function AccountPageContent() {
                 <div className="mt-6 text-center">
                   <button
                     type="button"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-stone-600 hover:text-slate-950 transition"
                     onClick={() => switchMode('signin')}
                   >
                     <ArrowLeft size={15} /> Retour à la connexion
@@ -1052,9 +1018,9 @@ export default function AccountPageContent() {
       </main>
 
       {/* Embedded Minimalist Footer */}
-      <footer className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 text-center text-xs text-slate-600">
+      <footer className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 text-center text-xs text-stone-500">
         <p>© {new Date().getFullYear()} Bren-nholz — Leylines Park — Espace sécurisé. Tous droits réservés.</p>
-        <nav aria-label="Informations juridiques" className="mt-3 flex flex-wrap justify-center gap-4"><Link href="/datenschutz" className="text-slate-600 underline">Confidentialité</Link><Link href="/retractation#retractation" className="rounded-lg border border-orange-400/50 px-3 py-2 font-bold text-orange-700">Me rétracter du contrat</Link></nav>
+        <nav aria-label="Informations juridiques" className="mt-3 flex flex-wrap justify-center gap-4"><Link href="/datenschutz" className="text-stone-600 hover:text-slate-950 underline">Confidentialité</Link><Link href="/retractation#retractation" className="rounded-lg border border-orange-300 bg-orange-50/60 px-3 py-1.5 font-bold text-orange-700 hover:bg-orange-100">Me rétracter du contrat</Link></nav>
       </footer>
     </div>
   ), brenLocale);

@@ -11,9 +11,18 @@ export function mergeCatalog(rows: ProductOverride[]): Product[] {
     const row = overrides.get(id);
     if (row?.is_deleted) return [];
     const data = row?.data ?? {};
+    if (!base && (!data.name || typeof data.name !== 'string')) return [];
     const priceAmount = Object.hasOwn(data, 'priceAmount') ? data.priceAmount : base?.priceAmount;
     const stock = Object.hasOwn(data, 'stock') ? data.stock : base?.stock;
-    const product = { ...base, ...data, id,
+    const product = {
+      name: 'Produit',
+      type: 'Bois de chauffage',
+      quantity: 'Unité',
+      description: '',
+      image: '/BD.jpg',
+      ...base,
+      ...data,
+      id,
       priceAmount: Number.isSafeInteger(priceAmount) && Number(priceAmount) > 0 ? Number(priceAmount) : undefined,
       stock: Number.isSafeInteger(stock) && Number(stock) >= 0 ? Number(stock) : undefined,
     } as Product;

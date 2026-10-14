@@ -10,12 +10,6 @@ import { ChevronLeft, ChevronRight, Flame, ZoomIn } from 'lucide-react';
 
 const slides = [
   {
-    image: '/pellets.webp',
-    alt: 'Granulés de bois conditionnés en sacs et en palette',
-    badge: 'Granulés de bois',
-    title: 'Sacs & Palettes ENplus A1 / DINplus',
-  },
-  {
     image: '/bois-chauffage.webp',
     alt: 'Bûches de bois de chauffage sèches sur palette',
     badge: 'Bois de chauffage',
@@ -52,10 +46,10 @@ export default function ProductHeroShowcase() {
   return localizeNode((
     <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
       {/* Glow background effect */}
-      <div className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-r from-[#123524]/30 to-[#123524]/20 blur-2xl transition-all duration-700" />
+      <div className="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-r from-[#a33d1e]/30 to-[#a33d1e]/20 blur-2xl transition-all duration-700" />
 
       {/* Main card */}
-      <div className="relative aspect-[1.12/1] overflow-hidden rounded-[2.5rem] bg-[#123524] shadow-2xl border border-stone-800">
+      <div className="relative aspect-[1.12/1] overflow-hidden rounded-[2.5rem] bg-[#a33d1e] shadow-2xl border border-stone-800">
         <AnimatePresence mode="wait">
           <motion.div
             key={current.image}
@@ -84,7 +78,7 @@ export default function ProductHeroShowcase() {
           <button
             type="button"
             onClick={() => setIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1))}
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/90 text-[#123524] backdrop-blur-md shadow-lg transition hover:bg-white hover:scale-105 active:scale-95"
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/90 text-[#a33d1e] backdrop-blur-md shadow-lg transition hover:bg-white hover:scale-105 active:scale-95"
             aria-label="Image précédente"
           >
             <ChevronLeft size={20} />
@@ -92,7 +86,7 @@ export default function ProductHeroShowcase() {
           <button
             type="button"
             onClick={() => setIndex((prev) => (prev + 1) % slides.length)}
-            className="grid h-10 w-10 place-items-center rounded-full bg-white/90 text-[#123524] backdrop-blur-md shadow-lg transition hover:bg-white hover:scale-105 active:scale-95"
+            className="grid h-10 w-10 place-items-center rounded-full bg-white/90 text-[#a33d1e] backdrop-blur-md shadow-lg transition hover:bg-white hover:scale-105 active:scale-95"
             aria-label="Image suivante"
           >
             <ChevronRight size={20} />
@@ -110,17 +104,17 @@ export default function ProductHeroShowcase() {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
               >
-                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#123524]">
-                  <Flame size={14} className="fill-[#123524] text-[#123524]" />
+                <p className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#a33d1e]">
+                  <Flame size={14} className="fill-[#a33d1e] text-[#a33d1e]" />
                   {current.badge}
                 </p>
-                <p className="mt-1 font-black text-[#123524] text-sm sm:text-base truncate">
+                <p className="mt-1 font-black text-[#a33d1e] text-sm sm:text-base truncate">
                   {current.title}
                 </p>
               </motion.div>
             </AnimatePresence>
           </div>
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#123524] text-white shadow-md">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#a33d1e] text-white shadow-md">
             <ZoomIn size={20} />
           </span>
         </div>
@@ -133,7 +127,7 @@ export default function ProductHeroShowcase() {
               type="button"
               onClick={() => setIndex(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === index ? 'w-8 bg-[#123524]' : 'w-2 bg-white/60 hover:bg-white'
+                i === index ? 'w-8 bg-[#a33d1e]' : 'w-2 bg-white/60 hover:bg-white'
               }`}
               aria-label={`Aller à la diapositive ${i + 1}`}
             />

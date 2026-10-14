@@ -1,4 +1,4 @@
-﻿export type Review = {
+export type Review = {
   id: string;
   author: string;
   location: string;
@@ -37,9 +37,6 @@ export const reviewsData: Record<number, Review[]> = {
   ],
   51: [
     { id: 'r51-1', author: 'Heiko T.', location: 'Bremen', rating: 5, date: '27.02.2026', title: 'Gute RUF Briketts', comment: 'Kompakt gestapelt auf Palette. Hohe Wärmeabgabe.', verified: true },
-  ],
-  52: [
-    { id: 'r52-1', author: 'Renate P.', location: 'Magdeburg', rating: 5, date: '20.02.2026', title: 'Sehr gute Flamme', comment: 'Das Zugloch sorgt für perfekte Verbrennung im Kaminofen.', verified: true },
   ],
   61: [
     { id: 'r61-1', author: 'Matthias K.', location: 'Karlsruhe', rating: 5, date: '01.03.2026', title: 'Schüttgut Brennholz 25cm', comment: 'Gute Hartholzmischung, schnelle Anlieferung.', verified: true },

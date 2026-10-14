@@ -11,7 +11,7 @@ export default function TopTrustBanner() {
   return localizeNode(
     <aside
       aria-label="Livraison"
-      className="border-b border-[#1b4d35] bg-[#123524] px-3 py-2 text-xs font-semibold text-white shadow-inner select-none sm:text-sm"
+      className="border-b border-[#883015] bg-[#a33d1e] px-3 py-2 text-xs font-semibold text-white shadow-inner select-none sm:text-sm"
     >
       <div className="container mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2 sm:gap-4">
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mx-auto sm:mx-0">

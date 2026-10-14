@@ -1,0 +1,235 @@
+{
+    "date":  "2026-10-14",
+    "environment":  "Next.js production, Edge, localhost:3001",
+    "pages":  [
+                  {
+                      "route":  "/de",
+                      "title":  "Brennholz, Holzpellets und Holzbriketts mit Lieferung in Deutschland.",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/produits",
+                      "title":  "Sortiment: Brennholz, Holzpellets und Holzbriketts",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/services",
+                      "title":  "Beratung zur Auswahl und Lieferung Ihrer Holzbrennstoffe",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/a-propos",
+                      "title":  "Bren-nholz — Leylines Park: Ihr Onlineshop für Holzbrennstoffe",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/contact",
+                      "title":  "Benötigen Sie Hilfe oder weitere Informationen?",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/devis",
+                      "title":  "Sortiment: Brennholz, Holzpellets und Holzbriketts",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/faq",
+                      "title":  "Häufige Fragen",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/guide-granules",
+                      "title":  "Ratgeber zur Auswahl von Holzpellets",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/guide-pellets",
+                      "title":  "Ratgeber zur Auswahl von Holzpellets",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/auswahlhilfe/holzpellets",
+                      "title":  "Ratgeber zur Auswahl von Holzpellets",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/frais-livraison",
+                      "title":  "Lieferbedingungen",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/avis-juridique",
+                      "title":  "Impressum",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/agb",
+                      "title":  "Allgemeine Geschäftsbedingungen",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/datenschutz",
+                      "title":  "Datenschutzerklärung",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/retractation",
+                      "title":  "Widerruf, Rücksendungen und Erstattungen",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/aide",
+                      "title":  "Hilfe \u0026 Kundenservice",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/compte",
+                      "title":  "",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/compte?mode=signup",
+                      "title":  "",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/compte?mode=recovery",
+                      "title":  "",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/panier",
+                      "title":  "Mein Warenkorb",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/commande",
+                      "title":  "Ihr Warenkorb ist leer",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/commande/succes",
+                      "title":  "Bestellreferenz nicht verfügbar",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/admin",
+                      "title":  "Administrationsbereich",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/super-admin",
+                      "title":  "Superadministration",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/audit-page-inconnue",
+                      "title":  "Seite nicht gefunden",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/produits/audit-produit-inconnu",
+                      "title":  "Seite nicht gefunden",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/produits/categorie/audit-categorie-inconnue",
+                      "title":  "Seite nicht gefunden",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/livraison/audit-region-inconnue",
+                      "title":  "Seite nicht gefunden",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/produits/categorie/bois-de-chauffage",
+                      "title":  "Brennholz",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/produits/categorie/granules-de-bois",
+                      "title":  "Holzpellets",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/produits/categorie/briquettes-de-bois",
+                      "title":  "Holzbriketts",
+                      "overflow":  false
+                  },
+                  {
+                      "route":  "/de/produits/categorie/bois-allumage",
+                      "title":  "Anzündholz und Anzünder",
+                      "overflow":  false
+                  }
+              ],
+    "checkedLinks":  112,
+    "brokenLinks":  [
+
+                    ],
+    "missingAnchors":  [
+
+                       ],
+    "contrastFindings":  [
+
+                         ],
+    "errors":  [
+
+               ],
+    "interactions":  [
+                         {
+                             "value":  [
+                                           {
+                                               "name":  "404: retour accueil et catalogue",
+                                               "ok":  true
+                                           },
+                                           {
+                                               "name":  "Catalogue: favoris, photos, quantité et ajout panier",
+                                               "ok":  true
+                                           },
+                                           {
+                                               "name":  "Commande: validation et panne réseau récupérable",
+                                               "ok":  true
+                                           },
+                                           {
+                                               "name":  "Compte: mot de passe visible et récupération lien expiré",
+                                               "ok":  true
+                                           },
+                                           {
+                                               "name":  "Contact: erreur simulée et bouton disponible pour réessayer",
+                                               "ok":  true
+                                           },
+                                           {
+                                               "name":  "FAQ: ouverture et fermeture des réponses",
+                                               "ok":  true
+                                           },
+                                           {
+                                               "name":  "Cookies: ouverture des préférences",
+                                               "ok":  true
+                                           },
+                                           {
+                                               "name":  "Mobile: menu, sous-menu produits et navigation",
+                                               "ok":  true
+                                           }
+                                       ],
+                             "Count":  8
+                         },
+                         {
+                             "value":  [
+                                           {
+                                               "name":  "Supplément: recherche et fermeture",
+                                               "ok":  true
+                                           },
+                                           {
+                                               "name":  "Supplément: guide, recommandation et ajout panier",
+                                               "ok":  true
+                                           },
+                                           {
+                                               "name":  "Supplément: rétractation, modification et panne simulée",
+                                               "ok":  true
+                                           }
+                                       ],
+                             "Count":  3
+                         }
+                     ]
+}

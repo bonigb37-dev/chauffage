@@ -7,6 +7,7 @@ import ProductCatalog from '@/components/ProductCatalog';
 import Services from '@/components/Services';
 import { Suspense } from 'react';
 import ProductHeroShowcase from '@/components/ProductHeroShowcase';
+import FireBrazier from '@/components/FireBrazier';
 import { getServerCatalog } from '@/lib/server-catalog';
 import { productCategories } from '@/lib/product-categories';
 
@@ -24,8 +25,9 @@ export default async function ProductsPageContent({ categorySlug }: { categorySl
   const category = productCategories.find((item) => item.slug === categorySlug);
   return localizeNode((
     <main>
-      <section className="relative overflow-hidden bg-[#F5F7F8]">
-        <div className="container grid min-h-[380px] items-center gap-8 py-10 lg:grid-cols-[1fr_0.9fr] lg:py-12">
+      <section className="relative overflow-hidden bg-[#FAF6F0]">
+        <FireBrazier variant="light" intensity="high" className="z-0" />
+        <div className="container relative z-10 grid min-h-[380px] items-center gap-8 py-10 lg:grid-cols-[1fr_0.9fr] lg:py-12">
           <div className="relative z-10 max-w-2xl">
             <h1 className="text-4xl font-black leading-tight tracking-tight text-gray-950 sm:text-6xl">{category?.title ?? 'Catalogue de bois de chauffage, granulés et briquettes'}</h1>
             <p className="mt-5 max-w-xl text-lg leading-8 text-gray-600">{category?.description ?? 'Comparez les marques de granulés, les palettes et les différents conditionnements. Retrouvez aussi notre sélection de bois de chauffage, de briquettes et de produits d’allumage.'}</p>

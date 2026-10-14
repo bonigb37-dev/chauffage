@@ -1,0 +1,1180 @@
+{
+    "commit":  "a681a19d6d073c252a9376ccb9981f4704a4db1c",
+    "url":  "https://www.brennholz-direk.de",
+    "date":  "2026-10-14",
+    "deployment":  "success",
+    "local":  {
+                  "screens":  [
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  "rgb(165, 72, 41)"
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/produits",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/a-propos",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/contact",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/devis",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/faq",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/guide-pellets",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/services",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/compte",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/panier",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/commande",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/agb",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/datenschutz",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/retractation",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  1440,
+                                      "route":  "/de/aide",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  "rgb(165, 72, 41)"
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/produits",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/a-propos",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/contact",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/devis",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/faq",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/guide-pellets",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/services",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/compte",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/panier",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/commande",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/agb",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/datenschutz",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/retractation",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  768,
+                                      "route":  "/de/aide",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  "rgb(165, 72, 41)"
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/produits",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/a-propos",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/contact",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/devis",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/faq",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/guide-pellets",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/services",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/compte",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/panier",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/commande",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/agb",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/datenschutz",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/retractation",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  },
+                                  {
+                                      "width":  390,
+                                      "route":  "/de/aide",
+                                      "overflow":  false,
+                                      "issues":  [
+
+                                                 ],
+                                      "hero":  null
+                                  }
+                              ],
+                  "links":  [
+                                {
+                                    "href":  "/",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/contact",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/a-propos",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/datenschutz",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/compte",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/devis",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/guide-pellets",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/categorie/briquettes-de-bois",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/categorie/bois-de-chauffage",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/categorie/granules-de-bois",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/categorie/bois-allumage",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/2-granules-eph-premium-dinplus-enplus-a1-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/51-briquettes-ruf-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/52-briquettes-pini-kay-importees-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/services",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/compte?mode=signup",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/faq",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/avis-juridique",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/retractation",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/aide",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/agb",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/de/produits",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/25-granules-totalenergies-premium-enplus-a1",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/26-granules-heizfuxx-blue-enplus-a1",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/28-granules-helios-dinplus-enplus-a1",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/30-granules-proxima-star-premium",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/49-granules-firestixx-premium-dinplus-enplus-a1",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/56-granules-giant-flames-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/57-granules-giant-flames-demi-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/75-granules-de-bois-verpellet-pellets-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/73-granules-de-bois-ante-din-et-en-sac-de-15-kg",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/74-granules-de-bois-ante-din-et-en-palette-complete",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/76-granules-de-bois-verpellet-pellets-sac-de-15-kg",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/1-granules-de-bois-sac",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/4-granules-de-bois-economiques-sac",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/3-granules-de-bois-enplus-a1-sac",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/27-granules-dinplus-palette-petit-format",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/18-granules-de-bois-economiques",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/21-granules-enplus-a1-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/5-buches-de-chene-seches",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/7-buches-de-bouleau-seches",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/19-buches-de-bois-compresse",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/20-buches-densifiees-rondes",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/36-bois-de-hetre-ecorce-palette-filetee",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/48-bois-de-chene-sec-buches-de-33-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/59-bois-de-hetre-seche-au-four-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/58-bois-de-chene-seche-au-four-filets",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/61-bois-de-chauffage-mi-sec-en-vrac-25-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/62-bois-de-chauffage-mi-sec-en-vrac-33-ou-50-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/64-bois-de-chauffage-sec-en-big-bag-33-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/63-bois-de-chauffage-sec-en-big-bag-25-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/65-bois-de-chauffage-sec-en-big-bag-50-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/66-bois-de-chauffage-sec-en-vrac-25-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/67-bois-de-chauffage-sec-en-vrac-33-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/68-bois-de-chauffage-sec-en-vrac-50-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/69-bois-de-chauffage-sec-sur-palette-25-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/70-bois-de-chauffage-sec-sur-palette-33-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/71-bois-de-chauffage-sec-sur-palette-50-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/72-filet-de-buches-de-bois-33-cm-6-a-8-pieces",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/80-bois-de-chauffage-chene-hetre-sec-en-box-2-steres",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/81-buches-de-hetre-sechees-sur-palette-1-5-stere-33-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/10-briquettes-pini-kay-origine-pays-bas-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/11-briquettes-ruf-paquet",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/40-briquettes-rondes-de-hetre-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/82-buches-de-chene-pur-sechees-sur-palette-2-steres-50-cm",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/43-briquettes-biomac-extra-braise-longue-duree",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/53-briquettes-ruf-demi-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/54-briquettes-pini-kay-demi-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/55-briquettes-rondes-de-hetre-demi-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/60-briquettes-giant-flames-palette",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/13-buchettes-d-allumage-seches",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/14-bois-d-allumage-en-sac",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/15-buchettes-en-filet",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/16-allume-feux-en-laine-de-bois",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/17-cubes-allume-feux",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/77-allume-feu-ecologique-en-laine-de-bois",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/78-allume-feu-sans-petrole",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/produits/79-filet-de-bois-allume-feu",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/commande",
+                                    "status":  200
+                                },
+                                {
+                                    "href":  "/de/retractation",
+                                    "status":  200
+                                }
+                            ],
+                  "interactions":  [
+                                       "favorites",
+                                       "add to cart",
+                                       "checkout validation",
+                                       "FAQ",
+                                       "cookie preferences",
+                                       "mobile menu"
+                                   ],
+                  "errors":  [
+
+                             ]
+              },
+    "public":  {
+                   "screens":  [
+                                   {
+                                       "width":  1440,
+                                       "route":  "/de",
+                                       "overflow":  false,
+                                       "issues":  [
+
+                                                  ],
+                                       "hero":  "rgb(165, 72, 41)"
+                                   },
+                                   {
+                                       "width":  1440,
+                                       "route":  "/de/produits",
+                                       "overflow":  false,
+                                       "issues":  [
+
+                                                  ],
+                                       "hero":  null
+                                   },
+                                   {
+                                       "width":  1440,
+                                       "route":  "/de/guide-pellets",
+                                       "overflow":  false,
+                                       "issues":  [
+
+                                                  ],
+                                       "hero":  null
+                                   },
+                                   {
+                                       "width":  768,
+                                       "route":  "/de",
+                                       "overflow":  false,
+                                       "issues":  [
+
+                                                  ],
+                                       "hero":  "rgb(165, 72, 41)"
+                                   },
+                                   {
+                                       "width":  768,
+                                       "route":  "/de/produits",
+                                       "overflow":  false,
+                                       "issues":  [
+
+                                                  ],
+                                       "hero":  null
+                                   },
+                                   {
+                                       "width":  768,
+                                       "route":  "/de/guide-pellets",
+                                       "overflow":  false,
+                                       "issues":  [
+
+                                                  ],
+                                       "hero":  null
+                                   },
+                                   {
+                                       "width":  390,
+                                       "route":  "/de",
+                                       "overflow":  false,
+                                       "issues":  [
+
+                                                  ],
+                                       "hero":  "rgb(165, 72, 41)"
+                                   },
+                                   {
+                                       "width":  390,
+                                       "route":  "/de/produits",
+                                       "overflow":  false,
+                                       "issues":  [
+
+                                                  ],
+                                       "hero":  null
+                                   },
+                                   {
+                                       "width":  390,
+                                       "route":  "/de/guide-pellets",
+                                       "overflow":  false,
+                                       "issues":  [
+
+                                                  ],
+                                       "hero":  null
+                                   }
+                               ],
+                   "links":  [
+                                 {
+                                     "href":  "/datenschutz",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/contact",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/a-propos",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/compte",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/devis",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/guide-pellets",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/categorie/briquettes-de-bois",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/categorie/bois-de-chauffage",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/categorie/granules-de-bois",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/categorie/bois-allumage",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/2-granules-eph-premium-dinplus-enplus-a1-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/52-briquettes-pini-kay-importees-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/51-briquettes-ruf-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/faq",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/services",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/avis-juridique",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/compte?mode=signup",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/retractation",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/aide",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/25-granules-totalenergies-premium-enplus-a1",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/agb",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/de/produits",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/26-granules-heizfuxx-blue-enplus-a1",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/49-granules-firestixx-premium-dinplus-enplus-a1",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/30-granules-proxima-star-premium",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/28-granules-helios-dinplus-enplus-a1",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/56-granules-giant-flames-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/57-granules-giant-flames-demi-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/74-granules-de-bois-ante-din-et-en-palette-complete",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/73-granules-de-bois-ante-din-et-en-sac-de-15-kg",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/75-granules-de-bois-verpellet-pellets-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/1-granules-de-bois-sac",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/76-granules-de-bois-verpellet-pellets-sac-de-15-kg",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/3-granules-de-bois-enplus-a1-sac",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/4-granules-de-bois-economiques-sac",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/27-granules-dinplus-palette-petit-format",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/18-granules-de-bois-economiques",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/21-granules-enplus-a1-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/5-buches-de-chene-seches",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/7-buches-de-bouleau-seches",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/19-buches-de-bois-compresse",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/20-buches-densifiees-rondes",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/36-bois-de-hetre-ecorce-palette-filetee",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/48-bois-de-chene-sec-buches-de-33-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/58-bois-de-chene-seche-au-four-filets",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/59-bois-de-hetre-seche-au-four-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/61-bois-de-chauffage-mi-sec-en-vrac-25-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/62-bois-de-chauffage-mi-sec-en-vrac-33-ou-50-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/63-bois-de-chauffage-sec-en-big-bag-25-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/64-bois-de-chauffage-sec-en-big-bag-33-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/65-bois-de-chauffage-sec-en-big-bag-50-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/66-bois-de-chauffage-sec-en-vrac-25-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/67-bois-de-chauffage-sec-en-vrac-33-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/69-bois-de-chauffage-sec-sur-palette-25-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/68-bois-de-chauffage-sec-en-vrac-50-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/70-bois-de-chauffage-sec-sur-palette-33-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/71-bois-de-chauffage-sec-sur-palette-50-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/72-filet-de-buches-de-bois-33-cm-6-a-8-pieces",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/80-bois-de-chauffage-chene-hetre-sec-en-box-2-steres",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/82-buches-de-chene-pur-sechees-sur-palette-2-steres-50-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/81-buches-de-hetre-sechees-sur-palette-1-5-stere-33-cm",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/10-briquettes-pini-kay-origine-pays-bas-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/11-briquettes-ruf-paquet",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/40-briquettes-rondes-de-hetre-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/43-briquettes-biomac-extra-braise-longue-duree",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/53-briquettes-ruf-demi-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/54-briquettes-pini-kay-demi-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/55-briquettes-rondes-de-hetre-demi-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/60-briquettes-giant-flames-palette",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/13-buchettes-d-allumage-seches",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/14-bois-d-allumage-en-sac",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/17-cubes-allume-feux",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/15-buchettes-en-filet",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/16-allume-feux-en-laine-de-bois",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/77-allume-feu-ecologique-en-laine-de-bois",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/78-allume-feu-sans-petrole",
+                                     "status":  200
+                                 },
+                                 {
+                                     "href":  "/produits/79-filet-de-bois-allume-feu",
+                                     "status":  200
+                                 }
+                             ],
+                   "interactions":  [
+                                        "favorites",
+                                        "add to cart",
+                                        "checkout validation",
+                                        "FAQ",
+                                        "cookie preferences",
+                                        "mobile menu"
+                                    ],
+                   "errors":  [
+
+                              ]
+               },
+    "links":  {
+                  "pages":  90,
+                  "internalLinks":  79,
+                  "anchors":  145,
+                  "contacts":  [
+                                   "tel:+4917668417729",
+                                   "mailto:kontakt@brennholz-direk.de"
+                               ],
+                  "failures":  [
+
+                               ]
+              },
+    "merchantProductsVerified":  59,
+    "germanLabelsVerified":  191
+}

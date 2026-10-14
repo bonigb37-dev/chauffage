@@ -167,7 +167,7 @@ export default function Navbar() {
     <>
       {/* Free delivery banner with truck icon in Terracotta background */}
       <div
-        className="bg-[#123524] py-2 px-4 text-center text-xs sm:text-sm font-bold text-white shadow-inner z-50 relative flex items-center justify-center gap-2"
+        className="bg-[#a33d1e] py-2 px-4 text-center text-xs sm:text-sm font-bold text-white shadow-inner z-50 relative flex items-center justify-center gap-2"
       >
         <Truck size={17} className="shrink-0 text-white" />
         <span>Livraison en Allemagne · Aucun frais supplémentaire à régler au transporteur</span>
@@ -176,7 +176,7 @@ export default function Navbar() {
       {/* Main Sticky Navbar */}
       <header
         ref={navRef}
-        className={`sticky top-0 z-50 bg-white transition-all duration-200 border-b border-[#E2E8F0] ${
+        className={`sticky top-0 z-50 bg-[#fdfbf7] transition-all duration-200 border-b border-[#e8decb] ${
           isScrolled ? 'shadow-md py-2.5' : 'py-3.5 sm:py-4'
         }`}
       >
@@ -185,13 +185,13 @@ export default function Navbar() {
           <Link
             href="/"
             aria-label="Bren-nholz — Leylines Park, accueil"
-            className="flex items-center gap-1.5 sm:gap-2.5 font-black text-sm sm:text-xl tracking-tight text-[#1f2937] shrink-0 group"
+            className="flex items-center gap-1.5 sm:gap-2.5 font-black text-sm sm:text-xl tracking-tight text-[#1c1917] shrink-0 group"
           >
-            <span className="grid h-7 w-7 sm:h-10 sm:w-10 place-items-center rounded-xl bg-[#123524] text-white shadow-md shadow-[#123524]/25 group-hover:bg-[#1b4d35] transition-colors">
+            <span className="grid h-7 w-7 sm:h-10 sm:w-10 place-items-center rounded-xl bg-[#a33d1e] text-white shadow-md shadow-[#a33d1e]/25 group-hover:bg-[#883015] transition-colors">
               <Flame size={22} strokeWidth={2.2} fill="currentColor" />
             </span>
-            <span className="font-extrabold text-sm sm:text-xl tracking-tight text-[#1f2937]">
-              <BrandWordmark hyphenClass="text-[#123524]" />
+            <span className="font-extrabold text-sm sm:text-xl tracking-tight text-[#1c1917]">
+              <BrandWordmark hyphenClass="text-[#a33d1e]" />
             </span>
           </Link>
 
@@ -207,18 +207,18 @@ export default function Navbar() {
                       type="button"
                       onClick={() => setMegaMenuOpen(!megaMenuOpen)}
                       className={`flex items-center gap-1.5 py-2 font-medium text-base transition-colors ${
-                        isActive || megaMenuOpen ? 'text-[#123524]' : 'text-[#1f2937] hover:text-[#123524]'
+                        isActive || megaMenuOpen ? 'text-[#a33d1e]' : 'text-[#1c1917] hover:text-[#a33d1e]'
                       }`}
                       aria-expanded={megaMenuOpen}
                     >
                       <span>{link.label}</span>
                       <ChevronDown
                         size={16}
-                        className={`transition-transform duration-200 ${megaMenuOpen ? 'rotate-180 text-[#123524]' : 'text-[#475569]'}`}
+                        className={`transition-transform duration-200 ${megaMenuOpen ? 'rotate-180 text-[#a33d1e]' : 'text-[#57534e]'}`}
                       />
                     </button>
                     {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#123524] rounded-full" />
+                      <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#a33d1e] rounded-full" />
                     )}
                   </div>
                 );
@@ -229,13 +229,13 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     className={`py-2 font-medium text-base transition-colors ${
-                      isActive ? 'text-[#123524]' : 'text-[#1f2937] hover:text-[#123524]'
+                      isActive ? 'text-[#a33d1e]' : 'text-[#1c1917] hover:text-[#a33d1e]'
                     }`}
                   >
                     {link.label}
                   </Link>
                   {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#123524] rounded-full" />
+                    <span className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#a33d1e] rounded-full" />
                   )}
                 </div>
               );
@@ -249,17 +249,17 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setSearchOpen(!searchOpen)}
-                className="p-2.5 rounded-xl text-[#1f2937] hover:text-[#123524] hover:bg-[#F5F7F8] transition flex items-center justify-center relative"
+                className="p-2.5 rounded-xl text-[#1c1917] hover:text-[#a33d1e] hover:bg-[#f9f5ee] transition flex items-center justify-center relative"
                 aria-label="Rechercher des produits"
                 aria-expanded={searchOpen}
                 aria-controls="product-search-panel"
               >
                 <Search size={20} />
-                <span className="absolute top-1 right-1 text-[9px] font-extrabold text-[#475569] bg-[#F5F7F8] px-1 rounded border border-[#E2E8F0] pointer-events-none">
+                <span className="absolute top-1 right-1 text-[9px] font-extrabold text-[#57534e] bg-[#f9f5ee] px-1 rounded border border-[#e8decb] pointer-events-none">
                   ⌘K
                 </span>
               </button>
-              <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#123524] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
+              <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#a33d1e] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
                 Rechercher <kbd className="text-[9px] bg-white/20 px-1 rounded ml-1">⌘K</kbd>
               </span>
             </div>
@@ -268,12 +268,12 @@ export default function Navbar() {
             <div className="relative group">
               <Link
                 href="/produits"
-                className="relative p-2.5 rounded-xl text-[#1f2937] hover:text-[#123524] hover:bg-[#F5F7F8] transition flex items-center justify-center"
+                className="relative p-2.5 rounded-xl text-[#1c1917] hover:text-[#a33d1e] hover:bg-[#f9f5ee] transition flex items-center justify-center"
                 aria-label="Mes favoris"
               >
                 <Heart size={20} />
               </Link>
-              <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#123524] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
+              <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#a33d1e] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
                 Favoris
               </span>
             </div>
@@ -287,7 +287,7 @@ export default function Navbar() {
                   setAccountOpen(false);
                   setMegaMenuOpen(false);
                 }}
-                className="relative p-2.5 rounded-xl text-[#1f2937] hover:text-[#123524] hover:bg-[#F5F7F8] transition flex items-center justify-center"
+                className="relative p-2.5 rounded-xl text-[#1c1917] hover:text-[#a33d1e] hover:bg-[#f9f5ee] transition flex items-center justify-center"
                 aria-label={
                   totalCartItemsCount > 0
                     ? `Panier, ${totalCartItemsCount} article${totalCartItemsCount > 1 ? 's' : ''}`
@@ -296,12 +296,12 @@ export default function Navbar() {
               >
                 <ShoppingCart size={20} />
                 {totalCartItemsCount > 0 && (
-                  <span className="absolute -top-1 -right-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#123524] px-1 text-[11px] font-black text-white ring-2 ring-white shadow-sm">
+                  <span className="absolute -top-1 -right-1 grid h-5 min-w-5 place-items-center rounded-full bg-[#a33d1e] px-1 text-[11px] font-black text-white ring-2 ring-white shadow-sm">
                     {totalCartItemsCount}
                   </span>
                 )}
               </button>
-              <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#123524] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
+              <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#a33d1e] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
                 {cartTooltip}
               </span>
             </div>
@@ -315,26 +315,20 @@ export default function Navbar() {
                   setCartOpen(false);
                   setMegaMenuOpen(false);
                 }}
-                className="relative p-2.5 rounded-xl text-[#1f2937] hover:text-[#123524] hover:bg-[#F5F7F8] transition flex items-center justify-center"
+                className="relative p-2.5 rounded-xl text-[#1c1917] hover:text-[#a33d1e] hover:bg-[#f9f5ee] transition flex items-center justify-center"
                 aria-label="Espace compte client"
               >
                 <CircleUserRound size={21} />
                 {user && (
-                  <span className="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-emerald-600 ring-2 ring-white" />
+                  <span className="absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full bg-amber-600 ring-2 ring-white" />
                 )}
               </button>
-              <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#123524] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
+              <span className="pointer-events-none absolute -bottom-9 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-200 text-[11px] font-bold text-white bg-[#a33d1e] px-2.5 py-1 rounded-lg shadow-xl whitespace-nowrap z-50">
                 {accountTooltip}
               </span>
             </div>
 
-            {/* CTA Devis Button in Vert forêt (#123524) with white text */}
-            <Link
-              href="/devis"
-              className="ml-1 rounded-full bg-[#123524] px-5 py-2.5 text-white transition hover:bg-[#1b4d35] font-bold text-sm shadow-md"
-            >
-              Demander un devis
-            </Link>
+
           </div>
 
           {/* MOBILE RIGHT ACTIONS (compact layout) */}
@@ -369,7 +363,7 @@ export default function Navbar() {
             >
               <ShoppingCart size={20} />
               {totalCartItemsCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#123524] px-1 text-[10px] font-black text-white shadow-sm">
+                <span className="absolute -top-0.5 -right-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#A33D1E] px-1 text-[10px] font-black text-white shadow-sm">
                   {totalCartItemsCount}
                 </span>
               )}
@@ -404,7 +398,7 @@ export default function Navbar() {
             onMouseLeave={() => setMegaMenuOpen(false)}
           >
             <div className="max-w-7xl mx-auto px-6 py-8 grid grid-cols-12 gap-8">
-              <div className="col-span-4 relative rounded-2xl overflow-hidden shadow-md flex flex-col justify-between p-6 text-white min-h-[240px] group bg-[#123524]">
+              <div className="col-span-4 relative rounded-2xl overflow-hidden shadow-md flex flex-col justify-between p-6 text-white min-h-[240px] group bg-[#a33d1e]">
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
                   style={{
@@ -414,7 +408,7 @@ export default function Navbar() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/50 to-black/20" />
 
                 <div className="relative z-10">
-                  <span className="inline-block px-2.5 py-1 rounded-md bg-[#123524] text-[11px] font-bold uppercase tracking-wider text-white mb-2">
+                  <span className="inline-block px-2.5 py-1 rounded-md bg-[#a33d1e] text-[11px] font-bold uppercase tracking-wider text-white mb-2">
                     Bren-nholz Qualité
                   </span>
                   <p className="text-lg font-bold leading-snug text-white drop-shadow-sm">
@@ -425,7 +419,7 @@ export default function Navbar() {
                 <Link
                   href="/produits"
                   onClick={() => setMegaMenuOpen(false)}
-                  className="relative z-10 inline-flex items-center gap-2 text-sm font-bold text-[#F5F7F8] hover:text-white transition mt-4"
+                  className="relative z-10 inline-flex items-center gap-2 text-sm font-bold text-[#f9f5ee] hover:text-white transition mt-4"
                 >
                   <span>Voir tous les produits</span>
                   <ArrowRight size={16} />
@@ -433,7 +427,7 @@ export default function Navbar() {
               </div>
 
               <div className="col-span-4 space-y-4">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-[#123524] border-b border-[#E2E8F0] pb-2">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-[#a33d1e] border-b border-[#e8decb] pb-2">
                   Bois de chauffage
                 </h3>
                 <ul className="space-y-3 text-sm">
@@ -441,37 +435,37 @@ export default function Navbar() {
                     <Link
                       href="/produits/categorie/bois-de-chauffage"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="group flex items-center justify-between text-[#475569] hover:text-[#123524] font-medium transition"
+                      className="group flex items-center justify-between text-[#57534e] hover:text-[#a33d1e] font-medium transition"
                     >
                       <span>Bûches de chêne & hêtre</span>
-                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#123524]" />
+                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#a33d1e]" />
                     </Link>
                   </li>
                   <li>
                     <Link
                       href="/produits/categorie/granules-de-bois"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="group flex items-center justify-between text-[#475569] hover:text-[#123524] font-medium transition"
+                      className="group flex items-center justify-between text-[#57534e] hover:text-[#a33d1e] font-medium transition"
                     >
                       <span>Granulés / Pellets DIN+</span>
-                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#123524]" />
+                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#a33d1e]" />
                     </Link>
                   </li>
                   <li>
                     <Link
                       href="/produits/categorie/briquettes-de-bois"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="group flex items-center justify-between text-[#475569] hover:text-[#123524] font-medium transition"
+                      className="group flex items-center justify-between text-[#57534e] hover:text-[#a33d1e] font-medium transition"
                     >
                       <span>Bois compressé & Briquettes</span>
-                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#123524]" />
+                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#a33d1e]" />
                     </Link>
                   </li>
                 </ul>
               </div>
 
               <div className="col-span-4 space-y-4">
-                <h3 className="text-sm font-bold uppercase tracking-wider text-[#123524] border-b border-[#E2E8F0] pb-2">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-[#a33d1e] border-b border-[#e8decb] pb-2">
                   Guides & Conseils
                 </h3>
                 <ul className="space-y-3 text-sm">
@@ -479,20 +473,20 @@ export default function Navbar() {
                     <Link
                       href="/guide-granules"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="group flex items-center justify-between text-[#475569] hover:text-[#123524] font-medium transition"
+                      className="group flex items-center justify-between text-[#57534e] hover:text-[#a33d1e] font-medium transition"
                     >
-                      <span className="font-semibold text-[#1f2937]">Guide de sélection des granulés</span>
-                      <ArrowRight size={14} className="text-[#123524]" />
+                      <span className="font-semibold text-[#1c1917]">Guide de sélection des granulés</span>
+                      <ArrowRight size={14} className="text-[#a33d1e]" />
                     </Link>
                   </li>
                   <li>
                     <Link
                       href="/produits/categorie/bois-allumage"
                       onClick={() => setMegaMenuOpen(false)}
-                      className="group flex items-center justify-between text-[#475569] hover:text-[#123524] font-medium transition"
+                      className="group flex items-center justify-between text-[#57534e] hover:text-[#a33d1e] font-medium transition"
                     >
                       <span>Allume-feu naturel & Accessoires</span>
-                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#123524]" />
+                      <ArrowRight size={14} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-[#a33d1e]" />
                     </Link>
                   </li>
                 </ul>
@@ -503,28 +497,28 @@ export default function Navbar() {
 
         {/* ACCOUNT DROPDOWN */}
         {accountOpen && (
-          <div className="absolute top-full right-4 sm:right-16 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-[#E2E8F0] p-4 z-50 animate-in fade-in zoom-in-95 duration-150">
+          <div className="absolute top-full right-4 sm:right-16 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-[#e8decb] p-4 z-50 animate-in fade-in zoom-in-95 duration-150">
             {user ? (
               <>
-                <div className="flex items-center gap-3 pb-3 border-b border-[#E2E8F0]">
-                  <div className="w-10 h-10 rounded-full bg-[#F5F7F8] text-[#123524] font-black flex items-center justify-center text-base border border-[#E2E8F0] shrink-0">
+                <div className="flex items-center gap-3 pb-3 border-b border-[#e8decb]">
+                  <div className="w-10 h-10 rounded-full bg-[#f9f5ee] text-[#a33d1e] font-black flex items-center justify-center text-base border border-[#e8decb] shrink-0">
                     {user.email?.[0].toUpperCase() ?? 'A'}
                   </div>
                   <div className="overflow-hidden">
-                    <p className="font-bold text-[#1f2937] text-sm truncate">
+                    <p className="font-bold text-[#1c1917] text-sm truncate">
                       {user.user_metadata?.full_name || user.email?.split('@')[0] || 'Client'}
                     </p>
-                    <p className="text-xs text-[#475569] truncate">{user.email}</p>
+                    <p className="text-xs text-[#57534e] truncate">{user.email}</p>
                   </div>
                 </div>
 
-                <div className="py-2 space-y-1 text-sm text-[#1f2937]">
-                  <Link href="/panier" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] hover:text-[#123524] font-medium transition"><ShoppingCart size={16} /><span>Mon panier ({itemCount})</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
-                  <Link href="/compte" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] hover:text-[#123524] font-medium transition"><User size={16} /><span>Mon profil</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
-                  <Link href="/compte" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#F5F7F8] hover:text-[#123524] font-medium transition"><ShoppingBag size={16} /><span>Mes commandes</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
+                <div className="py-2 space-y-1 text-sm text-[#1c1917]">
+                  <Link href="/panier" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#f9f5ee] hover:text-[#a33d1e] font-medium transition"><ShoppingCart size={16} /><span>Mon panier ({itemCount})</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
+                  <Link href="/compte" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#f9f5ee] hover:text-[#a33d1e] font-medium transition"><User size={16} /><span>Mon profil</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
+                  <Link href="/compte" onClick={() => setAccountOpen(false)} className="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-[#f9f5ee] hover:text-[#a33d1e] font-medium transition"><ShoppingBag size={16} /><span>Mes commandes</span><ArrowRight size={14} className="ml-auto text-gray-400" /></Link>
                 </div>
 
-                <hr className="my-1 border-[#E2E8F0]" />
+                <hr className="my-1 border-[#e8decb]" />
 
                 <button
                   type="button"
@@ -537,15 +531,15 @@ export default function Navbar() {
               </>
             ) : (
               <div className="space-y-3 py-1">
-                <div className="text-center pb-2 border-b border-[#E2E8F0]">
-                  <p className="font-bold text-[#1f2937] text-base">Espace Client</p>
-                  <p className="text-xs text-[#475569] mt-0.5">Connectez-vous pour suivre vos commandes & devis</p>
+                <div className="text-center pb-2 border-b border-[#e8decb]">
+                  <p className="font-bold text-[#1c1917] text-base">Espace Client</p>
+                  <p className="text-xs text-[#57534e] mt-0.5">Connectez-vous pour suivre vos commandes & devis</p>
                 </div>
 
                 <Link
                   href="/compte?mode=signin"
                   onClick={() => setAccountOpen(false)}
-                  className="w-full bg-[#123524] hover:bg-[#1b4d35] text-white font-bold py-2.5 px-4 rounded-xl text-center block text-sm shadow-md transition"
+                  className="w-full bg-[#a33d1e] hover:bg-[#883015] text-white font-bold py-2.5 px-4 rounded-xl text-center block text-sm shadow-md transition"
                 >
                   Se connecter
                 </Link>
@@ -553,7 +547,7 @@ export default function Navbar() {
                 <Link
                   href="/compte?mode=signup"
                   onClick={() => setAccountOpen(false)}
-                  className="w-full bg-[#F5F7F8] hover:bg-[#E2E8F0] text-[#1f2937] font-semibold py-2.5 px-4 rounded-xl text-center block text-sm transition"
+                  className="w-full bg-[#f9f5ee] hover:bg-[#e8decb] text-[#1c1917] font-semibold py-2.5 px-4 rounded-xl text-center block text-sm transition"
                 >
                   Créer un compte
                 </Link>
@@ -564,9 +558,9 @@ export default function Navbar() {
 
         {/* MINI PANIER DROPDOWN */}
         {cartOpen && (
-          <div className="absolute top-full right-2 sm:right-12 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-[#E2E8F0] p-5 z-50 animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
-              <h3 className="font-bold text-[#1f2937] text-base">
+          <div className="absolute top-full right-2 sm:right-12 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-[#e8decb] p-5 z-50 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-3 border-b border-[#e8decb]">
+              <h3 className="font-bold text-[#1c1917] text-base">
                 Votre panier ({totalCartItemsCount})
               </h3>
               <button
@@ -584,35 +578,35 @@ export default function Navbar() {
                 displayCartItems.map((item, index) => (
                   <div key={index} className="flex items-center justify-between text-sm py-1 border-b border-stone-100 last:border-0">
                     <div className="flex items-center gap-3">
-                      <span className="w-8 h-8 rounded-lg bg-[#F5F7F8] text-[#123524] flex items-center justify-center font-bold text-xs shrink-0">
+                      <span className="w-8 h-8 rounded-lg bg-[#f9f5ee] text-[#a33d1e] flex items-center justify-center font-bold text-xs shrink-0">
                         {item.quantity}×
                       </span>
-                      <span className="font-semibold text-[#1f2937] line-clamp-1">{item.title}</span>
+                      <span className="font-semibold text-[#1c1917] line-clamp-1">{item.title}</span>
                     </div>
-                    <span className="font-bold text-[#1f2937] shrink-0">
+                    <span className="font-bold text-[#1c1917] shrink-0">
                       {item.price.includes('€') ? item.price : item.price === 'Sur devis' ? item.price : `${item.price} €`}
                     </span>
                   </div>
                 ))
               ) : (
-                <p className="py-6 text-center text-sm font-medium text-[#475569]">
+                <p className="py-6 text-center text-sm font-medium text-[#57534e]">
                   Votre panier est vide.
                 </p>
               )}
             </div>
 
-            <div className="pt-3 border-t border-[#E2E8F0] space-y-3">
+            <div className="pt-3 border-t border-[#e8decb] space-y-3">
               {displayCartItems.length > 0 && (
-                <div className="flex items-center justify-between font-bold text-base text-[#1f2937]">
+                <div className="flex items-center justify-between font-bold text-base text-[#1c1917]">
                   <span>Total</span>
-                  <span className="text-[#123524] text-lg">{totalCartPrice} €</span>
+                  <span className="text-[#a33d1e] text-lg">{totalCartPrice} €</span>
                 </div>
               )}
 
               <Link
                 href="/panier"
                 onClick={() => setCartOpen(false)}
-                className="w-full bg-[#123524] hover:bg-[#1b4d35] text-white font-bold py-3 px-4 rounded-xl text-center block transition shadow-md text-sm"
+                className="w-full bg-[#a33d1e] hover:bg-[#883015] text-white font-bold py-3 px-4 rounded-xl text-center block transition shadow-md text-sm"
               >
                 Voir mon panier →
               </Link>
@@ -622,7 +616,7 @@ export default function Navbar() {
 
         {/* SEARCH OVERLAY */}
         {searchOpen && (
-          <div id="product-search-panel" className="absolute top-full left-0 right-0 bg-white border-b border-[#E2E8F0] shadow-xl p-4 z-50 animate-in fade-in slide-in-from-top-1">
+          <div id="product-search-panel" className="absolute top-full left-0 right-0 bg-white border-b border-[#e8decb] shadow-xl p-4 z-50 animate-in fade-in slide-in-from-top-1">
             <form onSubmit={handleSearchSubmit} className="max-w-3xl mx-auto flex items-center gap-3">
               <Search size={20} className="text-gray-400 shrink-0" />
               <input
@@ -632,11 +626,11 @@ export default function Navbar() {
                 placeholder="Rechercher des produits (ex: bûches de chêne, granulés, allume-feu...)"
                 aria-label="Nom du produit à rechercher"
                 autoFocus
-                className="w-full text-sm font-medium text-[#1f2937] bg-transparent border-0 focus:outline-none focus:ring-0"
+                className="w-full text-sm font-medium text-[#1c1917] bg-transparent border-0 focus:outline-none focus:ring-0"
               />
               <button
                 type="submit"
-                className="px-3.5 py-2 bg-[#123524] text-white font-bold rounded-xl text-xs hover:bg-[#1b4d35] transition shrink-0"
+                className="px-3.5 py-2 bg-[#a33d1e] text-white font-bold rounded-xl text-xs hover:bg-[#883015] transition shrink-0"
               >
                 Chercher
               </button>
@@ -655,27 +649,27 @@ export default function Navbar() {
 
       {/* MOBILE DRAWER */}
       {mobileMenuOpen && (
-        <div className="forest-surface fixed inset-0 z-50 text-white flex flex-col justify-between p-6 overflow-y-auto animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 bg-[#FDFBF7] text-[#1C1917] flex flex-col justify-between p-6 overflow-y-auto animate-in fade-in duration-200">
           <div>
-            <div className="flex items-center justify-between pb-6 border-b border-white/10">
+            <div className="flex items-center justify-between pb-6 border-b border-[#E6DCce]">
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
                 aria-label="Bren-nholz — Leylines Park, accueil"
-                className="flex items-center gap-2.5 font-black text-xl tracking-tight text-white"
+                className="flex items-center gap-2.5 font-black text-xl tracking-tight text-[#1C1917]"
               >
-                <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#123524] text-white shadow-md">
+                <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#A33D1E] text-white shadow-md">
                   <Flame size={20} strokeWidth={2.2} fill="currentColor" />
                 </span>
-                <span className="font-extrabold text-xl tracking-tight text-white">
-                  <BrandWordmark hyphenClass="text-[#F5F7F8]" />
+                <span className="font-extrabold text-xl tracking-tight text-[#1C1917]">
+                  <BrandWordmark hyphenClass="text-[#A33D1E]" />
                 </span>
               </Link>
 
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition"
+                className="p-2 rounded-full bg-[#F4EDE4] text-[#1C1917] hover:bg-[#E6DCce] transition"
                 aria-label="Fermer le menu"
               >
                 <X size={22} />
@@ -686,8 +680,8 @@ export default function Navbar() {
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-3 px-2 rounded-xl transition ${
-                  pathname === '/' ? 'text-[#F5F7F8] bg-white/10' : 'text-stone-200 hover:text-white'
+                className={`block py-3 px-3 rounded-xl transition ${
+                  pathname === '/' ? 'text-[#A33D1E] bg-[#F4EDE4]' : 'text-[#1C1917] hover:text-[#A33D1E]'
                 }`}
               >
                 Accueil
@@ -697,35 +691,35 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => setMobileProduitsOpen(!mobileProduitsOpen)}
-                  className="w-full flex items-center justify-between py-3 px-2 rounded-xl text-stone-200 hover:text-white transition"
+                  className="w-full flex items-center justify-between py-3 px-3 rounded-xl text-[#1C1917] hover:text-[#A33D1E] transition"
                 >
                   <span>Produits</span>
                   <ChevronDown
                     size={20}
-                    className={`transition-transform duration-200 ${mobileProduitsOpen ? 'rotate-180 text-[#F5F7F8]' : ''}`}
+                    className={`transition-transform duration-200 ${mobileProduitsOpen ? 'rotate-180 text-[#A33D1E]' : ''}`}
                   />
                 </button>
 
                 {mobileProduitsOpen && (
-                  <div className="ml-4 pl-4 border-l border-white/10 space-y-3 py-2 text-sm font-medium text-stone-300">
+                  <div className="ml-4 pl-4 border-l border-[#E6DCce] space-y-3 py-2 text-sm font-medium text-[#6B5E55]">
                     <Link
                       href="/produits/categorie/bois-de-chauffage"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block hover:text-white py-1"
+                      className="block hover:text-[#A33D1E] py-1"
                     >
                       Bûches de chauffage
                     </Link>
                     <Link
                       href="/produits/categorie/granules-de-bois"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block hover:text-white py-1"
+                      className="block hover:text-[#A33D1E] py-1"
                     >
                       Granulés & Pellets DIN+
                     </Link>
                     <Link
                       href="/produits/categorie/briquettes-de-bois"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="block hover:text-white py-1"
+                      className="block hover:text-[#A33D1E] py-1"
                     >
                       Bois compressé
                     </Link>
@@ -736,8 +730,8 @@ export default function Navbar() {
               <Link
                 href="/guide-granules"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-3 px-2 rounded-xl transition ${
-                  pathname === '/guide-granules' ? 'text-[#F5F7F8] bg-white/10' : 'text-stone-200 hover:text-white'
+                className={`block py-3 px-3 rounded-xl transition ${
+                  pathname === '/guide-granules' ? 'text-[#A33D1E] bg-[#F4EDE4]' : 'text-[#1C1917] hover:text-[#A33D1E]'
                 }`}
               >
                 Guide Pellets
@@ -746,8 +740,8 @@ export default function Navbar() {
               <Link
                 href="/a-propos"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-3 px-2 rounded-xl transition ${
-                  pathname === '/a-propos' ? 'text-[#F5F7F8] bg-white/10' : 'text-stone-200 hover:text-white'
+                className={`block py-3 px-3 rounded-xl transition ${
+                  pathname === '/a-propos' ? 'text-[#A33D1E] bg-[#F4EDE4]' : 'text-[#1C1917] hover:text-[#A33D1E]'
                 }`}
               >
                 À propos
@@ -756,21 +750,11 @@ export default function Navbar() {
               <Link
                 href="/contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-3 px-2 rounded-xl transition ${
-                  pathname === '/contact' ? 'text-[#F5F7F8] bg-white/10' : 'text-stone-200 hover:text-white'
+                className={`block py-3 px-3 rounded-xl transition ${
+                  pathname === '/contact' ? 'text-[#A33D1E] bg-[#F4EDE4]' : 'text-[#1C1917] hover:text-[#A33D1E]'
                 }`}
               >
                 Contact
-              </Link>
-
-              <hr className="my-4 border-white/10" />
-
-              <Link
-                href="/devis"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block text-center py-3.5 px-4 rounded-xl bg-[#123524] font-extrabold text-white text-base shadow-md"
-              >
-                Demander un devis
               </Link>
             </nav>
           </div>

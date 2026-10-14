@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     const token = request.headers.get('authorization')?.match(/^Bearer (.+)$/i)?.[1];
     if (token) {
       const verified = await db.auth.getUser(token);
-      if (verified.error || !verified.data.user?.email_confirmed_at) return response({ error: 'signin' }, 401);
+      if (verified.error || !verified.data.user) return response({ error: 'signin' }, 401);
       const role = await db.from('admin_roles').select('role').eq('user_id', verified.data.user.id).maybeSingle();
       if (role.error) return response({ error: 'unavailable' }, 503);
       if (role.data) return response({ ok: true, excluded: true });
@@ -38,7 +38,7 @@ export async function GET(request: Request) {
     const token = request.headers.get('authorization')?.match(/^Bearer (.+)$/i)?.[1];
     if (!token) return response({ error: 'signin' }, 401);
     const verified = await db.auth.getUser(token);
-    if (verified.error || !verified.data.user?.email_confirmed_at) return response({ error: 'signin' }, 401);
+    if (verified.error || !verified.data.user) return response({ error: 'signin' }, 401);
     const role = await db.from('admin_roles').select('role').eq('user_id', verified.data.user.id).maybeSingle();
     if (role.error) return response({ error: 'unavailable' }, 503);
     if (!['admin','super_admin','owner'].includes(role.data?.role ?? '')) return response({ error: 'forbidden' }, 403);
@@ -46,7 +46,12 @@ export async function GET(request: Request) {
     const days = Number(params.get('days') ?? 30), offset = Number(params.get('offset') ?? 0), session = params.get('session');
     if (![7,30,90].includes(days) || !Number.isInteger(offset) || offset < 0 || offset > 100000 || (session && !/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(session))) return response({ error: 'invalid' }, 400);
     const result = await db.rpc(session ? 'analytics_session_journey' : 'analytics_dashboard', session ? { p_session: session, p_days: days } : { p_days: days, p_offset: offset });
-    if (result.error) return response({ error: result.error.code === 'PGRST202' || result.error.code === '42P01' ? 'setup' : 'unavailable' }, 503);
+    if (result.error) {
+      const isSetupError = ['PGRST202', 'PGRST204', '42P01', '42883', 'PGRST200', 'PGRST301'].includes(result.error.code);
+      return response({ error: isSetupError ? 'setup' : 'unavailable', message: result.error.message, code: result.error.code }, isSetupError ? 200 : 503);
+    }
     return response(result.data);
-  } catch { return response({ error: 'unavailable' }, 503); }
+  } catch (cause) {
+    return response({ error: 'unavailable', message: cause instanceof Error ? cause.message : String(cause) }, 503);
+  }
 }

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { validPaymentProofToken, proofValidityMs } from '@/lib/payment-proof-token';
 import { protectApi, readLimitedBody, BodyLimitError } from '@/lib/api-security';
+import { sendPaymentAcknowledgmentEmail } from '@/lib/payment-acknowledgment';
 export const runtime = 'nodejs';
 const bucket = 'payment-proofs';
 const allowedMimeTypes = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'];
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
     const webp = bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 12) === 'WEBP';
     const pdf = bytes.toString('ascii', 0, 5) === '%PDF-';
     if (!png && !jpeg && !webp && !pdf) return fail('Formats acceptés : PDF, JPG, PNG ou WebP.', 400);
-    const order = await server.db.from('order_requests').select('id').eq('reference', reference).maybeSingle();
+    const order = await server.db.from('order_requests').select('id, reference, customer, total_cents, items').eq('reference', reference).maybeSingle();
     if (order.error || !order.data) return fail('Commande introuvable.', 404);
     if (/^[a-f0-9]{64}$/.test(token)) {
       const dated = await server.db.from('order_requests').select('created_at').eq('reference', reference).maybeSingle();
@@ -49,7 +50,21 @@ export async function POST(request: Request) {
     }
     const upload = await server.db.storage.from(bucket).upload(`${reference}/proof`, bytes, { contentType: pdf ? 'application/pdf' : png ? 'image/png' : jpeg ? 'image/jpeg' : 'image/webp', upsert: true });
     if (upload.error) return fail('La preuve n’a pas pu être sauvegardée.', 503);
-    return NextResponse.json({ success: true });
+
+    // Envoi automatique de l'accusé de réception par email au client
+    let emailSent = false;
+    try {
+      emailSent = await sendPaymentAcknowledgmentEmail({
+        reference,
+        customer: order.data.customer,
+        totalCents: order.data.total_cents,
+        items: order.data.items,
+      });
+    } catch (err) {
+      console.error('Erreur envoi accusé de réception paiement:', err);
+    }
+
+    return NextResponse.json({ success: true, emailSent });
   } catch (cause) { return fail('L’envoi a échoué. Réessayez.', cause instanceof BodyLimitError ? 413 : 400); }
 }
 export async function GET(request: Request) {

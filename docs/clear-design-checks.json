@@ -1,0 +1,171 @@
+{
+  "base": "https://www.brennholz-direk.de",
+  "results": [
+    {
+      "route": "/de",
+      "width": 1440,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": {
+        "color": "rgb(31, 41, 55)",
+        "weight": "700",
+        "font": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+      },
+      "hero": "rgb(255, 255, 255)",
+      "contact": "rgb(245, 247, 248)",
+      "video": {
+        "muted": true,
+        "loop": true
+      },
+      "regions": 16
+    },
+    {
+      "route": "/de/compte",
+      "width": 1440,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": null,
+      "hero": null,
+      "contact": null,
+      "video": null,
+      "regions": 0
+    },
+    {
+      "route": "/de/compte?mode=signup",
+      "width": 1440,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": null,
+      "hero": null,
+      "contact": null,
+      "video": null,
+      "regions": 0
+    },
+    {
+      "route": "/de/compte?mode=forgot",
+      "width": 1440,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": null,
+      "hero": null,
+      "contact": null,
+      "video": null,
+      "regions": 0
+    },
+    {
+      "route": "/de",
+      "width": 768,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": {
+        "color": "rgb(31, 41, 55)",
+        "weight": "700",
+        "font": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+      },
+      "hero": "rgb(255, 255, 255)",
+      "contact": "rgb(245, 247, 248)",
+      "video": {
+        "muted": true,
+        "loop": true
+      },
+      "regions": 16
+    },
+    {
+      "route": "/de/compte",
+      "width": 768,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": null,
+      "hero": null,
+      "contact": null,
+      "video": null,
+      "regions": 0
+    },
+    {
+      "route": "/de/compte?mode=signup",
+      "width": 768,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": null,
+      "hero": null,
+      "contact": null,
+      "video": null,
+      "regions": 0
+    },
+    {
+      "route": "/de/compte?mode=forgot",
+      "width": 768,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": null,
+      "hero": null,
+      "contact": null,
+      "video": null,
+      "regions": 0
+    },
+    {
+      "route": "/de",
+      "width": 390,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": {
+        "color": "rgb(31, 41, 55)",
+        "weight": "700",
+        "font": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+      },
+      "hero": "rgb(255, 255, 255)",
+      "contact": "rgb(245, 247, 248)",
+      "video": {
+        "muted": true,
+        "loop": true
+      },
+      "regions": 16
+    },
+    {
+      "route": "/de/compte",
+      "width": 390,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": null,
+      "hero": null,
+      "contact": null,
+      "video": null,
+      "regions": 0
+    },
+    {
+      "route": "/de/compte?mode=signup",
+      "width": 390,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": null,
+      "hero": null,
+      "contact": null,
+      "video": null,
+      "regions": 0
+    },
+    {
+      "route": "/de/compte?mode=forgot",
+      "width": 390,
+      "bad": [],
+      "overflow": false,
+      "body": "rgb(255, 255, 255)",
+      "heading": null,
+      "hero": null,
+      "contact": null,
+      "video": null,
+      "regions": 0
+    }
+  ],
+  "errors": []
+}

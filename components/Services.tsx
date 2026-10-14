@@ -1,4 +1,4 @@
-﻿import Image from 'next/image';
+import Image from 'next/image';
 import { deliveryRegions } from '@/lib/delivery-regions';
 import Link from '@/i18n/navigation';
 import { localizeNode } from '@/i18n/copy';
@@ -10,30 +10,30 @@ import { storeConfig, deliverySummary } from '@/lib/store-config';
 export default function Services() {
   const locale = useLocale() as Locale;
   return localizeNode((
-    <section id="livraison" data-analytics-section="delivery" className="relative isolate scroll-mt-24 overflow-hidden bg-slate-950 py-16 text-white sm:py-24 shadow-xl">
-      <Image src="/B5.jpg" alt="" aria-hidden="true" fill sizes="100vw" className="object-cover opacity-25" />
-      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/65 to-slate-950/35" />
+    <section id="livraison" data-analytics-section="delivery" className="relative isolate scroll-mt-24 overflow-hidden bg-[#24140E] py-16 text-white sm:py-24 shadow-xl">
+      <Image src="/B5.jpg" alt="" aria-hidden="true" fill sizes="100vw" className="object-cover opacity-50" />
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-[#24140E]/80 via-[#2F1B13]/65 to-[#1C0F0A]/40" />
       <div className="container relative">
         <div className="grid items-center gap-8 lg:grid-cols-[1fr_1.15fr]">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-bold uppercase tracking-widest text-[#F5F7F8]"><Truck size={18} />Zone de livraison</p>
-            <h2 className="mt-6 text-4xl font-black leading-tight tracking-tight sm:text-5xl text-white">Votre bois de chauffage,<br /><span className="text-orange-400">livré en Allemagne.</span></h2>
-            <p className="mt-6 max-w-xl text-lg leading-8 text-stone-200">{deliverySummary}</p>
-            <Link href="/produits#catalogue" className="mt-7 inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-4 font-bold text-white transition hover:bg-orange-600 shadow-lg"><span>Choisir mes produits</span> <ArrowRight size={18} /></Link>
+            <p className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-bold uppercase tracking-widest text-[#FDFBF7]"><Truck size={18} />Zone de livraison</p>
+            <h2 className="mt-6 text-4xl font-black leading-tight tracking-tight sm:text-5xl !text-white">Votre bois de chauffage,<br /><span className="text-orange-400">livré en Allemagne.</span></h2>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-[#FAF6F0]">{deliverySummary}</p>
+            <Link href="/produits#catalogue" className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#A33D1E] px-6 py-4 font-bold text-white transition hover:bg-[#832F15] shadow-lg"><span>Choisir mes produits</span> <ArrowRight size={18} /></Link>
           </div>
           <div className="relative aspect-[1.7/1] min-w-0">
             <Image src="/delivery-truck-bren-nholz-20261013.png" alt="Camion personnalisé Bren-nholz — Leylines Park" fill sizes="(max-width: 1024px) 100vw, 55vw" className="object-contain drop-shadow-2xl" />
           </div>
         </div>
-        <div className="mt-12 grid gap-8 border-t border-white/20 pt-10 lg:grid-cols-[0.7fr_1.3fr]">
-          <div><p className="text-sm font-bold uppercase tracking-widest text-[#F5F7F8]">Regionen</p><h3 className="mt-3 text-2xl font-black text-white">Lieferung in alle 16 Bundesländer</h3></div>
+        <div className="mt-12 grid gap-8 border-t border-white/15 pt-10 lg:grid-cols-[0.7fr_1.3fr]">
+          <div><p className="text-sm font-bold uppercase tracking-widest text-orange-200">Regionen</p><h3 className="mt-3 text-2xl font-black !text-white">Lieferung in alle 16 Bundesländer</h3></div>
           <ul className="delivery-regions">{deliveryRegions.map(region => <li key={region.slug}><Link href={`/livraison/${region.slug}`} className="delivery-regions__link"><span lang="de">{region.name}</span><ArrowRight size={16} aria-hidden="true" /></Link></li>)}</ul>
         </div>
-        <div className="mt-10 flex flex-col gap-5 rounded-2xl border border-white/20 bg-white/10 p-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between text-white">
+        <div className="mt-10 flex flex-col gap-5 rounded-2xl border border-white/15 bg-white/10 p-5 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between text-white">
           <span className="font-bold">{storeConfig.name}</span>
-          <a data-original-content href={`tel:${storeConfig.phoneHref}`} className="inline-flex items-center gap-2 hover:text-[#F5F7F8]"><Phone size={18} />{storeConfig.phone}</a>
-          <a data-original-content href={`mailto:${storeConfig.email}`} className="inline-flex min-w-0 items-center gap-2 break-all hover:text-[#F5F7F8]"><Mail size={18} />{storeConfig.email}</a>
-          <Link href="/services" className="inline-flex items-center gap-2 font-bold text-[#F5F7F8] hover:text-white">Informations de livraison <ArrowRight size={16} /></Link>
+          <a data-original-content href={`tel:${storeConfig.phoneHref}`} className="inline-flex items-center gap-2 hover:text-[#FAF6F0]"><Phone size={18} />{storeConfig.phone}</a>
+          <a data-original-content href={`mailto:${storeConfig.email}`} className="inline-flex min-w-0 items-center gap-2 break-all hover:text-[#FAF6F0]"><Mail size={18} />{storeConfig.email}</a>
+          <Link href="/services" className="inline-flex items-center gap-2 font-bold text-[#FDFBF7] hover:text-[#C2765A]">Informations de livraison <ArrowRight size={16} /></Link>
         </div>
       </div>
     </section>

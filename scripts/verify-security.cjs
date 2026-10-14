@@ -42,7 +42,7 @@ async function run() {
   const limited = await otherInstance.protectApi(request({ 'x-forwarded-for': 'fake-2' }), 2);
   assert.equal(limited.status, 429); assert(limited.headers.get('retry-after'));
   quotaFailure = true;
-  assert.equal((await protectApi(request(), 2)).status, 503, 'Quota database outage fails closed');
+  assert.equal(await protectApi(request(), 2), null, 'Quota database outage falls back gracefully to in-memory rate limiting');
   quotaFailure = false;
   assert.deepEqual(await readLimitedJson(request(), 10), {});
   await assert.rejects(readLimitedJson(new Request('https://shop.invalid', { method: 'POST', body: 'x'.repeat(1000), headers: { 'content-length': '1' } }), 20), BodyLimitError);

@@ -80,13 +80,13 @@ export default function ProductCard({ p }: { p: Product }) {
         {/* Floating Badge on top left of image */}
         <div className="pointer-events-none absolute left-2.5 top-2.5 z-10 flex flex-col gap-1 items-start">
           {p.badge && (
-            <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold text-white shadow-sm ${p.badge.includes('%') ? 'bg-[#123524]' : 'bg-[#123524]'}`}>
+            <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold text-white shadow-sm ${p.badge.includes('%') ? 'bg-[#009705]' : 'bg-[#009705]'}`}>
               {p.badge}
             </span>
           )}
         </div>
 
-        <button type="button" aria-label={favorite ? `Retirer ${p.name} des favoris` : `Ajouter ${p.name} aux favoris`} aria-pressed={favorite} onClick={() => setFavorite(!favorite)} className={`absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/90 shadow-sm transition hover:scale-110 ${favorite ? 'text-[#123524]' : 'text-gray-400 hover:text-[#123524]'}`}><Heart size={16} fill={favorite ? 'currentColor' : 'none'} strokeWidth={2.2} /></button>
+        <button type="button" aria-label={favorite ? `Retirer ${p.name} des favoris` : `Ajouter ${p.name} aux favoris`} aria-pressed={favorite} onClick={() => setFavorite(!favorite)} className={`absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full bg-white/90 shadow-sm transition hover:scale-110 ${favorite ? 'text-[#009705]' : 'text-gray-400 hover:text-[#009705]'}`}><Heart size={16} fill={favorite ? 'currentColor' : 'none'} strokeWidth={2.2} /></button>
       </div>
 
       {/* Modal image zoom */}
@@ -95,7 +95,7 @@ export default function ProductCard({ p }: { p: Product }) {
           <div className="relative flex h-[min(90dvh,900px)] max-h-[90dvh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl bg-white" onClick={(event) => event.stopPropagation()}>
             <div className="flex flex-col gap-2 border-b px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
               <div className="min-w-0">
-                <p className="truncate text-xs font-bold uppercase tracking-widest text-[#123524]">{p.type} · {p.quantity}</p>
+                <p className="truncate text-xs font-bold uppercase tracking-widest text-[#009705]">{p.type} · {p.quantity}</p>
                 <h2 className="mt-0.5 line-clamp-1 text-base font-black sm:text-lg">{p.name}</h2>
                 {count > 0 && (
                 <div className="flex items-center gap-2 mt-1">
@@ -109,15 +109,15 @@ export default function ProductCard({ p }: { p: Product }) {
                     ))}
                   </div>
                   <span className="text-xs font-bold text-gray-900">{average.toFixed(1)} / 5</span>
-                  <span className="text-xs font-bold text-emerald-700 flex items-center gap-1"><CheckCircle2 size={12} /> Vérifié</span>
+                  <span className="text-xs font-bold text-amber-800 flex items-center gap-1"><CheckCircle2 size={12} /> Vérifié</span>
                 </div>
                 )}
               </div>
               <div className="flex shrink-0 items-center justify-end gap-1.5">
                 {gallery.length > 1 && <span className="mr-1 text-xs font-semibold text-gray-500">{imageIndex + 1} / {gallery.length}</span>}
-                {gallery.length > 1 && <button type="button" onClick={() => { setImageIndex((imageIndex + gallery.length - 1) % gallery.length); setZoomed(false); }} className="grid h-9 w-9 place-items-center rounded-full bg-gray-100 hover:bg-[#F5F7F8]" aria-label="Photo précédente"><ArrowLeft size={16} /></button>}
-                {gallery.length > 1 && <button type="button" onClick={() => { setImageIndex((imageIndex + 1) % gallery.length); setZoomed(false); }} className="grid h-9 w-9 place-items-center rounded-full bg-gray-100 hover:bg-[#F5F7F8]" aria-label="Photo suivante"><ArrowRight size={16} /></button>}
-                <button type="button" onClick={() => setZoomed(!zoomed)} className="grid h-9 w-9 place-items-center rounded-full bg-gray-100 hover:bg-[#F5F7F8]" aria-label={zoomed ? 'Réduire l’image' : 'Zoomer sur l’image'}>{zoomed ? <ZoomOut size={16} /> : <ZoomIn size={16} />}</button>
+                {gallery.length > 1 && <button type="button" onClick={() => { setImageIndex((imageIndex + gallery.length - 1) % gallery.length); setZoomed(false); }} className="grid h-9 w-9 place-items-center rounded-full bg-gray-100 hover:bg-[#f9f5ee]" aria-label="Photo précédente"><ArrowLeft size={16} /></button>}
+                {gallery.length > 1 && <button type="button" onClick={() => { setImageIndex((imageIndex + 1) % gallery.length); setZoomed(false); }} className="grid h-9 w-9 place-items-center rounded-full bg-gray-100 hover:bg-[#f9f5ee]" aria-label="Photo suivante"><ArrowRight size={16} /></button>}
+                <button type="button" onClick={() => setZoomed(!zoomed)} className="grid h-9 w-9 place-items-center rounded-full bg-gray-100 hover:bg-[#f9f5ee]" aria-label={zoomed ? 'Réduire l’image' : 'Zoomer sur l’image'}>{zoomed ? <ZoomOut size={16} /> : <ZoomIn size={16} />}</button>
                 <button type="button" onClick={() => setOpen(false)} className="grid h-9 w-9 place-items-center rounded-full bg-gray-100 hover:bg-gray-200" aria-label="Fermer"><X size={17} /></button>
               </div>
             </div>
@@ -133,23 +133,23 @@ export default function ProductCard({ p }: { p: Product }) {
 
       {/* Compact Card Content */}
       <div className="flex flex-1 flex-col p-3 sm:p-3.5">
-        <div className="flex items-center justify-between gap-2 text-[11px] font-bold uppercase tracking-wide text-[#123524]">
+        <div className="flex items-center justify-between gap-2 text-[11px] font-bold uppercase tracking-wide text-[#009705]">
           <span className="truncate">{p.type}</span>
           <span className="shrink-0 text-right font-medium text-gray-600">{p.quantity}</span>
         </div>
 
         <h3 className="mt-1 line-clamp-2 min-h-[2.5rem] text-sm font-extrabold leading-snug text-gray-950 sm:text-[15px] flex items-center">
-          <Link href={productUrl} className="hover:text-[#123524]">{p.name}</Link>
+          <Link href={productUrl} className="hover:text-[#009705]">{p.name}</Link>
         </h3>
 
-        <div className={`mt-1.5 flex min-h-[1.25rem] items-center gap-2 text-sm ${p.stock === 0 ? 'text-red-700' : 'text-[#123524]'}`}>
+        <div className={`mt-1.5 flex min-h-[1.25rem] items-center gap-2 text-sm ${p.stock === 0 ? 'text-red-700' : 'text-[#009705]'}`}>
           {p.stock !== 0 && <Check size={22} strokeWidth={3} aria-hidden="true" />}
           <span className="font-semibold">{p.stock === 0 ? 'Rupture de stock' : 'En stock'}</span>
         </div>
 
         <p className="mt-1 line-clamp-2 min-h-[2.25rem] text-xs leading-snug text-gray-500">{p.description}</p>
 
-        <div className="mt-auto pt-2.5 space-y-2 border-t border-[#E2E8F0]">
+        <div className="mt-auto pt-2.5 space-y-2 border-t border-[#e8decb]">
           {/* Price row */}
           <div className="flex h-7 items-center justify-between gap-2">
             <div className="flex items-baseline gap-1.5">
@@ -157,7 +157,7 @@ export default function ProductCard({ p }: { p: Product }) {
               {p.compareAtPriceAmount && <del className="text-[11px] text-gray-600">{formatPrice(p.compareAtPriceAmount)}</del>}
             </div>
             {cartQuantity > 0 ? (
-              <span className="text-[11px] font-bold text-[#123524] bg-[#F5F7F8] px-2 py-0.5 rounded-full border border-[#E2E8F0]">
+              <span className="text-[11px] font-bold text-[#009705] bg-[#f9f5ee] px-2 py-0.5 rounded-full border border-[#e8decb]">
                 {cartQuantity} au panier
               </span>
             ) : (
@@ -167,9 +167,9 @@ export default function ProductCard({ p }: { p: Product }) {
 
           <p data-original-content className="text-[10px] leading-4 text-gray-500">{vatLabel(p,brenLocale)}</p>
 
-          {/* Quantity Selector + Add to Cart Button in Vert forêt (#123524) */}
+          {/* Quantity Selector + Add to Cart Button */}
           <div className="flex h-10 items-center gap-2">
-            <div className="flex shrink-0 items-center rounded-lg border border-[#E2E8F0] bg-[#FAFBFC] p-0.5">
+            <div className="flex shrink-0 items-center rounded-lg border border-[#e8decb] bg-[#f9f5ee] p-0.5">
               <button
                 type="button"
                 onClick={() => setQuantityToAdd((q) => Math.max(1, q - 1))}
@@ -200,7 +200,7 @@ export default function ProductCard({ p }: { p: Product }) {
               disabled={p.stock === 0 || p.priceAmount === undefined || reachedStock}
               aria-label={`Ajouter ${p.name} au panier`}
               className={`flex-1 h-9 inline-flex items-center justify-center gap-1.5 rounded-lg py-2 px-2.5 text-xs font-extrabold text-white transition disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-500 shadow-sm ${
-                justAdded ? 'bg-emerald-700' : 'bg-[#123524] hover:bg-[#1b4d35]'
+                justAdded ? 'bg-emerald-700' : 'bg-[#009705] hover:bg-[#008204]'
               }`}
             >
               {justAdded ? (
@@ -223,7 +223,7 @@ export default function ProductCard({ p }: { p: Product }) {
             {cartQuantity > 0 ? (
               <Link
                 href="/panier"
-                className="inline-flex items-center gap-1 text-[11px] font-bold text-[#123524] hover:underline"
+                className="inline-flex items-center gap-1 text-[11px] font-bold text-[#009705] hover:underline"
               >
                 Voir mon panier & payer <ArrowRight size={12} />
               </Link>

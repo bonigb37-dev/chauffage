@@ -9,18 +9,18 @@ export default function ContactCTA() {
 
   return localizeNode((
     <section data-analytics-section="contact" className="container py-20">
-      <div className="relative overflow-hidden rounded-[2rem] border border-[#E2E8F0] bg-[#F5F7F8] px-7 py-14 text-[#1f2937] sm:px-12 shadow-sm">
-        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10" />
+      <div className="relative overflow-hidden rounded-[2rem] border border-[#E6DCce] bg-[#F4EDE4] px-7 py-14 text-[#1C1917] sm:px-12 shadow-sm">
+        <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#A33D1E]/5" />
         <div className="relative flex flex-col justify-between gap-8 md:flex-row md:items-center">
           <div>
-            <p className="font-bold uppercase tracking-[.2em] text-[#123524]">Un projet d&apos;approvisionnement ?</p>
-            <h2 className="mt-3 max-w-2xl text-3xl font-black text-[#1f2937] sm:text-5xl">Choisissez vos combustibles et commandez en ligne.</h2>
-            <p className="mt-4 max-w-xl text-[#475569]">Consultez nos produits et ajoutez vos articles au panier. Les prix sont TTC. Aucun supplément de livraison n’est facturé en Allemagne.</p>
+            <p className="font-bold uppercase tracking-[.2em] text-[#A33D1E]">Un projet d&apos;approvisionnement ?</p>
+            <h2 className="mt-3 max-w-2xl text-3xl font-black text-[#1C1917] sm:text-5xl">Choisissez vos combustibles et commandez en ligne.</h2>
+            <p className="mt-4 max-w-xl text-[#6B5E55]">Consultez nos produits et ajoutez vos articles au panier. Les prix sont TTC. Aucun supplément de livraison n’est facturé en Allemagne.</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link
               href="/produits#catalogue"
-              className="inline-flex items-center gap-2 rounded-full bg-[#123524] px-6 py-4 font-extrabold text-white transition shadow-lg hover:bg-[#1b4d35]"
+              className="inline-flex items-center gap-2 rounded-full bg-[#A33D1E] px-6 py-4 font-extrabold text-white transition shadow-lg hover:bg-[#832F15]"
             >
               <span>Choisir mes produits</span>
               <ArrowRight size={18} />

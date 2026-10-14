@@ -165,16 +165,15 @@ export async function POST(request: Request) {
     catch { console.error('Cart draft cleanup unavailable after successful order'); }
   }
 
-  // Service d'envoi de l'accusé de réception par e-mail au client
+  // Service d'envoi de l'accusé de réception par e-mail au client (toujours en allemand)
   try {
-    const localeHeader = request.headers.get('accept-language')?.includes('de') ? 'de' : 'fr';
     await sendOrderConfirmationEmail({
       reference,
       customer,
       shipping,
       totalCents,
       lines: orderLines,
-      locale: localeHeader,
+      locale: 'de',
     });
   } catch (err) {
     console.error('Order receipt email notification error:', err);
