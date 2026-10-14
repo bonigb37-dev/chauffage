@@ -66,7 +66,7 @@ export default function ProductCatalog({ initialCategory = 'Tous les produits' }
       </div>
 
       <div className="mb-4 mt-5 flex items-center justify-between">
-        <p className="text-sm font-medium text-[#57534e]">{visibleProducts.length} produit{visibleProducts.length > 1 ? 's' : ''}</p>
+        <p className="text-sm font-medium text-[#57534e]">{visibleProducts.length} {visibleProducts.length === 1 ? 'Produkt' : 'Produkte'}</p>
         <p className="hidden text-sm text-[#57534e] sm:block">Sélectionnez une photo pour l’agrandir</p>
       </div>
       <p className="mb-4 rounded-2xl border border-[#E7E0D3] bg-[#F4F0E5] px-4 py-3 text-sm leading-6 text-[#123524]">Tous les prix affichés sont TTC. La TVA est déjà incluse et le total de commande correspond à la somme des prix TTC des produits.</p>

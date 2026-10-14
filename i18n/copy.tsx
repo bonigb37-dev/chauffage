@@ -10,6 +10,27 @@ export function translate(text: string, locale: Locale): string {
   const clean = text.replace(/\s+/g, ' ').trim();
   const translation = Object.hasOwn(dictionaries[locale], clean) ? dictionaries[locale][clean] : undefined;
   if (translation !== undefined) return (text.match(/^\s*/)?.[0] ?? '') + translation + (text.match(/\s*$/)?.[0] ?? '');
+  // These templates contain product names or counts, rather than whole dictionary keys.
+  const productLabels: [RegExp, (name: string) => string][] = [
+    [/^Ajouter (.+) aux favoris$/, name => `${name} zu den Favoriten hinzufügen`],
+    [/^Retirer (.+) des favoris$/, name => `${name} aus den Favoriten entfernen`],
+    [/^Ajouter (.+) au panier$/, name => `${name} in den Warenkorb legen`],
+    [/^Diminuer la quantité de (.+)$/, name => `Menge für ${name} verringern`],
+    [/^Augmenter la quantité de (.+)$/, name => `Menge für ${name} erhöhen`],
+  ];
+  for (const [pattern, format] of productLabels) {
+    const match = clean.match(pattern);
+    if (match) return format(translate(match[1], 'de'));
+  }
+  const photo = clean.match(/^(.+) — photo (\d+)$/);
+  if (photo) return `${translate(photo[1], 'de')} — Foto ${photo[2]}`;
+  const cart = clean.match(/^Mon panier \((\d+)\)(.*)$/);
+  if (cart) return `Mein Warenkorb (${cart[1]})${cart[2]}`;
+  const stock = clean.match(/^En stock · (\d+) unité(?:s)? disponible(?:s)?$/);
+  if (stock) return `Auf Lager · ${stock[1]} ${stock[1] === '1' ? 'Einheit verfügbar' : 'Einheiten verfügbar'}`;
+  // Account identifiers are customer data and must be preserved verbatim.
+  const account = text.match(/^(\s*)Compte client · ([\s\S]+)$/);
+  if (account) return `${account[1]}Kundenkonto · ${account[2]}`;
   // Template strings combine fixed copy with quantities, references or names.
   // Replace reviewed phrases only; never infer translations for customer data.
   let composed = text;

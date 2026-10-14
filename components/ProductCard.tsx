@@ -99,7 +99,7 @@ export default function ProductCard({ p }: { p: Product }) {
 
       {/* Modal image zoom */}
       {open && typeof document !== 'undefined' && createPortal(
-        <div className="fixed inset-0 z-[150] grid place-items-center bg-gray-950/90 p-4" role="dialog" aria-modal="true" aria-label={`Photo du produit : ${p.name}`} onClick={() => setOpen(false)}>
+        localizeNode(<div className="fixed inset-0 z-[150] grid place-items-center bg-gray-950/90 p-4" role="dialog" aria-modal="true" aria-label={`Photo du produit : ${p.name}`} onClick={() => setOpen(false)}>
           <div className="relative flex h-[min(90dvh,900px)] max-h-[90dvh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl bg-white" onClick={(event) => event.stopPropagation()}>
             <div className="flex flex-col gap-2 border-b px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
               <div className="min-w-0">
@@ -136,7 +136,7 @@ export default function ProductCard({ p }: { p: Product }) {
             </div>
             <div className="flex flex-col gap-2 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6"><p className="min-w-0 text-xs leading-5 text-gray-600">{p.description}</p></div>
           </div>
-        </div>, document.body
+        </div>, brenLocale), document.body
       )}
 
       {/* Compact Card Content */}

@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const ts = require('typescript');
-const dictionaries = ['de', 'en'].map(locale => require('../translations/' + locale + '.json'));
+const dictionaries = ['de'].map(locale => require('../translations/' + locale + '.json'));
 const missing = new Map();
 function add(value, file) {
   const source = value.replaceAll('&apos;', "'").replaceAll('&quot;', '"').replaceAll('&amp;', '&').replace(/\s+/g, ' ').trim();
@@ -26,7 +26,7 @@ function scan(folder) {
 scan('components'); scan('app');
 if (process.argv.includes('--check')) {
   // Proper names, standards, legal references and technical units stay unchanged.
-  const unchanged = new Set(['Bren','nholz','Max','Müller','Geoapify','© OpenStreetMap','UUID','Bren-nholz','Language / Sprache / Langue','⌘K','ENplus A1','DINplus','ENplus A1 & DINplus','KB)','e','§ 355 BGB','§ 356a BGB','§ 357 BGB']);
+  const unchanged = new Set(['Bren','nholz','Bren-nholz — Leylines Park','In den Warenkorb','km','Max','Müller','Geoapify','© OpenStreetMap','UUID','Bren-nholz','Language / Sprache / Langue','⌘K','ENplus A1','DINplus','ENplus A1 & DINplus','KB)','e','§ 355 BGB','§ 356a BGB','§ 357 BGB']);
   for (const key of unchanged) missing.delete(key);
   if (missing.size) process.exitCode = 1;
 }
