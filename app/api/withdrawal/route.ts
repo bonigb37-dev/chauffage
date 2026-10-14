@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     const body = await readLimitedJson(request, 12000);
     if (!body || typeof body !== 'object') return fail('Déclaration invalide.', 400);
     const { name, email, contract, id } = body as Record<string, unknown>;
-    const words = withdrawalCopy(isLocale((body as Record<string, unknown>).locale) ? (body as {locale: 'de' | 'fr' | 'en'}).locale : 'fr');
+    const words = withdrawalCopy('de');
     if (typeof name !== 'string' || !name.trim() || name.length > 120 || typeof email !== 'string' || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || typeof contract !== 'string' || !contract.trim() || contract.length > 2000 || typeof id !== 'string' || !/^[a-f0-9-]{36}$/.test(id)) return fail('Vérifiez votre nom, votre e-mail et le contrat concerné.', 400);
     const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
     const marker = `Rétractation ${id}`;
