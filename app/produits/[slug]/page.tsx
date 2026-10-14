@@ -114,7 +114,7 @@ export default async function ProductDetailPage({ params }: Props) {
               </div>
               <span className="font-black text-gray-950 text-sm">{average.toFixed(1)} / 5</span>
               <a href="#avis-clients" className="text-sm font-semibold text-orange-600 hover:underline">
-                ({count} {brenLocale === 'de' ? (count === 1 ? 'Kundenbewertung' : 'Kundenbewertungen') : brenLocale === 'en' ? (count === 1 ? 'customer review' : 'customer reviews') : (count === 1 ? 'avis client' : 'avis clients')})
+                ({count} {count === 1 ? 'Kundenbewertung' : 'Kundenbewertungen'})
               </a>
             </div>
 
@@ -156,7 +156,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   ))}
                 </div>
                 <p className="mt-1 text-xs font-semibold text-gray-700">
-                  Basé sur {count} {brenLocale === 'de' ? (count === 1 ? 'Kundenbewertung' : 'Kundenbewertungen') : brenLocale === 'en' ? (count === 1 ? 'customer review' : 'customer reviews') : (count === 1 ? 'avis client' : 'avis clients')}
+                  Basé sur {count} {count === 1 ? 'Kundenbewertung' : 'Kundenbewertungen'}
                 </p>
               </div>
             </div>

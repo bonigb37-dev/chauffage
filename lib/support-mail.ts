@@ -8,10 +8,9 @@ export function supportMailConfigured() {
 }
 export function notificationContent(kind: string, locale: string) {
   const base = 'https://www.brennholz-direk.de';
-  if (kind !== 'customer_reply') return { subject: 'Bren-nholz – Neue Kundenanfrage', text: `Eine neue Kundenanfrage ist eingegangen. Melden Sie sich an, um sie zu lesen und zu beantworten.\n\n${base}/de/admin#${kind === 'admin_contact' ? 'contact-requests' : 'support-messages'}\n\nBren-nholz · Leylines` };
-  const language = ['de','fr','en'].includes(locale) ? locale : 'de';
-  const copy = language === 'fr' ? ['Bren-nholz – Une réponse vous attend', 'Notre équipe a répondu à votre conversation. Connectez-vous pour lire la réponse.'] : language === 'en' ? ['Bren-nholz – You have a new reply', 'Our team has replied to your conversation. Sign in to read the reply.'] : ['Bren-nholz – Eine Antwort wartet auf Sie', 'Unser Team hat auf Ihre Unterhaltung geantwortet. Melden Sie sich an, um die Antwort zu lesen.'];
-  return { subject: copy[0], text: `${copy[1]}\n\n${base}/${language}/aide\n\nBren-nholz · Leylines` };
+  if (kind !== 'customer_reply') return { subject: 'Bren-nholz – Neue Kundenanfrage', text: `Eine neue Kundenanfrage ist eingegangen. Melden Sie sich an, um sie zu lesen und zu beantworten.\n\n${base}/admin#${kind === 'admin_contact' ? 'contact-requests' : 'support-messages'}\n\nBren-nholz · Leylines` };
+  const copy = ['Bren-nholz – Eine Antwort wartet auf Sie', 'Unser Team hat auf Ihre Unterhaltung geantwortet. Melden Sie sich an, um die Antwort zu lesen.'];
+  return { subject: copy[0], text: `${copy[1]}\n\naide\n\nBren-nholz · Leylines` };
 }
 // A durable SQL outbox and atomic leases coordinate all serverless instances.
 // SMTP cannot guarantee exactly-once delivery if the process dies after send.

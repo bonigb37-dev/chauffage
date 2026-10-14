@@ -15,7 +15,7 @@ export default function SupportHelpButton() {
     <WhatsAppLink className="border border-stone-200 shadow-xl" />
     <Link href="/aide" aria-label={supportCopy[locale].help} className="inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-white bg-orange-600 px-5 py-3 font-bold shadow-xl transition hover:bg-orange-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-600" style={{ color: '#ffffff' }}>
     <MessageCircle size={22} aria-hidden="true" />
-    <span>{locale === 'de' ? 'Hilfe' : locale === 'fr' ? 'Aide' : 'Help'}</span>
+    <span>Hilfe</span>
     <SupportUnreadBadge />
     </Link>
   </div>;
