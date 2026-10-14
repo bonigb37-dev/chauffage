@@ -4,6 +4,7 @@ import { locales, localizedPath } from '@/i18n/routing';
 
 export default function LanguageSelector() {
   const active = useLocale();
+  if (locales.length <= 1) return null;
   return <nav aria-label="Language / Sprache / Langue" className="flex shrink-0 items-center gap-1 text-xs font-bold">
     {locales.map(locale => <button key={locale} type="button" lang={locale} aria-pressed={active === locale}
       className={`rounded-md px-2 py-1 transition ${active === locale ? 'bg-white text-orange-700' : 'text-white hover:bg-white/15'}`}

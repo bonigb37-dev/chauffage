@@ -80,14 +80,16 @@ export default function ProductCard({ p }: { p: Product }) {
 
         {/* Floating Rating Badge on top left of image */}
         <div className="pointer-events-none absolute left-2.5 top-2.5 z-10 flex flex-col gap-1 items-start">
-          <Link
-            href={`${productUrl}#avis-clients`}
-            className="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[11px] font-black text-gray-900 shadow-sm backdrop-blur-sm hover:bg-orange-50 hover:text-orange-600 transition"
-          >
-            <Star size={12} className="fill-amber-400 text-amber-400" />
-            <span>{average.toFixed(1)}</span>
-            <span className="text-[10px] font-semibold text-gray-500">({count})</span>
-          </Link>
+          {count > 0 && (
+            <Link
+              href={`${productUrl}#avis-clients`}
+              className="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[11px] font-black text-gray-900 shadow-sm backdrop-blur-sm hover:bg-orange-50 hover:text-orange-600 transition"
+            >
+              <Star size={12} className="fill-amber-400 text-amber-400" />
+              <span>{average.toFixed(1)}</span>
+              <span className="text-[10px] font-semibold text-gray-500">({count})</span>
+            </Link>
+          )}
           {p.badge && (
             <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold text-white shadow-sm ${p.badge.includes('%') ? 'bg-orange-600' : 'bg-gray-900'}`}>
               {p.badge}
@@ -106,19 +108,21 @@ export default function ProductCard({ p }: { p: Product }) {
               <div className="min-w-0">
                 <p className="truncate text-xs font-bold uppercase tracking-widest text-orange-600">{p.type} · {p.quantity}</p>
                 <h2 className="mt-0.5 line-clamp-1 text-base font-black sm:text-lg">{p.name}</h2>
-                <div className="flex items-center gap-2 mt-1">
-                  <div className="flex items-center text-amber-400">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star
-                        key={star}
-                        size={14}
-                        className={star <= Math.round(average) ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}
-                      />
-                    ))}
+                {count > 0 && (
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="flex items-center text-amber-400">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          size={14}
+                          className={star <= Math.round(average) ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs font-bold text-gray-900">{average.toFixed(1)} / 5</span>
+                    <span className="text-xs text-gray-500">({count} avis vérifiés)</span>
                   </div>
-                  <span className="text-xs font-bold text-gray-900">{average.toFixed(1)} / 5</span>
-                  <span className="text-xs text-gray-500">({count} avis vérifiés)</span>
-                </div>
+                )}
               </div>
               <div className="flex shrink-0 items-center justify-end gap-1.5">
                 {gallery.length > 1 && <span className="mr-1 text-xs font-semibold text-gray-500">{imageIndex + 1} / {gallery.length}</span>}
@@ -150,21 +154,23 @@ export default function ProductCard({ p }: { p: Product }) {
         </h3>
 
         {/* Rating Stars Row directly on the product card */}
-        <div className="mt-1 flex items-center gap-1.5 text-xs">
-          <Link href={`${productUrl}#avis-clients`} className="flex items-center gap-1.5 group/stars hover:text-orange-600">
-            <div className="flex items-center text-amber-400">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                  key={star}
-                  size={14}
-                  className={star <= Math.round(average) ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}
-                />
-              ))}
-            </div>
-            <span className="font-extrabold text-gray-900 text-xs group-hover/stars:text-orange-600">{average.toFixed(1)}</span>
-            <span className="text-xs text-gray-500 font-semibold group-hover/stars:underline">({count} avis)</span>
-          </Link>
-        </div>
+        {count > 0 && (
+          <div className="mt-1 flex items-center gap-1.5 text-xs">
+            <Link href={`${productUrl}#avis-clients`} className="flex items-center gap-1.5 group/stars hover:text-orange-600">
+              <div className="flex items-center text-amber-400">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star
+                    key={star}
+                    size={14}
+                    className={star <= Math.round(average) ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}
+                  />
+                ))}
+              </div>
+              <span className="font-extrabold text-gray-900 text-xs group-hover/stars:text-orange-600">{average.toFixed(1)}</span>
+              <span className="text-xs text-gray-500 font-semibold group-hover/stars:underline">({count} avis)</span>
+            </Link>
+          </div>
+        )}
 
         <div className={`mt-1.5 flex min-h-[1.25rem] items-center gap-2 text-sm ${p.stock === 0 ? 'text-red-700' : 'text-green-600'}`}>
           {p.stock !== 0 && <Check size={22} strokeWidth={3} aria-hidden="true" />}

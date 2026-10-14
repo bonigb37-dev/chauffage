@@ -53,26 +53,6 @@ export default async function ProductDetailPage({ params }: Props) {
     image: (product.gallery?.length ? product.gallery : [product.image]).map((image) => new URL(image, siteUrl).href),
     url: `${siteUrl}${localizedPath(`/produits/${canonicalSlug}`, brenLocale)}`,
     sku: product.articleNumber,
-    aggregateRating: count > 0 ? {
-      '@type': 'AggregateRating',
-      ratingValue: average,
-      reviewCount: count,
-      bestRating: '5',
-      worstRating: '1',
-    } : undefined,
-    review: reviews.map((r) => ({
-      '@type': 'Review',
-      reviewRating: {
-        '@type': 'Rating',
-        ratingValue: r.rating,
-        bestRating: '5',
-      },
-      author: {
-        '@type': 'Person',
-        name: r.author,
-      },
-      reviewBody: r.comment,
-    })),
     offers: product.priceAmount !== undefined ? {
       '@type': 'Offer',
       url: `${siteUrl}${localizedPath(`/produits/${canonicalSlug}`, brenLocale)}`,
@@ -102,6 +82,7 @@ export default async function ProductDetailPage({ params }: Props) {
             <h1 className="mt-2 text-3xl font-black leading-tight text-gray-950 sm:text-4xl">{product.name}</h1>
 
             {/* Rating Stars Summary Header */}
+            {count > 0 && (
             <div className="mt-3 flex items-center gap-2">
               <div className="flex items-center text-amber-400">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -117,6 +98,7 @@ export default async function ProductDetailPage({ params }: Props) {
                 ({count} {count === 1 ? 'Kundenbewertung' : 'Kundenbewertungen'})
               </a>
             </div>
+            )}
 
             {product.articleNumber && <p className="mt-2 text-sm text-gray-500">N° d’article : {product.articleNumber}</p>}
             <p className="mt-5 leading-7 text-gray-700">{product.description}</p>
@@ -132,6 +114,7 @@ export default async function ProductDetailPage({ params }: Props) {
         </article>
 
         {/* Customer Reviews Section */}
+        {count > 0 && (
         <section id="avis-clients" className="mt-12 rounded-3xl border border-stone-200 bg-white p-6 shadow-sm sm:p-10">
           <div className="flex flex-col gap-6 border-b border-stone-200 pb-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
@@ -208,6 +191,7 @@ export default async function ProductDetailPage({ params }: Props) {
             ))}
           </div>
         </section>
+        )}
       </div>
     </main>
   ), brenLocale);
