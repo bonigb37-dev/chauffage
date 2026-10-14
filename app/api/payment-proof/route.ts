@@ -16,15 +16,15 @@ export async function POST(request: Request) {
   if (blocked) return blocked;
   const server = client();
   if (!server) return fail('Service d’envoi indisponible.', 503);
-  if (Number(request.headers.get('content-length')) > 4 * 1024 * 1024) return fail('Justificatif limité à 3 Mo.', 413);
+  if (Number(request.headers.get('content-length')) > 22 * 1024 * 1024) return fail('Justificatif limité à 20 Mo.', 413);
   try {
-    const bytesBody = await readLimitedBody(request, 4 * 1024 * 1024);
+    const bytesBody = await readLimitedBody(request, 22 * 1024 * 1024);
     const form = await new Response(bytesBody.buffer as ArrayBuffer, { headers: { 'Content-Type': request.headers.get('content-type') ?? '' } }).formData();
     const reference = String(form.get('reference') ?? '');
     const token = String(form.get('token') ?? '');
     if (!/^TP-[A-F0-9]{12}$/.test(reference) || !validPaymentProofToken(reference, token, server.key)) return fail('Lien d’envoi invalide.', 403);
     const file = form.get('file');
-    if (!(file instanceof File) || !file.size || file.size > 3 * 1024 * 1024) return fail('Choisissez un justificatif de 3 Mo maximum.', 400);
+    if (!(file instanceof File) || !file.size || file.size > 20 * 1024 * 1024) return fail('Choisissez un document avec une taille maximale de 20 Mo.', 400);
     const bytes = Buffer.from(await file.arrayBuffer());
     const png = bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]));
     const jpeg = bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
@@ -40,11 +40,11 @@ export async function POST(request: Request) {
     }
     const existingBucket = await server.db.storage.getBucket(bucket);
     if (!existingBucket.data) {
-      const created = await server.db.storage.createBucket(bucket, { public: false, fileSizeLimit: 3 * 1024 * 1024, allowedMimeTypes });
+      const created = await server.db.storage.createBucket(bucket, { public: false, fileSizeLimit: 20 * 1024 * 1024, allowedMimeTypes });
       if (created.error && !(await server.db.storage.getBucket(bucket)).data) return fail('Stockage indisponible.', 503);
     }
     if (!existingBucket.data || existingBucket.data.public || !allowedMimeTypes.every((type) => existingBucket.data.allowed_mime_types?.includes(type))) {
-      const updated = await server.db.storage.updateBucket(bucket, { public: false, fileSizeLimit: 3 * 1024 * 1024, allowedMimeTypes });
+      const updated = await server.db.storage.updateBucket(bucket, { public: false, fileSizeLimit: 20 * 1024 * 1024, allowedMimeTypes });
       if (updated.error) return fail('Stockage des justificatifs indisponible.', 503);
     }
     const upload = await server.db.storage.from(bucket).upload(`${reference}/proof`, bytes, { contentType: pdf ? 'application/pdf' : png ? 'image/png' : jpeg ? 'image/jpeg' : 'image/webp', upsert: true });
