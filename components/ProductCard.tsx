@@ -24,8 +24,8 @@ export default function ProductCard({ p }: { p: Product }) {
   const [favorite, setFavorite] = useState(false);
   const [quantityToAdd, setQuantityToAdd] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
-  const gallery = p.gallery?.length ? p.gallery : [p.image];
-  const activeImage = gallery[imageIndex] ?? p.image;
+  const gallery = p?.gallery?.length ? p.gallery : (p?.image ? [p.image] : []);
+  const activeImage = gallery[imageIndex] ?? p?.image ?? '/BD.jpg';
   const { addItem, items } = useCart();
   const cartQuantity = items.find((item) => item.productId === p.id)?.quantity ?? 0;
   const reachedStock = p.stock !== undefined && cartQuantity >= p.stock;
@@ -77,16 +77,8 @@ export default function ProductCard({ p }: { p: Product }) {
           </span>
         </button>
 
-        {/* Floating Rating Badge on top left of image */}
+        {/* Floating Badge on top left of image */}
         <div className="pointer-events-none absolute left-2.5 top-2.5 z-10 flex flex-col gap-1 items-start">
-          {count > 0 && (<Link
-            href={`${productUrl}#avis-clients`}
-            className="pointer-events-auto inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[11px] font-black text-gray-900 shadow-sm backdrop-blur-sm hover:bg-[#F4F0E5] hover:text-[#A54829] transition"
-          >
-            <Star size={12} className="fill-amber-400 text-amber-400" />
-            <span>{average.toFixed(1)}</span>
-            <span className="text-[10px] font-bold text-emerald-700">Vérifié</span>
-          </Link>)}
           {p.badge && (
             <span className={`rounded-full px-2 py-0.5 text-[10px] font-extrabold text-white shadow-sm ${p.badge.includes('%') ? 'bg-[#A54829]' : 'bg-[#123524]'}`}>
               {p.badge}
@@ -143,31 +135,12 @@ export default function ProductCard({ p }: { p: Product }) {
       <div className="flex flex-1 flex-col p-3 sm:p-3.5">
         <div className="flex items-center justify-between gap-2 text-[11px] font-bold uppercase tracking-wide text-[#A54829]">
           <span className="truncate">{p.type}</span>
-          <span className="shrink-0 text-right font-medium text-gray-400">{p.quantity}</span>
+          <span className="shrink-0 text-right font-medium text-gray-600">{p.quantity}</span>
         </div>
 
         <h3 className="mt-1 line-clamp-2 min-h-[2.5rem] text-sm font-extrabold leading-snug text-gray-950 sm:text-[15px] flex items-center">
           <Link href={productUrl} className="hover:text-[#A54829]">{p.name}</Link>
         </h3>
-
-        {/* Rating Stars Row */}
-        {count > 0 && (
-        <div className="mt-1 flex items-center gap-1.5 text-xs">
-          <Link href={`${productUrl}#avis-clients`} className="flex items-center gap-1.5 group/stars hover:text-[#A54829]">
-            <div className="flex items-center text-amber-400">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Star
-                  key={star}
-                  size={14}
-                  className={star <= Math.round(average) ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}
-                />
-              ))}
-            </div>
-            <span className="font-extrabold text-gray-900 text-xs group-hover/stars:text-[#A54829]">{average.toFixed(1)}</span>
-            <span className="text-xs text-emerald-700 font-semibold flex items-center gap-0.5"><CheckCircle2 size={12} /> Vérifié</span>
-          </Link>
-        </div>
-        )}
 
         <div className={`mt-1.5 flex min-h-[1.25rem] items-center gap-2 text-sm ${p.stock === 0 ? 'text-red-700' : 'text-[#123524]'}`}>
           {p.stock !== 0 && <Check size={22} strokeWidth={3} aria-hidden="true" />}
@@ -181,7 +154,7 @@ export default function ProductCard({ p }: { p: Product }) {
           <div className="flex h-7 items-center justify-between gap-2">
             <div className="flex items-baseline gap-1.5">
               <b className="text-base font-black text-gray-950 sm:text-lg">{p.price}</b>
-              {p.compareAtPriceAmount && <del className="text-[11px] text-gray-400">{formatPrice(p.compareAtPriceAmount)}</del>}
+              {p.compareAtPriceAmount && <del className="text-[11px] text-gray-600">{formatPrice(p.compareAtPriceAmount)}</del>}
             </div>
             {cartQuantity > 0 ? (
               <span className="text-[11px] font-bold text-[#123524] bg-[#F4F0E5] px-2 py-0.5 rounded-full border border-[#E7E0D3]">

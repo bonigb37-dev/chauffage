@@ -62,25 +62,27 @@ const genericGermanReviews: Review[] = [
 ];
 
 export function getReviewsForProduct(productId: number): Review[] {
-  return reviewsData[productId] ?? genericGermanReviews;
+  return reviewsData[productId] ?? genericGermanReviews ?? [];
 }
 
 export function getAverageRating(productId: number) {
-  const reviews = getReviewsForProduct(productId);
+  const reviews = getReviewsForProduct(productId) ?? [];
+  const len = reviews?.length ?? 0;
   return {
-    average: reviews.length ? Math.round((reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length) * 10) / 10 : 5.0,
-    count: reviews.length,
+    average: len ? Math.round((reviews.reduce((sum, r) => sum + (r?.rating ?? 5), 0) / len) * 10) / 10 : 5.0,
+    count: len,
   };
 }
 
 export function getAllReviews(): Review[] {
-  return Object.values(reviewsData).flat();
+  return Object.values(reviewsData ?? {}).flat().filter(Boolean);
 }
 
 export function getTotalReviewsSummary() {
-  const all = getAllReviews();
+  const all = getAllReviews() ?? [];
+  const len = all?.length ?? 0;
   return {
-    totalReviews: all.length,
-    averageRating: all.length ? Math.round((all.reduce((sum, r) => sum + r.rating, 0) / all.length) * 10) / 10 : 5.0,
+    totalReviews: len,
+    averageRating: len ? Math.round((all.reduce((sum, r) => sum + (r?.rating ?? 5), 0) / len) * 10) / 10 : 5.0,
   };
 }

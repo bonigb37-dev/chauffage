@@ -37,7 +37,7 @@ type AuditRow = { id: number; actor_user_id: string | null; actor_role: string |
 
 const statusLabels: Record<RequestStatus, string> = { new: 'Nouvelle', in_progress: 'En cours', done: 'Terminée' };
 const subjectLabels: Record<string, string> = { product: 'Information produit', quote: 'Devis', delivery: 'Livraison', order: 'Commande', claim: 'Réclamation', other: 'Autre' };
-const euros = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
+const euros = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
 
 function text(value: unknown) { return typeof value === 'string' ? value : ''; }
 function date(value: string, locale: Locale) { return new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)); }

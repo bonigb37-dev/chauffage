@@ -18,7 +18,6 @@ import {
   LogOut,
   Menu,
   Search,
-  Settings,
   ShoppingBag,
   ShoppingCart,
   Truck,
@@ -137,10 +136,10 @@ export default function Navbar() {
   // Hide Navbar completely on dedicated fullscreen pages like /compte
   if (pathname === '/compte' || isAdminPage) return null;
 
-  const totalCartItemsCount = itemCount;
+  const totalCartItemsCount = itemCount ?? 0;
 
-  const displayCartItems = items.slice(0, 3).map((line) => {
-    const product = products.find((p) => p.id === line.productId);
+  const displayCartItems = (items ?? []).slice(0, 3).map((line) => {
+    const product = (products ?? []).find((p) => p.id === line.productId);
     return {
       title: product?.name ?? 'Produit',
       quantity: line.quantity,
@@ -148,9 +147,9 @@ export default function Navbar() {
     };
   });
 
-  const totalCartPrice = items
+  const totalCartPrice = (items ?? [])
     .reduce((sum, line) => {
-      const product = products.find((p) => p.id === line.productId);
+      const product = (products ?? []).find((p) => p.id === line.productId);
       return sum + (product?.priceAmount ? product.priceAmount / 100 : 0) * line.quantity;
     }, 0)
     .toFixed(2)
@@ -656,7 +655,7 @@ export default function Navbar() {
 
       {/* MOBILE DRAWER */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-[#123524] text-white flex flex-col justify-between p-6 overflow-y-auto animate-in fade-in duration-200">
+        <div className="forest-surface fixed inset-0 z-50 text-white flex flex-col justify-between p-6 overflow-y-auto animate-in fade-in duration-200">
           <div>
             <div className="flex items-center justify-between pb-6 border-b border-white/10">
               <Link
@@ -669,7 +668,7 @@ export default function Navbar() {
                   <Flame size={20} strokeWidth={2.2} fill="currentColor" />
                 </span>
                 <span className="font-extrabold text-xl tracking-tight text-white">
-                  <BrandWordmark hyphenClass="text-[#A54829]" />
+                  <BrandWordmark hyphenClass="text-[#F4F0E5]" />
                 </span>
               </Link>
 

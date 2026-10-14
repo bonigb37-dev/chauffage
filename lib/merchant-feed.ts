@@ -28,10 +28,10 @@ function absoluteUrl(value: string | undefined, base: string) {
   } catch { return undefined; }
 }
 
-export function buildMerchantFeed(products: Product[], base: string) {
+export function buildMerchantFeed(products: Product[] = [], base: string = '') {
   const omitted: { id: number; reason: string }[] = [];
   const items: string[] = [];
-  for (const product of products) {
+  for (const product of products ?? []) {
     const title = translation(product.name);
     const description = translation(product.description);
     const sourceImage = product.gallery?.[0] ?? product.image;
@@ -65,6 +65,6 @@ export function buildMerchantFeed(products: Product[], base: string) {
   }
   return {
     count: items.length, omitted,
-    xml: `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">\n<channel>\n<title>Bren-nholz – Deutschland</title>\n<link>${xml(base)}/de</link>\n<description>Brennholz, Holzpellets und Holzbriketts von Bren-nholz.</description>\n<language>de-DE</language>\n${items.join('\n')}\n</channel>\n</rss>\n`,
+    xml: `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">\n<channel>\n<title>Brennholz-direk – Deutschland</title>\n<link>${xml(base)}/de</link>\n<description>Brennholz, Holzpellets und Holzbriketts von Brennholz-direk.</description>\n<language>de-DE</language>\n${items.join('\n')}\n</channel>\n</rss>\n`,
   };
 }

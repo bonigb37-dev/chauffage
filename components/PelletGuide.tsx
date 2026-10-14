@@ -172,9 +172,9 @@ export default function PelletGuide() {
   );
 
   return localizeNode((
-    <div className="bg-gray-50 text-gray-900 pb-20">
+    <div className="bg-[#F4F0E5] text-gray-900 pb-20">
       {/* Header Banner */}
-      <section className="bg-gradient-to-br from-gray-950 via-gray-900 to-amber-950 text-white py-16 sm:py-20">
+      <section className="brand-promotion bg-[#A54829] text-white py-16 sm:py-20">
         <div className="container max-w-5xl">
           <div className="inline-flex items-center gap-2 rounded-full bg-orange-500/20 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-orange-400 border border-orange-500/30 mb-6">
             <Flame size={15} className="text-orange-400 fill-orange-400" />
@@ -318,7 +318,7 @@ export default function PelletGuide() {
           </div>
 
           {/* Dynamic Result Banner */}
-          <div className="mt-8 rounded-2xl bg-gradient-to-br from-amber-500 via-orange-500 to-orange-600 p-6 sm:p-8 text-white shadow-lg">
+          <div className="mt-8 rounded-2xl bg-[#A54829] p-6 sm:p-8 text-white shadow-lg">
             <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
               <div className="space-y-2">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur">
@@ -345,10 +345,10 @@ export default function PelletGuide() {
                   type="button"
                   onClick={handleAddRecommendedToCart}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-black transition hover:bg-orange-50 shadow-md"
-                  style={{ color: '#ea580c' }}
+                  style={{ color: '#b83c09' }}
                 >
-                  <ShoppingCart size={18} style={{ color: '#ea580c' }} />
-                  <span style={{ color: '#ea580c' }}>Commander la quantité recommandée</span>
+                  <ShoppingCart size={18} style={{ color: '#b83c09' }} />
+                  <span style={{ color: '#b83c09' }}>Commander la quantité recommandée</span>
                 </button>
                 {addedNotice && (
                   <p className="text-center text-xs font-bold text-white bg-green-600/80 px-3 py-1.5 rounded-lg animate-pulse">
@@ -641,10 +641,10 @@ export default function PelletGuide() {
             <Link
               href="/produits"
               className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-black transition hover:bg-orange-50 shadow-md"
-              style={{ color: '#ea580c' }}
+              style={{ color: '#b83c09' }}
             >
-              <span style={{ color: '#ea580c' }}>Voir tous les granulés de bois</span>
-              <ArrowRight size={18} style={{ color: '#ea580c' }} />
+              <span style={{ color: '#b83c09' }}>Voir tous les granulés de bois</span>
+              <ArrowRight size={18} style={{ color: '#b83c09' }} />
             </Link>
 
           </div>

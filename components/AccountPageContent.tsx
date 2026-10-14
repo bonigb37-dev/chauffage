@@ -1052,7 +1052,7 @@ export default function AccountPageContent() {
       </main>
 
       {/* Embedded Minimalist Footer */}
-      <footer className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 text-center text-xs text-slate-500">
+      <footer className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 text-center text-xs text-slate-600">
         <p>© {new Date().getFullYear()} Bren-nholz — Leylines Park — Espace sécurisé. Tous droits réservés.</p>
         <nav aria-label="Informations juridiques" className="mt-3 flex flex-wrap justify-center gap-4"><Link href="/datenschutz" className="text-slate-600 underline">Confidentialité</Link><Link href="/retractation#retractation" className="rounded-lg border border-orange-400/50 px-3 py-2 font-bold text-orange-700">Me rétracter du contrat</Link></nav>
       </footer>

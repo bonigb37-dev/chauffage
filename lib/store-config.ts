@@ -1,6 +1,6 @@
 export const storeConfig = {
-  name: 'Bren-nholz — Leylines Park',
-  brandName: 'Bren-nholz',
+  name: 'Brennholz-direk',
+  brandName: 'Brennholz-direk',
   brandSubtitle: 'Leylines Park',
   email: 'kontakt@brennholz-direk.de',
   phone: '+49 176 68417729',

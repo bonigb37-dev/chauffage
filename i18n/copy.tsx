@@ -34,7 +34,8 @@ export function translate(text: string, locale: Locale): string {
   // Template strings combine fixed copy with quantities, references or names.
   // Replace reviewed phrases only; never infer translations for customer data.
   let composed = text;
-  for (const [source, target] of phrases[locale]) {
+  const list = phrases[locale] ?? phrases['de'] ?? [];
+  for (const [source, target] of list) {
     if (source.length >= 12 && composed.includes(source)) composed = composed.replaceAll(source, target);
   }
   if (composed !== text) return composed;
