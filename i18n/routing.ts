@@ -6,10 +6,9 @@ export function isLocale(value: unknown): value is Locale {
 export function stripLocale(path: string) {
   return path.replace(/^\/(de)(?=\/|\?|#|$)/, '') || '/';
 }
-export function localizedPath(path: string, locale: Locale) {
+export function localizedPath(path: string, _locale: Locale) {
   if (!path.startsWith('/') || path.startsWith('//') || /^\/api(?:\/|$)/.test(path)) return path;
-  const clean = stripLocale(path);
-  return `/${locale}${clean === '/' ? '' : clean}`;
+  return stripLocale(path);
 }
 export function detectLocale(preference: string | undefined, acceptLanguage: string | null): Locale {
   return 'de';

@@ -4,15 +4,7 @@ export function middleware(request: NextRequest) {
   const incomingPath = request.nextUrl.pathname;
   const pageRequest = !incomingPath.startsWith('/api/') && !/\.[a-z0-9]+$/i.test(incomingPath);
   const prefix = incomingPath.split('/')[1];
-  const locale = isLocale(prefix) ? prefix : detectLocale(request.cookies.get('bren_locale')?.value, request.headers.get('accept-language'));
-  if (pageRequest && !isLocale(prefix)) {
-    const target = request.nextUrl.clone();
-    target.pathname = `/${locale}${incomingPath === '/' ? '' : incomingPath}`;
-    const redirect = NextResponse.redirect(target);
-    redirect.headers.set('Vary', 'Accept-Language, Cookie');
-    redirect.headers.set('Cache-Control', 'private, no-store');
-    return redirect;
-  }
+  const locale = 'de';
   const nonce = btoa(crypto.randomUUID());
   const development = process.env.NODE_ENV !== 'production';
   const connections = ["'self'", 'https://www.googletagmanager.com', 'https://*.google-analytics.com', 'https://*.analytics.google.com',
