@@ -23,13 +23,27 @@ export async function protectApi(request: Request, limit: number, windowMs = 60_
       auth: { persistSession: false, autoRefreshToken: false },
       global: { fetch: (input, init) => fetch(input, { ...init, signal: AbortSignal.timeout(5000) }) },
     });
-    const result = await db.rpc('consume_api_rate_limit', { p_key: key, p_limit: limit, p_window_seconds: Math.ceil(windowMs / 1000) });
+    const result = await (async () => {
+      try {
+        const first = await db.rpc('consume_api_rate_limit', { p_key: key, p_limit: limit, p_window_seconds: Math.ceil(windowMs / 1000) });
+        if (!first.error || first.status < 500) return first;
+        console.error('API rate-limit check returned a server error:', first.status, first.error.code);
+      } catch (cause) {
+        console.error('API rate-limit check failed:', cause);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      return db.rpc('consume_api_rate_limit', { p_key: key, p_limit: limit, p_window_seconds: Math.ceil(windowMs / 1000) });
+    })();
     const quota = Array.isArray(result.data) ? result.data[0] : null;
     if (result.error || !quota || typeof quota.allowed !== 'boolean' || !Number.isInteger(quota.retry_after) || quota.retry_after < 1 || quota.retry_after > 3600) {
+      if (result.error) console.error('API rate-limit check failed after retry:', result.status, result.error.code);
       return deny('Service temporairement indisponible. Réessayez plus tard.', 503);
     }
     return quota.allowed ? null : deny('Trop de demandes. Réessayez plus tard.', 429, { 'Retry-After': String(quota.retry_after) });
-  } catch { return deny('Service temporairement indisponible. Réessayez plus tard.', 503); }
+  } catch (cause) {
+    console.error('API rate-limit check failed after retry:', cause);
+    return deny('Service temporairement indisponible. Réessayez plus tard.', 503);
+  }
 }
 
 export class BodyLimitError extends Error {}
