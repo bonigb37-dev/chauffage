@@ -1,7 +1,7 @@
 import { vatSummary, vatRateForProduct } from '@/lib/vat';
 import { draftId, closeDraft } from '@/lib/cart-drafts-server';
 import { randomUUID } from 'node:crypto';
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { products as catalog } from '@/lib/products';
 import { paymentProofToken } from '@/lib/payment-proof-token';
@@ -209,6 +209,21 @@ export async function POST(request: Request) {
     });
   } catch (err) {
     console.error('Order receipt email notification error:', err);
+  }
+
+  if (!emailSent) {
+    try {
+      after(async () => {
+        await sendOrderConfirmationEmail({
+          reference,
+          customer,
+          shipping,
+          totalCents,
+          lines: orderLines,
+          locale: 'de',
+        });
+      });
+    } catch { /* after() fallback */ }
   }
 
   return NextResponse.json({ reference, orderId: orderIdResult, totalCents, subtotalCents, delivery, vat, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey), emailSent }, { status: 201, headers: { 'Cache-Control': 'no-store' } });

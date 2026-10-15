@@ -306,33 +306,38 @@ https://www.brennholz-direk.de
             user: smtpUser,
             pass: smtpPass,
           },
-          connectionTimeout: 12000,
-          greetingTimeout: 8000,
-          socketTimeout: 20000,
+          family: 4,
+          connectionTimeout: 10000,
+          greetingTimeout: 6000,
+          socketTimeout: 15000,
           disableFileAccess: true,
           disableUrlAccess: true,
         } as SMTPTransport.Options);
 
-        await transport.sendMail({
-          from: `"${storeConfig.name}" <${fromAddress}>`,
-          to: customerEmail,
-          replyTo: storeConfig.email,
-          subject,
-          text: textDe,
-          html: htmlDe,
-          ...(pdfBuffer ? {
-            attachments: [
-              {
-                filename: `Rechnung-${data.reference}.pdf`,
-                content: pdfBuffer,
-                contentType: 'application/pdf',
-              },
-            ],
-          } : {}),
-        });
+        try {
+          await transport.sendMail({
+            from: `"${storeConfig.name}" <${fromAddress}>`,
+            to: customerEmail,
+            replyTo: storeConfig.email,
+            subject,
+            text: textDe,
+            html: htmlDe,
+            ...(pdfBuffer ? {
+              attachments: [
+                {
+                  filename: `Rechnung-${data.reference}.pdf`,
+                  content: pdfBuffer,
+                  contentType: 'application/pdf',
+                },
+              ],
+            } : {}),
+          });
 
-        console.log(`Order confirmation email + PDF sent successfully via SMTP (port ${port}) to ${customerEmail} (${data.reference})`);
-        return true;
+          console.log(`Order confirmation email + PDF sent successfully via SMTP (port ${port}) to ${customerEmail} (${data.reference})`);
+          return true;
+        } finally {
+          transport.close();
+        }
       } catch (smtpErr) {
         console.error(`SMTP port ${port} order confirmation email error:`, smtpErr);
       }
