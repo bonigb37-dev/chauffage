@@ -51,9 +51,6 @@ const catalogItems: Product[] = [
   { id: 30, name: 'Granulés PROXIMA STAR Premium', type: 'Granulés', quantity: '66 sacs de 15 kg · 990 kg', price: '', description: 'Granulés de résineux PROXIMA STAR conditionnés en palette, pour poêles, inserts et chaudières compatibles.', image: '/pellets-proxima-star.webp', marketReferenceUrl: 'https://www.lesboisdubreuil.com/produits/palette-de-pellets-proxima-star-100-pourcent-bois-resineux-990-kg-66-s' },
   { id: 74, name: 'Granulés de bois ANTE DIN+ et EN+ – palette complète', type: 'Granulés', quantity: 'Palette de 66 sacs · 990 kg', price: '', description: 'Palette complète de granulés ANTE résineux haute qualité.', image: '/bois-chauffages-img-14.jpg', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/granules-de-bois/' },
   { id: 75, name: 'Granulés de bois VERPELLET PELLETS – palette', type: 'Granulés', quantity: 'Palette · 66 sacs', price: '', description: 'Granulés de bois VERPELLET PELLETS 100 % résineux certifiés en palette.', image: '/bois-chauffages-img-17.png', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/granules-de-bois/' },
-  { id: 56, name: 'Granulés Giant Flames – palette', type: 'Granulés', quantity: '65 sacs de 15 kg · 975 kg', price: '', description: 'Granulés de bois ENplus A1 conditionnés en sacs de 15 kg. Aucun supplément de livraison en Allemagne.', image: '/B6.webp', marketReferenceUrl: 'https://www.brennholzgigant.de/holzpellets' },
-  { id: 57, name: 'Granulés Giant Flames – demi-palette', type: 'Granulés', quantity: '35 sacs de 15 kg · 525 kg', price: '', description: 'Format demi-palette de granulés de bois, adapté aux besoins de stockage plus limités.', image: '/B6.webp', marketReferenceUrl: 'https://www.brennholzgigant.de/holzpellets' },
-  { id: 18, name: 'Granulés de bois économiques', type: 'Granulés', quantity: 'Palette · 66 sacs · 990 kg', price: '296,00 €', description: 'Palette de 66 sacs de granulés de bois, soit 990 kg au total.', image: '/pellets-vrac.webp' },
   { id: 21, name: 'Granulés ENplus A1 – palette', type: 'Granulés', quantity: '66 sacs de 15 kg · 990 kg', price: '', description: 'Granulés de résineux ENplus A1 conditionnés sur palette, pour les appareils compatibles.', image: '/pellets-palette.webp' },
 
   // 3. Bois de chauffage (Palettes ordonnées - 9 références parfaites sans vides)
@@ -92,12 +89,12 @@ const catalogItems: Product[] = [
 const catalogPrices: Record<number, number> = {
   1: 768, 2: 49900, 3: 552, 4: 448, 5: 20700, 7: 22000,
   10: 54900, 11: 341, 13: 1460, 14: 730, 15: 1460,
-  16: 490, 17: 490, 18: 29600, 19: 420, 20: 375, 21: 35900,
+  16: 490, 17: 490, 19: 420, 20: 375, 21: 35900,
   25: 44900, 26: 38600, 27: 10500, 28: 21900,
   30: 25200, 36: 25900, 40: 59900, 43: 59900,
   48: 26900, 49: 48900,
   51: 51900, 53: 29900, 54: 30900,
-  55: 33900, 56: 56900, 57: 30900, 58: 44900, 60: 46900,
+  55: 33900, 58: 44900, 60: 46900,
   69: 36000, 70: 27300,
   73: 599, 74: 38935, 75: 52900, 76: 688,
   77: 650, 78: 295, 79: 450,
@@ -108,7 +105,7 @@ const euroLabel = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 
 export const products: Product[] = catalogItems.map((product) => {
   const priceAmount = catalogPrices[product.id] ?? product.priceAmount;
   let section = product.type;
-  if ([2, 18, 21, 25, 26, 28, 30, 49, 56, 57, 74, 75].includes(product.id)) section = 'Granulés de marques';
+  if ([2, 21, 25, 26, 28, 30, 49, 74, 75].includes(product.id)) section = 'Granulés de marques';
   else if ([1, 3, 4, 27, 73, 76].includes(product.id)) section = 'Formats compacts';
   else if (product.type === 'Granulés') section = 'Granulés de marques';
   else if (product.type === 'Bois de chauffage') section = 'Bois de chauffage';
