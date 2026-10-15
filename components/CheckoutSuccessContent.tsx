@@ -40,6 +40,8 @@ export default function CheckoutSuccessContent() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [downloadingPdf, setDownloadingPdf] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<'sent' | 'resending' | 'success' | 'error' | null>(null);
   const { clearCart } = useCart();
   const { stopLoading } = useActionLoading();
 
@@ -49,7 +51,72 @@ export default function CheckoutSuccessContent() {
     if (!pending) return;
     setOrder(pending);
     if (markCartCleared(pending.reference)) clearCart();
+
+    if (pending.emailSent) {
+      setEmailStatus('sent');
+    } else {
+      // Ensure email receipt with PDF invoice is dispatched even if serverless checkout timed out
+      fetch('/api/invoice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reference: pending.reference,
+          customer: pending.customer,
+          shipping: pending.shipping,
+          totalCents: pending.total,
+          orderDate: pending.orderDate,
+          sendEmail: true,
+          lines: pending.items.map((it) => ({
+            name: it.name,
+            quantity: it.quantity,
+            unit_price_cents: it.unitPriceCents || Math.round(pending.total / pending.items.reduce((s, x) => s + x.quantity, 0)),
+          })),
+        }),
+      })
+        .then((r) => r.json())
+        .then((res) => {
+          if (res?.emailSent || res?.success) {
+            setEmailStatus('sent');
+          }
+        })
+        .catch(() => {});
+    }
   }, [clearCart, stopLoading]);
+
+  const handleResendEmail = async () => {
+    if (!order || sendingEmail) return;
+    setSendingEmail(true);
+    setEmailStatus('resending');
+    try {
+      const res = await fetch('/api/invoice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          reference: order.reference,
+          customer: order.customer,
+          shipping: order.shipping,
+          totalCents: order.total,
+          orderDate: order.orderDate,
+          sendEmail: true,
+          lines: order.items.map((it) => ({
+            name: it.name,
+            quantity: it.quantity,
+            unit_price_cents: it.unitPriceCents || Math.round(order.total / order.items.reduce((s, x) => s + x.quantity, 0)),
+          })),
+        }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setEmailStatus('success');
+      } else {
+        setEmailStatus('error');
+      }
+    } catch {
+      setEmailStatus('error');
+    } finally {
+      setSendingEmail(false);
+    }
+  };
 
   const copyToClipboard = (text: string, key: string) => {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
@@ -206,12 +273,52 @@ export default function CheckoutSuccessContent() {
             </div>
           )}
 
-          {/* Quick confirmation notification note */}
-          <div className="mt-6 flex items-center gap-3 rounded-2xl bg-stone-50 px-4 py-3 text-xs text-stone-600 sm:text-sm">
-            <Mail size={16} className="shrink-0 text-stone-500" />
-            <span>
-              Eine automatische Bestelleingangsbestätigung samt offizieller Rechnung im PDF-Format wurde an <strong>{order.customer.email}</strong> versandt.
-            </span>
+          {/* Email Confirmation & Resend Banner */}
+          <div className="mt-6 rounded-2xl border border-emerald-200/90 bg-emerald-50/70 p-4 sm:p-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-emerald-800">
+                  <Mail size={20} />
+                </div>
+                <div>
+                  <h2 className="text-sm font-bold text-stone-900">
+                    Bestelleingangsbestätigung & Rechnung per E-Mail
+                  </h2>
+                  <p className="mt-0.5 text-xs text-stone-600 sm:text-sm">
+                    Eine Eingangsbestätigung samt offizieller Rechnung im PDF-Format wurde an <strong className="text-stone-900">{order.customer.email}</strong> versandt.
+                  </p>
+                  {emailStatus === 'success' && (
+                    <p className="mt-2 flex items-center gap-1.5 text-xs font-bold text-emerald-800">
+                      <Check size={14} /> E-Mail mit Rechnung erfolgreich erneut versandt!
+                    </p>
+                  )}
+                  {emailStatus === 'error' && (
+                    <p className="mt-2 text-xs font-semibold text-amber-900">
+                      Der erneute Versand konnte nicht abgeschlossen werden. Prüfen Sie bitte Ihren Spam-Ordner oder laden Sie Ihre Rechnung oben als PDF herunter.
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleResendEmail}
+                disabled={sendingEmail}
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-emerald-300 bg-white px-4 py-2.5 text-xs font-bold text-stone-800 shadow-sm transition hover:bg-emerald-50 disabled:opacity-60"
+              >
+                {sendingEmail ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin text-emerald-700" />
+                    Wird gesendet...
+                  </>
+                ) : (
+                  <>
+                    <Mail size={14} className="text-emerald-700" />
+                    E-Mail erneut senden
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 

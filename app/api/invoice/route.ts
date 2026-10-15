@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { generateInvoicePdf, type InvoiceData } from '@/lib/invoice-pdf';
+import { sendOrderConfirmationEmail } from '@/lib/order-email';
 import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security';
 
 export const runtime = 'nodejs';
@@ -78,6 +79,24 @@ export async function GET(request: Request) {
     }),
   };
 
+  const sendEmail = url.searchParams.get('sendEmail') === '1' || url.searchParams.get('sendEmail') === 'true';
+  if (sendEmail) {
+    try {
+      const emailSent = await sendOrderConfirmationEmail({
+        reference: order.reference,
+        customer: invoiceData.customer,
+        shipping: invoiceData.shipping,
+        totalCents: invoiceData.totalCents,
+        lines: invoiceData.lines,
+        locale: 'de',
+      });
+      return NextResponse.json({ success: true, emailSent });
+    } catch (err) {
+      console.error('Invoice confirmation email error:', err);
+      return NextResponse.json({ error: 'Die Bestätigung per E-Mail konnte nicht versendet werden.' }, { status: 500 });
+    }
+  }
+
   try {
     const pdfBuffer = await generateInvoicePdf(invoiceData);
     return new Response(new Uint8Array(pdfBuffer), {
@@ -149,6 +168,24 @@ export async function POST(request: Request) {
       }),
     };
 
+    const sendEmail = isRecord(body) && (body.sendEmail === true || body.sendEmail === '1' || body.sendEmail === 'true');
+    if (sendEmail) {
+      try {
+        const emailSent = await sendOrderConfirmationEmail({
+          reference: invoiceData.reference,
+          customer: invoiceData.customer,
+          shipping: invoiceData.shipping,
+          totalCents: invoiceData.totalCents,
+          lines: invoiceData.lines,
+          locale: 'de',
+        });
+        return NextResponse.json({ success: true, emailSent });
+      } catch (err) {
+        console.error('Invoice confirmation email error:', err);
+        return NextResponse.json({ error: 'Die Bestätigung per E-Mail konnte nicht versendet werden.' }, { status: 500 });
+      }
+    }
+
     try {
       const pdfBuffer = await generateInvoicePdf(invoiceData);
       return new Response(new Uint8Array(pdfBuffer), {
@@ -219,6 +256,24 @@ export async function POST(request: Request) {
       };
     }),
   };
+
+  const sendEmail = isRecord(body) && (body.sendEmail === true || body.sendEmail === '1' || body.sendEmail === 'true');
+  if (sendEmail) {
+    try {
+      const emailSent = await sendOrderConfirmationEmail({
+        reference: order.reference,
+        customer: invoiceData.customer,
+        shipping: invoiceData.shipping,
+        totalCents: invoiceData.totalCents,
+        lines: invoiceData.lines,
+        locale: 'de',
+      });
+      return NextResponse.json({ success: true, emailSent });
+    } catch (err) {
+      console.error('Invoice confirmation email error:', err);
+      return NextResponse.json({ error: 'Die Bestätigung per E-Mail konnte nicht versendet werden.' }, { status: 500 });
+    }
+  }
 
   try {
     const pdfBuffer = await generateInvoicePdf(invoiceData);

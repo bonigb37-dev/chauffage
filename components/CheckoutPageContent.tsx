@@ -75,7 +75,7 @@ export default function CheckoutPageContent() {
         method: 'POST', headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
         body: JSON.stringify({ items: lines.map(({ product, quantity }) => ({ productId: product.id, quantity, unitPriceCents: product.priceAmount })), customer, shipping, acceptedTerms: true }),
       });
-      const result = await response.json() as { reference?: string; totalCents?: number; proofToken?: string; vat?: ReturnType<typeof vatSummary>; error?: string };
+      const result = await response.json() as { reference?: string; totalCents?: number; proofToken?: string; vat?: ReturnType<typeof vatSummary>; emailSent?: boolean; error?: string };
       if (!response.ok || !result.reference || typeof result.totalCents !== 'number') {
         stopLoading();
         setError(result.error ?? 'Die Bestellung konnte nicht aufgenommen werden. Bitte versuchen Sie es später erneut.');
@@ -90,6 +90,7 @@ export default function CheckoutPageContent() {
         proofToken: result.proofToken,
         total: confirmedTotal,
         orderDate: new Date().toLocaleDateString('de-DE'),
+        emailSent: result.emailSent,
         delivery: { feeCents: 0 },
         vat: result.vat,
         items: lines.map(({ product, quantity }) => ({ name: product.name, quantity, unitPriceCents: product.priceAmount })),

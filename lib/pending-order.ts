@@ -7,6 +7,7 @@ export type PendingOrder = {
   proofToken?: string;
   total: number;
   orderDate?: string;
+  emailSent?: boolean;
   items: { name: string; quantity: number; unitPriceCents?: number }[];
   customer: {
     firstName: string;

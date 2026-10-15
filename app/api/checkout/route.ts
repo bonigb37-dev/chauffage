@@ -165,9 +165,10 @@ export async function POST(request: Request) {
     catch { console.error('Cart draft cleanup unavailable after successful order'); }
   }
 
+  let emailSent = false;
   // Service d'envoi de l'accusé de réception par e-mail au client (toujours en allemand)
   try {
-    await sendOrderConfirmationEmail({
+    emailSent = await sendOrderConfirmationEmail({
       reference,
       customer,
       shipping,
@@ -179,5 +180,5 @@ export async function POST(request: Request) {
     console.error('Order receipt email notification error:', err);
   }
 
-  return NextResponse.json({ reference, orderId, totalCents, subtotalCents, delivery, vat, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey) }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
+  return NextResponse.json({ reference, orderId, totalCents, subtotalCents, delivery, vat, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey), emailSent }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
 }

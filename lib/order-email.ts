@@ -276,47 +276,51 @@ https://www.brennholz-direk.de
 
   // 1. Primary: SMTP via Hostinger
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
-    try {
-      const port = Number(process.env.SMTP_PORT ?? 465);
-      const fromAddress = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER;
-      const transport = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port,
-        secure: port === 465,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASSWORD,
-        },
-        family: 4, // IPv4 resolution to prevent DNS timeout on Windows
-        connectionTimeout: 15000,
-        greetingTimeout: 10000,
-        socketTimeout: 20000,
-        disableFileAccess: true,
-        disableUrlAccess: true,
-      } as SMTPTransport.Options);
+    const fromAddress = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER;
+    const initialPort = Number(process.env.SMTP_PORT ?? 465);
+    const portsToTry = initialPort === 587 ? [587, 465] : [465, 587];
 
-      await transport.sendMail({
-        from: `"${storeConfig.name}" <${fromAddress}>`,
-        to: customerEmail,
-        replyTo: storeConfig.email,
-        subject,
-        text: textDe,
-        html: htmlDe,
-        ...(pdfBuffer ? {
-          attachments: [
-            {
-              filename: `Rechnung-${data.reference}.pdf`,
-              content: pdfBuffer,
-              contentType: 'application/pdf',
-            },
-          ],
-        } : {}),
-      });
+    for (const port of portsToTry) {
+      try {
+        const isSecure = port === 465;
+        const transport = nodemailer.createTransport({
+          host: process.env.SMTP_HOST,
+          port,
+          secure: isSecure,
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASSWORD,
+          },
+          connectionTimeout: 12000,
+          greetingTimeout: 8000,
+          socketTimeout: 20000,
+          disableFileAccess: true,
+          disableUrlAccess: true,
+        } as SMTPTransport.Options);
 
-      console.log(`Order confirmation email sent successfully via SMTP to ${customerEmail} (${data.reference})`);
-      return true;
-    } catch (smtpErr) {
-      console.error('SMTP order confirmation email error:', smtpErr);
+        await transport.sendMail({
+          from: `"${storeConfig.name}" <${fromAddress}>`,
+          to: customerEmail,
+          replyTo: storeConfig.email,
+          subject,
+          text: textDe,
+          html: htmlDe,
+          ...(pdfBuffer ? {
+            attachments: [
+              {
+                filename: `Rechnung-${data.reference}.pdf`,
+                content: pdfBuffer,
+                contentType: 'application/pdf',
+              },
+            ],
+          } : {}),
+        });
+
+        console.log(`Order confirmation email + PDF sent successfully via SMTP (port ${port}) to ${customerEmail} (${data.reference})`);
+        return true;
+      } catch (smtpErr) {
+        console.error(`SMTP port ${port} order confirmation email error:`, smtpErr);
+      }
     }
   }
 
