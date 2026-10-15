@@ -1019,7 +1019,7 @@ export default function AccountPageContent() {
 
       {/* Embedded Minimalist Footer */}
       <footer className="relative z-20 w-full max-w-6xl mx-auto px-4 sm:px-8 py-4 text-center text-xs text-stone-500">
-        <p>© {new Date().getFullYear()} Brennholz-direk — Leylines Park — Espace sécurisé.</p>
+        <p>© {new Date().getFullYear()} Brennholz-direk — Leylines Park — Sicherer Kundenbereich. Alle Rechte vorbehalten.</p>
         <nav aria-label="Informations juridiques" className="mt-3 flex flex-wrap justify-center gap-4"><Link href="/datenschutz" className="text-stone-600 hover:text-slate-950 underline">Confidentialité</Link><Link href="/retractation#retractation" className="rounded-lg border border-orange-300 bg-orange-50/60 px-3 py-1.5 font-bold text-orange-700 hover:bg-orange-100">Me rétracter du contrat</Link></nav>
       </footer>
     </div>

@@ -25,7 +25,8 @@ async function authenticate(request: Request) {
 }
 export async function GET(request: Request) {
   try {
-    const blocked = await protectApi(request, 120); if (blocked) return blocked;
+    const isNotifications = new URL(request.url).searchParams.get('notifications') === '1';
+    const blocked = await protectApi(request, isNotifications ? 300 : 120); if (blocked) return blocked;
     const access = await authenticate(request); if (access.error) return access.error;
     const { db, user, admin } = access;
     const params = new URL(request.url).searchParams;
@@ -41,12 +42,35 @@ export async function GET(request: Request) {
       return new Response(await downloaded.data.arrayBuffer(), { headers: { 'Content-Type': record.data.attachment_type || 'application/octet-stream', 'Content-Disposition': `attachment; filename="attachment"; filename*=UTF-8''${encodeURIComponent(attachmentName(record.data.attachment_name || 'attachment'))}`, 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff', 'Content-Security-Policy': "default-src 'none'; sandbox", Vary: 'Authorization' } });
     }
     if (params.get('notifications') === '1') {
+      let countsData: { support: number; contacts: number; threads?: unknown[] } | null = null;
       const counts = await db.rpc('support_notification_counts', { p_reader: user.id });
-      if (counts.error) return response({ error: 'setup' }, 503);
-      if (!admin) return response(counts.data);
-      const mail = await db.rpc('mail_notification_status');
-      if (mail.error) return response({ error: 'setup' }, 503);
-      return response({ ...counts.data, mail: { ...mail.data, configured: supportMailConfigured() } });
+      if (!counts.error && counts.data && typeof counts.data.support === 'number') {
+        countsData = counts.data;
+      } else {
+        try {
+          const [contactsRes, supportRes] = await Promise.all([
+            db.from('contact_requests').select('id', { count: 'exact', head: true }).eq('status', 'new'),
+            db.from('support_messages').select('id', { count: 'exact', head: true }).eq('sender_kind', 'customer'),
+          ]);
+          countsData = {
+            support: supportRes.count ?? 0,
+            contacts: contactsRes.count ?? 0,
+            threads: [],
+          };
+        } catch {
+          if (counts.error) return response({ error: 'setup' }, 503);
+        }
+      }
+      if (!countsData) return response({ error: 'setup' }, 503);
+      if (!admin) return response(countsData);
+      let mailData = { pending: 0, failed: 0, configured: supportMailConfigured() };
+      try {
+        const mail = await db.rpc('mail_notification_status');
+        if (!mail.error && mail.data) {
+          mailData = { ...mail.data, configured: supportMailConfigured() };
+        }
+      } catch { /* Mail notification status is secondary; do not fail notifications if mail RPC is unavailable */ }
+      return response({ ...countsData, mail: mailData });
     }
     if (params.get('inbox') === '1') {
       if (!admin) return response({ error: 'forbidden' }, 403);

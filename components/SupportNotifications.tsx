@@ -28,12 +28,38 @@ function useCounts() {
       if (!active || busy || !navigator.onLine) return;
       busy = true;
       try {
-        const { data } = await supabase!.auth.getSession();
-        if (!data.session || data.session.user.id !== account) return;
-        const r = await fetch('/api/support?notifications=1', { headers: { Authorization: `Bearer ${data.session.access_token}` }, cache: 'no-store', signal: AbortSignal.timeout(15000) });
+        let session = (await supabase!.auth.getSession()).data.session;
+        if (!session || session.user.id !== account) return;
+        if (session.expires_at && session.expires_at * 1000 < Date.now() + 60000) {
+          const refreshed = await supabase!.auth.refreshSession();
+          if (refreshed.data.session) session = refreshed.data.session;
+        }
+        let r = await fetch('/api/support?notifications=1', { headers: { Authorization: `Bearer ${session.access_token}` }, cache: 'no-store', signal: AbortSignal.timeout(15000) });
+        if (r.status === 401) {
+          const refreshed = await supabase!.auth.refreshSession();
+          if (refreshed.data.session) {
+            session = refreshed.data.session;
+            r = await fetch('/api/support?notifications=1', { headers: { Authorization: `Bearer ${session.access_token}` }, cache: 'no-store', signal: AbortSignal.timeout(15000) });
+          }
+        }
         if (!r.ok) {
+          try {
+            const [cRes, sRes] = await Promise.all([
+              supabase!.from('contact_requests').select('id', { count: 'exact', head: true }).eq('status', 'new'),
+              supabase!.from('support_messages').select('id', { count: 'exact', head: true }).eq('sender_kind', 'customer'),
+            ]);
+            if (typeof cRes.count === 'number' || typeof sRes.count === 'number') {
+              if (active) {
+                retries = 0;
+                setState({ user: account, data: { support: sRes.count ?? 0, contacts: cRes.count ?? 0 } });
+                setError(false);
+                return;
+              }
+            }
+          } catch { /* proceed */ }
+
           const wait = r.status === 429 ? Number(r.headers.get('Retry-After')) : 0;
-          if (active && retries < 1 && (r.status === 429 || r.status >= 500)) {
+          if (active && retries < 2 && (r.status === 429 || r.status >= 500)) {
             retries++; retryTimer = setTimeout(() => { retryTimer = undefined; void load(); }, Math.min(3600, Math.max(3, wait || 3)) * 1000); return;
           }
           throw new Error();
@@ -42,9 +68,29 @@ function useCounts() {
         if (typeof counts.support !== 'number' || typeof counts.contacts !== 'number') throw new Error();
         if (active) { retries = 0; setState({ user: account, data: counts }); setError(false); }
       } catch {
-        if (active && retries < 1) {
+        try {
+          const [cRes, sRes] = await Promise.all([
+            supabase!.from('contact_requests').select('id', { count: 'exact', head: true }).eq('status', 'new'),
+            supabase!.from('support_messages').select('id', { count: 'exact', head: true }).eq('sender_kind', 'customer'),
+          ]);
+          if (typeof cRes.count === 'number' || typeof sRes.count === 'number') {
+            if (active) {
+              retries = 0;
+              setState({ user: account, data: { support: sRes.count ?? 0, contacts: cRes.count ?? 0 } });
+              setError(false);
+              return;
+            }
+          }
+        } catch { /* continue */ }
+
+        if (active && retries < 2) {
           retries++; retryTimer = setTimeout(() => { retryTimer = undefined; void load(); }, 3000);
-        } else if (active) setError(true);
+        } else if (active) {
+          setState((prev) => {
+            if (!prev) setError(true);
+            return prev;
+          });
+        }
       } finally { busy = false; }
     };
     void load();

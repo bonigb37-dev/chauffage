@@ -56,7 +56,7 @@ export default function Footer() {
       </div>
       <div className="border-t border-white/10 py-6 text-center text-sm text-[#F5F7F8]/70">
         <div className="container flex flex-col items-center justify-between gap-3 sm:flex-row">
-          <p>© {new Date().getFullYear()} Brennholz-direk — Leylines Park.</p>
+          <p>© {new Date().getFullYear()} Brennholz-direk — Leylines Park. Alle Rechte vorbehalten.</p>
           <button data-original-content type="button" onClick={() => window.dispatchEvent(new Event('bren-analytics-settings'))} className="font-semibold text-white underline underline-offset-4 hover:text-[#F5F7F8]">{cookieConsentCopy[brenLocale].settings}</button>
           <Link href="/agb" className="font-semibold text-white underline underline-offset-4 transition hover:text-[#F5F7F8]">Conditions générales de vente</Link>
         </div>
