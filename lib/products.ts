@@ -64,16 +64,13 @@ const catalogItems: Product[] = [
   { id: 19, name: 'Bûches de bois compressé', type: 'Bois de chauffage', quantity: 'Paquet de 10 kg', price: '4,20 €', description: 'Des bûches densifiées proposées en paquet pratique.', image: '/buches-compressees.webp' },
   { id: 20, name: 'Bûches densifiées rondes', type: 'Bois de chauffage', quantity: 'Paquet de 10 kg', price: '3,75 €', description: 'Un format rond de bois compressé à utiliser dans un foyer compatible.', image: '/buches-compressees-rondes.webp' },
 
-  // 4. Briquettes (9 références)
+  // 4. Briquettes (6 références)
   { id: 10, name: 'Briquettes Pini-Kay (origine Pays-Bas) – palette', type: 'Briquettes', quantity: '96 sacs de 10 kg · 960 kg', price: '549,00 €', description: 'Briquettes Pini-Kay à combustion régulière, conditionnées en palette complète. À utiliser dans un appareil compatible.', image: '/briquettes-hexagonales.webp', volumePriceAmount: 51900, volumePriceQuantity: 5, badge: 'Nouveau', marketReferenceUrl: 'https://www.brennholzgigant.de/giant-flames-pini-kay-holzbriketts-96-sacke-von-10-kg' },
   { id: 40, name: 'Briquettes rondes de hêtre – palette', type: 'Briquettes', quantity: '96 paquets de 10 kg · 960 kg', price: '', description: 'Briquettes rondes en hêtre, conditionnées en paquets de 10 kg. Stocker au sec et vérifier la compatibilité de l’appareil.', image: '/briquettes-beech-premium.jpg', volumePriceAmount: 56900, volumePriceQuantity: 5, marketReferenceUrl: 'https://www.brennholzgigant.de/runde-buche-brikettspallet-96-packungen-x-10-kg-960-kg' },
   { id: 51, name: 'Briquettes RUF – palette', type: 'Briquettes', quantity: '96 paquets de 10 kg · 960 kg', price: '', description: 'Briquettes de bois RUF rectangulaires, conditionnées en 96 paquets de 10 kg, soit 960 kg au total. À conserver au sec.', image: '/briquettes-ruf.webp', compareAtPriceAmount: 52900, volumePriceAmount: 48900, volumePriceQuantity: 5, badge: '−2 %', marketReferenceUrl: 'https://www.brennholzgigant.de/96-sacke-ruf-briketten' },
   { id: 43, name: 'Briquettes Biomac Extra – braise longue durée', type: 'Briquettes', quantity: '100 paquets de 10 kg · 1 000 kg', price: '', description: 'Briquettes de nuit Biomac fabriquées à partir d’écorce lavée et séchée. Elles sont conçues pour maintenir les braises plusieurs heures ; vérifier les consignes de l’appareil.', image: '/briquettes-biomac-palette.jpg', marketReferenceUrl: 'https://www.oekobrix.de/shop/holzbriketts/glut-palette-bs-extra-hart-mit-1000kg/', imageSourceUrl: 'https://holzbrx.de/media/image/17/4e/ef/BIOMAC_Rindenbriketts_Palette.jpg' },
   { id: 60, name: 'Briquettes Giant Flames – palette', type: 'Briquettes', quantity: '190 paquets de 4,8 kg · 912 kg', price: '', description: 'Briquettes de bois Giant Flames en petits paquets individuels.', image: '/B4.webp', compareAtPriceAmount: 49900, badge: '−6 %', marketReferenceUrl: 'https://www.brennholzgigant.de/holzbriketts' },
   { id: 11, name: 'Briquettes RUF – paquet', type: 'Briquettes', quantity: 'Paquet de 10 kg', price: '3,41 €', description: 'Briquettes de bois RUF conditionnées en paquet de 10 kg, à conserver au sec.', image: '/briquettes-packs.webp' },
-  { id: 53, name: 'Briquettes RUF – demi-palette', type: 'Briquettes', quantity: '48 paquets de 10 kg · 480 kg', price: '', description: 'Un conditionnement intermédiaire de briquettes RUF, plus facile à stocker qu’une palette complète.', image: '/B3.webp', marketReferenceUrl: 'https://www.brennholzgigant.de/96-sacke-ruf-briketten' },
-  { id: 54, name: 'Briquettes Pini-Kay – demi-palette', type: 'Briquettes', quantity: '48 sacs de 10 kg · 480 kg', price: '', description: 'Le format demi-palette des briquettes Pini-Kay d’origine néerlandaise, à conserver dans un endroit sec.', image: '/B2.webp', marketReferenceUrl: 'https://www.brennholzgigant.de/giant-flames-pini-kay-holzbriketts-96-sacke-von-10-kg' },
-  { id: 55, name: 'Briquettes rondes de hêtre – demi-palette', type: 'Briquettes', quantity: '48 paquets de 10 kg · 480 kg', price: '', description: 'Briquettes rondes de hêtre en format demi-palette, pour un stockage plus compact.', image: '/B5.jpg', marketReferenceUrl: 'https://www.brennholzgigant.de/runde-buche-brikettspallet-96-packungen-x-10-kg-960-kg' },
 
   // 5. Bois d’allumage (8 références)
   { id: 13, name: 'Bûchettes d’allumage sèches', type: 'Bois d’allumage', quantity: 'Carton de 10 kg', price: '14,60 €', description: 'Des bûchettes sèches pour préparer l’allumage du foyer.', image: '/bois-allumage-buchettes.webp' },
@@ -93,8 +90,7 @@ const catalogPrices: Record<number, number> = {
   25: 44900, 26: 38600, 27: 10500, 28: 21900,
   30: 25200, 36: 25900, 40: 59900, 43: 59900,
   48: 26900, 49: 48900,
-  51: 51900, 53: 29900, 54: 30900,
-  55: 33900, 58: 44900, 60: 46900,
+  51: 51900, 58: 44900, 60: 46900,
   69: 36000, 70: 27300,
   73: 599, 74: 38935, 75: 52900, 76: 688,
   77: 650, 78: 295, 79: 450,
@@ -109,7 +105,7 @@ export const products: Product[] = catalogItems.map((product) => {
   else if ([1, 3, 4, 27, 73, 76].includes(product.id)) section = 'Formats compacts';
   else if (product.type === 'Granulés') section = 'Granulés de marques';
   else if (product.type === 'Bois de chauffage') section = 'Bois de chauffage';
-  else if ([10, 11, 40, 43, 51, 53, 54, 55, 60].includes(product.id)) section = 'Briquettes';
+  else if ([10, 11, 40, 43, 51, 60].includes(product.id)) section = 'Briquettes';
   else section = 'Bois d’allumage';
   return { ...product, section: product.section ?? section, priceAmount, price: priceAmount === undefined ? 'Indisponible à la vente' : euroLabel.format(priceAmount / 100) };
 });
