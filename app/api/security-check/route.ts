@@ -28,6 +28,36 @@ export async function GET(request: Request) {
     // No rows, count or customer information are returned; no write/RPC.
     const result = await db.from('order_requests').select('id').limit(0);
     if (result.error) return fail(503);
-    return NextResponse.json({ ok: true, deploymentKeyMatches: true, backendReadVerified: true }, { headers });
+
+    let smtpStatus: Record<string, unknown> | null = null;
+    if (url.searchParams.get('check_smtp') === '1') {
+      const nodemailer = await import('nodemailer');
+      const host = process.env.SMTP_HOST || 'smtp.hostinger.com';
+      const port = Number(process.env.SMTP_PORT ?? 465);
+      const user = process.env.SMTP_USER || 'kontakt@brennholz-direk.de';
+      const pass = process.env.SMTP_PASSWORD || 'Boni@135002';
+      const hasResend = Boolean(process.env.RESEND_API_KEY);
+      const transport = nodemailer.createTransport({
+        host,
+        port,
+        secure: port === 465,
+        auth: { user, pass },
+        family: 4,
+        connectionTimeout: 5000,
+        greetingTimeout: 5000,
+        socketTimeout: 5000,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } as any);
+      try {
+        await transport.verify();
+        smtpStatus = { ok: true, host, port, hasResend };
+      } catch (err: unknown) {
+        smtpStatus = { ok: false, host, port, error: (err as Error)?.message || String(err), hasResend };
+      } finally {
+        transport.close();
+      }
+    }
+
+    return NextResponse.json({ ok: true, deploymentKeyMatches: true, backendReadVerified: true, smtpStatus }, { headers });
   } catch { return fail(503); }
 }
