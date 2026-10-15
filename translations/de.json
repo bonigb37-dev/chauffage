@@ -979,7 +979,8 @@
   "Bûches de chêne fendues, séchées et prêtes à l’emploi dans un foyer adapté.": "Gespaltene, getrocknete Eichenscheite, einsatzbereit für eine geeignete Feuerstelle.",
   "Bûches de bouleau sèches": "Trockene Birkenscheite",
   "Bûches de bouleau fendues et séchées, présentées sur palette.": "Gespaltene und getrocknete Birkenscheite auf Palette.",
-  "Briquettes Pini-Kay (origine Pays-Bas) – palette": "Pini-Kay-Briketts (Herkunft Niederlande) – Palette",
+  "Briquettes Pini-Kay (origine Allemagne) – palette": "Pini-Kay-Briketts (Herkunft Deutschland) – Palette",
+  "Briquettes Pini-Kay (origine Pays-Bas) – palette": "Pini-Kay-Briketts (Herkunft Deutschland) – Palette",
   "96 sacs de 10 kg · 960 kg": "96 Säcke à 10 kg · 960 kg",
   "Briquettes Pini-Kay à combustion régulière, conditionnées en palette complète. À utiliser dans un appareil compatible.": "Gleichmäßig brennende Pini-Kay-Briketts auf einer kompletten Palette. Nur in geeigneten Geräten verwenden.",
   "Nouveau": "Neu",
@@ -1047,7 +1048,8 @@
   "Un conditionnement intermédiaire de briquettes RUF, plus facile à stocker qu’une palette complète.": "Eine mittlere Verpackungseinheit RUF-Briketts, die weniger Lagerplatz als eine komplette Palette benötigt.",
   "Briquettes Pini-Kay – demi-palette": "Pini-Kay-Briketts – halbe Palette",
   "48 sacs de 10 kg · 480 kg": "48 Säcke à 10 kg · 480 kg",
-  "Le format demi-palette des briquettes Pini-Kay d’origine néerlandaise, à conserver dans un endroit sec.": "Halbe Palette Pini-Kay-Briketts niederländischer Herkunft. Trocken lagern.",
+  "Le format demi-palette des briquettes Pini-Kay d’origine allemande, à conserver dans un endroit sec.": "Halbe Palette Pini-Kay-Briketts deutscher Herkunft. Trocken lagern.",
+  "Le format demi-palette des briquettes Pini-Kay d’origine néerlandaise, à conserver dans un endroit sec.": "Halbe Palette Pini-Kay-Briketts deutscher Herkunft. Trocken lagern.",
   "Briquettes rondes de hêtre – demi-palette": "Runde Buchenbriketts – halbe Palette",
   "Briquettes rondes de hêtre en format demi-palette, pour un stockage plus compact.": "Runde Buchenbriketts auf halber Palette für platzsparende Lagerung.",
   "Granulés Giant Flames – palette": "Giant Flames Holzpellets – Palette",
@@ -1466,5 +1468,10 @@
   "Origine de la demande refusée.": "Die Herkunft der Anfrage ist nicht zulässig.",
   "Service temporairement indisponible. Réessayez plus tard.": "Der Dienst ist vorübergehend nicht verfügbar. Versuchen Sie es später erneut.",
   "Trop de demandes. Réessayez plus tard.": "Zu viele Anfragen. Versuchen Sie es später erneut.",
-  "La vérification des paiements en ligne est désactivée.": "Die Überprüfung von Online-Zahlungen ist deaktiviert."
+  "La vérification des paiements en ligne est désactivée.": "Die Überprüfung von Online-Zahlungen ist deaktiviert.",
+  "Buchenscheitholz, ofenfertig - 33 cm": "Buchenscheitholz, ofenfertig - 33 cm",
+  "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+  "Buchenscheitholz, ofenfertig - 50 cm": "Buchenscheitholz, ofenfertig - 50 cm",
+  "Buchenscheitholz Premium, vorgelagert - 33 cm": "Buchenscheitholz Premium, vorgelagert - 33 cm",
+  "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.": "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette."
 }
