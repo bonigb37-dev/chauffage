@@ -6,7 +6,7 @@ import { useLocale } from 'next-intl';
 import { useRef, useState, type FormEvent } from 'react';
 import { FileCheck2, Upload } from 'lucide-react';
 
-export default function PaymentProofUpload({ reference, token }: { reference: string; token: string }) {
+export default function PaymentProofUpload({ reference, token, onSuccess }: { reference: string; token: string; onSuccess?: () => void }) {
   const brenLocale = useLocale() as Locale;
 
   const [busy, setBusy] = useState(false);
@@ -36,6 +36,7 @@ export default function PaymentProofUpload({ reference, token }: { reference: st
         setError(result.error ?? 'Der Upload ist fehlgeschlagen.');
       } else {
         setSent(true);
+        onSuccess?.();
       }
     } catch {
       setError('Der Upload ist fehlgeschlagen. Bitte überprüfen Sie Ihre Internetverbindung.');
