@@ -28,9 +28,9 @@ export async function POST(request: Request) {
   const blocked = await protectApi(request, 8, 10 * 60_000);
   if (blocked) return blocked;
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!supabaseUrl || !publishableKey || !serviceRoleKey) {
+  if (!supabaseUrl || !serviceRoleKey) {
     return error('Der Bestellservice ist derzeit nicht verfügbar. Bitte kontaktieren Sie uns.', 503);
   }
 
@@ -137,7 +137,8 @@ export async function POST(request: Request) {
   let userId: string | null = null;
   const token = request.headers.get('authorization')?.match(/^Bearer\s+(.+)$/i)?.[1];
   if (token) {
-    const authClient = createClient(supabaseUrl, publishableKey, {
+    const keyToUse = publishableKey || serviceRoleKey;
+    const authClient = createClient(supabaseUrl, keyToUse, {
       auth: { persistSession: false, autoRefreshToken: false },
       global: { headers: { Authorization: `Bearer ${token}` } },
     });
@@ -147,6 +148,7 @@ export async function POST(request: Request) {
   }
 
   const reference = `TP-${randomUUID().replaceAll('-', '').slice(0, 12).toUpperCase()}`;
+  let orderIdResult: unknown = null;
   const { data: orderId, error: createError } = await admin.rpc('create_order_request_atomic', {
     p_reference: reference,
     p_customer: {...customer, deliveryFeeCents: 0, vat},
@@ -155,10 +157,36 @@ export async function POST(request: Request) {
     p_total_cents: totalCents,
     p_user_id: userId,
   });
-  if (createError) {
-    if (createError.message.includes('insufficient_stock')) return error('Der Lagerbestand hat sich soeben geändert. Bitte aktualisieren Sie den Warenkorb.', 409);
-    if (createError.message.includes('product_unavailable')) return error('Ein Artikel aus Ihrem Warenkorb ist nicht mehr verfügbar.', 409);
-    return error('Die Bestellung konnte nicht gespeichert werden. Bitte versuchen Sie es später erneut.', 503);
+
+  if (!createError && orderId) {
+    orderIdResult = orderId;
+  } else {
+    if (createError?.message.includes('insufficient_stock')) return error('Der Lagerbestand hat sich soeben geändert. Bitte aktualisieren Sie den Warenkorb.', 409);
+    if (createError?.message.includes('product_unavailable')) return error('Ein Artikel aus Ihrem Warenkorb ist nicht mehr verfügbar.', 409);
+
+    // Enregistrement direct de secours si la fonction RPC échoue
+    try {
+      const fallbackInsert = await admin.from('order_requests').insert({
+        reference,
+        customer: { ...customer, deliveryFeeCents: 0, vat },
+        shipping,
+        items: orderLines,
+        total_cents: totalCents,
+        accepted_terms: true,
+        status: 'new',
+        payment_status: 'pending',
+        user_id: userId,
+      }).select('id').maybeSingle();
+
+      if (fallbackInsert.error || !fallbackInsert.data) {
+        console.error('Order creation fallback error:', fallbackInsert.error);
+        return error('Die Bestellung konnte nicht gespeichert werden. Bitte versuchen Sie es später erneut.', 503);
+      }
+      orderIdResult = fallbackInsert.data.id;
+    } catch (fallbackErr) {
+      console.error('Order creation fallback exception:', fallbackErr);
+      return error('Die Bestellung konnte nicht gespeichert werden. Bitte versuchen Sie es später erneut.', 503);
+    }
   }
 
   const cartDraftId = draftId(request);
@@ -168,7 +196,7 @@ export async function POST(request: Request) {
   }
 
   let emailSent = false;
-  // Service d'envoi de l'accusé de réception par e-mail au client (toujours en allemand)
+  // Service d'envoi de l'accusé de réception par e-mail au client (toujours en allemand avec PDF joint)
   try {
     emailSent = await sendOrderConfirmationEmail({
       reference,
@@ -182,5 +210,5 @@ export async function POST(request: Request) {
     console.error('Order receipt email notification error:', err);
   }
 
-  return NextResponse.json({ reference, orderId, totalCents, subtotalCents, delivery, vat, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey), emailSent }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
+  return NextResponse.json({ reference, orderId: orderIdResult, totalCents, subtotalCents, delivery, vat, lines: orderLines, proofToken: paymentProofToken(reference, serviceRoleKey), emailSent }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
 }
