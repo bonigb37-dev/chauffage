@@ -25,7 +25,7 @@ function error(message: string, status: number) {
 }
 
 export async function POST(request: Request) {
-  const blocked = await protectApi(request, 8, 10 * 60_000);
+  const blocked = await protectApi(request, 60, 10 * 60_000);
   if (blocked) return blocked;
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
   const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

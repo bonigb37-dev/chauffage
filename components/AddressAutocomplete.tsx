@@ -34,9 +34,9 @@ export default function AddressAutocomplete({ name, postalCodeName, cityName, in
         if (controller.signal.aborted) return;
         setSuggestions(data.suggestions ?? []);
         setActiveIndex(-1);
-        setStatus(data.unavailable || !response.ok ? 'Suggestions indisponibles. Saisissez votre adresse manuellement.' : data.suggestions?.length ? '' : 'Aucune adresse trouvée. Ajoutez la ville ou saisissez votre adresse manuellement.');
+        setStatus(data.suggestions?.length ? '' : 'Aucune adresse trouvée. Ajoutez la ville ou saisissez votre adresse manuellement.');
       } catch {
-        if (!controller.signal.aborted) { setSuggestions([]); setStatus('Suggestions indisponibles. Saisissez votre adresse manuellement.'); }
+        if (!controller.signal.aborted) { setSuggestions([]); setStatus(''); }
       } finally {
         if (!controller.signal.aborted) setLoading(false);
       }

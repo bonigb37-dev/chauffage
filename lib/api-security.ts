@@ -33,7 +33,10 @@ export async function protectApi(request: Request, limit: number, windowMs = 60_
   if (request.headers.get('sec-fetch-site') === 'cross-site') return deny('Origine de la demande refusée.', 403);
 
   const ip = process.env.VERCEL === '1'
-    ? request.headers.get('x-vercel-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
+    ? (request.headers.get('x-vercel-forwarded-for')?.split(',')[0]?.trim()
+       || request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+       || request.headers.get('x-real-ip')?.trim()
+       || 'unknown')
     : 'local';
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const secret = process.env.SUPABASE_SERVICE_ROLE_KEY;
