@@ -1,5 +1,6 @@
 import 'server-only';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
+import de from '@/translations/de.json';
 import { storeConfig } from './store-config';
 
 export interface InvoiceData {
@@ -215,7 +216,9 @@ export async function generateInvoicePdf(data: InvoiceData): Promise<Buffer> {
   let currentY = tableY - 20;
   data.lines.forEach((line, idx) => {
     const lineTotal = line.unit_price_cents * line.quantity;
-    const nameSanitized = sanitize(line.name);
+    const rawName = line.name;
+    const germanName = (de as Record<string, string>)[rawName] || rawName;
+    const nameSanitized = sanitize(germanName);
     const displayName = nameSanitized.length > 42 ? `${nameSanitized.slice(0, 39)}...` : nameSanitized;
 
     page.drawText(String(idx + 1), { x: 48, y: currentY, size: 9, font: fontRegular, color: textMuted });
@@ -282,8 +285,11 @@ export async function generateInvoicePdf(data: InvoiceData): Promise<Buffer> {
   page.drawText('IBAN:', { x: 52, y: bankY + 35, size: 8, font: fontRegular, color: textMuted });
   page.drawText(sanitize(BANK_DETAILS.iban), { x: 130, y: bankY + 35, size: 9, font: fontBold, color: textDark });
 
-  page.drawText('BIC / Bank:', { x: 52, y: bankY + 20, size: 8, font: fontRegular, color: textMuted });
-  page.drawText(sanitize(`${BANK_DETAILS.bic} - ${BANK_DETAILS.bank}`), { x: 130, y: bankY + 20, size: 9, font: fontBold, color: textDark });
+  page.drawText('BIC:', { x: 52, y: bankY + 20, size: 8, font: fontRegular, color: textMuted });
+  page.drawText(sanitize(BANK_DETAILS.bic), { x: 130, y: bankY + 20, size: 9, font: fontBold, color: textDark });
+
+  page.drawText('Bank:', { x: 52, y: bankY + 6, size: 8, font: fontRegular, color: textMuted });
+  page.drawText(sanitize(BANK_DETAILS.bank), { x: 130, y: bankY + 6, size: 9, font: fontBold, color: textDark });
 
   page.drawText('Verwendungszweck:', { x: 320, y: bankY + 45, size: 8, font: fontBold, color: accentColor });
   page.drawText(sanitize(data.reference), { x: 410, y: bankY + 45, size: 10, font: fontBold, color: accentColor });

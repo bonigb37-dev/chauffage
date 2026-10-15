@@ -1,7 +1,7 @@
 'use client';
 import { vatLabel, vatSummary } from '@/lib/vat';
 import { emitAnalytics } from '@/lib/analytics';
-import { localizeNode } from '@/i18n/copy';
+import { localizeNode, translate } from '@/i18n/copy';
 import { localizedPath, type Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
 
@@ -93,7 +93,7 @@ export default function CheckoutPageContent() {
         emailSent: result.emailSent,
         delivery: { feeCents: 0 },
         vat: result.vat,
-        items: lines.map(({ product, quantity }) => ({ name: product.name, quantity, unitPriceCents: product.priceAmount })),
+        items: lines.map(({ product, quantity }) => ({ name: translate(product.name, 'de'), quantity, unitPriceCents: product.priceAmount })),
         customer: {
           firstName: details.firstName,
           lastName: details.lastName,

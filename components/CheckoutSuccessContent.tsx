@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from '@/i18n/navigation';
+import { translate } from '@/i18n/copy';
 import {
   CheckCircle2,
   CircleHelp,
@@ -67,7 +68,7 @@ export default function CheckoutSuccessContent() {
           orderDate: pending.orderDate,
           sendEmail: true,
           lines: pending.items.map((it) => ({
-            name: it.name,
+            name: translate(it.name, 'de'),
             quantity: it.quantity,
             unit_price_cents: it.unitPriceCents || Math.round(pending.total / pending.items.reduce((s, x) => s + x.quantity, 0)),
           })),
@@ -99,7 +100,7 @@ export default function CheckoutSuccessContent() {
           orderDate: order.orderDate,
           sendEmail: true,
           lines: order.items.map((it) => ({
-            name: it.name,
+            name: translate(it.name, 'de'),
             quantity: it.quantity,
             unit_price_cents: it.unitPriceCents || Math.round(order.total / order.items.reduce((s, x) => s + x.quantity, 0)),
           })),
@@ -142,7 +143,7 @@ export default function CheckoutSuccessContent() {
           totalCents: order.total,
           orderDate: order.orderDate,
           lines: order.items.map((it) => ({
-            name: it.name,
+            name: translate(it.name, 'de'),
             quantity: it.quantity,
             unit_price_cents: it.unitPriceCents || Math.round(order.total / order.items.reduce((s, x) => s + x.quantity, 0)),
           })),
@@ -379,7 +380,7 @@ export default function CheckoutSuccessContent() {
                       return (
                         <tr key={idx} className="hover:bg-stone-50/50">
                           <td className="py-3 pr-2">
-                            <span className="font-semibold text-stone-900">{item.name}</span>
+                            <span className="font-semibold text-stone-900">{translate(item.name, 'de')}</span>
                           </td>
                           <td className="py-3 px-2 text-center font-medium text-stone-700">
                             {item.quantity}×
@@ -503,11 +504,11 @@ export default function CheckoutSuccessContent() {
                   </button>
                 </div>
 
-                {/* BIC & Bank */}
+                {/* BIC */}
                 <div className="flex items-center justify-between rounded-xl bg-stone-50 p-3 text-xs sm:text-sm">
                   <div>
-                    <span className="block text-[11px] font-medium text-stone-500">BIC / Bank</span>
-                    <span className="font-mono font-bold text-stone-900">{BANK_DETAILS.bic} · {BANK_DETAILS.bank}</span>
+                    <span className="block text-[11px] font-medium text-stone-500">BIC</span>
+                    <span className="font-mono font-bold text-stone-900">{BANK_DETAILS.bic}</span>
                   </div>
                   <button
                     type="button"
@@ -516,6 +517,22 @@ export default function CheckoutSuccessContent() {
                     title="BIC kopieren"
                   >
                     {copiedKey === 'bic' ? <Check size={14} className="text-emerald-800" /> : <Copy size={14} />}
+                  </button>
+                </div>
+
+                {/* Bank */}
+                <div className="flex items-center justify-between rounded-xl bg-stone-50 p-3 text-xs sm:text-sm">
+                  <div>
+                    <span className="block text-[11px] font-medium text-stone-500">Bank</span>
+                    <span className="font-bold text-stone-900">{BANK_DETAILS.bank}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => copyToClipboard(BANK_DETAILS.bank, 'bank')}
+                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-600 transition hover:bg-stone-100"
+                    title="Bank kopieren"
+                  >
+                    {copiedKey === 'bank' ? <Check size={14} className="text-emerald-800" /> : <Copy size={14} />}
                   </button>
                 </div>
 

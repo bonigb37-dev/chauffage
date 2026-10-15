@@ -8,6 +8,7 @@ import { paymentProofToken } from '@/lib/payment-proof-token';
 import { mergeCatalog } from '@/lib/catalog';
 import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security';
 import { sendOrderConfirmationEmail } from '@/lib/order-email';
+import de from '@/translations/de.json';
 
 export const runtime = 'nodejs';
 
@@ -126,7 +127,8 @@ export async function POST(request: Request) {
     if (!Number.isSafeInteger(totalCents) || totalCents > 2_000_000_000) return error('Der Bestellwert übersteigt das zulässige Limit.', 400);
     const product = resolvedCatalog.find(p => p.id === productId)!;
     vatLines.push({product,grossCents:unitPrice * quantity});
-    orderLines.push({ product_id: productId, name, quantity, unit_price_cents: unitPrice, vat_rate: vatRateForProduct(product) });
+    const germanName = (de as Record<string, string>)[name] || name;
+    orderLines.push({ product_id: productId, name: germanName, quantity, unit_price_cents: unitPrice, vat_rate: vatRateForProduct(product) });
   }
 
   const subtotalCents = totalCents;

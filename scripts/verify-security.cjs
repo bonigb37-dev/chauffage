@@ -21,7 +21,7 @@ function load(file) {
   const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
   const localRequire = name => name === 'server-only' ? {} : name === '@/lib/support-mail' ? { dispatchSupportMail:async()=>({configured:false,sent:0,failed:0}) } : name === '@supabase/supabase-js' ? { createClient: () => new Proxy(mockDb ?? {}, { get(target, key) {
     return key === 'rpc' ? (name, payload) => name === 'consume_api_rate_limit' ? mockQuota(payload) : target.rpc(name, payload) : target[key];
-  } }) } : name.startsWith('@/') ? load(`${name.slice(2)}.ts`) : name.startsWith('./') ? load(path.join(path.dirname(file), name) + '.ts') : require(name);
+  } }) } : name.startsWith('@/') ? (name.endsWith('.json') ? JSON.parse(fs.readFileSync(name.slice(2), 'utf8')) : load(`${name.slice(2)}.ts`)) : name.startsWith('./') ? load(path.join(path.dirname(file), name) + '.ts') : require(name);
   vm.runInThisContext(`(function(require,module,exports){${code}\n})`, { filename: file })(localRequire, module, module.exports);
   return module.exports;
 }

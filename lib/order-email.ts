@@ -1,6 +1,7 @@
 import 'server-only';
 import nodemailer from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
+import de from '@/translations/de.json';
 import { storeConfig } from '@/lib/store-config';
 import { generateInvoicePdf } from '@/lib/invoice-pdf';
 
@@ -61,20 +62,25 @@ export async function sendOrderConfirmationEmail(data: OrderEmailData): Promise<
   const addressText = `${addr.firstName} ${addr.lastName}\n${addr.street}\n${addr.postalCode} ${addr.city}\nDeutschland`;
 
   const linesText = data.lines
-    .map((l) => `• ${l.name} (${l.quantity}x) — ${formatEuro(l.unit_price_cents * l.quantity)}`)
+    .map((l) => {
+      const germanName = (de as Record<string, string>)[l.name] || l.name;
+      return `• ${germanName} (${l.quantity}x) — ${formatEuro(l.unit_price_cents * l.quantity)}`;
+    })
     .join('\n');
 
   const linesHtml = data.lines
     .map(
-      (l) =>
-        `<tr>
+      (l) => {
+        const germanName = (de as Record<string, string>)[l.name] || l.name;
+        return `<tr>
           <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #1e293b;">
-            <strong>${escapeHtml(l.name)}</strong> × ${l.quantity}
+            <strong>${escapeHtml(germanName)}</strong> × ${l.quantity}
           </td>
           <td align="right" style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #1e293b; font-weight: 600;">
             ${escapeHtml(formatEuro(l.unit_price_cents * l.quantity))}
           </td>
-        </tr>`
+        </tr>`;
+      }
     )
     .join('');
 
