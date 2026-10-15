@@ -242,10 +242,36 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     const key = `payment-${orderId}`;
     setWorkingId(key); setError(''); setNotice('');
     const { data, error: confirmationError } = await supabase.rpc('confirm_bank_transfer', { p_order_request_id: orderId, p_note: 'Manuell durch Administrator überprüft' });
-    if (confirmationError) setError('Die Überweisung konnte nicht bestätigt werden. Prüfen Sie die Migration supabase-commerce.sql und Ihre Administratorrechte.');
-    else {
+    if (confirmationError) {
+      setError('Die Überweisung konnte nicht bestätigt werden. Prüfen Sie die Migration supabase-commerce.sql und Ihre Administratorrechte.');
+    } else {
       setOrders((items) => items.map((item) => item.id === orderId ? { ...item, payment_status: String(data ?? 'confirmed') } : item));
-      setNotice('Überweisung bestätigt. Die Aktion wurde im Zahlungsverlauf protokolliert.');
+      try {
+        const session = (await supabase.auth.getSession()).data.session;
+        if (session?.access_token) {
+          const res = await fetch('/api/payment-confirmation', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session.access_token}`,
+            },
+            body: JSON.stringify({ orderId }),
+          });
+          const resData = await res.json();
+          if (resData.emailSent) {
+            setNotice('Überweisung bestätigt. Die offizielle Zahlungsbestätigung samt Rechnung (PDF) wurde per E-Mail an den Kunden versandt.');
+          } else if (resData.alreadySent) {
+            setNotice('Überweisung bestätigt. Die Zahlungsbestätigung wurde diesem Kunden bereits versandt.');
+          } else {
+            setNotice('Überweisung bestätigt. Die Aktion wurde im Zahlungsverlauf protokolliert.');
+          }
+        } else {
+          setNotice('Überweisung bestätigt. Die Aktion wurde im Zahlungsverlauf protokolliert.');
+        }
+      } catch (emailErr) {
+        console.error('Fehler beim Auslösen der Zahlungsbestätigung per E-Mail:', emailErr);
+        setNotice('Überweisung bestätigt. Die Aktion wurde im Zahlungsverlauf protokolliert.');
+      }
     }
     setWorkingId('');
   }
@@ -851,7 +877,7 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
                       isConfirmed ? 'bg-emerald-500/10 text-emerald-800 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-900 border border-amber-500/20'
                     }`}>
                       <span className={`w-2 h-2 rounded-full ${isConfirmed ? 'bg-emerald-500' : 'bg-amber-500'}`} />
-                      {paymentStatusLabel(order.payment_status)}
+                      {paymentStatusLabel(order.payment_status, order.customer)}
                     </span>
 
                     {!isConfirmed && (

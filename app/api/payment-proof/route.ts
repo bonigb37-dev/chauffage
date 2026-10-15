@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     const form = await new Response(bytesBody.buffer as ArrayBuffer, { headers: { 'Content-Type': request.headers.get('content-type') ?? '' } }).formData();
     const reference = String(form.get('reference') ?? '');
     const token = String(form.get('token') ?? '');
-    if (!/^TP-[A-F0-9]{12}$/.test(reference) || !validPaymentProofToken(reference, token, server.key)) return fail('Ungültiger oder abgelaufener Übermittlungslink.', 403);
+    if (!/^TP-[A-F0-9]{12}$/.test(reference)) return fail('Ungültige Bestellreferenz.', 400);
     const file = form.get('file');
     if (!file || typeof file === 'string' || !(file as Blob).size || (file as Blob).size > 20 * 1024 * 1024) return fail('Bitte wählen Sie ein Dokument mit einer maximalen Dateigröße von 20 MB.', 400);
     const bytes = Buffer.from(await (file as Blob).arrayBuffer());
@@ -37,12 +37,24 @@ export async function POST(request: Request) {
     const webp = bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 12) === 'WEBP';
     const pdf = bytes.toString('ascii', 0, 5) === '%PDF-';
     if (!png && !jpeg && !webp && !pdf) return fail('Zulässige Formate: PDF, JPG, PNG oder WebP.', 400);
-    const order = await server.db.from('order_requests').select('id, reference, customer, total_cents, items').eq('reference', reference).maybeSingle();
+    const order = await server.db.from('order_requests').select('id, reference, customer, total_cents, items, user_id, created_at').eq('reference', reference).maybeSingle();
     if (order.error || !order.data) return fail('Bestellung nicht gefunden.', 404);
-    if (/^[a-f0-9]{64}$/.test(token)) {
-      const dated = await server.db.from('order_requests').select('created_at').eq('reference', reference).maybeSingle();
-      const created = Date.parse(dated.data?.created_at ?? '');
-      if (dated.error || !Number.isFinite(created) || created > Date.now() || Date.now() - created >= proofValidityMs) return fail('Ungültiger oder abgelaufener Übermittlungslink.', 403);
+
+    const authHeader = request.headers.get('authorization')?.match(/^Bearer\s+(.+)$/i)?.[1];
+    let isOwner = false;
+    if (authHeader) {
+      const { data: authData } = await server.db.auth.getUser(authHeader);
+      if (authData?.user && order.data.user_id === authData.user.id) {
+        isOwner = true;
+      }
+    }
+
+    const tokenValid = validPaymentProofToken(reference, token, server.key);
+    if (!tokenValid && !isOwner) return fail('Ungültiger oder abgelaufener Übermittlungslink.', 403);
+
+    if (tokenValid && /^[a-f0-9]{64}$/.test(token)) {
+      const created = Date.parse(order.data?.created_at ?? '');
+      if (!Number.isFinite(created) || created > Date.now() || Date.now() - created >= proofValidityMs) return fail('Ungültiger oder abgelaufener Übermittlungslink.', 403);
     }
     const existingBucket = await server.db.storage.getBucket(bucket);
     if (!existingBucket.data) {
@@ -51,7 +63,20 @@ export async function POST(request: Request) {
     const upload = await server.db.storage.from(bucket).upload(`${reference}/proof`, bytes, { contentType: pdf ? 'application/pdf' : png ? 'image/png' : jpeg ? 'image/jpeg' : 'image/webp', upsert: true });
     if (upload.error) return fail('Der Zahlungsnachweis konnte nicht gespeichert werden.', 503);
 
-    // Automatische Sendung der Zahlungsbestätigung per E-Mail an den Kunden
+    // Aktualisierung des Bestellstatus auf « Prüfung läuft » via customer-Metadaten
+    try {
+      const rawCust = typeof order.data.customer === 'object' && order.data.customer !== null ? (order.data.customer as Record<string, unknown>) : {};
+      const updatedCustomer = {
+        ...rawCust,
+        payment_proof_submitted: true,
+        payment_proof_submitted_at: new Date().toISOString(),
+      };
+      await server.db.from('order_requests').update({ customer: updatedCustomer }).eq('reference', reference);
+    } catch (updateErr) {
+      console.error('Fehler beim Aktualisieren der Kundendaten nach Zahlungsbeleg-Upload:', updateErr);
+    }
+
+    // Automatische Sendung der Eingangsbestätigung des Zahlungsbelegs per E-Mail an den Kunden (Status: Prüfung läuft)
     let emailSent = false;
     try {
       emailSent = await sendPaymentAcknowledgmentEmail({
@@ -61,7 +86,7 @@ export async function POST(request: Request) {
         items: order.data.items,
       });
     } catch (err) {
-      console.error('Fehler beim Versenden der Zahlungsbestätigung:', err);
+      console.error('Fehler beim Versenden der Bestätigung des Zahlungsbelegs:', err);
     }
 
     return NextResponse.json({ success: true, emailSent });

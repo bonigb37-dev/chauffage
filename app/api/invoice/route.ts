@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { generateInvoicePdf, type InvoiceData } from '@/lib/invoice-pdf';
-import { sendOrderConfirmationEmail } from '@/lib/order-email';
+import { sendOrderConfirmationEmail, sendPaymentConfirmedEmail } from '@/lib/order-email';
 import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security';
 import { DEFAULT_SUPABASE_URL, DEFAULT_SERVICE_ROLE_KEY } from '@/lib/supabase-defaults';
 
@@ -13,6 +13,25 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function cleanText(value: unknown, max: number): string {
   return typeof value === 'string' ? value.trim().slice(0, max) : '';
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function isCallerAdmin(request: Request, adminClient: any): Promise<boolean> {
+  const authHeader = request.headers.get('authorization')?.match(/^Bearer\s+(.+)$/i)?.[1];
+  if (!authHeader) return false;
+  try {
+    const { data: userData } = await adminClient.auth.getUser(authHeader);
+    if (!userData?.user) return false;
+    const { data: roleData } = await adminClient
+      .from('admin_roles')
+      .select('role')
+      .eq('user_id', userData.user.id)
+      .maybeSingle();
+    const role = (roleData as { role?: string } | null)?.role;
+    return Boolean(role && ['admin', 'super_admin', 'owner'].includes(role));
+  } catch {
+    return false;
+  }
 }
 
 export async function GET(request: Request) {
@@ -39,7 +58,7 @@ export async function GET(request: Request) {
 
   const { data: order, error: orderErr } = await admin
     .from('order_requests')
-    .select('reference, customer, shipping, items, total_cents, created_at')
+    .select('reference, customer, shipping, items, total_cents, created_at, payment_status')
     .eq('reference', reference)
     .maybeSingle();
 
@@ -83,18 +102,44 @@ export async function GET(request: Request) {
   const sendEmail = url.searchParams.get('sendEmail') === '1' || url.searchParams.get('sendEmail') === 'true';
   if (sendEmail) {
     try {
-      const emailSent = await sendOrderConfirmationEmail({
-        reference: order.reference,
-        customer: invoiceData.customer,
-        shipping: invoiceData.shipping,
-        totalCents: invoiceData.totalCents,
-        lines: invoiceData.lines,
-        locale: 'de',
-      });
+      let emailSent = false;
+      if (order.payment_status === 'confirmed') {
+        emailSent = await sendPaymentConfirmedEmail({
+          reference: order.reference,
+          customer: invoiceData.customer,
+          shipping: invoiceData.shipping,
+          totalCents: invoiceData.totalCents,
+          lines: invoiceData.lines,
+          locale: 'de',
+        });
+      } else {
+        // Envoi de l'accusé de réception (sans facture PDF)
+        emailSent = await sendOrderConfirmationEmail({
+          reference: order.reference,
+          customer: invoiceData.customer,
+          shipping: invoiceData.shipping,
+          totalCents: invoiceData.totalCents,
+          lines: invoiceData.lines,
+          locale: 'de',
+          attachInvoice: false,
+        });
+      }
       return NextResponse.json({ success: true, emailSent });
     } catch (err) {
-      console.error('Invoice confirmation email error:', err);
-      return NextResponse.json({ error: 'Die Bestätigung per E-Mail konnte nicht versendet werden.' }, { status: 500 });
+      console.error('Email dispatch error:', err);
+      return NextResponse.json({ error: 'Die E-Mail konnte nicht versendet werden.' }, { status: 500 });
+    }
+  }
+
+  // Vérification de sécurité : la facture PDF n'est téléchargeable que si le paiement est confirmé, ou pour l'administrateur
+  const isConfirmed = order.payment_status === 'confirmed';
+  if (!isConfirmed) {
+    const adminUser = await isCallerAdmin(request, admin);
+    if (!adminUser) {
+      return NextResponse.json(
+        { error: 'Die Rechnung steht erst nach bestätigtem Zahlungseingang zur Verfügung.' },
+        { status: 403 }
+      );
     }
   }
 
@@ -133,77 +178,6 @@ export async function POST(request: Request) {
   }
 
   const reference = body.reference;
-  const rawCustomer = isRecord(body.customer) ? body.customer : null;
-  const rawShipping = isRecord(body.shipping) ? body.shipping : null;
-  const rawLines = Array.isArray(body.lines) ? body.lines : null;
-  const totalCents = Number(body.totalCents);
-
-  // If complete payload was provided by client, generate directly
-  if (rawCustomer && rawLines && Number.isSafeInteger(totalCents) && totalCents > 0) {
-    const invoiceData: InvoiceData = {
-      reference,
-      orderDate: typeof body.orderDate === 'string' ? body.orderDate : undefined,
-      customer: {
-        firstName: cleanText(rawCustomer.firstName, 100),
-        lastName: cleanText(rawCustomer.lastName, 100),
-        email: cleanText(rawCustomer.email, 254),
-        street: cleanText(rawCustomer.street, 180),
-        postalCode: cleanText(rawCustomer.postalCode, 12),
-        city: cleanText(rawCustomer.city, 100),
-      },
-      shipping: rawShipping ? {
-        firstName: cleanText(rawShipping.firstName, 100),
-        lastName: cleanText(rawShipping.lastName, 100),
-        street: cleanText(rawShipping.street, 180),
-        postalCode: cleanText(rawShipping.postalCode, 12),
-        city: cleanText(rawShipping.city, 100),
-      } : null,
-      totalCents,
-      lines: rawLines.map((it: unknown) => {
-        const rec = isRecord(it) ? it : {};
-        return {
-          name: cleanText(rec.name, 200) || 'Artikel',
-          quantity: Number(rec.quantity) || 1,
-          unit_price_cents: Number(rec.unit_price_cents) || 0,
-        };
-      }),
-    };
-
-    const sendEmail = isRecord(body) && (body.sendEmail === true || body.sendEmail === '1' || body.sendEmail === 'true');
-    if (sendEmail) {
-      try {
-        const emailSent = await sendOrderConfirmationEmail({
-          reference: invoiceData.reference,
-          customer: invoiceData.customer,
-          shipping: invoiceData.shipping,
-          totalCents: invoiceData.totalCents,
-          lines: invoiceData.lines,
-          locale: 'de',
-        });
-        return NextResponse.json({ success: true, emailSent });
-      } catch (err) {
-        console.error('Invoice confirmation email error:', err);
-        return NextResponse.json({ error: 'Die Bestätigung per E-Mail konnte nicht versendet werden.' }, { status: 500 });
-      }
-    }
-
-    try {
-      const pdfBuffer = await generateInvoicePdf(invoiceData);
-      return new Response(new Uint8Array(pdfBuffer), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/pdf',
-          'Content-Disposition': `attachment; filename="Rechnung-${reference}.pdf"`,
-          'Cache-Control': 'no-store, private',
-        },
-      });
-    } catch (pdfErr) {
-      console.error('Invoice PDF generation error:', pdfErr);
-      return NextResponse.json({ error: 'Die PDF-Rechnung konnte nicht erstellt werden.' }, { status: 500 });
-    }
-  }
-
-  // Fallback: fetch from Supabase
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || DEFAULT_SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || DEFAULT_SERVICE_ROLE_KEY;
 
@@ -217,7 +191,7 @@ export async function POST(request: Request) {
 
   const { data: order, error: orderErr } = await admin
     .from('order_requests')
-    .select('reference, customer, shipping, items, total_cents, created_at')
+    .select('reference, customer, shipping, items, total_cents, created_at, payment_status')
     .eq('reference', reference)
     .maybeSingle();
 
@@ -261,18 +235,44 @@ export async function POST(request: Request) {
   const sendEmail = isRecord(body) && (body.sendEmail === true || body.sendEmail === '1' || body.sendEmail === 'true');
   if (sendEmail) {
     try {
-      const emailSent = await sendOrderConfirmationEmail({
-        reference: order.reference,
-        customer: invoiceData.customer,
-        shipping: invoiceData.shipping,
-        totalCents: invoiceData.totalCents,
-        lines: invoiceData.lines,
-        locale: 'de',
-      });
+      let emailSent = false;
+      if (order.payment_status === 'confirmed') {
+        emailSent = await sendPaymentConfirmedEmail({
+          reference: order.reference,
+          customer: invoiceData.customer,
+          shipping: invoiceData.shipping,
+          totalCents: invoiceData.totalCents,
+          lines: invoiceData.lines,
+          locale: 'de',
+        });
+      } else {
+        // Envoi de l'accusé de réception (sans facture PDF)
+        emailSent = await sendOrderConfirmationEmail({
+          reference: order.reference,
+          customer: invoiceData.customer,
+          shipping: invoiceData.shipping,
+          totalCents: invoiceData.totalCents,
+          lines: invoiceData.lines,
+          locale: 'de',
+          attachInvoice: false,
+        });
+      }
       return NextResponse.json({ success: true, emailSent });
     } catch (err) {
-      console.error('Invoice confirmation email error:', err);
+      console.error('Email dispatch error:', err);
       return NextResponse.json({ error: 'Die Bestätigung per E-Mail konnte nicht versendet werden.' }, { status: 500 });
+    }
+  }
+
+  // Vérification de sécurité : la facture PDF n'est téléchargeable que si le paiement est confirmé, ou pour l'administrateur
+  const isConfirmed = order.payment_status === 'confirmed';
+  if (!isConfirmed) {
+    const adminUser = await isCallerAdmin(request, admin);
+    if (!adminUser) {
+      return NextResponse.json(
+        { error: 'Die Rechnung steht erst nach bestätigtem Zahlungseingang zur Verfügung.' },
+        { status: 403 }
+      );
     }
   }
 

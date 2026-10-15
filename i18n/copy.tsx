@@ -17,6 +17,8 @@ export function translate(text: string, locale: Locale): string {
     [/^Ajouter (.+) au panier$/, name => `${name} in den Warenkorb legen`],
     [/^Diminuer la quantité de (.+)$/, name => `Menge für ${name} verringern`],
     [/^Augmenter la quantité de (.+)$/, name => `Menge für ${name} erhöhen`],
+    [/^Agrandir la photo : (.+)$/, name => `Foto vergrößern: ${translate(name, 'de')}`],
+    [/^Photo du produit : (.+)$/, name => `Produktfoto: ${translate(name, 'de')}`],
   ];
   for (const [pattern, format] of productLabels) {
     const match = clean.match(pattern);

@@ -19,6 +19,7 @@ import {
   ArrowRight,
   CheckCircle2,
   Clock,
+  Download,
   Eye,
   EyeOff,
   Flame,
@@ -27,6 +28,7 @@ import {
   LockKeyhole,
   Mail,
   ShieldAlert,
+  Upload,
   UserCheck,
   UserRound,
   WifiOff,
@@ -38,7 +40,7 @@ import { confirmationMessage, wasEmailConfirmed } from '@/lib/auth-link';
 import { useCart } from '@/components/CartProvider';
 
 type Mode = 'signin' | 'signup' | 'forgot' | 'update';
-type OwnOrder = {customer?: {vat?:ReturnType<typeof vatSummary>;deliveryFeeCents?:number;delivery?: {feeCents:number;distanceKm:number}}; id: number; reference: string; created_at: string; total_cents: number; status: string; payment_status: string; items: unknown };
+type OwnOrder = {customer?: {vat?:ReturnType<typeof vatSummary>;deliveryFeeCents?:number;delivery?: {feeCents:number;distanceKm:number}; payment_proof_submitted?: boolean; payment_proof_submitted_at?: string; [key: string]: unknown}; id: number; reference: string; created_at: string; total_cents: number; status: string; payment_status: string; items: unknown };
 type OwnAddress = { id: number; label: string; recipient_name: string; street: string; postal_code: string; city: string; country_code: string };
 
 export type ParsedError = {
@@ -405,6 +407,10 @@ export default function AccountPageContent() {
   const [savingAddress, setSavingAddress] = useState(false);
   const [needsConfirmationLink, setNeedsConfirmationLink] = useState(false);
   const [recoveryLinkInvalid, setRecoveryLinkInvalid] = useState(false);
+  const [uploadingOrderId, setUploadingOrderId] = useState<string | null>(null);
+  const [proofFile, setProofFile] = useState<File | null>(null);
+  const [proofSubmitting, setProofSubmitting] = useState(false);
+  const [proofNotice, setProofNotice] = useState('');
 
   useEffect(() => {
     const urlMode = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('mode') : null;
@@ -646,6 +652,54 @@ export default function AccountPageContent() {
     }
   }
 
+  const handleUploadProof = async (e: FormEvent, reference: string) => {
+    e.preventDefault();
+    if (!proofFile) return;
+    setProofSubmitting(true);
+    setProofNotice('');
+    try {
+      const formData = new FormData();
+      formData.append('reference', reference);
+      formData.append('file', proofFile);
+
+      const headers: Record<string, string> = {};
+      if (supabase) {
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (sessionData.session?.access_token) {
+          headers['Authorization'] = `Bearer ${sessionData.session.access_token}`;
+        }
+      }
+
+      const res = await fetch('/api/payment-proof', {
+        method: 'POST',
+        headers,
+        body: formData,
+      });
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setProofNotice(result.error || 'Erreur lors de l’envoi du justificatif.');
+      } else {
+        setProofNotice('Justificatif envoyé avec succès. Vérification en cours.');
+        setProofFile(null);
+        setOrders((prev) =>
+          prev.map((ord) =>
+            ord.reference === reference
+              ? { ...ord, customer: { ...(ord.customer || {}), payment_proof_submitted: true } }
+              : ord
+          )
+        );
+        setTimeout(() => {
+          setUploadingOrderId(null);
+          setProofNotice('');
+        }, 3000);
+      }
+    } catch {
+      setProofNotice('Erreur réseau. Veuillez réessayer.');
+    } finally {
+      setProofSubmitting(false);
+    }
+  };
+
   const heading =
     mode === 'signup'
       ? 'Créer un compte '
@@ -730,8 +784,78 @@ export default function AccountPageContent() {
                           {order.customer?.vat && <IncludedVatSummary summary={order.customer.vat} locale={brenLocale}/>}
                           {(order.customer?.delivery || order.customer?.deliveryFeeCents!==undefined) && <p className="mt-1 text-xs text-slate-600">Livraison : {new Intl.NumberFormat(brenLocale,{style:'currency',currency:'EUR'}).format((order.customer?.deliveryFeeCents??order.customer?.delivery?.feeCents??0)/100)}</p>}
                           <p className="mt-1 text-xs text-slate-500">
-                            {new Intl.DateTimeFormat(brenLocale, { dateStyle: 'medium' }).format(new Date(order.created_at))} · {paymentStatusLabel(order.payment_status)} · {orderStatusLabels[order.status as keyof typeof orderStatusLabels] ?? order.status}
+                            {new Intl.DateTimeFormat(brenLocale, { dateStyle: 'medium' }).format(new Date(order.created_at))} · {paymentStatusLabel(order.payment_status, order.customer as Record<string, unknown>)} · {orderStatusLabels[order.status as keyof typeof orderStatusLabels] ?? order.status}
                           </p>
+                          {order.payment_status === 'confirmed' ? (
+                            <div className="mt-2.5 pt-2 border-t border-orange-200/60 flex items-center justify-between">
+                              <span className="text-xs font-medium text-emerald-800 flex items-center gap-1.5">
+                                <CheckCircle2 size={14} className="text-emerald-600" />
+                                Paiement confirmé
+                              </span>
+                              <a
+                                href={`/api/invoice?reference=${order.reference}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-white px-3 py-1.5 rounded-lg border border-orange-200 shadow-2xs transition"
+                              >
+                                <Download size={13} />
+                                Télécharger la facture (PDF)
+                              </a>
+                            </div>
+                          ) : order.customer?.payment_proof_submitted ? (
+                            <div className="mt-2.5 pt-2 border-t border-orange-200/60 flex items-center justify-between">
+                              <span className="text-xs font-medium text-amber-800 flex items-center gap-1.5">
+                                <Clock size={14} className="text-amber-600" />
+                                Preuve transmise · Vérification en cours
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="mt-2.5 pt-2 border-t border-orange-200/60">
+                              {uploadingOrderId === order.reference ? (
+                                <form onSubmit={(e) => void handleUploadProof(e, order.reference)} className="space-y-2 mt-1">
+                                  <div className="flex items-center gap-2">
+                                    <input
+                                      type="file"
+                                      accept=".pdf,.png,.jpg,.jpeg,.webp"
+                                      required
+                                      onChange={(e) => setProofFile(e.target.files?.[0] ?? null)}
+                                      className="text-xs text-slate-700 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-orange-100 file:text-orange-800 hover:file:bg-orange-200 cursor-pointer"
+                                    />
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <button
+                                      type="submit"
+                                      disabled={proofSubmitting || !proofFile}
+                                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold transition disabled:opacity-50"
+                                    >
+                                      {proofSubmitting ? <LoaderCircle size={13} className="animate-spin" /> : <Upload size={13} />}
+                                      Envoyer le justificatif
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => { setUploadingOrderId(null); setProofFile(null); setProofNotice(''); }}
+                                      className="px-2.5 py-1.5 text-xs text-slate-600 hover:text-slate-800"
+                                    >
+                                      Annuler
+                                    </button>
+                                  </div>
+                                  {proofNotice && <p className="text-xs text-orange-700 font-medium">{proofNotice}</p>}
+                                </form>
+                              ) : (
+                                <div className="flex items-center justify-between">
+                                  <span className="text-xs text-slate-500">Paiement par virement bancaire</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => { setUploadingOrderId(order.reference); setProofFile(null); setProofNotice(''); }}
+                                    className="inline-flex items-center gap-1.5 text-xs font-bold text-orange-600 hover:text-orange-700 bg-white px-3 py-1.5 rounded-lg border border-orange-200 shadow-2xs transition"
+                                  >
+                                    <Upload size={13} />
+                                    Transmettre le justificatif
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </li>
                       ))}
                     </ul>

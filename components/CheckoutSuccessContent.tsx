@@ -6,7 +6,6 @@ import { translate } from '@/i18n/copy';
 import {
   CheckCircle2,
   CircleHelp,
-  Download,
   Copy,
   Check,
   Truck,
@@ -39,8 +38,6 @@ export default function CheckoutSuccessContent() {
   const euro = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
   const [order, setOrder] = useState<PendingOrder | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
-  const [downloadingPdf, setDownloadingPdf] = useState(false);
-  const [downloadError, setDownloadError] = useState<string | null>(null);
   const [sendingEmail, setSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState<'sent' | 'resending' | 'success' | 'error' | null>(null);
   const { clearCart } = useCart();
@@ -127,58 +124,6 @@ export default function CheckoutSuccessContent() {
     }
   };
 
-  const handleDownloadPdf = async () => {
-    if (!order) return;
-    setDownloadingPdf(true);
-    setDownloadError(null);
-    try {
-      // First try POST with order data to guarantee immediate rendering without DB roundtrip
-      const response = await fetch('/api/invoice', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          reference: order.reference,
-          customer: order.customer,
-          shipping: order.shipping,
-          totalCents: order.total,
-          orderDate: order.orderDate,
-          lines: order.items.map((it) => ({
-            name: translate(it.name, 'de'),
-            quantity: it.quantity,
-            unit_price_cents: it.unitPriceCents || Math.round(order.total / order.items.reduce((s, x) => s + x.quantity, 0)),
-          })),
-        }),
-      });
-
-      if (!response.ok) {
-        // Fallback to GET
-        const fallbackRes = await fetch(`/api/invoice?reference=${encodeURIComponent(order.reference)}`);
-        if (!fallbackRes.ok) throw new Error('PDF konnte nicht erstellt werden.');
-        const blob = await fallbackRes.blob();
-        triggerBlobDownload(blob, `Rechnung-${order.reference}.pdf`);
-        return;
-      }
-
-      const blob = await response.blob();
-      triggerBlobDownload(blob, `Rechnung-${order.reference}.pdf`);
-    } catch {
-      setDownloadError('PDF-Download momentan nicht verfügbar. Sie erhalten Ihre Rechnung auch per E-Mail.');
-    } finally {
-      setDownloadingPdf(false);
-    }
-  };
-
-  const triggerBlobDownload = (blob: Blob, filename: string) => {
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
-  };
-
   if (!order) {
     return (
       <main className="container min-h-[60vh] py-16">
@@ -224,55 +169,31 @@ export default function CheckoutSuccessContent() {
                 <CheckCircle2 size={34} className="stroke-[2.5]" />
               </div>
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-emerald-900">
-                  <span className="h-2 w-2 rounded-full bg-emerald-600 animate-pulse" />
-                  Bestellung erfolgreich aufgenommen
+                <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 border border-amber-200 px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-900">
+                  <span className="h-2 w-2 rounded-full bg-amber-600 animate-pulse" />
+                  Bestellung aufgenommen · Zahlung ausstehend
                 </div>
                 <h1 className="mt-2 text-2xl font-black text-stone-900 sm:text-3xl">
-                  Bestelleingang & Rechnung
+                  Bestelleingang & Zahlungsanweisung
                 </h1>
                 <p className="mt-1 text-sm text-stone-600">
-                  Vielen Dank für Ihren Auftrag, <strong className="text-stone-900">{customerName}</strong>! Ihre Bestellung wurde verbindlich entgegengenommen.
+                  Vielen Dank für Ihre Bestellung, <strong className="text-stone-900">{customerName}</strong>! Bitte führen Sie die Banküberweisung durch. Ihre offizielle Rechnung (PDF) erhalten Sie nach Zahlungseingang.
                 </p>
               </div>
             </div>
 
-            {/* Action buttons (Download PDF / Print) */}
+            {/* Action button (Print order summary & bank details) */}
             <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
               <button
                 type="button"
-                onClick={handleDownloadPdf}
-                disabled={downloadingPdf}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0f291e] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#163c2c] disabled:opacity-75"
-              >
-                {downloadingPdf ? (
-                  <>
-                    <Loader2 size={18} className="animate-spin" />
-                    Rechnung wird erstellt...
-                  </>
-                ) : (
-                  <>
-                    <Download size={18} />
-                    Rechnung herunterladen (PDF)
-                  </>
-                )}
-              </button>
-              <button
-                type="button"
                 onClick={() => window.print()}
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-100 print:hidden"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0f291e] px-5 py-3 text-sm font-bold text-white shadow-sm transition hover:bg-[#163c2c] print:hidden"
               >
                 <Printer size={18} />
-                Drucken
+                Bestellübersicht drucken
               </button>
             </div>
           </div>
-
-          {downloadError && (
-            <div className="mt-4 rounded-xl bg-amber-50 p-3 text-xs text-amber-900">
-              {downloadError}
-            </div>
-          )}
 
           {/* Email Confirmation & Resend Banner */}
           <div className="mt-6 rounded-2xl border border-emerald-200/90 bg-emerald-50/70 p-4 sm:p-5">
@@ -283,19 +204,19 @@ export default function CheckoutSuccessContent() {
                 </div>
                 <div>
                   <h2 className="text-sm font-bold text-stone-900">
-                    Bestelleingangsbestätigung & Rechnung per E-Mail
+                    Bestelleingangsbestätigung per E-Mail
                   </h2>
                   <p className="mt-0.5 text-xs text-stone-600 sm:text-sm">
-                    Eine Eingangsbestätigung samt offizieller Rechnung im PDF-Format wurde an <strong className="text-stone-900">{order.customer.email}</strong> versandt.
+                    Eine Bestelleingangsbestätigung samt Zahlungsanweisung wurde an <strong className="text-stone-900">{order.customer.email}</strong> versandt.
                   </p>
                   {emailStatus === 'success' && (
                     <p className="mt-2 flex items-center gap-1.5 text-xs font-bold text-emerald-800">
-                      <Check size={14} /> E-Mail mit Rechnung erfolgreich erneut versandt!
+                      <Check size={14} /> Bestelleingangsbestätigung erfolgreich erneut versandt!
                     </p>
                   )}
                   {emailStatus === 'error' && (
                     <p className="mt-2 text-xs font-semibold text-amber-900">
-                      Der erneute Versand konnte nicht abgeschlossen werden. Prüfen Sie bitte Ihren Spam-Ordner oder laden Sie Ihre Rechnung oben als PDF herunter.
+                      Der erneute Versand konnte nicht abgeschlossen werden. Prüfen Sie bitte Ihren Spam-Ordner oder kontaktieren Sie uns.
                     </p>
                   )}
                 </div>

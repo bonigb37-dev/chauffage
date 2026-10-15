@@ -80,7 +80,7 @@ export async function sendPaymentAcknowledgmentEmail(payload: PaymentAcknowledgm
     disableUrlAccess: true,
   } as SMTPTransport.Options);
 
-  const subject = `Brennholz-direk – Zahlungs- und Belegbestätigung (${payload.reference}) : ${amountEuros}`;
+  const subject = `Brennholz-direk – Eingang Ihres Zahlungsbelegs (${payload.reference})`;
 
   const formattedDate = new Date().toLocaleDateString('de-DE', {
     day: '2-digit',
@@ -90,21 +90,21 @@ export async function sendPaymentAcknowledgmentEmail(payload: PaymentAcknowledgm
 
   const textBody = `Guten Tag ${customerName},
 
-wir bestätigen Ihnen hiermit den erfolgreichen Eingang Ihres Überweisungsbelegs für Ihre Bestellung ${payload.reference}.
+wir bestätigen Ihnen hiermit den erfolgreichen Eingang Ihres Überweisungsnachweises für Ihre Bestellung ${payload.reference}.
 
-ÜBERSICHT IHRER ZAHLUNG:
+STATUS IHRER ZAHLUNG:
 ---------------------------------------------
 • Bestellnummer: ${payload.reference}
-• Gezahlter Betrag: ${amountEuros}
-• Zahlungsstatus: Beleg erfolgreich eingegangen & in Bearbeitung
+• Angegebener Betrag: ${amountEuros}
+• Status: Prüfung läuft (Zahlungsnachweis eingegangen)
 • Eingangsdatum: ${formattedDate}
 
 BESTELLTE ARTIKEL:
 ${itemsListText}
 
 NÄCHSTE SCHRITTE:
-Ihr Zahlungsbeleg wurde an unsere Buchhaltung übermittelt. Ihre Bestellung ist damit bestätigt und wird von unserem Logistikzentrum für den Versand vorbereitet.
-Die Lieferung erfolgt innerhalb von 2 bis 4 Werktagen an Ihre angegebene Adresse in Deutschland (ohne zusätzliche Lieferkosten).
+Ihr Zahlungsbeleg wurde an unsere Buchhaltung übermittelt und befindet sich derzeit in Prüfung.
+Sobald die Gutschrift auf unserem Bankkonto durch unsere Buchhaltung verbucht wurde, erhalten Sie Ihre offizielle Zahlungsbestätigung samt Rechnung im PDF-Format per E-Mail und Ihre Ware wird für den Versand freigegeben.
 
 Haben Sie Fragen zu Ihrer Bestellung oder Lieferung?
 • E-Mail: ${storeConfig.email}
@@ -120,7 +120,7 @@ https://www.brennholz-direk.de
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>Zahlungs- und Belegbestätigung</title>
+  <title>Eingangsbestätigung Zahlungsbeleg</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; padding: 32px 16px;">
@@ -142,14 +142,17 @@ https://www.brennholz-direk.de
           <!-- Confirmation Badge -->
           <tr>
             <td style="padding: 32px 32px 16px 32px; text-align: center;">
-              <div style="display: inline-block; background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 9999px; padding: 8px 20px; margin-bottom: 16px;">
-                <span style="color: #065f46; font-size: 14px; font-weight: 700;">✓ Zahlungsbeleg erfolgreich eingegangen</span>
+              <div style="display: inline-block; background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 9999px; padding: 8px 20px; margin-bottom: 16px;">
+                <span style="color: #92400e; font-size: 14px; font-weight: 700;">⏳ Zahlungsbeleg eingegangen · Prüfung läuft</span>
               </div>
               <h2 style="color: #0f172a; margin: 0 0 8px 0; font-size: 20px; font-weight: 700;">
-                Bestätigung Ihres Zahlungseingangs
+                Zahlungsnachweis erhalten
               </h2>
               <p style="color: #64748b; font-size: 15px; line-height: 1.5; margin: 0;">
-                Guten Tag <strong>${escapeHtml(customerName)}</strong>, wir bestätigen den Eingang Ihres Überweisungsnachweises für die Bestellung <strong>${escapeHtml(payload.reference)}</strong>.
+                Guten Tag <strong>${escapeHtml(customerName)}</strong>, wir haben Ihren Überweisungsnachweis für die Bestellung <strong>${escapeHtml(payload.reference)}</strong> erhalten.
+              </p>
+              <p style="color: #9a3412; font-size: 13px; font-weight: 600; margin: 8px 0 0 0;">
+                Status: Prüfung läuft (in Prüfung durch unsere Buchhaltung)
               </p>
             </td>
           </tr>

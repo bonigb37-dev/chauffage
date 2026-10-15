@@ -197,7 +197,7 @@ export async function POST(request: Request) {
   }
 
   let emailSent = false;
-  // Service d'envoi de l'accusé de réception par e-mail au client (toujours en allemand avec PDF joint)
+  // Envoi de l'accusé de réception par e-mail au client (sans facture PDF, statut : « Paiement en attente »)
   try {
     emailSent = await sendOrderConfirmationEmail({
       reference,
@@ -206,6 +206,7 @@ export async function POST(request: Request) {
       totalCents,
       lines: orderLines,
       locale: 'de',
+      attachInvoice: false,
     });
   } catch (err) {
     console.error('Order receipt email notification error:', err);
@@ -221,6 +222,7 @@ export async function POST(request: Request) {
           totalCents,
           lines: orderLines,
           locale: 'de',
+          attachInvoice: false,
         });
       });
     } catch { /* after() fallback */ }
