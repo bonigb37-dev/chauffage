@@ -73,10 +73,63 @@ async function dispatchEmail({
     return false;
   }
 
-  // 1. Primary: SMTP via Hostinger
-  const smtpHost = process.env.SMTP_HOST;
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.SMTP_PASSWORD;
+  // 1. Priorité 1 sur Vercel : API HTTP Resend (Port 443 — rapide, ultra-fiable, non bloqué par les pare-feux cloud)
+  const mailKey = process.env.RESEND_API_KEY;
+  const configuredFrom = process.env.ORDER_FROM_EMAIL || process.env.WITHDRAWAL_FROM_EMAIL || process.env.RESEND_FROM_EMAIL;
+
+  if (mailKey) {
+    const fromCandidates = [
+      configuredFrom,
+      'Brennholz-direk <kontakt@brennholz-direk.de>',
+      'Brennholz-direk <bestellung@brennholz-direk.de>',
+      'Brennholz-direk <onboarding@resend.dev>',
+    ].filter(Boolean) as string[];
+
+    for (const fromCandidate of fromCandidates) {
+      try {
+        const res = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${mailKey}`,
+            'Content-Type': 'application/json',
+            'Idempotency-Key': `order-email-${reference}-${pdfBuffer ? 'with-pdf' : 'no-pdf'}-${fromCandidate.includes('onboarding') ? 'onb' : 'prod'}`,
+          },
+          body: JSON.stringify({
+            from: fromCandidate,
+            to: [customerEmail],
+            subject,
+            text,
+            html,
+            reply_to: storeConfig.email,
+            ...(pdfBuffer ? {
+              attachments: [
+                {
+                  filename: `Rechnung-${reference}.pdf`,
+                  content: pdfBuffer.toString('base64'),
+                },
+              ],
+            } : {}),
+          }),
+          signal: AbortSignal.timeout(6000),
+        });
+
+        if (res.ok) {
+          console.log(`Email sent successfully via Resend API from ${fromCandidate} to ${customerEmail} (${reference})`);
+          return true;
+        }
+
+        const errData = await res.json().catch(() => ({}));
+        console.warn(`Resend dispatch attempt with ${fromCandidate} returned:`, errData);
+      } catch (resendErr) {
+        console.error('Resend dispatch error:', resendErr);
+      }
+    }
+  }
+
+  // 2. Repli secondaire : SMTP Hostinger (avec timeouts courts pour éviter de bloquer Vercel Serverless)
+  const smtpHost = process.env.SMTP_HOST || 'smtp.hostinger.com';
+  const smtpUser = process.env.SMTP_USER || 'kontakt@brennholz-direk.de';
+  const smtpPass = process.env.SMTP_PASSWORD || 'Boni@135002';
   const fromAddress = process.env.SMTP_FROM_EMAIL || smtpUser;
 
   if (smtpHost && smtpUser && smtpPass) {
@@ -95,9 +148,12 @@ async function dispatchEmail({
             pass: smtpPass,
           },
           family: 4,
-          connectionTimeout: 10000,
-          greetingTimeout: 6000,
-          socketTimeout: 15000,
+          connectionTimeout: 4000,
+          greetingTimeout: 3000,
+          socketTimeout: 5000,
+          tls: {
+            rejectUnauthorized: false,
+          },
           disableFileAccess: true,
           disableUrlAccess: true,
         } as SMTPTransport.Options);
@@ -129,42 +185,6 @@ async function dispatchEmail({
       } catch (smtpErr) {
         console.error(`SMTP port ${port} email error:`, smtpErr);
       }
-    }
-  }
-
-  // 2. Fallback: Resend API
-  const mailKey = process.env.RESEND_API_KEY;
-  const from = process.env.ORDER_FROM_EMAIL || process.env.WITHDRAWAL_FROM_EMAIL || process.env.RESEND_FROM_EMAIL;
-  if (mailKey && from) {
-    try {
-      const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${mailKey}`,
-          'Content-Type': 'application/json',
-          'Idempotency-Key': `order-email-${reference}-${pdfBuffer ? 'with-pdf' : 'no-pdf'}`,
-        },
-        body: JSON.stringify({
-          from,
-          to: [customerEmail],
-          subject,
-          text,
-          html,
-          reply_to: storeConfig.email,
-          ...(pdfBuffer ? {
-            attachments: [
-              {
-                filename: `Rechnung-${reference}.pdf`,
-                content: pdfBuffer.toString('base64'),
-              },
-            ],
-          } : {}),
-        }),
-        signal: AbortSignal.timeout(10000),
-      });
-      return res.ok;
-    } catch (resendErr) {
-      console.error('Resend email dispatch error:', resendErr);
     }
   }
 

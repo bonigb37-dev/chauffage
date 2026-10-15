@@ -37,13 +37,6 @@ export async function sendPaymentAcknowledgmentEmail(payload: PaymentAcknowledgm
     return false;
   }
 
-  const smtpHost = process.env.SMTP_HOST || 'smtp.hostinger.com';
-  const smtpUser = process.env.SMTP_USER || 'kontakt@brennholz-direk.de';
-  const smtpPass = process.env.SMTP_PASSWORD || 'Boni@135002';
-  if (!smtpHost || !smtpUser || !smtpPass) {
-    return false;
-  }
-
   const customerName = [payload.customer?.firstName, payload.customer?.lastName]
     .filter(Boolean)
     .join(' ')
@@ -60,25 +53,6 @@ export async function sendPaymentAcknowledgmentEmail(payload: PaymentAcknowledgm
   const itemsListHtml = Array.isArray(payload.items) && payload.items.length > 0
     ? payload.items.map((it) => `<li style="margin-bottom: 6px;"><strong>${escapeHtml(it.name ?? 'Artikel')}</strong> × ${it.quantity ?? 1}</li>`).join('')
     : '<li>Brennholz & Holzpellets</li>';
-
-  const port = Number(process.env.SMTP_PORT ?? 465);
-  const fromAddress = process.env.SMTP_FROM_EMAIL || smtpUser;
-
-  const transport = nodemailer.createTransport({
-    host: smtpHost,
-    port,
-    secure: port === 465,
-    auth: {
-      user: smtpUser,
-      pass: smtpPass,
-    },
-    family: 4, // IPv4 resolution to prevent DNS timeout
-    connectionTimeout: 15000,
-    greetingTimeout: 10000,
-    socketTimeout: 20000,
-    disableFileAccess: true,
-    disableUrlAccess: true,
-  } as SMTPTransport.Options);
 
   const subject = `Brennholz-direk – Eingang Ihres Zahlungsbelegs (${payload.reference})`;
 
@@ -225,6 +199,79 @@ https://www.brennholz-direk.de
 </body>
 </html>`;
 
+  // 1. Priorité 1 : API Resend via HTTPS (Port 443 — immédiat, non bloqué par les pare-feux cloud)
+  const mailKey = process.env.RESEND_API_KEY;
+  const configuredFrom = process.env.ORDER_FROM_EMAIL || process.env.WITHDRAWAL_FROM_EMAIL || process.env.RESEND_FROM_EMAIL;
+
+  if (mailKey) {
+    const fromCandidates = [
+      configuredFrom,
+      'Brennholz-direk <kontakt@brennholz-direk.de>',
+      'Brennholz-direk <bestellung@brennholz-direk.de>',
+      'Brennholz-direk <onboarding@resend.dev>',
+    ].filter(Boolean) as string[];
+
+    for (const fromCandidate of fromCandidates) {
+      try {
+        const res = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${mailKey}`,
+            'Content-Type': 'application/json',
+            'Idempotency-Key': `proof-ack-${payload.reference}-${fromCandidate.includes('onboarding') ? 'onb' : 'prod'}`,
+          },
+          body: JSON.stringify({
+            from: fromCandidate,
+            to: [customerEmail],
+            subject,
+            text: textBody,
+            html: htmlBody,
+            reply_to: storeConfig.email,
+          }),
+          signal: AbortSignal.timeout(6000),
+        });
+
+        if (res.ok) {
+          console.log(`Payment acknowledgment sent via Resend API from ${fromCandidate} to ${customerEmail}`);
+          return true;
+        }
+      } catch (resendErr) {
+        console.error('Resend payment acknowledgment error:', resendErr);
+      }
+    }
+  }
+
+  // 2. Repli secondaire : SMTP Hostinger
+  const smtpHost = process.env.SMTP_HOST || 'smtp.hostinger.com';
+  const smtpUser = process.env.SMTP_USER || 'kontakt@brennholz-direk.de';
+  const smtpPass = process.env.SMTP_PASSWORD || 'Boni@135002';
+
+  if (!smtpHost || !smtpUser || !smtpPass) {
+    return false;
+  }
+
+  const port = Number(process.env.SMTP_PORT ?? 465);
+  const fromAddress = process.env.SMTP_FROM_EMAIL || smtpUser;
+
+  const transport = nodemailer.createTransport({
+    host: smtpHost,
+    port,
+    secure: port === 465,
+    auth: {
+      user: smtpUser,
+      pass: smtpPass,
+    },
+    family: 4,
+    connectionTimeout: 4000,
+    greetingTimeout: 3000,
+    socketTimeout: 5000,
+    tls: {
+      rejectUnauthorized: false,
+    },
+    disableFileAccess: true,
+    disableUrlAccess: true,
+  } as SMTPTransport.Options);
+
   try {
     await transport.sendMail({
       from: {
@@ -240,7 +287,7 @@ https://www.brennholz-direk.de
     });
     return true;
   } catch (err) {
-    console.error('Error dispatching payment acknowledgment email:', err);
+    console.error('Error dispatching payment acknowledgment email via SMTP:', err);
     return false;
   } finally {
     transport.close();

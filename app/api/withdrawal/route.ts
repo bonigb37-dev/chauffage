@@ -48,12 +48,49 @@ export async function POST(request: Request) {
     }
     let emailSent = false;
 
-    // 1. Envoi via SMTP (Hostinger / configurations SMTP du site)
+    // 1. Envoi prioritaire via API Resend (rapide et non bloqué sur cloud)
+    const mailKey = process.env.RESEND_API_KEY;
     const isTestDomain = /@(example\.(invalid|com|org|net)|.*\.invalid|.*\.test)$/i.test(email);
+
+    if (!isTestDomain && mailKey) {
+      const fromCandidates = [
+        process.env.WITHDRAWAL_FROM_EMAIL,
+        process.env.SMTP_FROM_EMAIL,
+        'Brennholz-direk <kontakt@brennholz-direk.de>',
+        'Brennholz-direk <onboarding@resend.dev>',
+      ].filter(Boolean) as string[];
+
+      for (const fromCandidate of fromCandidates) {
+        try {
+          const sent = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${mailKey}`,
+              'Content-Type': 'application/json',
+              'Idempotency-Key': `withdrawal-${id}-${fromCandidate.includes('onboarding') ? 'onb' : 'prod'}`,
+            },
+            body: JSON.stringify({
+              from: fromCandidate,
+              to: [email.trim()],
+              subject: `Brennholz-direk — ${words[9]}`,
+              text: visibleReceipt,
+              reply_to: storeConfig.email,
+            }),
+            signal: AbortSignal.timeout(5000),
+          });
+          if (sent.ok) {
+            emailSent = true;
+            break;
+          }
+        } catch { /* Fallback to next candidate or SMTP */ }
+      }
+    }
+
+    // 2. Repli secondaire SMTP
     const smtpHost = process.env.SMTP_HOST || 'smtp.hostinger.com';
     const smtpUser = process.env.SMTP_USER || 'kontakt@brennholz-direk.de';
     const smtpPass = process.env.SMTP_PASSWORD || 'Boni@135002';
-    if (!isTestDomain && smtpHost && smtpUser && smtpPass) {
+    if (!emailSent && !isTestDomain && smtpHost && smtpUser && smtpPass) {
       try {
         const fromAddress = process.env.SMTP_FROM_EMAIL || smtpUser;
         const port = Number(process.env.SMTP_PORT ?? 465);
@@ -63,9 +100,9 @@ export async function POST(request: Request) {
           secure: port === 465,
           auth: { user: smtpUser, pass: smtpPass },
           family: 4,
-          connectionTimeout: 15000,
-          greetingTimeout: 10000,
-          socketTimeout: 20000,
+          connectionTimeout: 4000,
+          greetingTimeout: 3000,
+          socketTimeout: 5000,
           disableFileAccess: true,
           disableUrlAccess: true,
         } as SMTPTransport.Options);
@@ -105,18 +142,6 @@ export async function POST(request: Request) {
         transport.close();
       } catch (smtpErr) {
         console.error('SMTP withdrawal email error:', smtpErr);
-      }
-    }
-
-    // 2. Envoi de secours via API Resend si SMTP non configuré ou échec
-    if (!emailSent) {
-      const mailKey = process.env.RESEND_API_KEY;
-      const from = process.env.WITHDRAWAL_FROM_EMAIL || process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER;
-      if (mailKey && from) {
-        try {
-          const sent = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${mailKey}`, 'Content-Type': 'application/json', 'Idempotency-Key': `withdrawal-${id}` }, body: JSON.stringify({ from, to: [email.trim()], subject: `Brennholz-direk — ${words[9]}`, text: visibleReceipt, reply_to: storeConfig.email }), signal: AbortSignal.timeout(10000) });
-          emailSent = sent.ok;
-        } catch { /* Die eingegangene Erklärung bleibt auch bei E-Mail-Fehlschlag gültig. */ }
       }
     }
     return NextResponse.json({ receipt: visibleReceipt, emailSent }, { headers });
