@@ -1,5 +1,6 @@
 import createNextIntlPlugin from 'next-intl/plugin';
 import type { NextConfig } from 'next';
+import path from 'node:path';
 
 // Stop the build rather than embedding a privileged Supabase credential in JS.
 const publicKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim();
@@ -15,6 +16,7 @@ if (privilegedPublicKey || privilegedPublicName) throw new Error('Une cl√© priv√
 const config: NextConfig = {
   distDir: process.env.BREN_BUILD_DIR || '.next',
   poweredByHeader: false,
+  outputFileTracingRoot: path.resolve(__dirname),
   async headers() {
     return [{ source: '/:path*', headers: [
       { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -25,3 +27,4 @@ const config: NextConfig = {
 };
 
 export default createNextIntlPlugin('./i18n/request.ts')(config);
+
