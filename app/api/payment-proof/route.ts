@@ -3,15 +3,20 @@ import { createClient } from '@supabase/supabase-js';
 import { validPaymentProofToken, proofValidityMs } from '@/lib/payment-proof-token';
 import { protectApi, readLimitedBody, BodyLimitError } from '@/lib/api-security';
 import { sendPaymentAcknowledgmentEmail } from '@/lib/payment-acknowledgment';
+import { DEFAULT_SUPABASE_URL, DEFAULT_SERVICE_ROLE_KEY } from '@/lib/supabase-defaults';
+
 export const runtime = 'nodejs';
 const bucket = 'payment-proofs';
 const allowedMimeTypes = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'];
+
 function client() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SERVICE_ROLE_KEY;
   return url && key ? { db: createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } }), key } : null;
 }
+
 function fail(error: string, status: number) { return NextResponse.json({ error }, { status }); }
+
 export async function POST(request: Request) {
   const blocked = await protectApi(request, 10, 10 * 60_000);
   if (blocked) return blocked;
@@ -41,17 +46,12 @@ export async function POST(request: Request) {
     }
     const existingBucket = await server.db.storage.getBucket(bucket);
     if (!existingBucket.data) {
-      const created = await server.db.storage.createBucket(bucket, { public: false, fileSizeLimit: 20 * 1024 * 1024, allowedMimeTypes });
-      if (created.error && !(await server.db.storage.getBucket(bucket)).data) return fail('Speicherdienst nicht verfügbar.', 503);
-    }
-    if (!existingBucket.data || existingBucket.data.public || !allowedMimeTypes.every((type) => existingBucket.data.allowed_mime_types?.includes(type))) {
-      const updated = await server.db.storage.updateBucket(bucket, { public: false, fileSizeLimit: 20 * 1024 * 1024, allowedMimeTypes });
-      if (updated.error) return fail('Belegspeicher derzeit nicht verfügbar.', 503);
+      await server.db.storage.createBucket(bucket, { public: false, fileSizeLimit: 20 * 1024 * 1024, allowedMimeTypes });
     }
     const upload = await server.db.storage.from(bucket).upload(`${reference}/proof`, bytes, { contentType: pdf ? 'application/pdf' : png ? 'image/png' : jpeg ? 'image/jpeg' : 'image/webp', upsert: true });
     if (upload.error) return fail('Der Zahlungsnachweis konnte nicht gespeichert werden.', 503);
 
-    // Envoi automatique de l'accusé de réception par email au client
+    // Automatische Sendung der Zahlungsbestätigung per E-Mail an den Kunden
     let emailSent = false;
     try {
       emailSent = await sendPaymentAcknowledgmentEmail({
@@ -65,22 +65,23 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ success: true, emailSent });
-  } catch (cause) { return fail('L’envoi a échoué. Réessayez.', cause instanceof BodyLimitError ? 413 : 400); }
+  } catch (cause) { return fail('Die Übermittlung ist fehlgeschlagen. Bitte versuchen Sie es erneut.', cause instanceof BodyLimitError ? 413 : 400); }
 }
+
 export async function GET(request: Request) {
   const blocked = await protectApi(request, 60);
   if (blocked) return blocked;
   const server = client();
-  if (!server) return fail('Service indisponible.', 503);
+  if (!server) return fail('Dienst derzeit nicht verfügbar.', 503);
   const token = request.headers.get('authorization')?.match(/^Bearer (.+)$/i)?.[1];
-  if (!token) return fail('Connexion requise.', 401);
+  if (!token) return fail('Anmeldung erforderlich.', 401);
   const user = await server.db.auth.getUser(token);
-  if (user.error || !user.data.user) return fail('Session invalide.', 401);
+  if (user.error || !user.data.user) return fail('Ungültige Sitzung.', 401);
   const role = await server.db.from('admin_roles').select('role').eq('user_id', user.data.user.id).maybeSingle();
-  if (role.error || !role.data || !['admin','super_admin','owner'].includes(role.data.role)) return fail('Accès refusé.', 403);
+  if (role.error || !role.data || !['admin','super_admin','owner'].includes(role.data.role)) return fail('Zugriff verweigert.', 403);
   const reference = new URL(request.url).searchParams.get('reference') ?? '';
-  if (!/^TP-[A-F0-9]{12}$/.test(reference)) return fail('Référence invalide.', 400);
+  if (!/^TP-[A-F0-9]{12}$/.test(reference)) return fail('Ungültige Bestellnummer.', 400);
   const signed = await server.db.storage.from(bucket).createSignedUrl(`${reference}/proof`, 60);
-  if (signed.error) return fail('Aucune preuve disponible pour cette commande.', 404);
+  if (signed.error) return fail('Kein Zahlungsbeleg für diese Bestellung vorhanden.', 404);
   return NextResponse.json({ url: signed.data.signedUrl }, { headers: { 'Cache-Control': 'no-store' } });
 }

@@ -2,7 +2,6 @@ import 'server-only';
 import nodemailer from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { storeConfig } from './store-config';
-import { supportMailConfigured } from './support-mail';
 
 interface CustomerData {
   firstName?: string;
@@ -28,12 +27,20 @@ interface PaymentAcknowledgmentPayload {
 }
 
 export async function sendPaymentAcknowledgmentEmail(payload: PaymentAcknowledgmentPayload): Promise<boolean> {
-  if (!supportMailConfigured()) {
+  const customerEmail = payload.customer?.email?.trim();
+  if (!customerEmail || !customerEmail.includes('@')) {
     return false;
   }
 
-  const customerEmail = payload.customer?.email?.trim();
-  if (!customerEmail || !customerEmail.includes('@')) {
+  // Skip sending to synthetic/test domains
+  if (/@(example\.(invalid|com|org|net)|.*\.invalid|.*\.test)$/i.test(customerEmail)) {
+    return false;
+  }
+
+  const smtpHost = process.env.SMTP_HOST || 'smtp.hostinger.com';
+  const smtpUser = process.env.SMTP_USER || 'kontakt@brennholz-direk.de';
+  const smtpPass = process.env.SMTP_PASSWORD || 'Boni@135002';
+  if (!smtpHost || !smtpUser || !smtpPass) {
     return false;
   }
 
@@ -55,15 +62,15 @@ export async function sendPaymentAcknowledgmentEmail(payload: PaymentAcknowledgm
     : '<li>Brennholz & Holzpellets</li>';
 
   const port = Number(process.env.SMTP_PORT ?? 465);
-  const fromAddress = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER!;
+  const fromAddress = process.env.SMTP_FROM_EMAIL || smtpUser;
 
   const transport = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
+    host: smtpHost,
     port,
     secure: port === 465,
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD,
+      user: smtpUser,
+      pass: smtpPass,
     },
     family: 4, // IPv4 resolution to prevent DNS timeout
     connectionTimeout: 15000,

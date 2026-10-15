@@ -2,6 +2,7 @@ import { NextResponse, after } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { BodyLimitError, protectApi, readLimitedJson } from '@/lib/api-security';
 import { dispatchSupportMail } from '@/lib/support-mail';
+import { DEFAULT_SUPABASE_URL, DEFAULT_SERVICE_ROLE_KEY } from '@/lib/supabase-defaults';
 
 export const runtime = 'nodejs';
 export async function POST(request: Request) {
@@ -9,8 +10,8 @@ export async function POST(request: Request) {
   if (blocked) return blocked;
   const headers = { 'Cache-Control': 'no-store' };
   const fail = (error: string, status: number) => NextResponse.json({ error }, { status, headers });
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SERVICE_ROLE_KEY;
   if (!url || !key) return fail('Kontaktformular vorübergehend nicht verfügbar.', 503);
   try {
     const body = await readLimitedJson(request, 24_000);

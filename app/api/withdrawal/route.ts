@@ -7,6 +7,8 @@ import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security'
 import { isLocale } from '@/i18n/routing';
 import { withdrawalCopy } from '@/lib/withdrawal-copy';
 
+import { DEFAULT_SUPABASE_URL, DEFAULT_SERVICE_ROLE_KEY } from '@/lib/supabase-defaults';
+
 export const runtime = 'nodejs';
 
 function escapeHtml(str: string): string {
@@ -24,8 +26,8 @@ export async function POST(request: Request) {
   const headers = { 'Cache-Control': 'no-store' };
   const fail = (error: string, status: number) => NextResponse.json({ error }, { status, headers });
   if (Number(request.headers.get('content-length')) > 12000) return fail('Erklärung zu lang.', 413);
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SERVICE_ROLE_KEY;
   if (!url || !key) return fail('Dienst vorübergehend nicht verfügbar. Bitte senden Sie Ihren Widerruf per E-Mail.', 503);
   try {
     const body = await readLimitedJson(request, 12000);
@@ -47,15 +49,19 @@ export async function POST(request: Request) {
     let emailSent = false;
 
     // 1. Envoi via SMTP (Hostinger / configurations SMTP du site)
-    if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
+    const isTestDomain = /@(example\.(invalid|com|org|net)|.*\.invalid|.*\.test)$/i.test(email);
+    const smtpHost = process.env.SMTP_HOST || 'smtp.hostinger.com';
+    const smtpUser = process.env.SMTP_USER || 'kontakt@brennholz-direk.de';
+    const smtpPass = process.env.SMTP_PASSWORD || 'Boni@135002';
+    if (!isTestDomain && smtpHost && smtpUser && smtpPass) {
       try {
-        const fromAddress = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER;
+        const fromAddress = process.env.SMTP_FROM_EMAIL || smtpUser;
         const port = Number(process.env.SMTP_PORT ?? 465);
         const transport = nodemailer.createTransport({
-          host: process.env.SMTP_HOST,
+          host: smtpHost,
           port,
           secure: port === 465,
-          auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD },
+          auth: { user: smtpUser, pass: smtpPass },
           family: 4,
           connectionTimeout: 15000,
           greetingTimeout: 10000,

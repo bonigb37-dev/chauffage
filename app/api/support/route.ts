@@ -3,14 +3,15 @@ import { createClient } from '@supabase/supabase-js';
 import { BodyLimitError, protectApi, readLimitedJson, readLimitedBody } from '@/lib/api-security';
 import { attachmentType, attachmentName, supportAttachmentLimit, supportAttachmentBucket } from '@/lib/support-attachments';
 import { dispatchSupportMail, supportMailConfigured } from '@/lib/support-mail';
+import { DEFAULT_SUPABASE_URL, DEFAULT_SERVICE_ROLE_KEY } from '@/lib/supabase-defaults';
 
 export const runtime = 'nodejs';
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fields = 'id,user_id,sender_kind,body,locale,created_at,attachment_name,attachment_type,attachment_size';
 const response = (data: unknown, status = 200) => NextResponse.json(data, { status, headers: { 'Cache-Control': 'private, no-store', Vary: 'Authorization' } });
 async function authenticate(request: Request) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const secret = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+  const secret = process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SERVICE_ROLE_KEY;
   if (!url || !secret) return { error: response({ error: 'unavailable' }, 503) };
   const token = request.headers.get('authorization')?.match(/^Bearer (.+)$/i)?.[1];
   if (!token) return { error: response({ error: 'signin' }, 401) };

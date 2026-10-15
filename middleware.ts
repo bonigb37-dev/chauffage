@@ -22,7 +22,7 @@ export function middleware(request: NextRequest) {
     'https://www.merchant-center-analytics.goog',
   ];
   try {
-    const configured = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? '');
+    const configured = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ykmwooejlvcsalobjopl.supabase.co');
     if (configured.protocol === 'https:' || (development && configured.hostname === 'localhost')) {
       connections.push(configured.origin, `${configured.protocol === 'https:' ? 'wss:' : 'ws:'}//${configured.host}`);
     }

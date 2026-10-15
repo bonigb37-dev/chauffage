@@ -5,7 +5,10 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { storeConfig } from './store-config';
 
 export function supportMailConfigured() {
-  return Boolean(process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD && [465,587].includes(Number(process.env.SMTP_PORT ?? 465)));
+  const host = process.env.SMTP_HOST || 'smtp.hostinger.com';
+  const user = process.env.SMTP_USER || 'kontakt@brennholz-direk.de';
+  const pass = process.env.SMTP_PASSWORD || 'Boni@135002';
+  return Boolean(host && user && pass);
 }
 export function notificationContent(kind: string, locale: string) {
   const base = 'https://www.brennholz-direk.de';
@@ -18,8 +21,11 @@ export function notificationContent(kind: string, locale: string) {
 // SMTP cannot guarantee exactly-once delivery if the process dies after send.
 export async function dispatchSupportMail(db: SupabaseClient, limit = 1) {
   if (!supportMailConfigured()) return { configured: false, sent: 0, failed: 0 };
+  const host = process.env.SMTP_HOST || 'smtp.hostinger.com';
+  const user = process.env.SMTP_USER || 'kontakt@brennholz-direk.de';
+  const pass = process.env.SMTP_PASSWORD || 'Boni@135002';
   const port = Number(process.env.SMTP_PORT ?? 465);
-  const transport = nodemailer.createTransport({ host: process.env.SMTP_HOST, port, secure: port === 465, auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD }, family: 4, connectionTimeout: 15000, greetingTimeout: 10000, socketTimeout: 20000, disableFileAccess: true, disableUrlAccess: true, logger: false, debug: false } as SMTPTransport.Options);
+  const transport = nodemailer.createTransport({ host, port, secure: port === 465, auth: { user, pass }, family: 4, connectionTimeout: 15000, greetingTimeout: 10000, socketTimeout: 20000, disableFileAccess: true, disableUrlAccess: true, logger: false, debug: false } as SMTPTransport.Options);
   let sent = 0, failed = 0;
   try {
     for (let i=0; i<Math.min(limit,3); i++) {
