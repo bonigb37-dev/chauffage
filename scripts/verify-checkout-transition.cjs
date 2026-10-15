@@ -14,7 +14,7 @@ async function scenario(blocked,rejected,baseline=false){
  const imports={
  'react':{...React,useState:initial=>[initial,value=>states.push(value)],useEffect:effect=>effect()},
  'next-intl':{useLocale:()=> 'de'},
- '@/i18n/copy':{localizeNode:n=>n},
+ '@/i18n/copy':{localizeNode:n=>n,translate:k=>k},
  '@/i18n/routing':load('i18n/routing.ts'),
  '@/i18n/navigation':{__esModule:true,default:()=>null,useRouter:()=>({push:url=>navigation.push(url)})},
  '@/lib/pending-order':pending,

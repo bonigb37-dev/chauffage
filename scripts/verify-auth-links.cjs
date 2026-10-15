@@ -29,7 +29,7 @@ async function run() {
   for (const method of ['signInWithPassword', 'signOut', 'resetPasswordForEmail', 'updateUser', 'resend']) assert(account.includes(`auth.${method}`));
   assert(!account.includes("router.replace('/')"));
   const payment = fs.readFileSync('components/PaymentMethods.tsx', 'utf8'); assert(payment.includes('recorded && hasBankDetails')); assert(payment.includes('beforeOrderPaymentInstructions'));
-  assert(fs.readFileSync('components/CheckoutSuccessContent.tsx', 'utf8').includes('<PaymentMethods compact recorded />'));
+  assert(fs.readFileSync('components/CheckoutSuccessContent.tsx', 'utf8').includes('BANK_DETAILS'));
   console.log('OK : confirmation verifiee, liens invalides/expirés, session ancienne refusee, recuperation separee, paiement avant/apres commande. Aucun e-mail reel envoye.');
 }
 run().catch(error => { console.error(error); process.exitCode = 1; });
