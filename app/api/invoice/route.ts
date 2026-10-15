@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { generateInvoicePdf, type InvoiceData } from '@/lib/invoice-pdf';
 import { sendOrderConfirmationEmail } from '@/lib/order-email';
 import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security';
+import { DEFAULT_SUPABASE_URL, DEFAULT_SERVICE_ROLE_KEY } from '@/lib/supabase-defaults';
 
 export const runtime = 'nodejs';
 
@@ -25,8 +26,8 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Ungültige Bestellreferenz.' }, { status: 400 });
   }
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || DEFAULT_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || DEFAULT_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceRoleKey) {
     return NextResponse.json({ error: 'Rechnungsdienst vorübergehend nicht verfügbar.' }, { status: 503 });
@@ -203,8 +204,8 @@ export async function POST(request: Request) {
   }
 
   // Fallback: fetch from Supabase
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || DEFAULT_SUPABASE_URL;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || DEFAULT_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceRoleKey) {
     return NextResponse.json({ error: 'Rechnungsdienst vorübergehend nicht verfügbar.' }, { status: 503 });

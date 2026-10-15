@@ -2,6 +2,8 @@ import { createHmac } from 'node:crypto';
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+import { DEFAULT_SUPABASE_URL, DEFAULT_SERVICE_ROLE_KEY } from '@/lib/supabase-defaults';
+
 const memoryRateLimits = new Map<string, { count: number; resetAt: number }>();
 
 function checkMemoryRateLimit(key: string, limit: number, windowMs: number): { allowed: boolean; retryAfter: number } {
@@ -38,8 +40,8 @@ export async function protectApi(request: Request, limit: number, windowMs = 60_
        || request.headers.get('x-real-ip')?.trim()
        || 'unknown')
     : 'local';
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const secret = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+  const secret = process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SERVICE_ROLE_KEY;
 
   const keyStr = secret ? `${request.method}:${new URL(request.url).pathname}:${ip}` : `${request.method}:${new URL(request.url).pathname}:${ip}`;
   const key = secret ? createHmac('sha256', secret).update(keyStr).digest('hex') : ip;

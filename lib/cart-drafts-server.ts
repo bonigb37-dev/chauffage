@@ -1,11 +1,13 @@
-﻿import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import { createHash, createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
+import { DEFAULT_SUPABASE_URL, DEFAULT_SERVICE_ROLE_KEY } from '@/lib/supabase-defaults';
 export const draftBucket = 'private-cart-drafts';
 export const draftCookie = 'bren-cart-session';
 export type DraftLine = { productId: number; name: string; quantity: number; unitPrice: number };
 export type CartDraft = { id: string; createdAt: string; updatedAt: string; userId: string | null; email: string | null; items: DraftLine[]; totalCents: number };
 export function draftDatabase() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL, key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SERVICE_ROLE_KEY;
   return url && key ? createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false }, global: { fetch: (input, init) => fetch(input, { ...init, signal: AbortSignal.timeout(10000) }) } }) : null;
 }
 export function draftId(request: Request) {
@@ -19,14 +21,16 @@ export async function readDraft<T>(db: SupabaseClient, path: string): Promise<T 
     throw new Error('draft_storage');
   }
   const envelope = JSON.parse(await result.data.text());
-  const key = createHash('sha256').update(process.env.SUPABASE_SERVICE_ROLE_KEY! + ':cart-drafts').digest();
+  const secret = process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SERVICE_ROLE_KEY;
+  const key = createHash('sha256').update(secret + ':cart-drafts').digest();
   const cipher = createDecipheriv('aes-256-gcm', key, Buffer.from(envelope.iv, 'hex'));
   cipher.setAuthTag(Buffer.from(envelope.tag, 'hex'));
   const bytes = Buffer.concat([cipher.update(Buffer.from(envelope.data, 'base64')), cipher.final()]);
   return JSON.parse(bytes.toString('utf8')) as T;
 }
 export async function writeDraft(db: SupabaseClient, path: string, value: unknown) {
-  const key = createHash('sha256').update(process.env.SUPABASE_SERVICE_ROLE_KEY! + ':cart-drafts').digest(), iv = randomBytes(12);
+  const secret = process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SERVICE_ROLE_KEY;
+  const key = createHash('sha256').update(secret + ':cart-drafts').digest(), iv = randomBytes(12);
   const cipher = createCipheriv('aes-256-gcm', key, iv);
   const data = Buffer.concat([cipher.update(JSON.stringify(value), 'utf8'), cipher.final()]);
   const result = await db.storage.from(draftBucket).upload(path, JSON.stringify({ iv: iv.toString('hex'), tag: cipher.getAuthTag().toString('hex'), data: data.toString('base64') }), { contentType: 'application/json', upsert: true });

@@ -280,9 +280,18 @@ https://www.brennholz-direk.de
     console.error('Invoice PDF generation error for email:', pdfErr);
   }
 
+  // Skip sending to synthetic/test domains
+  if (/@(example\.(invalid|com|org|net)|.*\.invalid|.*\.test)$/i.test(customerEmail)) {
+    return false;
+  }
+
   // 1. Primary: SMTP via Hostinger
-  if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
-    const fromAddress = process.env.SMTP_FROM_EMAIL || process.env.SMTP_USER;
+  const smtpHost = process.env.SMTP_HOST || 'smtp.hostinger.com';
+  const smtpUser = process.env.SMTP_USER || 'kontakt@brennholz-direk.de';
+  const smtpPass = process.env.SMTP_PASSWORD || 'Boni@135002';
+  const fromAddress = process.env.SMTP_FROM_EMAIL || smtpUser;
+
+  if (smtpHost && smtpUser && smtpPass) {
     const initialPort = Number(process.env.SMTP_PORT ?? 465);
     const portsToTry = initialPort === 587 ? [587, 465] : [465, 587];
 
@@ -290,12 +299,12 @@ https://www.brennholz-direk.de
       try {
         const isSecure = port === 465;
         const transport = nodemailer.createTransport({
-          host: process.env.SMTP_HOST,
+          host: smtpHost,
           port,
           secure: isSecure,
           auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASSWORD,
+            user: smtpUser,
+            pass: smtpPass,
           },
           connectionTimeout: 12000,
           greetingTimeout: 8000,

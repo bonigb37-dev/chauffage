@@ -1,10 +1,11 @@
-﻿import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
 import { incomingAuthLink } from '@/lib/auth-link';
+import { DEFAULT_SUPABASE_URL, DEFAULT_PUBLISHABLE_KEY } from '@/lib/supabase-defaults';
 
-const configuredSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+const configuredSupabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || DEFAULT_SUPABASE_URL;
 // Only expose Supabase's low-privilege publishable key to browser code.
-const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim();
+const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim() || DEFAULT_PUBLISHABLE_KEY;
 
 // Some browsers deny access to localStorage. Keep authentication usable in
 // those browsers without making client initialization fail.

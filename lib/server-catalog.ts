@@ -1,10 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 import { mergeCatalog } from '@/lib/catalog';
+import { DEFAULT_SUPABASE_URL, DEFAULT_PUBLISHABLE_KEY } from '@/lib/supabase-defaults';
 import { cache } from 'react';
 
 export const getServerCatalog = cache(async () => {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim();
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || DEFAULT_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim() || DEFAULT_PUBLISHABLE_KEY;
   if (!url || !key) return mergeCatalog([]);
   const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false },
     global: { fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }) } });

@@ -8,6 +8,7 @@ import { paymentProofToken } from '@/lib/payment-proof-token';
 import { mergeCatalog } from '@/lib/catalog';
 import { protectApi, readLimitedJson, BodyLimitError } from '@/lib/api-security';
 import { sendOrderConfirmationEmail } from '@/lib/order-email';
+import { DEFAULT_SUPABASE_URL, DEFAULT_PUBLISHABLE_KEY, DEFAULT_SERVICE_ROLE_KEY } from '@/lib/supabase-defaults';
 import de from '@/translations/de.json';
 
 export const runtime = 'nodejs';
@@ -27,9 +28,9 @@ function error(message: string, status: number) {
 export async function POST(request: Request) {
   const blocked = await protectApi(request, 60, 10 * 60_000);
   if (blocked) return blocked;
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || process.env.SUPABASE_URL?.trim() || DEFAULT_SUPABASE_URL;
+  const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY?.trim() || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim() || DEFAULT_PUBLISHABLE_KEY;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() || process.env.SUPABASE_SERVICE_KEY?.trim() || process.env.SUPABASE_SECRET_KEY?.trim() || DEFAULT_SERVICE_ROLE_KEY;
   if (!supabaseUrl || !serviceRoleKey) {
     return error('Der Bestellservice ist derzeit nicht verfügbar. Bitte kontaktieren Sie uns.', 503);
   }
