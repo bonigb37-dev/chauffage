@@ -34,15 +34,7 @@ export function productPathSegment(product?: Partial<Pick<Product, 'id' | 'name'
 
 const catalogItems: Product[] = [
   ...brennholzwerkProducts,
-  // 1. Formats compacts & sacs individuels
-  { id: 1, name: 'Granulés de bois – sac', type: 'Granulés', quantity: 'Sac de 15 kg', price: '7,68 €', description: 'Granulés de bois conditionnés en sac de 15 kg. Consultez les exigences de votre appareil avant utilisation.', image: '/pellets-sac.webp' },
-  { id: 3, name: 'Granulés de bois ENplus A1 – sac', type: 'Granulés', quantity: 'Sac de 15 kg', price: '5,52 €', description: 'Des granulés conditionnés en sac de 15 kg pour un stockage et un usage pratiques.', image: '/pellets-sacs-clairs.webp' },
-  { id: 4, name: 'Granulés de bois économiques – sac', type: 'Granulés', quantity: 'Sac de 15 kg', price: '4,48 €', description: 'Un sac de granulés de bois pour les appareils compatibles avec cette qualité.', image: '/pellets.webp' },
-  { id: 73, name: 'Granulés de bois ANTE DIN+ et EN+ – sac de 15 kg', type: 'Granulés', quantity: 'Sac de 15 kg', price: '', description: 'Granulés de bois ANTE certifiés DIN+ et EN+ A1 pour poêles et chaudières.', image: '/bois-chauffages-img-13.jpg', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/granules-de-bois/' },
-  { id: 76, name: 'Granulés de bois VERPELLET PELLETS – sac de 15 kg', type: 'Granulés', quantity: 'Sac de 15 kg', price: '', description: 'Sac individuel de 15 kg de granulés VERPELLET PELLETS.', image: '/bois-chauffages-img-18.png', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/granules-de-bois/' },
-  { id: 27, name: 'Granulés DINplus – palette petit format', type: 'Granulés', quantity: '20 sacs de 15 kg · 300 kg', price: '', description: 'Format compact de granulés de bois certifiés DINplus et ENplus A1. Une option pratique pour compléter le stock.', image: '/pellets-dinplus-300.webp', badge: 'Petit format', marketReferenceUrl: 'https://distriglobe.de/product/holzpellets-din-plus-palette-300-kg/' },
-
-  // 2. Granulés de marques sur palette complète
+  // 1. Granulés de marques sur palette complète (9 références)
   { id: 2, name: 'Granulés EPH Premium DINplus/ENplus A1 – palette', type: 'Granulés', quantity: '65 sacs en papier · 975 kg', price: '499,00 €', priceAmount: 49900, description: 'Une palette de 65 sacs papier, soit 975 kg de granulés EPH Premium certifiés DINplus et ENplus A1.', image: '/eph-premium-palette.webp', gallery: ['/eph-premium-palette.webp', '/eph-premium-sac.webp', '/eph-premium-detail.webp'], articleNumber: '10005-975', badge: 'Produit phare' },
   { id: 25, name: 'Granulés TotalEnergies Premium ENplus A1', type: 'Granulés', quantity: '65 sacs de 15 kg · 975 kg', price: '', description: 'Granulés de résineux TotalEnergies en sacs de 15 kg. Palette adaptée aux poêles et chaudières compatibles ENplus A1.', image: '/pellets-totalenergies.webp', marketReferenceUrl: 'https://proxi.totalenergies.fr/professionnels/pellets-buches' },
   { id: 26, name: 'Granulés HEIZFUXX Blue ENplus A1', type: 'Granulés', quantity: '65 sacs de 15 kg · 975 kg', price: '', description: 'Granulés de résineux certifiés ENplus A1, conditionnés en 65 sacs sur palette.', image: '/pellets-heizfuxx-blue.webp', marketReferenceUrl: 'https://brennholzbredemeier.com/product/heizfuxx-holzpellets-blue-975-kg-65-x-15-kg/' },
@@ -53,7 +45,7 @@ const catalogItems: Product[] = [
   { id: 75, name: 'Granulés de bois VERPELLET PELLETS – palette', type: 'Granulés', quantity: 'Palette · 66 sacs', price: '', description: 'Granulés de bois VERPELLET PELLETS 100 % résineux certifiés en palette.', image: '/bois-chauffages-img-17.png', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/granules-de-bois/' },
   { id: 21, name: 'Granulés ENplus A1 – palette', type: 'Granulés', quantity: '66 sacs de 15 kg · 990 kg', price: '', description: 'Granulés de résineux ENplus A1 conditionnés sur palette, pour les appareils compatibles.', image: '/pellets-palette.webp' },
 
-  // 3. Bois de chauffage (Palettes ordonnées - 9 références parfaites sans vides)
+  // 2. Bois de chauffage (Palettes ordonnées - 9 références parfaites sans vides)
   { id: 5, name: 'Bûches de chêne sèches', type: 'Bois de chauffage', quantity: 'Palette · 1 stère · 25 cm', price: '207,00 €', description: 'Bûches de chêne fendues, séchées et prêtes à l’emploi dans un foyer adapté.', image: '/buches-chene.webp' },
   { id: 7, name: 'Bûches de bouleau sèches', type: 'Bois de chauffage', quantity: 'Palette · 1 stère · 25 cm', price: '220,00 €', description: 'Bûches de bouleau fendues et séchées, présentées sur palette.', image: '/buches-bouleau.webp' },
   { id: 69, name: 'Bois de chauffage sec sur palette – 25 cm', type: 'Bois de chauffage', quantity: 'Palette rangée · 25 cm', price: '', description: 'Palette de bois de chauffage sec calibré à 25 cm, empilé avec soin.', image: '/bois-chauffages-img-9.jpg', marketReferenceUrl: 'https://www.bois-chauffages.com/type-de-chauffage/bois/' },
@@ -64,7 +56,7 @@ const catalogItems: Product[] = [
   { id: 19, name: 'Bûches de bois compressé', type: 'Bois de chauffage', quantity: 'Paquet de 10 kg', price: '4,20 €', description: 'Des bûches densifiées proposées en paquet pratique.', image: '/buches-compressees.webp' },
   { id: 20, name: 'Bûches densifiées rondes', type: 'Bois de chauffage', quantity: 'Paquet de 10 kg', price: '3,75 €', description: 'Un format rond de bois compressé à utiliser dans un foyer compatible.', image: '/buches-compressees-rondes.webp' },
 
-  // 4. Briquettes (6 références)
+  // 3. Briquettes (6 références)
   { id: 10, name: 'Briquettes Pini-Kay (origine Pays-Bas) – palette', type: 'Briquettes', quantity: '96 sacs de 10 kg · 960 kg', price: '549,00 €', description: 'Briquettes Pini-Kay à combustion régulière, conditionnées en palette complète. À utiliser dans un appareil compatible.', image: '/briquettes-hexagonales.webp', volumePriceAmount: 51900, volumePriceQuantity: 5, badge: 'Nouveau', marketReferenceUrl: 'https://www.brennholzgigant.de/giant-flames-pini-kay-holzbriketts-96-sacke-von-10-kg' },
   { id: 40, name: 'Briquettes rondes de hêtre – palette', type: 'Briquettes', quantity: '96 paquets de 10 kg · 960 kg', price: '', description: 'Briquettes rondes en hêtre, conditionnées en paquets de 10 kg. Stocker au sec et vérifier la compatibilité de l’appareil.', image: '/briquettes-beech-premium.jpg', volumePriceAmount: 56900, volumePriceQuantity: 5, marketReferenceUrl: 'https://www.brennholzgigant.de/runde-buche-brikettspallet-96-packungen-x-10-kg-960-kg' },
   { id: 51, name: 'Briquettes RUF – palette', type: 'Briquettes', quantity: '96 paquets de 10 kg · 960 kg', price: '', description: 'Briquettes de bois RUF rectangulaires, conditionnées en 96 paquets de 10 kg, soit 960 kg au total. À conserver au sec.', image: '/briquettes-ruf.webp', compareAtPriceAmount: 52900, volumePriceAmount: 48900, volumePriceQuantity: 5, badge: '−2 %', marketReferenceUrl: 'https://www.brennholzgigant.de/96-sacke-ruf-briketten' },
@@ -72,7 +64,7 @@ const catalogItems: Product[] = [
   { id: 60, name: 'Briquettes Giant Flames – palette', type: 'Briquettes', quantity: '190 paquets de 4,8 kg · 912 kg', price: '', description: 'Briquettes de bois Giant Flames en petits paquets individuels.', image: '/B4.webp', compareAtPriceAmount: 49900, badge: '−6 %', marketReferenceUrl: 'https://www.brennholzgigant.de/holzbriketts' },
   { id: 11, name: 'Briquettes RUF – paquet', type: 'Briquettes', quantity: 'Paquet de 10 kg', price: '3,41 €', description: 'Briquettes de bois RUF conditionnées en paquet de 10 kg, à conserver au sec.', image: '/briquettes-packs.webp' },
 
-  // 5. Bois d’allumage (8 références)
+  // 4. Bois d’allumage (8 références)
   { id: 13, name: 'Bûchettes d’allumage sèches', type: 'Bois d’allumage', quantity: 'Carton de 10 kg', price: '14,60 €', description: 'Des bûchettes sèches pour préparer l’allumage du foyer.', image: '/bois-allumage-buchettes.webp' },
   { id: 14, name: 'Bois d’allumage en sac', type: 'Bois d’allumage', quantity: 'Sac de 5 kg', price: '7,30 €', description: 'Des bûchettes rangées dans un sac pratique à conserver au sec.', image: '/bois-allumage.webp' },
   { id: 15, name: 'Bûchettes en filet', type: 'Bois d’allumage', quantity: 'Filet de 10 kg', price: '14,60 €', description: 'Un filet compact de bois d’allumage à garder près du foyer.', image: '/bois-allumage-filet.webp' },
@@ -84,15 +76,15 @@ const catalogItems: Product[] = [
 ];
 
 const catalogPrices: Record<number, number> = {
-  1: 768, 2: 49900, 3: 552, 4: 448, 5: 20700, 7: 22000,
+  2: 49900, 5: 20700, 7: 22000,
   10: 54900, 11: 341, 13: 1460, 14: 730, 15: 1460,
   16: 490, 17: 490, 19: 420, 20: 375, 21: 35900,
-  25: 44900, 26: 38600, 27: 10500, 28: 21900,
+  25: 44900, 26: 38600, 28: 21900,
   30: 25200, 36: 25900, 40: 59900, 43: 59900,
   48: 26900, 49: 48900,
   51: 51900, 58: 44900, 60: 46900,
   69: 36000, 70: 27300,
-  73: 599, 74: 38935, 75: 52900, 76: 688,
+  74: 38935, 75: 52900,
   77: 650, 78: 295, 79: 450,
 };
 
@@ -102,7 +94,6 @@ export const products: Product[] = catalogItems.map((product) => {
   const priceAmount = catalogPrices[product.id] ?? product.priceAmount;
   let section = product.type;
   if ([2, 21, 25, 26, 28, 30, 49, 74, 75].includes(product.id)) section = 'Granulés de marques';
-  else if ([1, 3, 4, 27, 73, 76].includes(product.id)) section = 'Formats compacts';
   else if (product.type === 'Granulés') section = 'Granulés de marques';
   else if (product.type === 'Bois de chauffage') section = 'Bois de chauffage';
   else if ([10, 11, 40, 43, 51, 60].includes(product.id)) section = 'Briquettes';

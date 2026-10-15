@@ -13,10 +13,6 @@ export type Review = {
 
 // Authentische Kundenbewertungen auf Deutsch
 export const reviewsData: Record<number, Review[]> = {
-  1: [
-    { id: 'r1-1', author: 'Markus W.', location: 'München', rating: 5, date: '14.02.2026', title: 'Top Pellets im Einzelsack', comment: 'Sehr gut verpackter Sack, brennt sehr sauber ab und erzeugt kaum Asche im Ofen.', verified: true },
-    { id: 'r1-2', author: 'Stefan K.', location: 'Stuttgart', rating: 5, date: '28.01.2026', title: 'Gute Qualität', comment: 'Ideal zum Testen oder Nachfüllen. Hoher Heizwert.', verified: true },
-  ],
   2: [
     { id: 'r2-1', author: 'Michael B.', location: 'Frankfurt am Main', rating: 5, date: '02.03.2026', title: 'Hervorragende Palette EPH Premium', comment: 'Die Pellets sind absolut erstklassig. Sauber im Papiersack verpackt, pünktliche Lieferung per Lkw mit Hebebühne.', verified: true },
     { id: 'r2-2', author: 'Christian S.', location: 'Nürnberg', rating: 5, date: '19.02.2026', title: 'Sehr zufrieden', comment: 'Kein Staub im Sack, fehlerfreie Zündung im Pelletofen. Kann ich nur empfehlen.', verified: true },

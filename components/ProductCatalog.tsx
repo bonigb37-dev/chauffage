@@ -10,11 +10,10 @@ import { Search, SlidersHorizontal } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
 import ProductCard from '@/components/ProductCard';
 
-const sectionOrder = ['Granulés de marques', 'Formats compacts', 'Bois de chauffage', 'Bois de hêtre', 'Briquettes', 'Bois d’allumage'];
+const sectionOrder = ['Granulés de marques', 'Bois de chauffage', 'Bois de hêtre', 'Briquettes', 'Bois d’allumage'];
 const sectionDescriptions: Record<string, string> = {
   'Bois de hêtre': 'Bûches de hêtre en PackFix de 1,5 SRM, selon la qualité, le séchage et la longueur.',
   'Granulés de marques': 'Références EPH, TotalEnergies, HEIZFUXX, HELIOS, PROXIMA STAR et FireStixx.',
-  'Formats compacts': 'Sacs individuels et petits conditionnements pour un approvisionnement flexible.',
   'Bois de chauffage': 'Bûches et bois densifié, proposés en différents formats.',
   'Briquettes': 'Briquettes compressées en paquets ou en palettes.',
   'Bois d’allumage': 'Bûchettes et allume-feux pour préparer le foyer.',
