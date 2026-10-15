@@ -1,68 +1,662 @@
 {
-  "avec livraison en Allemagne | Bren-nholz": {"de":"mit Lieferung in Deutschland | Bren-nholz", "en":"with delivery in Germany | Bren-nholz"},
-  "Conditionnement :": {"de":"Verpackungseinheit:","en":"Pack size:"},
-  "Le service de commande n’est pas configuré. Contactez l’entreprise.": {"de":"Der Bestellservice ist nicht eingerichtet. Bitte kontaktieren Sie uns.","en":"The order service is not configured. Please contact us."},
-  "La demande de commande est trop longue.": {"de":"Die Bestellanfrage ist zu lang.","en":"The order request is too long."},
-  "La demande de commande est invalide.": {"de":"Ungültige Bestellanfrage.","en":"Invalid order request."},
-  "Vérifiez les produits, les coordonnées et l’acceptation des conditions.": {"de":"Prüfen Sie die Produkte, Ihre Kontaktdaten und die Zustimmung zu den Bedingungen.","en":"Check the products, your contact details and your acceptance of the terms."},
-  "Renseignez un nom, une adresse allemande complète, un code postal à cinq chiffres et un e-mail valide.": {"de":"Geben Sie einen Namen, eine vollständige deutsche Adresse, eine fünfstellige Postleitzahl und eine gültige E-Mail-Adresse ein.","en":"Enter a name, a complete German address, a five-digit postcode and a valid email address."},
-  "Renseignez complètement l’adresse de livraison.": {"de":"Bitte geben Sie die vollständige Lieferadresse ein.","en":"Please enter the complete delivery address."},
-  "Un produit ou une quantité est invalide.": {"de":"Ein Produkt oder eine Menge ist ungültig.","en":"A product or quantity is invalid."},
-  "Chaque produit doit apparaître une seule fois et avec une quantité valide.": {"de":"Jedes Produkt darf nur einmal und mit einer gültigen Menge aufgeführt sein.","en":"Each product must appear only once with a valid quantity."},
-  "Actualisez le panier pour vérifier les prix avant de commander.": {"de":"Aktualisieren Sie den Warenkorb, um die Preise vor der Bestellung zu prüfen.","en":"Refresh your cart to check the prices before ordering."},
-  "Impossible de vérifier le catalogue. Réessayez plus tard.": {"de":"Der Katalog konnte nicht geprüft werden. Versuchen Sie es später erneut.","en":"The catalogue could not be checked. Please try again later."},
-  "Un produit de votre panier n’est plus disponible.": {"de":"Ein Produkt in Ihrem Warenkorb ist nicht mehr verfügbar.","en":"A product in your cart is no longer available."},
-  "Un produit de votre panier n’existe plus.": {"de":"Ein Produkt in Ihrem Warenkorb ist nicht mehr im Sortiment.","en":"A product in your cart is no longer listed."},
-  "n’est pas disponible à la vente. Actualisez votre panier.": {"de":"ist nicht zum Kauf verfügbar. Aktualisieren Sie Ihren Warenkorb.","en":"is not available for purchase. Refresh your cart."},
-  "Un prix a changé. Actualisez votre panier et vérifiez le nouveau total avant de commander.": {"de":"Ein Preis hat sich geändert. Aktualisieren Sie Ihren Warenkorb und prüfen Sie den neuen Gesamtbetrag vor der Bestellung.","en":"A price has changed. Refresh your cart and check the new total before ordering."},
-  "Le stock de «": {"de":"Der Bestand von „", "en":"The stock of “"},
-  "» doit être corrigé dans l’administration.": {"de":"“ muss in der Verwaltung korrigiert werden.","en":"” must be corrected in the administration."},
-  "Stock insuffisant pour «": {"de":"Nicht genügend Bestand für „", "en":"Insufficient stock for “"},
-  "unité(s) disponible(s).": {"de":"Einheit(en) verfügbar.","en":"unit(s) available."},
-  "Le montant de la commande dépasse la limite autorisée.": {"de":"Der Bestellbetrag überschreitet den zulässigen Höchstbetrag.","en":"The order amount exceeds the permitted limit."},
-  "Votre session a expiré. Reconnectez-vous puis réessayez.": {"de":"Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an und versuchen Sie es noch einmal.","en":"Your session has expired. Sign in again and retry."},
-  "Le stock vient de changer. Actualisez le panier et réessayez.": {"de":"Der Bestand hat sich geändert. Aktualisieren Sie Ihren Warenkorb und versuchen Sie es erneut.","en":"The stock has just changed. Refresh your cart and try again."},
-  "La commande n’a pas pu être enregistrée. Vérifiez que la migration Supabase commerce a été appliquée.": {"de":"Die Bestellung konnte nicht gespeichert werden. Prüfen Sie, ob die Supabase-Commerce-Migration ausgeführt wurde.","en":"The order could not be saved. Check that the Supabase commerce migration has been applied."},
-  "Service indisponible.": {"de":"Dienst derzeit nicht verfügbar.","en":"Service unavailable."},
-  "Demande invalide.": {"de":"Ungültige Anfrage.","en":"Invalid request."},
-  "La demande n’a pas pu être enregistrée.": {"de":"Ihre Anfrage konnte nicht gespeichert werden.","en":"Your request could not be saved."},
-  "Déclaration trop longue.": {"de":"Die Erklärung ist zu lang.","en":"The declaration is too long."},
-  "Déclaration invalide.": {"de":"Ungültige Erklärung.","en":"Invalid declaration."},
-  "Service indisponible. Notifiez votre rétractation par e-mail.": {"de":"Der Dienst ist nicht verfügbar. Teilen Sie uns Ihren Widerruf bitte per E-Mail mit.","en":"Service unavailable. Please notify us of your withdrawal by email."},
-  "Vérifiez votre nom, votre e-mail et le contrat concerné.": {"de":"Prüfen Sie Ihren Namen, Ihre E-Mail-Adresse und den betreffenden Vertrag.","en":"Check your name, email address and the contract concerned."},
-  "Service indisponible. Réessayez ou utilisez l’e-mail.": {"de":"Der Dienst ist nicht verfügbar. Versuchen Sie es erneut oder schreiben Sie uns eine E-Mail.","en":"Service unavailable. Try again or contact us by email."},
-  "La déclaration n’a pas pu être enregistrée. Réessayez ou utilisez l’e-mail.": {"de":"Ihre Erklärung konnte nicht gespeichert werden. Versuchen Sie es erneut oder schreiben Sie uns eine E-Mail.","en":"Your declaration could not be saved. Try again or contact us by email."},
-  "Déclaration invalide. Réessayez ou utilisez l’e-mail.": {"de":"Ungültige Erklärung. Versuchen Sie es erneut oder schreiben Sie uns eine E-Mail.","en":"Invalid declaration. Try again or contact us by email."},
-  "Service d’envoi indisponible.": {"de":"Der Upload-Dienst ist derzeit nicht verfügbar.","en":"The upload service is unavailable."},
-  "Justificatif limité à 3 Mo.": {"de":"Der Nachweis darf höchstens 20 MB groß sein.","en":"The payment proof is limited to 20 MB."},
-  "Justificatif limité à 20 Mo.": {"de":"Der Nachweis darf höchstens 20 MB groß sein.","en":"The payment proof is limited to 20 MB."},
-  "Lien d’envoi invalide.": {"de":"Ungültiger Upload-Link.","en":"Invalid upload link."},
-  "Choisissez un justificatif de 3 Mo maximum.": {"de":"Wählen Sie einen Nachweis mit höchstens 20 MB.","en":"Choose a payment proof no larger than 20 MB."},
-  "Choisissez un justificatif de 20 Mo maximum.": {"de":"Wählen Sie einen Nachweis mit höchstens 20 MB.","en":"Choose a payment proof no larger than 20 MB."},
-  "Choisissez un document d’une taille maximale de 20 Mo.": {"de":"Wählen Sie einen Nachweis mit höchstens 20 MB.","en":"Choose a payment proof no larger than 20 MB."},
-  "Formats acceptés : PDF, JPG, PNG ou WebP.": {"de":"Zulässige Formate: PDF, JPG, PNG oder WebP.","en":"Accepted formats: PDF, JPG, PNG or WebP."},
-  "Commande introuvable.": {"de":"Bestellung nicht gefunden.","en":"Order not found."},
-  "Stockage indisponible.": {"de":"Der Speicherdienst ist nicht verfügbar.","en":"Storage unavailable."},
-  "Stockage des justificatifs indisponible.": {"de":"Der Speicher für Zahlungsnachweise ist nicht verfügbar.","en":"Payment proof storage unavailable."},
-  "La preuve n’a pas pu être sauvegardée.": {"de":"Der Nachweis konnte nicht gespeichert werden.","en":"The proof could not be saved."},
-  "L’envoi a échoué. Réessayez.": {"de":"Der Upload ist fehlgeschlagen. Versuchen Sie es erneut.","en":"The upload failed. Please try again."},
-  "Connexion requise.": {"de":"Anmeldung erforderlich.","en":"Sign-in required."},
-  "Session invalide.": {"de":"Ungültige Sitzung.","en":"Invalid session."},
-  "Accès refusé.": {"de":"Zugriff verweigert.","en":"Access denied."},
-  "Référence invalide.": {"de":"Ungültige Bestellnummer.","en":"Invalid order reference."},
-  "Aucune preuve disponible pour cette commande.": {"de":"Für diese Bestellung liegt kein Zahlungsnachweis vor.","en":"No payment proof is available for this order."},
-  "Votre adresse e-mail a été confirmée. Bienvenue chez Bren-nholz, votre compte est maintenant actif.": {"de": "Ihre E-Mail-Adresse wurde bestätigt. Willkommen bei Bren-nholz – Ihr Konto ist jetzt aktiv.", "en": "Your email address has been confirmed. Welcome to Bren-nholz – your account is now active."},
-  ". Votre référence est": {"de": ". Ihre Bestellnummer lautet", "en": ". Your order reference is"},
-  ". Paiement en attente.": {"de": ". Zahlung ausstehend.", "en": ". Payment pending."},
-  ". Le responsable du traitement est": {"de": ". Verantwortlich für die Datenverarbeitung ist", "en": ". The data controller is"},
-  ". Numéro KvK :": {"de": ". KvK-Nummer:", "en": ". KvK registration number:"},
-  ". Vous pouvez également déposer une réclamation auprès d’une autorité de contrôle, notamment l’": {"de": ". Sie können sich auch bei einer Aufsichtsbehörde beschweren, insbesondere bei der ", "en": ". You may also lodge a complaint with a supervisory authority, including the "},
-  "produit": {"de": "Produkt", "en": "product"},
-  "Vérification de l’accès...": {"de": "Zugriff wird geprüft...", "en": "Checking access..."},
-  "Connexion requise": {"de": "Anmeldung erforderlich", "en": "Sign-in required"},
-  "Connectez-vous avec votre compte administrateur pour continuer.": {"de": "Melden Sie sich mit Ihrem Administratorkonto an, um fortzufahren.", "en": "Sign in with your administrator account to continue."},
-  "Page indisponible": {"de": "Seite nicht verfügbar", "en": "Page unavailable"},
-  "Cette page n’est pas accessible avec ce compte.": {"de": "Mit diesem Konto haben Sie keinen Zugriff auf diese Seite.", "en": "This account cannot access this page."},
-  "Accès administrateur requis": {"de": "Administratorzugriff erforderlich", "en": "Administrator access required"},
-  "Ce compte n’a pas de rôle administrateur.": {"de": "Dieses Konto verfügt über keine Administratorrolle.", "en": "This account does not have an administrator role."}
+  ". Le responsable du traitement est": {
+    "de": ". Verantwortlich für die Datenverarbeitung ist",
+    "en": ". The data controller is"
+  },
+  ". Numéro KvK :": {
+    "de": ". KvK-Nummer:",
+    "en": ". KvK registration number:"
+  },
+  ". Paiement en attente.": {
+    "de": ". Zahlung ausstehend.",
+    "en": ". Payment pending."
+  },
+  ". Votre référence est": {
+    "de": ". Ihre Bestellnummer lautet",
+    "en": ". Your order reference is"
+  },
+  ". Vous pouvez également déposer une réclamation auprès d’une autorité de contrôle, notamment l’": {
+    "de": ". Sie können sich auch bei einer Aufsichtsbehörde beschweren, insbesondere bei der ",
+    "en": ". You may also lodge a complaint with a supervisory authority, including the "
+  },
+  "0.00 EUR": {
+    "de": "0,00 EUR",
+    "en": "0.00 EUR"
+  },
+  "Accréditation": {
+    "de": "Akkreditierung",
+    "en": "Accreditation"
+  },
+  "Accès administrateur requis": {
+    "de": "Administratorzugriff erforderlich",
+    "en": "Administrator access required"
+  },
+  "Accès refusé.": {
+    "de": "Zugriff verweigert.",
+    "en": "Access denied."
+  },
+  "Accès restreint": {
+    "de": "Eingeschränkter Zugang",
+    "en": "Restricted access"
+  },
+  "Activité récente des comptes": {
+    "de": "Letzte Kontoaktivität",
+    "en": "Recent account activity"
+  },
+  "Actualisez le panier pour vérifier les prix avant de commander.": {
+    "de": "Aktualisieren Sie den Warenkorb, um die Preise vor der Bestellung zu prüfen.",
+    "en": "Refresh your cart to check the prices before ordering."
+  },
+  "Adresse e-mail de l’utilisateur": {
+    "de": "E-Mail-Adresse des Benutzers",
+    "en": "User email address"
+  },
+  "Afficher les détails JSON": {
+    "de": "JSON-Details anzeigen",
+    "en": "Show JSON details"
+  },
+  "Aperçu de la préparation du bois de chauffage": {
+    "de": "Überblick über die Vorbereitung von Brennholz",
+    "en": "Overview of preparing firewood"
+  },
+  "Articles commandés": {
+    "de": "Bestellte Artikel",
+    "en": "Items ordered"
+  },
+  "Attribuer ou modifier un rôle": {
+    "de": "Weisen Sie eine Rolle zu oder ändern Sie sie",
+    "en": "Assign or modify a role"
+  },
+  "Aucun supplément de livraison n’est facturé en Allemagne. Aucun frais supplémentaire n’est à régler au transporteur. Communiquez votre code postal allemand pour vérifier les conditions d’accès à votre adresse.": {
+    "de": "Innerhalb Deutschlands wird kein Lieferzuschlag erhoben. Für den Spediteur fallen keine zusätzlichen Kosten an. Geben Sie Ihre deutsche Postleitzahl an, um die Zugangsbedingungen zu Ihrer Adresse zu prüfen.",
+    "en": "No delivery surcharge is charged in Germany. No additional costs are payable to the carrier. Provide your German postal code to check the conditions of access to your address."
+  },
+  "Aucun supplément de livraison n’est facturé pour toute commande livrée en Allemagne. Les frais de livraison sont de 0,00 €, quels que soient la distance, la région, le code postal, les produits ou les quantités.": {
+    "de": "Für Bestellungen innerhalb Deutschlands wird kein Lieferzuschlag berechnet. Die Versandkosten betragen 0,00 €, unabhängig von Entfernung, Region, Postleitzahl, Produkten oder Mengen.",
+    "en": "No delivery surcharge is charged for any order delivered in Germany. Delivery costs are €0.00, regardless of distance, region, postal code, products or quantities."
+  },
+  "Aucune action enregistrée dans le journal.": {
+    "de": "Im Protokoll sind keine Aktionen aufgezeichnet.",
+    "en": "No actions recorded in the log."
+  },
+  "Aucune activité enregistrée.": {
+    "de": "Keine Aktivität aufgezeichnet.",
+    "en": "No activity recorded."
+  },
+  "Aucune demande de contact reçue pour le moment.": {
+    "de": "Derzeit sind keine Kontaktanfragen eingegangen.",
+    "en": "No contact requests received at this time."
+  },
+  "Aucune inscription trouvée.": {
+    "de": "Keine Registrierung gefunden.",
+    "en": "No registration found."
+  },
+  "Aucune preuve disponible pour cette commande.": {
+    "de": "Für diese Bestellung liegt kein Zahlungsnachweis vor.",
+    "en": "No payment proof is available for this order."
+  },
+  "BRENNHOLZ": {
+    "de": "BRENNHOLZ",
+    "en": "BRENNHOLZ"
+  },
+  "Bankverbindung für Ihre Überweisung:": {
+    "de": "Bankverbindung für Ihre Überweisung:",
+    "en": "Bank verbindung für Ihre Überweisung:"
+  },
+  "Banküberweisung": {
+    "de": "Bankwesen",
+    "en": "Banking"
+  },
+  "Banküberweisung (Beleg hinterlegt)": {
+    "de": "Banküberweisung (Beleg hinterlegt)",
+    "en": "Banküberweisung (Beleg hinterlegt)"
+  },
+  "Begünstigte / Kontoinhaberin": {
+    "de": "Begünstigte / Kontoinhaberin",
+    "en": "Begünstigte / Kontoinhaberin"
+  },
+  "Begünstigte:": {
+    "de": "Beschreibung:",
+    "en": "Description:"
+  },
+  "Bestelleingangsbestätigung": {
+    "de": "Bestelleingangsbestätigung",
+    "en": "Bestelleingangsbestätigung"
+  },
+  "Bestellübersicht & Referenzdaten": {
+    "de": "Best Selling & Referenzdaten",
+    "en": "Best Selling & Referenzdaten"
+  },
+  "Bestätigung Ihres Zahlungseingangs": {
+    "de": "Bestätigung Ihres Zahlungseingangs",
+    "en": "Bestätigung Ihres Zahlungseingangs"
+  },
+  "Bienvenue chez Bren-nholz — Leylines Park": {
+    "de": "Willkommen bei Bren-nholz — Leylines Park",
+    "en": "Welcome to Bren-nholz — Leylines Park"
+  },
+  "Bren-nholz — Leylines Park : votre boutique de combustibles bois": {
+    "de": "Bren-nholz – Leylines Park: Ihr Holzbrennstofflager",
+    "en": "Bren-nholz — Leylines Park: your wood fuel store"
+  },
+  "Bren-nholz — Leylines Park — Espace sécurisé.": {
+    "de": "Bren-nholz — Leylines Park — Sicherer Bereich.",
+    "en": "Bren-nholz — Leylines Park — Secure area."
+  },
+  "Bren-nholz — Leylines Park, accueil": {
+    "de": "Bren-nholz – Leylines Park, Empfang",
+    "en": "Bren-nholz — Leylines Park, reception"
+  },
+  "Bren-nholz — Leylines Park.": {
+    "de": "Bren-nholz — Leylines Park.",
+    "en": "Bren-nholz — Leylines Park."
+  },
+  "Bénéficiaire, IBAN, BIC et référence obligatoire à indiquer...": {
+    "de": "Begünstigter, IBAN, BIC und zwingende Angabe zur Angabe...",
+    "en": "Beneficiary, IBAN, BIC and mandatory reference to indicate..."
+  },
+  "Camion personnalisé Bren-nholz — Leylines Park": {
+    "de": "Bren-nholz Custom Truck – Leylines Park",
+    "en": "Bren-nholz custom truck — Leylines Park"
+  },
+  "Ce compte ne dispose pas des privilèges administrateur requis.": {
+    "de": "Dieses Konto verfügt nicht über die erforderlichen Administratorrechte.",
+    "en": "This account does not have the required administrator privileges."
+  },
+  "Ce compte n’a pas de rôle administrateur.": {
+    "de": "Dieses Konto verfügt über keine Administratorrolle.",
+    "en": "This account does not have an administrator role."
+  },
+  "Cette page n’est pas accessible avec ce compte.": {
+    "de": "Mit diesem Konto haben Sie keinen Zugriff auf diese Seite.",
+    "en": "This account cannot access this page."
+  },
+  "Cette section nécessite une accréditation Super-Admin ou Owner.": {
+    "de": "Für diesen Abschnitt ist eine Super-Admin- oder Owner-Akkreditierung erforderlich.",
+    "en": "This section requires Super-Admin or Owner accreditation."
+  },
+  "Chaque produit doit apparaître une seule fois et avec une quantité valide.": {
+    "de": "Jedes Produkt darf nur einmal und mit einer gültigen Menge aufgeführt sein.",
+    "en": "Each product must appear only once with a valid quantity."
+  },
+  "Chargement du catalogue et des configurations...": {
+    "de": "Laden des Katalogs und der Konfigurationen...",
+    "en": "Loading the catalog and configurations..."
+  },
+  "Chauffage au bois haute qualité - Brennholz Deutschland": {
+    "de": "Hochwertige Holzheizung - Brennholz Deutschland",
+    "en": "High quality wood heating - Brennholz Deutschland"
+  },
+  "Choisir mes produits": {
+    "de": "Produkte auswählen",
+    "en": "Select products"
+  },
+  "Choisissez un document d’une taille maximale de 20 Mo.": {
+    "de": "Wählen Sie einen Nachweis mit höchstens 20 MB.",
+    "en": "Choose a payment proof no larger than 20 MB."
+  },
+  "Choisissez un justificatif de 20 Mo maximum.": {
+    "de": "Wählen Sie einen Nachweis mit höchstens 20 MB.",
+    "en": "Choose a payment proof no larger than 20 MB."
+  },
+  "Choisissez un justificatif de 3 Mo maximum.": {
+    "de": "Wählen Sie einen Nachweis mit höchstens 20 MB.",
+    "en": "Choose a payment proof no larger than 20 MB."
+  },
+  "Choisissez vos produits dans notre catalogue. Les prix sont TTC. Aucun supplément de livraison n’est facturé en Allemagne.": {
+    "de": "Wählen Sie Ihre Produkte aus unserem Katalog. Die Preise verstehen sich inklusive Mehrwertsteuer. Innerhalb Deutschlands wird kein Lieferzuschlag erhoben.",
+    "en": "Choose your products from our catalog. Prices are inclusive of VAT. No delivery surcharge is charged in Germany."
+  },
+  "Commande introuvable.": {
+    "de": "Bestellung nicht gefunden.",
+    "en": "Order not found."
+  },
+  "Comptes client inscrits": {
+    "de": "Registrierte Kundenkonten",
+    "en": "Registered customer accounts"
+  },
+  "Conditionnement :": {
+    "de": "Verpackungseinheit:",
+    "en": "Pack size:"
+  },
+  "Conditions de livraison": {
+    "de": "Lieferbedingungen",
+    "en": "Delivery conditions"
+  },
+  "Connectez-vous avec votre compte administrateur pour accéder au poste de commande.": {
+    "de": "Melden Sie sich mit Ihrem Administratorkonto an, um auf die Kommandozentrale zuzugreifen.",
+    "en": "Log in with your administrator account to access the command center."
+  },
+  "Connectez-vous avec votre compte administrateur pour continuer.": {
+    "de": "Melden Sie sich mit Ihrem Administratorkonto an, um fortzufahren.",
+    "en": "Sign in with your administrator account to continue."
+  },
+  "Connexion requise": {
+    "de": "Anmeldung erforderlich",
+    "en": "Sign-in required"
+  },
+  "Connexion requise.": {
+    "de": "Anmeldung erforderlich.",
+    "en": "Sign-in required."
+  },
+  "Console de Direction": {
+    "de": "Lenkkonsole",
+    "en": "Steering console"
+  },
+  "Coordonnées de virement bancaire": {
+    "de": "Angaben zur Banküberweisung",
+    "en": "Bank transfer details"
+  },
+  "Créé le": {
+    "de": "Erstellt am",
+    "en": "Created on"
+  },
+  "DE": {
+    "de": "VON",
+    "en": "OF"
+  },
+  "Demande invalide.": {
+    "de": "Ungültige Anfrage.",
+    "en": "Invalid request."
+  },
+  "Description complète": {
+    "de": "Vollständige Beschreibung",
+    "en": "Full description"
+  },
+  "Déclaration invalide.": {
+    "de": "Ungültige Erklärung.",
+    "en": "Invalid declaration."
+  },
+  "Déclaration invalide. Réessayez ou utilisez l’e-mail.": {
+    "de": "Ungültige Erklärung. Versuchen Sie es erneut oder schreiben Sie uns eine E-Mail.",
+    "en": "Invalid declaration. Try again or contact us by email."
+  },
+  "Déclaration trop longue.": {
+    "de": "Die Erklärung ist zu lang.",
+    "en": "The declaration is too long."
+  },
+  "E-mail": {
+    "de": "E-Mail",
+    "en": "E-mail"
+  },
+  "ENplus A1": {
+    "de": "ENplus A1",
+    "en": "ENplus A1"
+  },
+  "ENplus A1 & DINplus": {
+    "de": "ENplus A1 & DINplus",
+    "en": "ENplus A1 & DINplus"
+  },
+  "Eine Empfangsbestätigung mit Ihrer Bestellübersicht und dem gezahlten Betrag wurde per E-Mail versendet.": {
+    "de": "Eine Empfangsbestätigung mit Ihrer Bestellübersicht und dem bezahlten Betrag wurde per E-Mail versendet.",
+    "en": "Eine Empfangsbestätigung mit Ihrer Bestellübersicht und dem gezahlten Betrag wurde per E-Mail versendet."
+  },
+  "Einzelpreis": {
+    "de": "Einzelpreis",
+    "en": "Einzelpreis"
+  },
+  "Enregistré avec succès.": {
+    "de": "Erfolgreich registriert.",
+    "en": "Registered successfully."
+  },
+  "Exploitant et responsable :": {
+    "de": "Betreiber und Verantwortlicher:",
+    "en": "Operator and responsible:"
+  },
+  "Formats acceptés : PDF, JPG, PNG ou WebP.": {
+    "de": "Zulässige Formate: PDF, JPG, PNG oder WebP.",
+    "en": "Accepted formats: PDF, JPG, PNG or WebP."
+  },
+  "Gestion des commandes clients et statut des règlements": {
+    "de": "Verwaltung von Kundenbestellungen und Zahlungsstatus",
+    "en": "Management of customer orders and payment status"
+  },
+  "Granulés, bois de chauffage, briquettes et conseils pour préparer votre approvisionnement en Allemagne.": {
+    "de": "Pellets, Brennholz, Briketts und Beratung zur Vorbereitung Ihrer Versorgung in Deutschland.",
+    "en": "Pellets, firewood, briquettes and advice on preparing your supply in Germany."
+  },
+  "Guide de sélection des granulés": {
+    "de": "Leitfaden zur Pelletauswahl",
+    "en": "Pellet Selection Guide"
+  },
+  "Gérez la disponibilité des produits et les tarifs": {
+    "de": "Verwalten Sie Produktverfügbarkeit und Preise",
+    "en": "Manage product availability and pricing"
+  },
+  "Historique des modifications effectuées sur la console.": {
+    "de": "Verlauf der an der Konsole vorgenommenen Änderungen.",
+    "en": "History of modifications made on the console."
+  },
+  "ID Produit (numérique)": {
+    "de": "Produkt-ID (numerisch)",
+    "en": "Product ID (numeric)"
+  },
+  "Impossible de vérifier le catalogue. Réessayez plus tard.": {
+    "de": "Der Katalog konnte nicht geprüft werden. Versuchen Sie es später erneut.",
+    "en": "The catalogue could not be checked. Please try again later."
+  },
+  "Informations RIB & Instructions affichées lors du paiement": {
+    "de": "RIB-Informationen und Anweisungen werden während der Zahlung angezeigt",
+    "en": "RIB information & Instructions displayed during payment"
+  },
+  "Informations de livraison": {
+    "de": "Lieferinformationen",
+    "en": "Delivery information"
+  },
+  "Justificatif limité à 20 Mo.": {
+    "de": "Der Nachweis darf höchstens 20 MB groß sein.",
+    "en": "The payment proof is limited to 20 MB."
+  },
+  "Justificatif limité à 3 Mo.": {
+    "de": "Der Nachweis darf höchstens 20 MB groß sein.",
+    "en": "The payment proof is limited to 20 MB."
+  },
+  "La commande n’a pas pu être enregistrée. Vérifiez que la migration Supabase commerce a été appliquée.": {
+    "de": "Die Bestellung konnte nicht gespeichert werden. Prüfen Sie, ob die Supabase-Commerce-Migration ausgeführt wurde.",
+    "en": "The order could not be saved. Check that the Supabase commerce migration has been applied."
+  },
+  "La demande de commande est invalide.": {
+    "de": "Ungültige Bestellanfrage.",
+    "en": "Invalid order request."
+  },
+  "La demande de commande est trop longue.": {
+    "de": "Die Bestellanfrage ist zu lang.",
+    "en": "The order request is too long."
+  },
+  "La demande n’a pas pu être enregistrée.": {
+    "de": "Ihre Anfrage konnte nicht gespeichert werden.",
+    "en": "Your request could not be saved."
+  },
+  "La déclaration n’a pas pu être enregistrée. Réessayez ou utilisez l’e-mail.": {
+    "de": "Ihre Erklärung konnte nicht gespeichert werden. Versuchen Sie es erneut oder schreiben Sie uns eine E-Mail.",
+    "en": "Your declaration could not be saved. Try again or contact us by email."
+  },
+  "La livraison intervient sous 2 à 4 jours ouvrables après réception effective du paiement. Les conditions d’accès pour le camion et le déchargement des palettes restent applicables. Aucun paiement n’est demandé au transporteur.": {
+    "de": "Die Lieferung erfolgt innerhalb von 2 bis 4 Werktagen nach Zahlungseingang. Es gelten weiterhin die Zufahrtsbedingungen für den LKW und die Entladung von Paletten. Es ist keine Zahlung vom Spediteur erforderlich.",
+    "en": "Delivery takes place within 2 to 4 working days after receipt of payment. Access conditions for the truck and unloading of pallets remain applicable. No payment is required from the carrier."
+  },
+  "La preuve n’a pas pu être sauvegardée.": {
+    "de": "Der Nachweis konnte nicht gespeichert werden.",
+    "en": "The proof could not be saved."
+  },
+  "Le montant de la commande dépasse la limite autorisée.": {
+    "de": "Der Bestellbetrag überschreitet den zulässigen Höchstbetrag.",
+    "en": "The order amount exceeds the permitted limit."
+  },
+  "Le remboursement utilise le même moyen de paiement, sauf accord exprès pour un autre moyen sans frais. La livraison en Allemagne est sans supplément : 0,00 €. Pour les anciennes commandes, les éventuels coûts d’envoi standard déjà réglés sont également remboursés ; les suppléments liés à un mode de livraison plus coûteux choisi par le client ne le sont pas.": {
+    "de": "Die Rückerstattung erfolgt über dasselbe Zahlungsmittel, es sei denn, es wurde ausdrücklich eine andere kostenfreie Zahlungsart vereinbart. Die Lieferung innerhalb Deutschlands erfolgt versandkostenfrei: 0,00 €. Bei Altbestellungen werden auch bereits gezahlte Standardversandkosten erstattet; Bei Zuschlägen, die mit einer vom Kunden gewählten teureren Versandart verbunden sind, gilt dies nicht.",
+    "en": "Reimbursement uses the same means of payment, unless expressly agreed for another method free of charge. Delivery within Germany is free of charge: €0.00. For old orders, any standard shipping costs already paid are also refunded; supplements linked to a more expensive delivery method chosen by the customer are not."
+  },
+  "Le service de commande n’est pas configuré. Contactez l’entreprise.": {
+    "de": "Der Bestellservice ist nicht eingerichtet. Bitte kontaktieren Sie uns.",
+    "en": "The order service is not configured. Please contact us."
+  },
+  "Le stock de «": {
+    "de": "Der Bestand von „",
+    "en": "The stock of “"
+  },
+  "Le stock vient de changer. Actualisez le panier et réessayez.": {
+    "de": "Der Bestand hat sich geändert. Aktualisieren Sie Ihren Warenkorb und versuchen Sie es erneut.",
+    "en": "The stock has just changed. Refresh your cart and try again."
+  },
+  "Les prix des produits sont TTC. La TVA est déjà incluse et n’est jamais ajoutée au paiement. Le total à payer correspond exactement à la somme des prix TTC des produits commandés.": {
+    "de": "Die Produktpreise verstehen sich inklusive Steuern. Die Mehrwertsteuer ist bereits enthalten und wird niemals zur Zahlung hinzugerechnet. Der zu zahlende Gesamtbetrag entspricht genau der Summe der Preise inklusive Mehrwertsteuer der bestellten Produkte.",
+    "en": "Product prices are inclusive of tax. VAT is already included and is never added to the payment. The total to be paid corresponds exactly to the sum of the prices including tax of the products ordered."
+  },
+  "Lieferadresse & Empfänger": {
+    "de": "Lieferdress & Empfänger",
+    "en": "Lieferdress & Empfänger"
+  },
+  "Lien d’envoi invalide.": {
+    "de": "Ungültiger Upload-Link.",
+    "en": "Invalid upload link."
+  },
+  "Liste des clients enregistrés sur la plateforme.": {
+    "de": "Liste der auf der Plattform registrierten Kunden.",
+    "en": "List of customers registered on the platform."
+  },
+  "Livraison en Allemagne · Aucun frais supplémentaire à régler au transporteur": {
+    "de": "Lieferung innerhalb Deutschlands · Keine zusätzlichen Kosten für den Spediteur",
+    "en": "Delivery within Germany · No additional costs to pay to the carrier"
+  },
+  "Lorsque vous utilisez la recherche d’adresse, la rue, le numéro, le code postal et la ville saisis sont transmis à Geoapify pour proposer des adresses en Allemagne. Vous pouvez saisir votre adresse manuellement. Les données cartographiques proviennent notamment d’OpenStreetMap.": {
+    "de": "Bei der Adresssuche werden die eingegebene Straße, Hausnummer, Postleitzahl und Ort an Geoapify übermittelt, um Adressen in Deutschland vorzuschlagen. Sie können Ihre Adresse manuell eingeben. Die kartografischen Daten stammen insbesondere von OpenStreetMap.",
+    "en": "When you use the address search, the street, number, postal code and city entered are transmitted to Geoapify to suggest addresses in Germany. You can enter your address manually. The cartographic data comes in particular from OpenStreetMap."
+  },
+  "L’envoi a échoué. Réessayez.": {
+    "de": "Der Upload ist fehlgeschlagen. Versuchen Sie es erneut.",
+    "en": "The upload failed. Please try again."
+  },
+  "Mis à jour le 13 octobre 2026": {
+    "de": "Aktualisiert am 13. Oktober 2026",
+    "en": "Updated October 13, 2026"
+  },
+  "Müller": {
+    "de": "Müller",
+    "en": "Muller"
+  },
+  "Nom commercial :": {
+    "de": "Handelsname:",
+    "en": "Trading name:"
+  },
+  "Nom du produit": {
+    "de": "Produktname",
+    "en": "Product Name"
+  },
+  "Numéro d’enregistrement de l’entreprise": {
+    "de": "Firmenregistrierungsnummer",
+    "en": "Company registration number"
+  },
+  "Nächste Schritte:": {
+    "de": "Nächste Schritte:",
+    "en": "Nächste Schritte:"
+  },
+  "Page indisponible": {
+    "de": "Seite nicht verfügbar",
+    "en": "Page unavailable"
+  },
+  "Paniers non validés": {
+    "de": "Nicht validierte Körbe",
+    "en": "Unvalidated baskets"
+  },
+  "Pour toute demande concernant vos données, contactez Bren-nholz — Leylines Park à": {
+    "de": "Bei Fragen zu Ihren Daten wenden Sie sich bitte an Brennholz – Leylines Park unter",
+    "en": "For any requests regarding your data, contact Bren-nholz — Leylines Park at"
+  },
+  "Pour un suivi de commande, merci d’indiquer votre numéro de référence. Pour toute question sur les produits, utilisez ce formulaire.": {
+    "de": "Für die Auftragsverfolgung geben Sie bitte Ihre Referenznummer an. Bei Produktfragen nutzen Sie bitte dieses Formular.",
+    "en": "For order tracking, please indicate your reference number. For any product questions, use this form."
+  },
+  "Prêt à commander ?": {
+    "de": "Bereit zur Bestellung?",
+    "en": "Ready to order?"
+  },
+  "Qualitätsgeprüft": {
+    "de": "Qualitätssicherung",
+    "en": "Quality assurance"
+  },
+  "Renseignez complètement l’adresse de livraison.": {
+    "de": "Bitte geben Sie die vollständige Lieferadresse ein.",
+    "en": "Please enter the complete delivery address."
+  },
+  "Renseignez un nom, une adresse allemande complète, un code postal à cinq chiffres et un e-mail valide.": {
+    "de": "Geben Sie einen Namen, eine vollständige deutsche Adresse, eine fünfstellige Postleitzahl und eine gültige E-Mail-Adresse ein.",
+    "en": "Enter a name, a complete German address, a five-digit postcode and a valid email address."
+  },
+  "Référence invalide.": {
+    "de": "Ungültige Bestellnummer.",
+    "en": "Invalid order reference."
+  },
+  "Régions": {
+    "de": "Regionen",
+    "en": "Regions"
+  },
+  "Réinitialiser": {
+    "de": "Zurücksetzen",
+    "en": "Reset"
+  },
+  "Rôle à attribuer": {
+    "de": "Zuzuweisende Rolle",
+    "en": "Role to assign"
+  },
+  "Saisissez l’adresse e-mail d’un compte utilisateur inscrit pour lui attribuer des privilèges d’administration.": {
+    "de": "Geben Sie die E-Mail-Adresse eines registrierten Benutzerkontos ein, um ihm Administratorrechte zu gewähren.",
+    "en": "Enter the email address of a registered user account to grant it administrative privileges."
+  },
+  "Service d’envoi indisponible.": {
+    "de": "Der Upload-Dienst ist derzeit nicht verfügbar.",
+    "en": "The upload service is unavailable."
+  },
+  "Service indisponible.": {
+    "de": "Dienst derzeit nicht verfügbar.",
+    "en": "Service unavailable."
+  },
+  "Service indisponible. Notifiez votre rétractation par e-mail.": {
+    "de": "Der Dienst ist nicht verfügbar. Teilen Sie uns Ihren Widerruf bitte per E-Mail mit.",
+    "en": "Service unavailable. Please notify us of your withdrawal by email."
+  },
+  "Service indisponible. Réessayez ou utilisez l’e-mail.": {
+    "de": "Der Dienst ist nicht verfügbar. Versuchen Sie es erneut oder schreiben Sie uns eine E-Mail.",
+    "en": "Service unavailable. Try again or contact us by email."
+  },
+  "Session invalide.": {
+    "de": "Ungültige Sitzung.",
+    "en": "Invalid session."
+  },
+  "Stock insuffisant pour «": {
+    "de": "Nicht genügend Bestand für „",
+    "en": "Insufficient stock for “"
+  },
+  "Stockage des justificatifs indisponible.": {
+    "de": "Der Speicher für Zahlungsnachweise ist nicht verfügbar.",
+    "en": "Payment proof storage unavailable."
+  },
+  "Stockage indisponible.": {
+    "de": "Der Speicherdienst ist nicht verfügbar.",
+    "en": "Storage unavailable."
+  },
+  "Tous les prix affichés sont TTC. La TVA est déjà incluse et le total de commande correspond à la somme des prix TTC des produits.": {
+    "de": "Alle angezeigten Preise verstehen sich inklusive Mehrwertsteuer. Die Mehrwertsteuer ist bereits enthalten und die Bestellsumme entspricht der Summe der Produktpreise inklusive Mehrwertsteuer.",
+    "en": "All prices displayed are inclusive of tax. VAT is already included and the order total corresponds to the sum of the product prices including tax."
+  },
+  "Un compte est marqué en ligne s’il a été actif durant les 2 dernières minutes.": {
+    "de": "Ein Konto wird als online markiert, wenn es in den letzten 2 Minuten aktiv war.",
+    "en": "An account is marked online if it has been active during the last 2 minutes."
+  },
+  "Un prestataire technique fournit les services d’authentification des comptes, de base de données et de stockage privé des justificatifs. Les administrateurs habilités et la comptabilité accèdent aux données nécessaires à leurs missions. Le transporteur reçoit les coordonnées nécessaires à la livraison.": {
+    "de": "Ein technischer Dienstleister bietet Kontoauthentifizierung, Datenbank und private Speicherung von Belegen. Autorisierte Administratoren und Buchhalter haben Zugriff auf die für ihre Aufgaben erforderlichen Daten. Der Spediteur erhält die für die Lieferung notwendigen Kontaktdaten.",
+    "en": "A technical service provider provides account authentication, database and private storage of supporting documents. Authorized administrators and accounting have access to the data necessary for their missions. The carrier receives the contact details necessary for delivery."
+  },
+  "Un prix a changé. Actualisez votre panier et vérifiez le nouveau total avant de commander.": {
+    "de": "Ein Preis hat sich geändert. Aktualisieren Sie Ihren Warenkorb und prüfen Sie den neuen Gesamtbetrag vor der Bestellung.",
+    "en": "A price has changed. Refresh your cart and check the new total before ordering."
+  },
+  "Un produit de votre panier n’est plus disponible.": {
+    "de": "Ein Produkt in Ihrem Warenkorb ist nicht mehr verfügbar.",
+    "en": "A product in your cart is no longer available."
+  },
+  "Un produit de votre panier n’existe plus.": {
+    "de": "Ein Produkt in Ihrem Warenkorb ist nicht mehr im Sortiment.",
+    "en": "A product in your cart is no longer listed."
+  },
+  "Un produit ou une quantité est invalide.": {
+    "de": "Ein Produkt oder eine Menge ist ungültig.",
+    "en": "A product or quantity is invalid."
+  },
+  "Utilisateurs & Accès": {
+    "de": "Benutzer und Zugriff",
+    "en": "Users & Access"
+  },
+  "Voici comment votre bois de chauffage est produit – de la bûche à la livraison.": {
+    "de": "So entsteht Ihr Brennholz – vom Scheit bis zur Lieferung.",
+    "en": "This is how your firewood is produced – from log to delivery."
+  },
+  "Votre adresse e-mail a été confirmée. Bienvenue chez Bren-nholz, votre compte est maintenant actif.": {
+    "de": "Ihre E-Mail-Adresse wurde bestätigt. Willkommen bei Bren-nholz – Ihr Konto ist jetzt aktiv.",
+    "en": "Your email address has been confirmed. Welcome to Bren-nholz – your account is now active."
+  },
+  "Votre bois de chauffage,": {
+    "de": "Dein Brennholz,",
+    "en": "Your firewood,"
+  },
+  "Votre session a expiré. Reconnectez-vous puis réessayez.": {
+    "de": "Ihre Sitzung ist abgelaufen. Melden Sie sich erneut an und versuchen Sie es noch einmal.",
+    "en": "Your session has expired. Sign in again and retry."
+  },
+  "Vérification de l’accès...": {
+    "de": "Zugriff wird geprüft...",
+    "en": "Checking access..."
+  },
+  "Vérification des accréditations en cours...": {
+    "de": "Überprüfung der Akkreditierungen läuft...",
+    "en": "Verification of accreditations in progress..."
+  },
+  "Vérifiez les produits, les coordonnées et l’acceptation des conditions.": {
+    "de": "Prüfen Sie die Produkte, Ihre Kontaktdaten und die Zustimmung zu den Bedingungen.",
+    "en": "Check the products, your contact details and your acceptance of the terms."
+  },
+  "Vérifiez votre nom, votre e-mail et le contrat concerné.": {
+    "de": "Prüfen Sie Ihren Namen, Ihre E-Mail-Adresse und den betreffenden Vertrag.",
+    "en": "Check your name, email address and the contract concerned."
+  },
+  "Vérifié": {
+    "de": "Verifiziert",
+    "en": "Verified"
+  },
+  "Zahlungs- und Belegbestätigung": {
+    "de": "Zahlungs- und Belegbestätigung",
+    "en": "Zahlungs- und Belegbestätigung"
+  },
+  "Zahlungsnachweis hinzufügen": {
+    "de": "Zahlungsnachweis hinzufügen",
+    "en": "Zahlungsnachweis hinzufügen"
+  },
+  "Zone de livraison": {
+    "de": "Liefergebiet",
+    "en": "Delivery area"
+  },
+  "Zurück zu den Produkten": {
+    "de": "Über die Produkte",
+    "en": "About the products"
+  },
+  "au panier": {
+    "de": "im Warenkorb",
+    "en": "in cart"
+  },
+  "autorité de protection des données de Hesse, en Allemagne": {
+    "de": "Datenschutzbehörde Hessen, Deutschland",
+    "en": "Data Protection Authority of Hesse, Germany"
+  },
+  "avec livraison en Allemagne | Bren-nholz": {
+    "de": "mit Lieferung in Deutschland | Bren-nholz",
+    "en": "with delivery in Germany | Bren-nholz"
+  },
+  "conditions générales de vente de Bren-nholz — Leylines Park": {
+    "de": "Allgemeine Verkaufsbedingungen von Brennholz – Leylines Park",
+    "en": "general conditions of sale of Bren-nholz — Leylines Park"
+  },
+  "de-DE": {
+    "de": "de-DE",
+    "en": "de-DE"
+  },
+  "livré en Allemagne.": {
+    "de": "nach Deutschland geliefert.",
+    "en": "delivered to Germany."
+  },
+  "n’est pas disponible à la vente. Actualisez votre panier.": {
+    "de": "ist nicht zum Kauf verfügbar. Aktualisieren Sie Ihren Warenkorb.",
+    "en": "is not available for purchase. Refresh your cart."
+  },
+  "produit": {
+    "de": "Produkt",
+    "en": "product"
+  },
+  "unité(s) disponible(s).": {
+    "de": "Einheit(en) verfügbar.",
+    "en": "unit(s) available."
+  },
+  "» doit être corrigé dans l’administration.": {
+    "de": "“ muss in der Verwaltung korrigiert werden.",
+    "en": "” must be corrected in the administration."
+  }
 }

@@ -25,8 +25,8 @@ export async function POST(request: Request) {
     const token = String(form.get('token') ?? '');
     if (!/^TP-[A-F0-9]{12}$/.test(reference) || !validPaymentProofToken(reference, token, server.key)) return fail('Ungültiger oder abgelaufener Übermittlungslink.', 403);
     const file = form.get('file');
-    if (!(file instanceof File) || !file.size || file.size > 20 * 1024 * 1024) return fail('Bitte wählen Sie ein Dokument mit einer maximalen Dateigröße von 20 MB.', 400);
-    const bytes = Buffer.from(await file.arrayBuffer());
+    if (!file || typeof file === 'string' || !(file as Blob).size || (file as Blob).size > 20 * 1024 * 1024) return fail('Bitte wählen Sie ein Dokument mit einer maximalen Dateigröße von 20 MB.', 400);
+    const bytes = Buffer.from(await (file as Blob).arrayBuffer());
     const png = bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]));
     const jpeg = bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
     const webp = bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 12) === 'WEBP';

@@ -69,7 +69,7 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
     });
     void client.auth.getSession().then(({ data, error: sessionError }) => {
       if (!active) return;
-      if (sessionError) setError('Impossible de vérifier votre session.');
+      if (sessionError) setError('Ihre Sitzung konnte nicht überprüft werden.');
       else setUser(data.session?.user ?? null);
       setSessionReady(true);
     });
@@ -85,7 +85,7 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
       .then((role) => {
         if (!active) return;
         setAccess({ userId, role });
-      }).catch(() => { if (active) setError('Impossible de vérifier votre rôle. Veuillez réessayer.'); });
+      }).catch(() => { if (active) setError('Ihre Rolle konnte nicht überprüft werden. Bitte versuchen Sie es erneut.'); });
     return () => { active = false; };
   }, [sessionReady, userId, retry]);
 
@@ -110,9 +110,9 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
 
   if (error) return localizeNode(<main className="min-h-[70vh] p-8 text-center">
     <p role="alert">{error}</p>
-    <button type="button" onClick={() => { setError(''); setRetry((value) => value + 1); }} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white">Réessayer</button>
-    <button type="button" onClick={() => void supabase?.auth.signOut()} className="ml-4 underline">Se déconnecter</button>
+    <button type="button" onClick={() => { setError(''); setRetry((value) => value + 1); }} className="mt-4 rounded-lg bg-gray-950 px-5 py-3 font-bold text-white">Erneut versuchen</button>
+    <button type="button" onClick={() => void supabase?.auth.signOut()} className="ml-4 underline">Abmelden</button>
   </main>, brenLocale);
-  if (!authLinkReady || !verified || destination) return localizeNode(<main className="min-h-[70vh] p-8 text-center" role="status">Vérification de votre accès…</main>, brenLocale);
+  if (!authLinkReady || !verified || destination) return localizeNode(<main className="min-h-[70vh] p-8 text-center" role="status">Zugriff wird überprüft …</main>, brenLocale);
   return content;
 }

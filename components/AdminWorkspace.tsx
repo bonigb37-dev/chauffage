@@ -37,13 +37,13 @@ type ActivityRow = { user_id: string; email: string | null; first_seen_at: strin
 type ClientAccountRow = { user_id: string; email: string | null; full_name: string | null; created_at: string };
 type AuditRow = { id: number; actor_user_id: string | null; actor_role: string | null; action: string; entity: string; entity_id: string | null; details: Record<string, unknown>; created_at: string };
 
-const statusLabels: Record<RequestStatus, string> = { new: 'Nouvelle', in_progress: 'En cours', done: 'Terminée' };
-const subjectLabels: Record<string, string> = { product: 'Information produit', quote: 'Devis', delivery: 'Livraison', order: 'Commande', claim: 'Réclamation', other: 'Autre' };
+const statusLabels: Record<RequestStatus, string> = { new: 'Neu', in_progress: 'In Bearbeitung', done: 'Abgeschlossen' };
+const subjectLabels: Record<string, string> = { product: 'Produktinformationen', quote: 'Angebot', delivery: 'Lieferung', order: 'Bestellung', claim: 'Reklamation', other: 'Sonstiges' };
 const euros = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
 
 function text(value: unknown) { return typeof value === 'string' ? value : ''; }
 function date(value: string, locale: Locale) { return new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)); }
-function emptyProduct(products: Product[]): Product { return { id: Math.max(0, ...products.map((item) => item.id)) + 1, name: '', type: 'Granulés', quantity: '', price: 'Sur devis', priceAmount: 0, description: '', image: '/pellets.webp', stock: -1 }; }
+function emptyProduct(products: Product[]): Product { return { id: Math.max(0, ...products.map((item) => item.id)) + 1, name: '', type: 'Pellets', quantity: '', price: 'Auf Anfrage', priceAmount: 0, description: '', image: '/pellets.webp', stock: -1 }; }
 
 function StatusSelect({ value, onChange, disabled, order = false }: { value: RequestStatus; onChange: (status: RequestStatus) => void; disabled: boolean; order?: boolean }) {
   const brenLocale = useLocale() as Locale;
@@ -118,14 +118,14 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
 
   const loadData = useCallback(async (activeUser: User | null, verifiedRole?: AdminRole | null) => {
     const generation = ++loadGeneration.current;
-    if (!supabase) { setError('Supabase n’est pas configuré sur cette version du site.'); setLoading(false); return; }
+    if (!supabase) { setError('Supabase ist für diese Website-Version nicht eingerichtet.'); setLoading(false); return; }
     const currentUser = activeUser;
     if (!currentUser) { setLoading(false); return; }
     setError('');
     setDetailsLoading(true);
     let currentRole;
     try { currentRole = verifiedRole === undefined ? await getAdminRole(supabase, currentUser.id) : verifiedRole; } catch {
-      setError('Impossible de vérifier votre rôle. Exécutez supabase-admin.sql dans le SQL Editor Supabase.');
+      setError('Ihre Rolle konnte nicht geprüft werden. Führen Sie supabase-admin.sql im Supabase SQL Editor aus.');
       setLoading(false);
       return;
     }
@@ -140,7 +140,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     if (orderResult.error?.code === '42703' || orderResult.error?.code === 'PGRST204') orderResult = await supabase.from('order_requests').select(orderFields).order('created_at', { ascending: false }).range(orderOffset,orderOffset+99);
     if (generation !== loadGeneration.current) return;
     setArchiveReady(ready);
-    if (orderResult.error) setError('Impossible de charger les commandes.');
+    if (orderResult.error) setError('Bestellungen konnten nicht geladen werden.');
     else setOrders((orderResult.data ?? []) as unknown as OrderRow[]);
 
     if (superAdminOnly) {
@@ -152,7 +152,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       void secondary.catch(() => { /* Handled when awaited after the primary list. */ });
       const roleList = await supabase.from('admin_roles').select('user_id, role, created_at').order('created_at', { ascending: true });
       if (generation !== loadGeneration.current) return;
-      if (roleList.error) setError('Impossible de charger la liste des rôles.');
+      if (roleList.error) setError('Die Rollenliste konnte nicht geladen werden.');
       else setRoles((roleList.data ?? []) as RoleRow[]);
       setLoading(false);
       const [activityList, accountList, auditList] = await secondary;
@@ -169,7 +169,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       void secondary.catch(() => { /* Handled when awaited after the primary lists. */ });
       const contactResult = await supabase.from('contact_requests').select('id, created_at, name, email, phone, postal_code, subject, message, status').order('created_at', { ascending: false }).limit(100);
       if (generation !== loadGeneration.current) return;
-      if (contactResult.error || orderResult.error) setError('Impossible de charger les demandes. Vérifiez les politiques RLS de supabase-admin.sql.');
+      if (contactResult.error || orderResult.error) setError('Die Anfragen konnten nicht geladen werden. Prüfen Sie die RLS-Richtlinien in supabase-admin.sql.');
       else {
         setContacts((contactResult.data ?? []) as ContactRow[]);
         setOrders((orderResult.data ?? []) as OrderRow[]);
@@ -203,7 +203,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   }
 
   useEffect(() => {
-    if (!supabase) { setError('Supabase n’est pas configuré sur cette version du site.'); setLoading(false); return; }
+    if (!supabase) { setError('Supabase ist für diese Website-Version nicht eingerichtet.'); setLoading(false); return; }
     if (!access.verified) return;
     setUser(access.user);
     const key = `${access.user?.id ?? ''}:${access.role ?? ''}:${superAdminOnly}:${showArchived}:${orderOffset}`;
@@ -213,7 +213,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     setLoading(true);
     const generation = loadGeneration.current + 1;
     void loadData(access.user, access.role).catch(() => {
-      if (generation === loadGeneration.current) { setError('Impossible de charger votre espace. Veuillez réessayer.'); setLoading(false); }
+      if (generation === loadGeneration.current) { setError('Ihr Verwaltungsbereich konnte nicht geladen werden. Bitte versuchen Sie es erneut.'); setLoading(false); }
     });
   }, [access.user, access.role, access.verified, superAdminOnly, showArchived, orderOffset, loadData]);
 
@@ -222,30 +222,30 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   async function updateStatus(table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) {
     if (!supabase) return;
     if (table === 'order_requests' && status !== 'new' && orders.find((order) => order.id === id)?.payment_status !== 'confirmed') {
-      setError('Confirmez la réception effective des fonds avant la préparation ou l’expédition.');
+      setError('Bestätigen Sie den tatsächlichen Zahlungseingang vor der Vorbereitung oder dem Versand.');
       return;
     }
     const key = `${table}-${id}`;
     setWorkingId(key); setError(''); setNotice('');
     const { error: updateError } = await supabase.from(table).update({ status }).eq('id', id);
-    if (updateError) setError('Le statut n’a pas pu être modifié. Vérifiez votre rôle et les règles RLS.');
+    if (updateError) setError('Der Status konnte nicht geändert werden. Prüfen Sie Ihre Rolle und die RLS-Regeln.');
     else {
       if (table === 'contact_requests') setContacts((items) => items.map((item) => item.id === id ? { ...item, status } : item));
       else setOrders((items) => items.map((item) => item.id === id ? { ...item, status } : item));
-      setNotice('Statut mis à jour.');
+      setNotice('Status aktualisiert.');
     }
     setWorkingId('');
   }
 
   async function confirmTransfer(orderId: number) {
-    if (!supabase || !window.confirm(translate('Confirmer que le virement a bien été reçu sur le compte bancaire ?', brenLocale))) return;
+    if (!supabase || !window.confirm(translate('Bestätigen, dass die Überweisung tatsächlich auf dem Bankkonto eingegangen ist?', brenLocale))) return;
     const key = `payment-${orderId}`;
     setWorkingId(key); setError(''); setNotice('');
-    const { data, error: confirmationError } = await supabase.rpc('confirm_bank_transfer', { p_order_request_id: orderId, p_note: 'Vérifié manuellement par l’administrateur' });
-    if (confirmationError) setError('Le virement n’a pas pu être confirmé. Vérifiez la migration supabase-commerce.sql et les droits administrateur.');
+    const { data, error: confirmationError } = await supabase.rpc('confirm_bank_transfer', { p_order_request_id: orderId, p_note: 'Manuell durch Administrator überprüft' });
+    if (confirmationError) setError('Die Überweisung konnte nicht bestätigt werden. Prüfen Sie die Migration supabase-commerce.sql und Ihre Administratorrechte.');
     else {
       setOrders((items) => items.map((item) => item.id === orderId ? { ...item, payment_status: String(data ?? 'confirmed') } : item));
-      setNotice('Virement confirmé. L’action est inscrite dans l’historique des paiements.');
+      setNotice('Überweisung bestätigt. Die Aktion wurde im Zahlungsverlauf protokolliert.');
     }
     setWorkingId('');
   }
@@ -255,40 +255,40 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     if (!supabase) return;
     const email = userId.trim().toLowerCase();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError('Saisissez une adresse e-mail valide.'); return;
+      setError('Geben Sie eine gültige E-Mail-Adresse ein.'); return;
     }
     setSavingRole(true); setError(''); setNotice('');
     try {
       const { data: account, error: lookupError } = await supabase.from('client_accounts')
         .select('user_id').ilike('email', email.replace(/[\\%_]/g, '\\$&')).maybeSingle();
       if (lookupError) {
-        setError('Impossible de rechercher ce compte. Vérifiez vos droits et la configuration Supabase.'); return;
+        setError('Dieses Konto konnte nicht gesucht werden. Prüfen Sie Ihre Berechtigungen und die Supabase-Konfiguration.'); return;
       }
       if (!account) {
-        setError('Aucun compte trouvé avec cette adresse e-mail. L’utilisateur doit d’abord créer son compte.'); return;
+        setError('Für diese E-Mail-Adresse wurde kein Konto gefunden. Der Benutzer muss zuerst ein Konto erstellen.'); return;
       }
       if (account.user_id === user?.id && newRole !== role) {
-        setError('Pour éviter de perdre vos accès, vous ne pouvez pas modifier votre propre rôle ici.'); return;
+        setError('Damit Sie Ihren Zugang nicht verlieren, können Sie Ihre eigene Rolle hier nicht ändern.'); return;
       }
       if (newRole === 'owner' && role !== 'owner') {
-        setError('Seul un owner peut attribuer le rôle owner.'); return;
+        setError('Nur ein Kontoinhaber kann die Rolle Kontoinhaber vergeben.'); return;
       }
       const { error: saveError } = await supabase.from('admin_roles').upsert({ user_id: account.user_id, role: newRole }, { onConflict: 'user_id' });
-      if (saveError) setError('Le rôle n’a pas pu être enregistré. Seul un administrateur autorisé peut gérer ce rôle.');
-      else { setUserId(''); setNotice(`Rôle enregistré pour ${email}.`); await loadData(user); }
+      if (saveError) setError('Die Rolle konnte nicht gespeichert werden. Nur ein berechtigter Administrator kann diese Rolle verwalten.');
+      else { setUserId(''); setNotice(`Rolle gespeichert für ${email}.`); await loadData(user); }
     } catch {
-      setError('Le rôle n’a pas pu être enregistré. Veuillez réessayer.');
+      setError('Die Rolle konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.');
     } finally {
       setSavingRole(false);
     }
   }
 
   async function removeRole(targetId: string) {
-    if (!supabase || targetId === user?.id || !window.confirm(translate('Retirer les droits administrateur de cet utilisateur ?', brenLocale))) return;
+    if (!supabase || targetId === user?.id || !window.confirm(translate('Diesem Benutzer die Administratorrechte entziehen?', brenLocale))) return;
     setWorkingId(targetId); setError(''); setNotice('');
     const { error: removeError } = await supabase.from('admin_roles').delete().eq('user_id', targetId);
-    if (removeError) setError('Impossible de retirer ce rôle.');
-    else { setRoles((items) => items.filter((item) => item.user_id !== targetId)); setNotice('Rôle retiré.'); }
+    if (removeError) setError('Diese Rolle konnte nicht entzogen werden.');
+    else { setRoles((items) => items.filter((item) => item.user_id !== targetId)); setNotice('Rolle entzogen.'); }
     setWorkingId('');
   }
 
@@ -300,12 +300,12 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
         .update({ value: { details: bankForm }, updated_at: new Date().toISOString() })
         .eq('key', 'bank_transfer').select('key').single();
       if (saveError || !data) {
-        setError('Les coordonnées bancaires n’ont pas pu être enregistrées.');
+        setError('Die Bankverbindung konnte nicht gespeichert werden.');
         return false;
       }
       return true;
     } catch {
-      setError('Les coordonnées bancaires n’ont pas pu être enregistrées. Veuillez réessayer.');
+      setError('Die Bankverbindung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.');
       return false;
     } finally {
       setSavingRole(false);
@@ -315,10 +315,10 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   async function saveProduct(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); if (!supabase) return;
     const p = { ...productForm, priceAmount: productForm.priceAmount ? productForm.priceAmount : null, stock: productForm.stock !== undefined && productForm.stock < 0 ? null : productForm.stock };
-    const data = { ...p, price: typeof p.priceAmount === 'number' ? euros.format(p.priceAmount / 100) : 'Sur devis' };
+    const data = { ...p, price: typeof p.priceAmount === 'number' ? euros.format(p.priceAmount / 100) : 'Auf Anfrage' };
     setSavingRole(true); setError(''); setNotice('');
     const { error: saveError } = await supabase.from('product_overrides').upsert({ product_id: p.id, data, is_deleted: false, updated_at: new Date().toISOString() }, { onConflict: 'product_id' });
-    if (saveError) setError('Le produit n’a pas pu être enregistré. Vérifiez le script SQL et votre rôle.');
+    if (saveError) setError('Das Produkt konnte nicht gespeichert werden. Prüfen Sie das SQL-Skript und Ihre Rolle.');
     else window.location.reload();
     setSavingRole(false);
   }
@@ -326,12 +326,12 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   async function deleteProduct(productId: number | number[]) {
     const ids = [...new Set(Array.isArray(productId) ? productId : [productId])];
     if (ids.length > 0 && ids.length === siteData.products.length) {
-      const confirmation = window.prompt(`${translate('Cette action supprimera les', brenLocale)} ${ids.length} ${translate('produits et rendra le catalogue vide sur tous les appareils. Pour confirmer, saisissez', brenLocale)} ${translate('SUPPRIMER TOUT', brenLocale)}.`);
-      if (confirmation !== translate('SUPPRIMER TOUT', brenLocale)) return;
+      const confirmation = window.prompt(`${translate('Diese Aktion löscht die', brenLocale)} ${ids.length} ${translate('Produkte und leert den Katalog auf allen Geräten. Geben Sie zur Bestätigung Folgendes ein:', brenLocale)} ${translate('ALLES LÖSCHEN', brenLocale)}.`);
+      if (confirmation !== translate('ALLES LÖSCHEN', brenLocale)) return;
     }
     if (!supabase || savingRole || ids.length === 0 || !window.confirm(ids.length === 1
-      ? translate('Supprimer ce produit du catalogue ?', brenLocale)
-      : `${translate('Supprimer les', brenLocale)} ${ids.length} ${translate('produits sélectionnés du catalogue ?', brenLocale)}`)) return;
+      ? translate('Dieses Produkt aus dem Katalog löschen?', brenLocale)
+      : `${translate('Löschen:', brenLocale)} ${ids.length} ${translate('ausgewählte Produkte aus dem Katalog?', brenLocale)}`)) return;
     setSavingRole(true); setError(''); setNotice('');
     try {
       const updatedAt = new Date().toISOString();
@@ -339,9 +339,9 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
         ids.map((id) => ({ product_id: id, data: {}, is_deleted: true, updated_at: updatedAt })),
         { onConflict: 'product_id' },
       );
-      if (deleteError) setError('Les produits n’ont pas pu être supprimés.'); else window.location.reload();
+      if (deleteError) setError('Die Produkte konnten nicht gelöscht werden.'); else window.location.reload();
     } catch {
-      setError('La suppression a échoué. Veuillez réessayer.');
+      setError('Das Löschen ist fehlgeschlagen. Bitte versuchen Sie es erneut.');
     } finally {
       setSavingRole(false);
     }
@@ -354,7 +354,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     try {
       const { error: signOutError } = await supabase.auth.signOut();
       if (signOutError) {
-        setError('La déconnexion a échoué. Veuillez réessayer.');
+        setError('Das Abmelden ist fehlgeschlagen. Bitte versuchen Sie es erneut.');
         return;
       }
       setUser(null);
@@ -362,7 +362,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       router.replace('/compte');
       router.refresh();
     } catch {
-      setError('La déconnexion a échoué. Veuillez réessayer.');
+      setError('Das Abmelden ist fehlgeschlagen. Bitte versuchen Sie es erneut.');
     } finally {
       setSigningOut(false);
     }
@@ -394,9 +394,9 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
         </div>
         <div>
           <h1 className="text-white font-black text-lg tracking-tight leading-none">
-            Bren<span className="text-[#FF6B00]">·</span>holz
+            Brennholz<span className="text-[#FF6B00]">-</span>direk
           </h1>
-          <p className="text-[11px] text-[#9AA4AF] font-semibold mt-0.5">Console de Direction</p>
+          <p className="text-[11px] text-[#9AA4AF] font-semibold mt-0.5">Leitkonsole</p>
         </div>
       </div>
 
@@ -415,7 +415,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
             </div>
           </div>
           <div className="mt-3 flex items-center justify-between">
-            <span className="text-[11px] text-[#9AA4AF] font-medium">Accréditation</span>
+            <span className="text-[11px] text-[#9AA4AF] font-medium">Berechtigung</span>
             <span className={`inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full border ${
               role === 'owner'
                 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
@@ -424,7 +424,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
                 : 'bg-zinc-800/80 text-orange-400 border-orange-500/30'
             }`}>
               <Crown className="w-2.5 h-2.5" />
-              {role === 'owner' ? 'Owner' : role === 'super_admin' ? 'Super Admin' : 'Admin'}
+              {role === 'owner' ? 'Inhaber' : role === 'super_admin' ? 'Super-Admin' : 'Admin'}
             </span>
           </div>
         </div>
@@ -433,11 +433,11 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       {/* ── Navigation ── */}
       <div className="mt-5 flex-1 min-h-0 overflow-y-auto">
         <p className="text-[10px] font-bold uppercase tracking-widest text-[#9AA4AF]/70 px-1 mb-2.5">Navigation</p>
-        <nav className="space-y-0.5" aria-label="Menu principal administration">
+        <nav className="space-y-0.5" aria-label="Hauptnavigation Administration">
 
           {[
             {
-              id: 'workspace', label: 'Vue d\'ensemble', icon: LayoutDashboard,
+              id: 'workspace', label: 'Übersicht', icon: LayoutDashboard,
               badge: null as number | null, show: true,
               action: () => {
                 setActiveNavItem('workspace'); setActiveView('workspace');
@@ -446,7 +446,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               },
             },
             {
-              id: 'orders', label: 'Commandes & Vir.', icon: Package,
+              id: 'orders', label: 'Bestellungen & Überw.', icon: Package,
               badge: pendingOrdersCount || null, show: true,
               action: () => {
                 setActiveNavItem('orders'); setActiveView('workspace');
@@ -455,7 +455,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               },
             },
             {
-              id: 'support', label: 'Support Client', icon: MessageCircle,
+              id: 'support', label: 'Kundenservice', icon: MessageCircle,
               badge: null as number | null, show: true,
               action: () => {
                 setActiveNavItem('support'); setActiveView('messages');
@@ -464,7 +464,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               },
             },
             {
-              id: 'contacts', label: 'Messages & Devis', icon: Mail,
+              id: 'contacts', label: 'Nachrichten & Angebote', icon: Mail,
               badge: newContactsCount || null, show: !superAdminOnly,
               action: () => {
                 setActiveNavItem('contacts'); setActiveView('workspace');
@@ -474,7 +474,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               },
             },
             {
-              id: 'catalogue', label: 'Catalogue & Stocks', icon: Layers,
+              id: 'catalogue', label: 'Katalog & Bestände', icon: Layers,
               badge: null as number | null, show: !superAdminOnly,
               action: () => {
                 setActiveNavItem('catalogue'); setActiveView('workspace');
@@ -484,7 +484,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               },
             },
             {
-              id: 'statistics', label: 'Statistiques Visiteurs', icon: BarChart3,
+              id: 'statistics', label: 'Besucherstatistiken', icon: BarChart3,
               badge: null as number | null, show: true,
               action: () => {
                 setActiveNavItem('statistics'); setActiveView('statistics');
@@ -493,7 +493,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               },
             },
             {
-              id: 'carts', label: 'Paniers abandonnés', icon: ShoppingCart,
+              id: 'carts', label: 'Verlassene Warenkörbe', icon: ShoppingCart,
               badge: null as number | null, show: true,
               action: () => { setActiveNavItem('carts'); setActiveView('carts'); setMobileOpen(false); },
             },
@@ -517,13 +517,13 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
             );
           })}
 
-          {/* Utilisateurs & Accès — super admin / owner seulement */}
+          {/* Benutzer & Zugänge — super admin / owner nur */}
           {canSeeSuperAdmin && (
             superAdminOnly ? (
               <button type="button" aria-pressed className={navBtnClass(true)}>
                 <span className="flex items-center gap-3 min-w-0">
                   <Users className="w-[18px] h-[18px] shrink-0" />
-                  <span className="truncate">Utilisateurs & Accès</span>
+                  <span className="truncate">Benutzer & Zugänge</span>
                 </span>
                 <ChevronRight className="w-4 h-4 opacity-80 shrink-0" />
               </button>
@@ -535,7 +535,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               >
                 <span className="flex items-center gap-3 min-w-0">
                   <Users className="w-[18px] h-[18px] shrink-0" />
-                  <span className="truncate">Utilisateurs & Accès</span>
+                  <span className="truncate">Benutzer & Zugänge</span>
                 </span>
                 {activeNavItem === 'users' && <ChevronRight className="w-4 h-4 opacity-80 shrink-0" />}
               </Link>
@@ -552,7 +552,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
           className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-[#9AA4AF] hover:text-white hover:bg-white/10 transition-all"
         >
           <RefreshCw className="w-[18px] h-[18px] shrink-0" />
-          <span>Actualiser</span>
+          <span>Aktualisieren</span>
         </button>
         <button
           type="button"
@@ -561,7 +561,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
           className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-[#9AA4AF] hover:text-red-400 hover:bg-red-500/10 transition-all disabled:opacity-50"
         >
           <LogOut className="w-[18px] h-[18px] shrink-0" />
-          <span>{signingOut ? 'Déconnexion...' : 'Déconnexion'}</span>
+          <span>{signingOut ? 'Abmeldung...' : 'Abmelden'}</span>
         </button>
       </div>
     </div>
@@ -577,8 +577,8 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
             <Flame className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h1 className="font-black text-sm tracking-tight leading-none text-white">BRENNHOLZ</h1>
-            <p className="text-[9px] text-[#9AA4AF] font-bold uppercase tracking-widest mt-0.5">Admin Workspace</p>
+            <h1 className="font-black text-sm tracking-tight leading-none text-white">Brennholz-direk</h1>
+            <p className="text-[9px] text-[#9AA4AF] font-bold uppercase tracking-widest mt-0.5">Admin-Arbeitsbereich</p>
           </div>
         </div>
         <button
@@ -624,12 +624,12 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
         <div className="flex flex-wrap items-center justify-between gap-4 bg-white border border-stone-200/90 rounded-2xl p-5 shadow-2xs">
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-[#FF6B00]">
-              Brennholz · Administration Industrielle
+              Brennholz-direk · Industrielle Verwaltung
             </p>
             <h1 className="mt-1 text-2xl sm:text-3xl font-black text-zinc-950 tracking-tight">
               {superAdminOnly
-                ? (role === 'owner' ? 'Administration Owner' : 'Super Administration')
-                : 'Console Administrateur'}
+                ? (role === 'owner' ? 'Inhaberverwaltung' : 'Super-Administration')
+                : 'Administratorkonsole'}
             </h1>
           </div>
 
@@ -640,7 +640,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               className="inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-800 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-all"
             >
               <RefreshCw className="w-3.5 h-3.5 text-orange-600" />
-              <span>Actualiser</span>
+              <span>Aktualisieren</span>
             </button>
           </div>
         </div>
@@ -664,30 +664,30 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
           {loading ? (
             <div className="flex items-center gap-3 rounded-2xl border border-stone-200/90 bg-white p-8 text-zinc-600 shadow-2xs">
               <LoaderCircle className="w-5 h-5 animate-spin text-[#FF6B00]" />
-              <span className="font-semibold text-sm">Vérification des accréditations en cours...</span>
+              <span className="font-semibold text-sm">Berechtigungen werden geprüft …</span>
             </div>
           ) : !user ? (
             <section className="rounded-2xl border border-stone-200/90 bg-white p-8 shadow-2xs">
-              <h2 className="text-xl font-black text-zinc-950 tracking-tight">Connexion requise</h2>
-              <p className="mt-2 text-sm text-stone-600">Connectez-vous avec votre compte administrateur pour accéder au poste de commande.</p>
+              <h2 className="text-xl font-black text-zinc-950 tracking-tight">Anmeldung erforderlich</h2>
+              <p className="mt-2 text-sm text-stone-600">Melden Sie sich mit Ihrem Administratorkonto an, um auf die Leitkonsole zuzugreifen.</p>
               <Link href="/compte" className="mt-5 inline-flex rounded-xl bg-zinc-950 px-5 py-3 text-sm font-bold text-white shadow-xs hover:bg-zinc-800 transition-all">
-                Se connecter
+                Anmelden
               </Link>
             </section>
           ) : superAdminOnly && !canSeeSuperAdmin ? (
             <section className="rounded-2xl border border-stone-200/90 bg-white p-8 shadow-2xs">
-              <h2 className="text-xl font-black text-zinc-950 tracking-tight">Accès restreint</h2>
-              <p className="mt-2 text-sm text-stone-600">Cette section nécessite une accréditation Super-Admin ou Owner.</p>
+              <h2 className="text-xl font-black text-zinc-950 tracking-tight">Zugriff eingeschränkt</h2>
+              <p className="mt-2 text-sm text-stone-600">Dieser Bereich erfordert eine Super-Admin- oder Inhaber-Berechtigung.</p>
             </section>
           ) : !canSeeWorkspace ? (
             <section className="rounded-2xl border border-red-200 bg-white p-8 shadow-2xs">
-              <h2 className="text-xl font-black text-red-800 tracking-tight">Accès administrateur requis</h2>
-              <p className="mt-2 text-sm text-stone-600">Ce compte ne dispose pas des privilèges administrateur requis.</p>
+              <h2 className="text-xl font-black text-red-800 tracking-tight">Administratorzugang erforderlich</h2>
+              <p className="mt-2 text-sm text-stone-600">Dieses Konto verfügt nicht über die erforderlichen Administratorrechte.</p>
             </section>
           ) : superAdminOnly ? (
             <>
               <Link href="/admin" className="inline-flex rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-900 shadow-2xs hover:bg-stone-50 transition-all">
-                Ouvrir l’espace boutique
+                Shop-Bereich öffnen
               </Link>
               <AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} ordersOnly />
               <SuperAdminPanel roles={roles} userId={user.id} currentRole={role} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} />
@@ -703,7 +703,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               ) : (
                 <div className="flex items-center gap-3 rounded-2xl border border-stone-200/90 bg-white p-8 text-zinc-600 shadow-2xs">
                   <LoaderCircle className="w-5 h-5 animate-spin text-[#FF6B00]" />
-                  <span className="font-semibold text-sm">Chargement du catalogue et des configurations...</span>
+                  <span className="font-semibold text-sm">Katalog und Konfigurationen werden geladen …</span>
                 </div>
               )}
               <AccountRegistrationPanel accounts={accounts} />
@@ -728,9 +728,9 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
     {!ordersOnly && (
       <div className="grid gap-4 sm:grid-cols-3">
         {[
-          ['Demandes de contact', contacts.length, 'Demandes e-mail et formulaires client'],
-          ['Demandes de commande', orders.length, 'Commandes passées via la boutique'],
-          ['En attente de traitement', contacts.filter((item) => item.status !== 'done').length + orders.filter((item) => item.status !== 'done').length, 'Dossiers nécessitant une action'],
+          ['Kontaktanfragen', contacts.length, 'E-Mail-Anfragen und Kundenformulare'],
+          ['Bestellanfragen', orders.length, 'Über den Shop aufgegebene Bestellungen'],
+          ['Ausstehende Bearbeitung', contacts.filter((item) => item.status !== 'done').length + orders.filter((item) => item.status !== 'done').length, 'Vorgänge, die eine Bearbeitung erfordern'],
         ].map(([label, count, sub]) => (
           <article key={String(label)} className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs flex flex-col justify-between">
             <div>
@@ -743,12 +743,12 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
       </div>
     )}
 
-    {/* Demandes de commande Panel */}
+    {/* Bestellanfragen Panel */}
     <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 pb-4">
         <div>
-          <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Demandes de commande</h2>
-          <p className="text-xs text-stone-500 font-medium mt-1">Gestion des commandes clients et statut des règlements</p>
+          <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Bestellanfragen</h2>
+          <p className="text-xs text-stone-500 font-medium mt-1">Verwaltung von Kundenbestellungen und Zahlungsstatus</p>
         </div>
         <div className="flex flex-wrap gap-2">
           {[false, true].map(archived => (
@@ -809,7 +809,7 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
                     </a>
 
                     <div className="mt-3 text-xs text-stone-600 space-y-1">
-                      <p><b className="text-zinc-900 font-bold uppercase tracking-wider text-[10px]">Facturation :</b></p>
+                      <p><b className="text-zinc-900 font-bold uppercase tracking-wider text-[10px]">Rechnungsadresse:</b></p>
                       <p>{text(customer.street)} {text(customer.addressLine2)}</p>
                       <p>{text(customer.postalCode)} {text(customer.city)} {text(customer.state)}</p>
                     </div>
@@ -817,7 +817,7 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
 
                   <div className="bg-[#F8FAFC] p-4 rounded-xl border border-stone-100 flex flex-col justify-between">
                     <div>
-                      <p className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-2">Articles commandés</p>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-2">Bestellte Artikel</p>
                       <ul className="space-y-1 text-xs font-medium text-stone-800">
                         {items.map((item, index) => (
                           <li key={`${order.id}-${index}`} className="flex justify-between gap-2">
@@ -829,7 +829,7 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
                     </div>
 
                     <div className="mt-3 pt-3 border-t border-stone-200/80 flex items-center justify-between">
-                      <span className="text-xs font-bold text-stone-600">Montant Total :</span>
+                      <span className="text-xs font-bold text-stone-600">Gesamtbetrag:</span>
                       <span className="text-lg font-black text-zinc-950 font-mono">
                         {new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' }).format(order.total_cents / 100)}
                       </span>
@@ -840,7 +840,7 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
                 {Boolean(customer.vat) && typeof customer.vat === 'object' && <IncludedVatSummary summary={customer.vat as ReturnType<typeof vatSummary>} locale={brenLocale}/>}
                 {delivery && typeof delivery.feeCents === 'number' && (
                   <p className="mt-3 text-xs font-semibold text-stone-600 bg-stone-50 p-2.5 rounded-lg border border-stone-200/60">
-                    Livraison : {new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' }).format(delivery.feeCents / 100)}
+                    Lieferung: {new Intl.NumberFormat(brenLocale, { style: 'currency', currency: 'EUR' }).format(delivery.feeCents / 100)}
                     {typeof delivery.distanceKm === 'number' && <> · <span>{delivery.distanceKm.toFixed(1)} km</span></>}
                   </p>
                 )}
@@ -861,7 +861,7 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
                         onClick={() => onConfirmTransfer(order.id)}
                         className="rounded-xl bg-zinc-950 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs hover:bg-zinc-800 disabled:opacity-50 transition-all"
                       >
-                        {workingId === `payment-${order.id}` ? 'Vérification…' : 'Confirmer le virement reçu'}
+                        {workingId === `payment-${order.id}` ? 'Wird geprüft …' : 'Zahlungseingang bestätigen'}
                       </button>
                     )}
                   </div>
@@ -900,9 +900,9 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
 
     {!ordersOnly && (
       <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
-        <h2 id="contact-requests" className="scroll-mt-32 text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Demandes de contact</h2>
+        <h2 id="contact-requests" className="scroll-mt-32 text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Kontaktanfragen</h2>
         {contacts.length === 0 ? (
-          <p className="mt-4 text-sm font-medium text-stone-500 bg-stone-50 p-6 rounded-xl border border-stone-200/80 text-center">Aucune demande de contact reçue pour le moment.</p>
+          <p className="mt-4 text-sm font-medium text-stone-500 bg-stone-50 p-6 rounded-xl border border-stone-200/80 text-center">Bislang keine Kontaktanfragen eingegangen.</p>
         ) : (
           <div tabIndex={0} className="mt-4 space-y-3">
             {contacts.map((item) => (
@@ -939,32 +939,32 @@ function SuperAdminPanel({ roles, userId, currentRole, newRole, setNewRole, targ
 
   const visibleRoles = roles.filter((entry) => currentRole === 'owner' || entry.role !== 'owner');
   const roleGroups: { role: Role; title: string }[] = [
-    ...(currentRole === 'owner' ? [{ role: 'owner' as const, title: 'Propriétaires (Owner)' }] : []),
-    { role: 'super_admin', title: 'Super Administrateurs' },
-    { role: 'admin', title: 'Administrateurs' },
+    ...(currentRole === 'owner' ? [{ role: 'owner' as const, title: 'Inhaber (Owner)' }] : []),
+    { role: 'super_admin', title: 'Super-Administratoren' },
+    { role: 'admin', title: 'Administratoren' },
   ];
 
   return localizeNode(<>
     <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
-      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Attribuer ou modifier un rôle</h2>
+      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Rolle zuweisen oder ändern</h2>
       <p className="mt-1 text-xs text-stone-500 font-medium max-w-3xl">
-        Saisissez l’adresse e-mail d’un compte utilisateur inscrit pour lui attribuer des privilèges d’administration.
+        Geben Sie die E-Mail-Adresse eines registrierten Benutzerkontos ein, um ihm Administratorrechte zuzuweisen.
       </p>
       <form onSubmit={onSubmit} className="mt-5 grid gap-4 sm:grid-cols-[1fr_190px_auto]">
         <label className="text-xs font-bold uppercase tracking-wider text-stone-600">
-          Adresse e-mail de l’utilisateur
-          <input required type="email" value={targetUserId} onChange={(event) => setTargetUserId(event.target.value)} placeholder="administrateur@exemple.com" className="mt-2 w-full rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FF6B00]/20 outline-none" />
+          E-Mail-Adresse des Benutzers
+          <input required type="email" value={targetUserId} onChange={(event) => setTargetUserId(event.target.value)} placeholder="administrator@beispiel.de" className="mt-2 w-full rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-medium focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FF6B00]/20 outline-none" />
         </label>
         <label className="text-xs font-bold uppercase tracking-wider text-stone-600">
-          Rôle à attribuer
+          Zuzuweisende Rolle
           <select value={newRole} onChange={(event) => setNewRole(event.target.value as Role)} className="mt-2 w-full rounded-xl border border-stone-300 bg-white px-4 py-2.5 text-sm font-bold focus:border-[#FF6B00] focus:ring-2 focus:ring-[#FF6B00]/20 outline-none">
-            <option value="admin">Administrateur</option>
-            <option value="super_admin">Super administrateur</option>
-            {currentRole === 'owner' && <option value="owner">Owner</option>}
+            <option value="admin">Administrator</option>
+            <option value="super_admin">Super-Administrator</option>
+            {currentRole === 'owner' && <option value="owner">Inhaber (Owner)</option>}
           </select>
         </label>
         <button type="submit" disabled={saving} className="self-end rounded-xl bg-zinc-950 px-6 py-3 text-sm font-bold text-white shadow-xs hover:bg-zinc-800 disabled:opacity-60 transition-all">
-          {saving ? 'Enregistrement...' : 'Enregistrer le rôle'}
+          {saving ? 'Wird gespeichert...' : 'Rolle speichern'}
         </button>
       </form>
     </section>
@@ -975,16 +975,16 @@ function SuperAdminPanel({ roles, userId, currentRole, newRole, setNewRole, targ
         <section key={group.role} className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
           <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">{group.title}</h2>
           {entries.length === 0 ? (
-            <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Aucun compte dans cette catégorie.</p>
+            <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Keine Konten in dieser Kategorie.</p>
           ) : (
             <div tabIndex={0} className="mt-4 overflow-x-auto rounded-xl border border-stone-200">
               <table className="w-full text-left text-xs sm:text-sm">
                 <thead className="bg-[#F9FAFB] text-stone-500 uppercase tracking-wider text-[11px] font-bold border-b border-stone-200">
                   <tr>
-                    <th className="px-4 py-3">UUID Utilisateur</th>
-                    <th className="px-4 py-3">Rôle</th>
-                    <th className="px-4 py-3">Créé le</th>
-                    <th className="px-4 py-3 text-right">Action</th>
+                    <th className="px-4 py-3">Benutzer-UUID</th>
+                    <th className="px-4 py-3">Rolle</th>
+                    <th className="px-4 py-3">Erstellt am</th>
+                    <th className="px-4 py-3 text-right">Aktion</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-stone-100">
@@ -993,7 +993,7 @@ function SuperAdminPanel({ roles, userId, currentRole, newRole, setNewRole, targ
                       <td className="px-4 py-3 font-mono text-xs font-bold text-zinc-900 break-all">{entry.user_id}</td>
                       <td className="px-4 py-3 font-bold">
                         <span className="bg-stone-100 text-stone-800 border border-stone-200 px-2.5 py-1 rounded-md text-xs font-mono">
-                          {entry.role === 'owner' ? 'Owner' : entry.role === 'super_admin' ? 'Super Admin' : 'Admin'}
+                          {entry.role === 'owner' ? 'Inhaber' : entry.role === 'super_admin' ? 'Super-Admin' : 'Admin'}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-stone-500 font-mono text-xs">{date(entry.created_at, brenLocale)}</td>
@@ -1004,7 +1004,7 @@ function SuperAdminPanel({ roles, userId, currentRole, newRole, setNewRole, targ
                           onClick={() => void onRemove(entry.user_id)}
                           className="inline-flex items-center gap-1 rounded-xl border border-red-200 bg-white px-3 py-1.5 text-xs font-bold text-red-700 hover:bg-red-50 disabled:opacity-40 transition-all shadow-2xs"
                         >
-                          <Trash2 className="w-3.5 h-3.5" /> Retirer
+                          <Trash2 className="w-3.5 h-3.5" /> Entfernen
                         </button>
                       </td>
                     </tr>
@@ -1025,21 +1025,21 @@ function ActivityPanel({ activities }: { activities: ActivityRow[] }) {
 
   return localizeNode(
     <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
-      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Activité récente des comptes</h2>
+      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Kürzliche Kontoaktivität</h2>
       <p className="mt-1 text-xs text-stone-500 font-medium">
-        Un compte est marqué en ligne s’il a été actif durant les 2 dernières minutes.
+        Ein Konto wird als online angezeigt, wenn es in den letzten 2 Minuten aktiv war.
       </p>
       {activities.length === 0 ? (
-        <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Aucune activité enregistrée.</p>
+        <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Keine Aktivität aufgezeichnet.</p>
       ) : (
         <div tabIndex={0} className="mt-4 overflow-x-auto rounded-xl border border-stone-200">
           <table className="w-full text-left text-xs sm:text-sm">
             <thead className="bg-[#F9FAFB] text-stone-500 uppercase tracking-wider text-[11px] font-bold border-b border-stone-200">
               <tr>
-                <th className="px-4 py-3">Compte</th>
-                <th className="px-4 py-3">Statut</th>
-                <th className="px-4 py-3">Dernière activité</th>
-                <th className="px-4 py-3">Connexions</th>
+                <th className="px-4 py-3">Konto</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Letzte Aktivität</th>
+                <th className="px-4 py-3">Anmeldungen</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
@@ -1053,7 +1053,7 @@ function ActivityPanel({ activities }: { activities: ActivityRow[] }) {
                         isOnline ? 'bg-emerald-500/10 text-emerald-800 border border-emerald-500/20' : 'bg-stone-100 text-stone-600 border border-stone-200'
                       }`}>
                         <span className={`w-2 h-2 rounded-full ${isOnline ? 'bg-emerald-500 animate-ping' : 'bg-stone-400'}`} />
-                        {isOnline ? 'En ligne' : 'Hors ligne'}
+                        {isOnline ? 'Online' : 'Offline'}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-stone-600 font-mono text-xs">{date(entry.last_seen_at, brenLocale)}</td>
@@ -1075,18 +1075,18 @@ function AccountRegistrationPanel({ accounts }: { accounts: ClientAccountRow[] }
 
   return localizeNode(
     <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
-      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Comptes client inscrits</h2>
-      <p className="mt-1 text-xs text-stone-500 font-medium">Liste des clients enregistrés sur la plateforme.</p>
+      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Registrierte Kundenkonten</h2>
+      <p className="mt-1 text-xs text-stone-500 font-medium">Liste der auf der Plattform registrierten Kunden.</p>
       {accounts.length === 0 ? (
-        <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Aucune inscription trouvée.</p>
+        <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Keine Registrierungen gefunden.</p>
       ) : (
         <div tabIndex={0} className="mt-4 overflow-x-auto rounded-xl border border-stone-200">
           <table className="w-full text-left text-xs sm:text-sm">
             <thead className="bg-[#F9FAFB] text-stone-500 uppercase tracking-wider text-[11px] font-bold border-b border-stone-200">
               <tr>
-                <th className="px-4 py-3">Nom</th>
-                <th className="px-4 py-3">E-mail</th>
-                <th className="px-4 py-3">Inscrit le</th>
+                <th className="px-4 py-3">Name</th>
+                <th className="px-4 py-3">E-Mail</th>
+                <th className="px-4 py-3">Registriert am</th>
                 <th className="px-4 py-3">UUID</th>
               </tr>
             </thead>
@@ -1110,14 +1110,14 @@ function AccountRegistrationPanel({ accounts }: { accounts: ClientAccountRow[] }
 
 function AuditPanel({ audit }: { audit: AuditRow[] }) {
   const brenLocale = useLocale() as Locale;
-  const actionNames: Record<string, string> = { insert: 'Création', update: 'Modification', delete: 'Suppression' };
+  const actionNames: Record<string, string> = { insert: 'Erstellung', update: 'Änderung', delete: 'Löschung' };
 
   return localizeNode(
     <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
-      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Journal d’audit administratif</h2>
-      <p className="mt-1 text-xs text-stone-500 font-medium">Historique des modifications effectuées sur la console.</p>
+      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Administratives Audit-Protokoll</h2>
+      <p className="mt-1 text-xs text-stone-500 font-medium">Historie der in der Konsole durchgeführten Änderungen.</p>
       {audit.length === 0 ? (
-        <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Aucune action enregistrée dans le journal.</p>
+        <p className="mt-4 text-xs font-medium text-stone-500 bg-stone-50 p-4 rounded-xl border border-stone-200/80">Keine Aktionen im Protokoll aufgezeichnet.</p>
       ) : (
         <div tabIndex={0} className="mt-4 space-y-3">
           {audit.map((entry) => (
@@ -1127,10 +1127,10 @@ function AuditPanel({ audit }: { audit: AuditRow[] }) {
                 <time className="text-stone-500 font-mono font-normal">{date(entry.created_at, brenLocale)}</time>
               </div>
               <p className="mt-1 text-stone-600 font-mono">
-                Auteur : {entry.actor_user_id ?? 'Système'} · ID Entité : {entry.entity_id ?? '—'}
+                Autor: {entry.actor_user_id ?? 'System'} · Entitäts-ID: {entry.entity_id ?? '—'}
               </p>
               <details className="mt-2">
-                <summary className="cursor-pointer text-xs font-bold text-[#FF6B00] hover:underline">Afficher les détails JSON</summary>
+                <summary className="cursor-pointer text-xs font-bold text-[#FF6B00] hover:underline">JSON-Details anzeigen</summary>
                 <pre className="mt-2 whitespace-pre-wrap break-all rounded-lg bg-white p-3 font-mono text-[11px] border border-stone-200">
                   {JSON.stringify(entry.details, null, 2)}
                 </pre>
@@ -1159,37 +1159,37 @@ function ProductAdminPanel({ products, product, setProduct, editing, setEditing,
     <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
       <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-stone-100">
         <div>
-          <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Catalogue &amp; Stocks</h2>
-          <p className="text-xs text-stone-500 font-medium">Gérez la disponibilité des produits et les tarifs</p>
+          <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Katalog &amp; Bestände</h2>
+          <p className="text-xs text-stone-500 font-medium">Verwalten Sie Produktverfügbarkeit und Preise</p>
         </div>
 
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2 text-xs font-bold text-stone-700 cursor-pointer">
             <input type="checkbox" checked={allSelected} disabled={saving || products.length === 0} ref={(element) => { if (element) element.indeterminate = selectedProducts.length > 0 && !allSelected; }} onChange={(event) => setSelectedIds(event.target.checked ? products.map((item) => item.id) : [])} className="h-4 w-4 rounded accent-[#FF6B00]" />
-            Tout sélectionner
+            Alle auswählen
           </label>
-          <span className="text-xs font-mono font-bold text-stone-500">({selectedProducts.length} sélec.)</span>
+          <span className="text-xs font-mono font-bold text-stone-500">({selectedProducts.length} ausgew.)</span>
           <button type="button" disabled={saving || selectedProducts.length === 0} onClick={() => onDelete(selectedProducts.map((item) => item.id))} className="rounded-xl bg-red-600 px-4 py-2 text-xs font-bold text-white shadow-2xs hover:bg-red-700 disabled:opacity-50 transition-all">
-            {saving ? 'Patientez...' : 'Supprimer'}
+            {saving ? 'Bitte warten...' : 'Löschen'}
           </button>
         </div>
       </div>
 
-      <div tabIndex={0} role="region" aria-label="Catalogue produits" className="mt-4 overflow-x-auto rounded-xl border border-stone-200">
+      <div tabIndex={0} role="region" aria-label="Produktkatalog" className="mt-4 overflow-x-auto rounded-xl border border-stone-200">
         <table className="w-full text-left text-xs sm:text-sm">
           <thead className="bg-[#F9FAFB] text-stone-500 uppercase tracking-wider text-[11px] font-bold border-b border-stone-200">
             <tr>
-              <th scope="col" className="w-10 px-3 py-3"><span className="sr-only">Sélectionner</span></th>
-              <th scope="col" className="px-3 py-3">Produit</th>
-              <th scope="col" className="px-3 py-3">Prix &amp; Stock</th>
-              <th scope="col" className="px-3 py-3 text-right">Action</th>
+              <th scope="col" className="w-10 px-3 py-3"><span className="sr-only">Auswählen</span></th>
+              <th scope="col" className="px-3 py-3">Produkt</th>
+              <th scope="col" className="px-3 py-3">Preis &amp; Bestand</th>
+              <th scope="col" className="px-3 py-3 text-right">Aktion</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-100">
             {products.map((item) => (
               <tr key={item.id} className="hover:bg-orange-50/40 transition-colors">
                 <td className="px-3 py-3">
-                  <input type="checkbox" aria-label={`Sélectionner ${item.name}`} checked={selectedIds.includes(item.id)} disabled={saving} onChange={(event) => setSelectedIds((current) => event.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))} className="h-4 w-4 rounded accent-[#FF6B00]" />
+                  <input type="checkbox" aria-label={`${item.name} auswählen`} checked={selectedIds.includes(item.id)} disabled={saving} onChange={(event) => setSelectedIds((current) => event.target.checked ? [...current, item.id] : current.filter((id) => id !== item.id))} className="h-4 w-4 rounded accent-[#FF6B00]" />
                 </td>
                 <td className="px-3 py-3 font-bold text-zinc-950">
                   <div className="flex items-center gap-3">
@@ -1200,16 +1200,16 @@ function ProductAdminPanel({ products, product, setProduct, editing, setEditing,
                 <td className="px-3 py-3">
                   <span className="font-bold text-zinc-950 font-mono">{item.price}</span>
                   <p className="text-[11px] font-medium text-stone-500 mt-0.5">
-                    {item.stock === 0 ? 'Rupture de stock' : item.stock !== undefined ? `${item.stock} en stock` : item.availability ?? 'Stock non suivi'}
+                    {item.stock === 0 ? 'Ausverkauft' : item.stock !== undefined ? `${item.stock} auf Lager` : item.availability ?? 'Bestand nicht erfasst'}
                   </p>
                 </td>
                 <td className="px-3 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <button type="button" disabled={saving} onClick={() => { setProduct({ ...item, priceAmount: item.priceAmount ?? 0, stock: item.stock ?? -1 }); setEditing(true); document.getElementById('catalog-product-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); }} className="rounded-xl border border-stone-200 bg-white px-3 py-1.5 text-xs font-bold text-zinc-800 hover:bg-stone-50 shadow-2xs">
-                      Modifier
+                      Bearbeiten
                     </button>
                     <button type="button" disabled={saving} onClick={() => onDelete(item.id)} className="rounded-xl border border-red-200 bg-white px-3 py-1.5 text-xs font-bold text-red-700 hover:bg-red-50 shadow-2xs">
-                      Supprimer
+                      Löschen
                     </button>
                   </div>
                 </td>
@@ -1220,24 +1220,24 @@ function ProductAdminPanel({ products, product, setProduct, editing, setEditing,
       </div>
 
       <form id="catalog-product-form" onSubmit={onSave} className="scroll-mt-24 mt-6 rounded-2xl bg-[#F8FAFC] border border-stone-200 p-5 shadow-2xs">
-        <h3 className="text-lg font-black text-zinc-950 tracking-tight">{editing ? 'Modifier le produit sélectionné' : 'Ajouter un nouveau produit'}</h3>
+        <h3 className="text-lg font-black text-zinc-950 tracking-tight">{editing ? 'Ausgewähltes Produkt bearbeiten' : 'Neues Produkt hinzufügen'}</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">ID Produit (numérique)<input required type="number" min="1" value={product.id} onChange={(e) => setProduct({ ...product, id: Number(e.target.value) })} className={inputClass} /></label>
-          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Nom du produit<input required value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className={inputClass} /></label>
-          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Catégorie<input required value={product.type} onChange={(e) => setProduct({ ...product, type: e.target.value })} className={inputClass} /></label>
-          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Conditionnement<input required value={product.quantity} onChange={(e) => setProduct({ ...product, quantity: e.target.value })} className={inputClass} /></label>
-          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Prix en centimes (ex: 49900 = 499.00€)<input type="number" min="0" value={product.priceAmount ?? 0} onChange={(e) => setProduct({ ...product, priceAmount: Number(e.target.value) })} className={inputClass} /></label>
-          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Stock (-1 = non suivi, 0 = rupture)<input required type="number" min="-1" value={product.stock ?? -1} onChange={(e) => { const stock = Number(e.target.value); setProduct({ ...product, stock, availability: stock < 0 ? (product.availability === 'Rupture de stock' ? undefined : product.availability) : stock === 0 ? 'Rupture de stock' : 'En stock' }); }} className={inputClass} /></label>
-          <label className="text-xs font-bold uppercase tracking-wider text-stone-600 sm:col-span-2">Image Principale (chemin local ex. /pellets.webp)<input required value={product.image} onChange={(e) => setProduct({ ...product, image: e.target.value })} className={inputClass} /></label>
-          <label className="text-xs font-bold uppercase tracking-wider text-stone-600 sm:col-span-2">Description complète<textarea required rows={3} value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Produkt-ID (numerisch)<input required type="number" min="1" value={product.id} onChange={(e) => setProduct({ ...product, id: Number(e.target.value) })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Produktname<input required value={product.name} onChange={(e) => setProduct({ ...product, name: e.target.value })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Kategorie<input required value={product.type} onChange={(e) => setProduct({ ...product, type: e.target.value })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Verpackung / Gebinde<input required value={product.quantity} onChange={(e) => setProduct({ ...product, quantity: e.target.value })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Preis in Cent (z. B. 49900 = 499,00 €)<input type="number" min="0" value={product.priceAmount ?? 0} onChange={(e) => setProduct({ ...product, priceAmount: Number(e.target.value) })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600">Bestand (-1 = nicht erfasst, 0 = ausverkauft)<input required type="number" min="-1" value={product.stock ?? -1} onChange={(e) => { const stock = Number(e.target.value); setProduct({ ...product, stock, availability: stock < 0 ? (product.availability === 'Ausverkauft' ? undefined : product.availability) : stock === 0 ? 'Ausverkauft' : 'Auf Lager' }); }} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600 sm:col-span-2">Hauptbild (lokaler Pfad z. B. /pellets.webp)<input required value={product.image} onChange={(e) => setProduct({ ...product, image: e.target.value })} className={inputClass} /></label>
+          <label className="text-xs font-bold uppercase tracking-wider text-stone-600 sm:col-span-2">Ausführliche Beschreibung<textarea required rows={3} value={product.description} onChange={(e) => setProduct({ ...product, description: e.target.value })} className={inputClass} /></label>
         </div>
         <div className="mt-5 flex flex-wrap gap-3">
           <button type="submit" disabled={saving} className="rounded-xl bg-zinc-950 px-6 py-3 text-sm font-bold text-white shadow-xs hover:bg-zinc-800 disabled:opacity-50 transition-all">
-            {saving ? 'Enregistrement...' : 'Enregistrer le produit'}
+            {saving ? 'Wird gespeichert...' : 'Produkt speichern'}
           </button>
           {editing && (
             <button type="button" onClick={() => { setEditing(false); setProduct(emptyProduct(products)); }} className="rounded-xl border border-stone-300 bg-white px-6 py-3 text-sm font-bold text-zinc-800 hover:bg-stone-50 transition-all shadow-2xs">
-              Réinitialiser
+              Zurücksetzen
             </button>
           )}
         </div>
@@ -1245,17 +1245,17 @@ function ProductAdminPanel({ products, product, setProduct, editing, setEditing,
     </section>
 
     <section className="bg-white border border-stone-200/90 rounded-2xl p-6 shadow-2xs">
-      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Coordonnées de virement bancaire</h2>
+      <h2 className="text-xl lg:text-2xl font-black text-zinc-950 tracking-tight">Bankverbindung für Überweisungen</h2>
       <form onSubmit={async (event) => { setBankSaved(false); setBankSaved(await onBankSave(event)); }} className="mt-4">
         <label className="text-xs font-bold uppercase tracking-wider text-stone-600">
-          Informations RIB &amp; Instructions affichées lors du paiement
-          <textarea rows={5} value={bankForm} disabled={saving} onChange={(e) => { setBankSaved(false); setBankForm(e.target.value); }} placeholder="Bénéficiaire, IBAN, BIC et référence obligatoire à indiquer..." className={inputClass} />
+          Bankdaten (IBAN, BIC) &amp; Anweisungen bei Zahlung
+          <textarea rows={5} value={bankForm} disabled={saving} onChange={(e) => { setBankSaved(false); setBankForm(e.target.value); }} placeholder="Empfänger, IBAN, BIC und obligatorischer Verwendungszweck..." className={inputClass} />
         </label>
         <div className="mt-4 flex items-center gap-4">
           <button type="submit" disabled={saving} className="rounded-xl bg-zinc-950 px-6 py-3 text-sm font-bold text-white shadow-xs hover:bg-zinc-800 disabled:opacity-50 transition-all">
-            {saving ? 'Enregistrement...' : 'Enregistrer le RIB'}
+            {saving ? 'Wird gespeichert...' : 'Bankdaten speichern'}
           </button>
-          {bankSaved && <p role="status" className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200">Enregistré avec succès.</p>}
+          {bankSaved && <p role="status" className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200">Erfolgreich gespeichert.</p>}
         </div>
       </form>
     </section>

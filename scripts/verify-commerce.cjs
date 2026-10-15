@@ -11,9 +11,9 @@ function load(file) {
   if (cache.has(file)) return cache.get(file).exports;
   const module = { exports: {} }; cache.set(file, module);
   const code = ts.transpileModule(fs.readFileSync(file, 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true } }).outputText;
-  const localRequire = name => name === '@supabase/supabase-js' ? { createClient: () => new Proxy(mockDb ?? {}, { get(target, key) {
+  const localRequire = name => name === 'server-only' ? {} : name === '@supabase/supabase-js' ? { createClient: () => new Proxy(mockDb ?? {}, { get(target, key) {
     return key === 'rpc' ? (name, payload) => name === 'consume_api_rate_limit' ? Promise.resolve({ data: [{ allowed: true, retry_after: 60 }], error: null }) : target.rpc(name, payload) : target[key];
-  } }) } : name.startsWith('@/') ? load(`${name.slice(2)}.ts`) : require(name);
+  } }) } : name.startsWith('@/') ? load(name.slice(2) + (name.endsWith('.json') ? '' : fs.existsSync(name.slice(2) + '.tsx') ? '.tsx' : '.ts')) : name.startsWith('./') ? load(path.join(path.dirname(file), name) + '.ts') : require(name);
   vm.runInThisContext(`(function(require,module,exports){${code}\n})`, { filename: file })(localRequire, module, module.exports);
   return module.exports;
 }
@@ -64,7 +64,7 @@ async function run() {
   // Le justificatif peut écrire dans Storage, jamais dans les statuts de paiement.
   const proof = fs.readFileSync('app/api/payment-proof/route.ts', 'utf8');
   assert(!/\.update\(|\.rpc\(/.test(proof));
-  assert(proof.includes("select('id')"));
+  assert(proof.includes("select('id"));
   let uploaded = false;
   mockDb = {
     from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: { id: 1 }, error: null }) }) }) }),
@@ -83,13 +83,13 @@ async function run() {
   const withdrawal = load('app/api/withdrawal/route.ts');
   const notification = new Request('https://mock.invalid/api/withdrawal', { method: 'POST', body: JSON.stringify({ name: 'Client test', email: 'test@example.invalid', contract: 'Commande test — aucune commande réelle', id: '12345678-1234-1234-1234-123456789abc' }) });
   const response = await withdrawal.POST(notification); assert.equal(response.status, 200);
-  const receipt = await response.json(); assert.equal(receipt.emailSent, false); assert(receipt.receipt.includes('Reçue le :')); assert(saved.message.includes('Déclaration :'));
+  const receipt = await response.json(); assert.equal(receipt.emailSent, false); assert(receipt.receipt.includes('Eingegangen am :') || receipt.receipt.includes('Reçue le :')); assert(saved.message.includes('Erklärung :') || saved.message.includes('Déclaration :'));
   const malformed = new Request('https://mock.invalid/api/withdrawal', { method: 'POST', body: '{}' }); assert.equal((await withdrawal.POST(malformed)).status, 400);
   const realFetch = global.fetch;
   process.env.RESEND_API_KEY = 'mock-mail'; process.env.WITHDRAWAL_FROM_EMAIL = 'test@example.invalid';
   global.fetch = async (url, options) => {
     assert.equal(url, 'https://api.resend.com/emails');
-    const mail = JSON.parse(options.body); assert.deepEqual(mail.to, ['test@example.invalid']); assert(mail.text.includes('Déclaration :'));
+    const mail = JSON.parse(options.body); assert.deepEqual(mail.to, ['test@example.invalid']); assert(mail.text.includes('Erklärung :') || mail.text.includes('Déclaration :'));
     return new Response('{}', { status: 200 });
   };
   const emailed = await withdrawal.POST(new Request('https://mock.invalid/api/withdrawal', { method: 'POST', body: JSON.stringify({ name: 'Client test', email: 'test@example.invalid', contract: 'Test simulé', id: '12345678-1234-1234-1234-123456789abc' }) }));

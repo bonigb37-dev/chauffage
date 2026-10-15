@@ -184,7 +184,7 @@ export default function Navbar() {
           {/* LEFT: Logo Bren-nholz */}
           <Link
             href="/"
-            aria-label="Bren-nholz — Leylines Park, accueil"
+            aria-label="Brennholz-direk — Leylines Park, accueil"
             className="flex items-center gap-1.5 sm:gap-2.5 font-black text-sm sm:text-xl tracking-tight text-[#1c1917] shrink-0 group"
           >
             <span className="grid h-7 w-7 sm:h-10 sm:w-10 place-items-center rounded-xl bg-[#a33d1e] text-white shadow-md shadow-[#a33d1e]/25 group-hover:bg-[#883015] transition-colors">
@@ -655,7 +655,7 @@ export default function Navbar() {
               <Link
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                aria-label="Bren-nholz — Leylines Park, accueil"
+                aria-label="Brennholz-direk — Leylines Park, accueil"
                 className="flex items-center gap-2.5 font-black text-xl tracking-tight text-[#1C1917]"
               >
                 <span className="grid h-9 w-9 place-items-center rounded-xl bg-[#A33D1E] text-white shadow-md">
