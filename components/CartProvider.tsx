@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
 import { useLocale } from 'next-intl';
@@ -35,7 +35,7 @@ export function CartProvider({ children, initialCatalog = initialProducts }: { c
   const [ready, setReady] = useState(false);
   const [products, setProducts] = useState<Product[]>(initialCatalog);
   const [bankDetails, setBankDetails] = useState('');
-  const [catalogReady, setCatalogReady] = useState(!supabase);
+  const [catalogReady, setCatalogReady] = useState(true);
 
   useEffect(() => {
     if (!supabase) return;

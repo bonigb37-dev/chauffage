@@ -64,11 +64,19 @@ export default function AnalyticsTracker() {
     }
     googleWindow.gtag('consent', 'update', { analytics_storage: 'granted' });
     if (!document.getElementById('google-tag')) {
-      const script = document.createElement('script');
-      script.id = 'google-tag';
-      script.async = true;
-      script.src = 'https://www.googletagmanager.com/gtag/js?id=' + tagId;
-      document.head.appendChild(script);
+      const loadGtagScript = () => {
+        if (document.getElementById('google-tag')) return;
+        const script = document.createElement('script');
+        script.id = 'google-tag';
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + tagId;
+        document.head.appendChild(script);
+      };
+      if ('requestIdleCallback' in window) {
+        (window as unknown as { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(loadGtagScript);
+      } else {
+        setTimeout(loadGtagScript, 1000);
+      }
     }
     googleWindow.gtag('event', 'page_view', {
       send_to: measurementId, page_path: pathname,

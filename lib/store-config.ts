@@ -14,7 +14,10 @@ export const storeConfig = {
   vatNumber: 'DE300812888',
   returnAddress: 'Aarstraße 5a, 35756 Mittenaar, Deutschland',
   returnCosts: 'Die Rücksendekosten werden von Brennholz-direk übernommen, auch für Palettenware.',
+  siteUrl: 'https://www.brennholz-direk.de',
 };
+
+export const siteUrl = storeConfig.siteUrl;
 
 export const whatsappUrl = `https://wa.me/${storeConfig.phoneHref.replace(/\D/g, '')}`;
 

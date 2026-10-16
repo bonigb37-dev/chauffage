@@ -38,6 +38,15 @@ import type { User } from '@supabase/supabase-js';
 import { isPasswordRecoveryRedirect, supabase } from '@/lib/supabase';
 import { confirmationMessage, wasEmailConfirmed } from '@/lib/auth-link';
 import { useCart } from '@/components/CartProvider';
+import { siteUrl } from '@/lib/store-config';
+
+function getAuthRedirectUrl(path: string): string {
+  if (typeof window !== 'undefined') {
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isLocalhost) return `${window.location.origin}${path}`;
+  }
+  return `${siteUrl}${path}`;
+}
 
 type Mode = 'signin' | 'signup' | 'forgot' | 'update';
 type OwnOrder = {customer?: {vat?:ReturnType<typeof vatSummary>;deliveryFeeCents?:number;delivery?: {feeCents:number;distanceKm:number}; payment_proof_submitted?: boolean; payment_proof_submitted_at?: string; [key: string]: unknown}; id: number; reference: string; created_at: string; total_cents: number; status: string; payment_status: string; items: unknown };
@@ -507,7 +516,7 @@ export default function AccountPageContent() {
     if (!(field instanceof HTMLInputElement) || !field.reportValidity() || !field.value.trim()) return;
     setBusy(true); setError(''); setNotice('');
     try {
-      const { error: resendError } = await supabase.auth.resend({ type: 'signup', email: field.value.trim(), options: { emailRedirectTo: `${window.location.origin}/compte?mode=confirm` } });
+      const { error: resendError } = await supabase.auth.resend({ type: 'signup', email: field.value.trim(), options: { emailRedirectTo: getAuthRedirectUrl('/compte?mode=confirm') } });
       if (resendError) throw resendError;
       setNotice('Si cette adresse attend une confirmation, un nouveau lien sécurisé lui a été envoyé. Consultez aussi vos courriers indésirables.');
     } catch (failure) { setError(failure instanceof Error ? failure.message : 'L’envoi a échoué. Réessayez dans quelques minutes.'); }
@@ -581,7 +590,7 @@ export default function AccountPageContent() {
           password,
           options: {
             data: { first_name: firstName, last_name: lastName, full_name: fullName },
-            emailRedirectTo: `${window.location.origin}/compte?mode=confirm`,
+            emailRedirectTo: getAuthRedirectUrl('/compte?mode=confirm'),
           },
         });
         if (authError) throw authError;
@@ -610,7 +619,7 @@ export default function AccountPageContent() {
         router.replace(destination);
       } else if (mode === 'forgot') {
         const { error: authError } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/compte?mode=recovery`,
+          redirectTo: getAuthRedirectUrl('/compte?mode=recovery'),
         });
         if (authError) throw authError;
         setNotice('Si cette adresse est associée à un compte, un lien de réinitialisation vient de lui être envoyé.');

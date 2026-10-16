@@ -331,25 +331,25 @@ export default function Navbar() {
 
           </div>
 
-          {/* MOBILE RIGHT ACTIONS (compact layout) */}
-          <div className="flex items-center gap-0 sm:gap-1.5 xl:hidden">
+          {/* MOBILE RIGHT ACTIONS (reliable 44x44px touch targets) */}
+          <div className="flex items-center gap-1 xl:hidden">
             <button
               type="button"
               onClick={() => setSearchOpen(!searchOpen)}
-              className="min-h-10 p-1 sm:p-2 rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] transition"
+              className="w-11 h-11 flex items-center justify-center rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] active:bg-[#ECEEF0] transition"
               aria-label="Recherche"
               aria-expanded={searchOpen}
               aria-controls="product-search-panel"
             >
-              <Search size={20} />
+              <Search size={21} />
             </button>
 
             <Link
               href="/produits"
-              className="relative min-h-10 p-1 sm:p-2 rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] transition"
+              className="relative w-11 h-11 flex items-center justify-center rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] active:bg-[#ECEEF0] transition"
               aria-label="Mes favoris"
             >
-              <Heart size={20} />
+              <Heart size={21} />
             </Link>
 
             <button
@@ -358,12 +358,12 @@ export default function Navbar() {
                 setCartOpen(!cartOpen);
                 setAccountOpen(false);
               }}
-              className="relative min-h-10 p-1 sm:p-2 rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] transition"
+              className="relative w-11 h-11 flex items-center justify-center rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] active:bg-[#ECEEF0] transition"
               aria-label="Voir le panier"
             >
-              <ShoppingCart size={20} />
+              <ShoppingCart size={21} />
               {totalCartItemsCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-[#A33D1E] px-1 text-[10px] font-black text-white shadow-sm">
+                <span className="absolute top-1 right-1 grid h-4 min-w-4 place-items-center rounded-full bg-[#A33D1E] px-1 text-[10px] font-black text-white shadow-sm pointer-events-none">
                   {totalCartItemsCount}
                 </span>
               )}
@@ -371,19 +371,19 @@ export default function Navbar() {
 
             <Link
               href="/compte"
-              className="relative min-h-10 p-1 sm:p-2 rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] transition"
+              className="relative w-11 h-11 flex items-center justify-center rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] active:bg-[#ECEEF0] transition"
               aria-label="Mon compte"
             >
-              <CircleUserRound size={21} />
+              <CircleUserRound size={22} />
               {user && (
-                <span className="absolute bottom-1 right-1 w-2 h-2 rounded-full bg-emerald-600 ring-2 ring-white" />
+                <span className="absolute bottom-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-600 ring-2 ring-white" />
               )}
             </Link>
 
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="min-h-10 p-1 sm:p-2 rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] transition"
+              className="w-11 h-11 flex items-center justify-center rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] active:bg-[#ECEEF0] transition"
               aria-label={mobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}

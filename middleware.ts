@@ -6,10 +6,18 @@ export function middleware(request: NextRequest) {
   const prefix = incomingPath.split('/')[1];
   const locale = 'de';
   if (pageRequest && !isLocale(prefix)) {
-    const target = request.nextUrl.clone();
     const cleanPath = stripLocale(incomingPath);
-    target.pathname = `/de${cleanPath === '/' ? '' : cleanPath}`;
-    const redirect = NextResponse.redirect(target, 308);
+    const host = request.headers.get('host') || '';
+    const isProduction = process.env.NODE_ENV === 'production';
+    const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
+    const destinationPath = `/de${cleanPath === '/' ? '' : cleanPath}`;
+    
+    // In production, force canonical www.brennholz-direk.de domain so user is never redirected to vercel.app
+    const targetUrl = (isProduction && !isLocalhost)
+      ? `https://www.brennholz-direk.de${destinationPath}`
+      : new URL(destinationPath, request.url).href;
+
+    const redirect = NextResponse.redirect(targetUrl, 308);
     redirect.headers.set('Cache-Control', 'private, no-store');
     return redirect;
   }
