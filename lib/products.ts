@@ -1,5 +1,6 @@
 import { brennholzwerkProducts } from '@/lib/brennholzwerk-products';
-﻿export type Product = {
+import { sperberProducts } from '@/lib/sperber-products';
+export type Product = {
   id: number;
   name: string;
   type: string;
@@ -34,6 +35,7 @@ export function productPathSegment(product?: Partial<Pick<Product, 'id' | 'name'
 
 const catalogItems: Product[] = [
   ...brennholzwerkProducts,
+  ...sperberProducts,
   // 1. Granulés de marques sur palette complète (9 références)
   { id: 2, name: 'Granulés EPH Premium DINplus/ENplus A1 – palette', type: 'Granulés', quantity: '65 sacs en papier · 975 kg', price: '499,00 €', priceAmount: 49900, description: 'Une palette de 65 sacs papier, soit 975 kg de granulés EPH Premium certifiés DINplus et ENplus A1.', image: '/eph-premium-palette.webp', gallery: ['/eph-premium-palette.webp', '/eph-premium-sac.webp', '/eph-premium-detail.webp'], articleNumber: '10005-975', badge: 'Produit phare' },
   { id: 25, name: 'Granulés TotalEnergies Premium ENplus A1', type: 'Granulés', quantity: '65 sacs de 15 kg · 975 kg', price: '', description: 'Granulés de résineux TotalEnergies en sacs de 15 kg. Palette adaptée aux poêles et chaudières compatibles ENplus A1.', image: '/pellets-totalenergies.webp', marketReferenceUrl: 'https://proxi.totalenergies.fr/professionnels/pellets-buches' },
@@ -86,6 +88,8 @@ const catalogPrices: Record<number, number> = {
   69: 36000, 70: 27300,
   74: 38935, 75: 52900,
   77: 650, 78: 295, 79: 450,
+  9101: 9730, 9102: 18830, 9103: 31430, 9104: 48930,
+  9105: 10430, 9106: 20230, 9107: 6230, 9108: 29330,
 };
 
 const euroLabel = new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' });
