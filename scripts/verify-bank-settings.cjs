@@ -76,6 +76,11 @@ async function main() {
     assert.equal((await server.getBankDetails()).recipient, name);
     assert.equal(await mail.sendOrderConfirmationEmail({ ...order, attachInvoice: true }), true);
     assert(sent.at(-1).text.includes(name)); assert(sent.at(-1).html.includes(bank));
+    const { paymentRecipientExplanation, bankTransferInstructions } = load('lib/store-config.ts');
+    assert(sent.at(-1).text.includes(paymentRecipientExplanation));
+    assert(sent.at(-1).html.includes(paymentRecipientExplanation));
+    assert(bankTransferInstructions.includes(paymentRecipientExplanation));
+    assert(!bankTransferInstructions.includes('Buchhalterin'));
     assert(sent.at(-1).html.includes('Vielen Dank f\u00fcr Ihre Bestellung!'));
     assert(sent.at(-1).html.includes('Beg\u00fcnstigte:'));
     assert(sent.at(-1).text.includes('Bank\u00fcberweisung'));

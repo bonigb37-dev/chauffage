@@ -22,6 +22,7 @@ export const siteUrl = storeConfig.siteUrl;
 export const whatsappUrl = `https://wa.me/${storeConfig.phoneHref.replace(/\D/g, '')}`;
 
 export const deliverySummary = 'Für Lieferungen innerhalb Deutschlands fallen keine zusätzlichen Versandkosten an. Die Lieferung erfolgt innerhalb von 2 bis 4 Werktagen nach tatsächlichem Zahlungseingang. Keine Barzahlung beim Spediteur.';
-export const bankTransferInstructions = 'Bitte überweisen Sie den Betrag anhand der folgenden Bankverbindung auf den unten angegebenen Namen unserer Buchhalterin. Geben Sie Ihre Bestellreferenz als Verwendungszweck an und laden Sie anschließend den Zahlungsbeleg hoch.';
+export const paymentRecipientExplanation = 'Der angegebene Zahlungsempfänger und Kontoinhaber ist zugleich der Geschäftsführer unseres Unternehmens.';
+export const bankTransferInstructions = `${paymentRecipientExplanation} Bitte überweisen Sie den Betrag auf die angegebene Bankverbindung. Geben Sie Ihre Bestellnummer als Verwendungszweck an und laden Sie anschließend den Zahlungsbeleg hoch.`;
 export const paymentInstructions = 'Vielen Dank für Ihre Bestellung. Um die Zahlung durchzuführen, überweisen Sie bitte den Betrag unter Angabe Ihrer Bestellnummer. Nach Zahlungseingang wird Ihre Bestellung umgehend für den Versand vorbereitet.';
 export const beforeOrderPaymentInstructions = 'Nach Bestätigung Ihrer Bestellung bitten wir um Überweisung des Betrags (vorzugsweise in Echtzeit). Bitte tragen Sie Ihre Bestellnummer in den Verwendungszweck ein. Sobald der Zahlungseingang verbucht ist, beginnt unverzüglich die Vorbereitung und der Versand Ihrer Ware.';

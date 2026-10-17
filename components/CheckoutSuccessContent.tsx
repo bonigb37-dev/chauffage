@@ -21,7 +21,7 @@ import {
 import { useCart } from '@/components/CartProvider';
 import { parseBankDetails } from '@/lib/bank-details';
 import IncludedVatSummary from '@/components/IncludedVatSummary';
-import { storeConfig } from '@/lib/store-config';
+import { storeConfig, paymentRecipientExplanation } from '@/lib/store-config';
 import PaymentProofUpload from '@/components/PaymentProofUpload';
 import { readPendingOrder, markCartCleared, type PendingOrder } from '@/lib/pending-order';
 import { useActionLoading } from '@/components/ActionLoadingProvider';
@@ -320,6 +320,8 @@ export default function CheckoutSuccessContent() {
                       </button>
                     </div>
                   ))}
+
+                  {BANK_DETAILS && <p className="rounded-xl border border-stone-200 bg-stone-50 p-3 text-xs leading-5 text-stone-600">{paymentRecipientExplanation}</p>}
 
                   <div className="rounded-xl border border-amber-300 bg-amber-50 p-3">
                     <div className="flex items-center justify-between gap-2">

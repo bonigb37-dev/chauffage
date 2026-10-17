@@ -2,7 +2,7 @@ import 'server-only';
 import nodemailer from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import de from '@/translations/de.json';
-import { storeConfig } from '@/lib/store-config';
+import { storeConfig, paymentRecipientExplanation } from '@/lib/store-config';
 import { generateInvoicePdf } from '@/lib/invoice-pdf';
 import { getBankDetails } from '@/lib/server-bank-details';
 
@@ -256,6 +256,8 @@ Bitte überweisen Sie den Gesamtbetrag von ${amountEuros} auf folgendes Bankkont
 • Bank: ${BANK_DETAILS.bank}
 • Verwendungszweck (zwingend erforderlich): ${data.reference}
 
+${paymentRecipientExplanation}
+
 NÄCHSTE SCHRITTE:
 1. Führen Sie die Überweisung mit dem Verwendungszweck "${data.reference}" durch.
 2. Nach Abschluss der Überweisung können Sie Ihren Überweisungsbeleg im Shop oder in Ihrem Kundenbereich hochladen, um die Bearbeitung zu beschleunigen.
@@ -360,6 +362,7 @@ https://www.brennholz-direk.de
                     <td style="padding: 6px 0; color: #a33d1e; font-family: monospace; font-weight: 800; font-size: 15px;">${escapeHtml(data.reference)}</td>
                   </tr>
                 </table>
+                <p style="margin: 12px 0 0; font-size: 13px; color: #475569; line-height: 1.6;">${escapeHtml(paymentRecipientExplanation)}</p>
               </div>
             </td>
           </tr>
