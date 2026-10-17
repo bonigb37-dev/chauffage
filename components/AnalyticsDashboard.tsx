@@ -20,7 +20,7 @@ type Report = {
 };
 type Journey = { events: { id: string; kind: 'page_view'|'section_view'|'cart_add'|'contact_sent'|'quote_sent'|'order_sent'; path: string; section: string; locale: Locale; created_at: string }[]; truncated: boolean };
 const card = 'min-w-0 rounded-2xl border border-stone-200 bg-white p-5 sm:p-6';
-export default function AnalyticsDashboard() {
+export default function AnalyticsDashboard({ refreshRevision = 0 }: { refreshRevision?: number } = {}) {
   const locale = useLocale() as Locale, copy = analyticsCopy[locale];
   const [days, setDays] = useState(30), [offset, setOffset] = useState(0);
   const [report, setReport] = useState<Report | null>(null), [error, setError] = useState(''), [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ export default function AnalyticsDashboard() {
     let active = true; const controller = new AbortController(); setLoading(true); setError(''); setReport(null); setSelected(null); setJourney(null);
     void call(`days=${days}&offset=${offset}`, controller.signal).then(data => { if (active) setReport(data); }).catch(error => { if (active) setError(error instanceof Error ? error.message : 'unavailable'); }).finally(()=> { if(active) setLoading(false); });
     return () => { active=false; controller.abort(); };
-  }, [days, offset, revision, call]);
+  }, [days, offset, revision, refreshRevision, call]);
   useEffect(() => {
     if (!selected) return;
     let active = true; const controller = new AbortController(); setJourney(null); setJourneyError('');

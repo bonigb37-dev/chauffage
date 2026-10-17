@@ -68,6 +68,9 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   const [role, setRole] = useState<Role | null>(null);
   const [loading, setLoading] = useState(true);
   const [detailsLoading, setDetailsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const refreshLock = useRef(false);
+  const [refreshRevision, setRefreshRevision] = useState(0);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [contacts, setContacts] = useState<ContactRow[]>([]);
@@ -144,6 +147,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     setArchiveReady(ready);
     if (orderResult.error) setError('Bestellungen konnten nicht geladen werden.');
     else setOrders((orderResult.data ?? []) as unknown as OrderRow[]);
+    let complete = !orderResult.error;
 
     if (superAdminOnly) {
       const secondary = Promise.all([
@@ -159,6 +163,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       setLoading(false);
       const [activityList, accountList, auditList] = await secondary;
       if (generation !== loadGeneration.current) return;
+      complete = complete && !roleList.error && !activityList.error && !accountList.error && !auditList.error;
       if (!activityList.error) setActivities((activityList.data ?? []) as ActivityRow[]);
       if (!accountList.error) setAccounts((accountList.data ?? []) as ClientAccountRow[]);
       if (!auditList.error) setAudit((auditList.data ?? []) as AuditRow[]);
@@ -179,13 +184,62 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       setLoading(false);
       const [activityList, accountList, settingsResult] = await secondary;
       if (generation !== loadGeneration.current) return;
+      complete = complete && !contactResult.error && !activityList.error && !accountList.error && !settingsResult.error;
       if (!activityList.error) setActivities((activityList.data ?? []) as ActivityRow[]);
       if (!accountList.error) setAccounts((accountList.data ?? []) as ClientAccountRow[]);
       if (!settingsResult.error) setBankForm(String((settingsResult.data?.value as { details?: unknown } | null)?.details ?? ''));
     }
     setDetailsLoading(false);
     setLoading(false);
+    return complete;
   }, [superAdminOnly, showArchived, orderOffset]);
+
+  async function refreshWorkspace() {
+    if (refreshLock.current) return;
+    refreshLock.current = true;
+    setRefreshing(true);
+    setError('');
+    setNotice('');
+    const minSpinPromise = new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      let activeUser = access.user || user;
+      let activeRole = access.role || role;
+      if (!activeUser && supabase) {
+        try {
+          const sessionRes = await supabase.auth.getSession();
+          if (sessionRes.data.session?.user) {
+            activeUser = sessionRes.data.session.user;
+            setUser(sessionRes.data.session.user);
+          }
+        } catch { /* ignore */ }
+      }
+      if (!activeRole && activeUser && supabase) {
+        try {
+          activeRole = await getAdminRole(supabase, activeUser.id);
+          setRole(activeRole);
+        } catch { /* ignore */ }
+      }
+
+      await Promise.all([
+        loadData(activeUser, activeRole),
+        minSpinPromise,
+      ]);
+
+      setRefreshRevision((value) => value + 1);
+      window.dispatchEvent(new Event('bren-support-updated'));
+      window.dispatchEvent(new Event('bren-bank-settings-updated'));
+      router.refresh();
+      setNotice('Verwaltungsdaten wurden erfolgreich aktualisiert.');
+    } catch (err) {
+      console.error(err);
+      setError('Die Aktualisierung ist fehlgeschlagen. Bitte erneut versuchen.');
+    } finally {
+      setLoading(false);
+      setDetailsLoading(false);
+      setRefreshing(false);
+      refreshLock.current = false;
+    }
+  }
 
   async function deleteArchivedOrder(selection: number | number[]) {
     if (!supabase || workingId || !showArchived) return;
@@ -605,11 +659,13 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
       <div className="mt-4 pt-4 border-t border-white/10 space-y-0.5 shrink-0">
         <button
           type="button"
-          onClick={() => void loadData(user)}
-          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-[#9AA4AF] hover:text-white hover:bg-white/10 transition-all"
+          onClick={() => void refreshWorkspace()}
+          disabled={refreshing}
+          aria-busy={refreshing}
+          className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-[#9AA4AF] hover:text-white hover:bg-white/10 active:scale-98 transition-all disabled:cursor-wait disabled:opacity-50 cursor-pointer"
         >
-          <RefreshCw className="w-[18px] h-[18px] shrink-0" />
-          <span>Aktualisieren</span>
+          <RefreshCw className={`w-[18px] h-[18px] shrink-0 ${refreshing ? 'animate-spin' : ''}`} />
+          <span>{refreshing ? 'Wird aktualisiert …' : 'Aktualisieren'}</span>
         </button>
         <button
           type="button"
@@ -693,11 +749,13 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => void loadData(user)}
-              className="inline-flex items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-800 shadow-2xs hover:bg-stone-50 hover:border-stone-300 transition-all"
+              onClick={() => void refreshWorkspace()}
+              disabled={refreshing}
+              aria-busy={refreshing}
+              className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-800 shadow-2xs hover:bg-stone-50 hover:border-stone-300 active:scale-95 transition-all disabled:cursor-wait disabled:opacity-50"
             >
-              <RefreshCw className="w-3.5 h-3.5 text-orange-600" />
-              <span>Aktualisieren</span>
+              <RefreshCw className={`w-3.5 h-3.5 text-orange-600 ${refreshing ? 'animate-spin' : ''}`} />
+              <span>{refreshing ? 'Wird aktualisiert …' : 'Aktualisieren'}</span>
             </button>
           </div>
         </div>
@@ -769,9 +827,9 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
           )}
         </div>
 
-        {activeView === 'messages' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportMessenger admin />}
-        {activeView === 'carts' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <CartDraftsPanel />}
-        {activeView === 'statistics' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <AnalyticsDashboard />}
+        {activeView === 'messages' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <SupportMessenger admin refreshRevision={refreshRevision} />}
+        {activeView === 'carts' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <CartDraftsPanel refreshRevision={refreshRevision} />}
+        {activeView === 'statistics' && !loading && canSeeWorkspace && user && (!superAdminOnly || canSeeSuperAdmin) && <AnalyticsDashboard refreshRevision={refreshRevision} />}
       </div>
     </div>,
     brenLocale

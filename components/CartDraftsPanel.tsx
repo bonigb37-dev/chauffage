@@ -10,7 +10,7 @@ const copy = {
  de: { title: 'Offene Warenkörbe', note: 'Hinzugefügte Artikel ohne abgeschlossene Bestellung. Aktualisierung alle 30 Sekunden. Warenkörbe werden höchstens 30 Tage gespeichert.', empty: 'Keine offenen Warenkörbe.', visitor: 'Anonymer Besucher', active: 'In Bearbeitung', inactive: 'Seit 30 Minuten unverändert', updated: 'Letzte Änderung', remove: 'Aus der Übersicht entfernen', confirm: 'Diesen Warenkorb aus der Verwaltung entfernen? Bestellungen und der Warenkorb des Besuchers bleiben erhalten.', error: 'Warenkörbe konnten nicht geladen oder geändert werden. Bitte erneut versuchen.', refresh: 'Aktualisieren', previous: 'Zurück', next: 'Weiter', total: 'Gesamt', loading: 'Laden…' },
  en: { title: 'Uncompleted carts', note: 'Items added without a completed order. Refreshed every 30 seconds. Carts unchanged for over 30 days are deleted when this list is loaded.', empty: 'No uncompleted carts.', visitor: 'Anonymous visitor', active: 'In progress', inactive: 'Unchanged for 30 minutes', updated: 'Last updated', remove: 'Remove from tracking', confirm: 'Remove this cart from administration tracking? Orders and the visitor’s local cart will remain unchanged.', error: 'Unable to load or update carts. Please try again.', refresh: 'Refresh', previous: 'Previous', next: 'Next', total: 'Total', loading: 'Loading…' },
 };
-export default function CartDraftsPanel() {
+export default function CartDraftsPanel({ refreshRevision = 0 }: { refreshRevision?: number } = {}) {
  const locale = useLocale() as keyof typeof copy, c = copy[locale] ?? copy.fr;
  const [drafts, setDrafts] = useState<CartDraft[]>([]), [offset, setOffset] = useState(0), [more, setMore] = useState(false), [loading, setLoading] = useState(true), [error, setError] = useState(false), [working, setWorking] = useState('');
  const sequence = useRef(0);
@@ -27,7 +27,7 @@ export default function CartDraftsPanel() {
    catch { if (revision === sequence.current) setError(true); }
    finally { if (revision === sequence.current) setLoading(false); }
  }, [request]);
- useEffect(() => { void refresh(); const timer = window.setInterval(() => void refresh(), 30000); const invalidate = () => { sequence.current++; }; return () => { window.clearInterval(timer); invalidate(); }; }, [refresh]);
+ useEffect(() => { void refresh(); const timer = window.setInterval(() => void refresh(), 30000); const invalidate = () => { sequence.current++; }; return () => { window.clearInterval(timer); invalidate(); }; }, [refresh, refreshRevision]);
  async function remove(id: string) {
    if (!window.confirm(c.confirm)) return; setWorking(id); sequence.current++;
    try { await request('DELETE', id); setDrafts(current => current.filter(d => d.id !== id)); await refresh(); }

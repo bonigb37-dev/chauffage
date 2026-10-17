@@ -10,7 +10,7 @@ import { useVerifiedAccess } from './AccessContext';
 
 type Message = { id: string; user_id: string; body: string; locale: Locale; sender_kind: 'customer' | 'admin'; created_at: string; customer_name?: string | null; attachment_name?: string | null; attachment_size?: number | null };
 type Thread = Omit<Message, 'id'> & { unread?: number };
-export default function SupportMessenger({ admin = false }: { admin?: boolean }) {
+export default function SupportMessenger({ admin = false, refreshRevision = 0 }: { admin?: boolean; refreshRevision?: number }) {
   const access = useVerifiedAccess();
   const locale = useLocale() as Locale;
   const copy = supportCopy[locale];
@@ -18,9 +18,9 @@ export default function SupportMessenger({ admin = false }: { admin?: boolean })
   // Remount on account changes so messages cannot linger after logout/switch.
   if (!access.verified) return <p className="py-8 text-gray-600">{copy.loading}</p>;
   if (!allowed) return <section className="rounded-2xl border border-stone-200 bg-white p-6"><p>{copy.signin}</p><div className="mt-4 flex flex-wrap gap-4"><Link href="/compte" className="font-bold text-orange-700 underline">{copy.login}</Link><Link href="/contact" className="text-orange-700 underline">{copy.contact}</Link></div></section>;
-  return <Messages key={`${access.user!.id}:${admin}`} admin={admin} locale={locale} />;
+  return <Messages key={`${access.user!.id}:${admin}`} admin={admin} locale={locale} refreshRevision={refreshRevision} />;
 }
-function Messages({ admin, locale }: { admin: boolean; locale: Locale }) {
+function Messages({ admin, locale, refreshRevision }: { admin: boolean; locale: Locale; refreshRevision: number }) {
   const copy = supportCopy[locale];
   const { user } = useVerifiedAccess();
   const metadata = user?.user_metadata;
@@ -90,6 +90,12 @@ function Messages({ admin, locale }: { admin: boolean; locale: Locale }) {
     } catch (cause) { if (live.current && current === generation.current.value) setError(cause instanceof Error ? cause.message : 'unavailable'); return false; }
     finally { if (live.current && current === generation.current.value) { busy.current = false; setLoading(false); setRefreshing(false); } }
   }, [admin, target, call]);
+  const lastRefresh = useRef(refreshRevision);
+  useEffect(() => {
+    if (lastRefresh.current === refreshRevision) return;
+    lastRefresh.current = refreshRevision;
+    void load();
+  }, [refreshRevision, load]);
   useEffect(() => { const counter = generation.current; setMessages([]); setBody(''); setFile(null); if (fileInput.current) fileInput.current.value = ''; setNotice(''); setLoading(true); follow.current = true; previousLast.current = ''; void load(); const refresh = () => { if (document.visibilityState === 'visible') void load(true); }; const timer = setInterval(refresh, 10000); document.addEventListener('visibilitychange', refresh); window.addEventListener('online', refresh); return () => { clearInterval(timer); document.removeEventListener('visibilitychange', refresh); window.removeEventListener('online', refresh); counter.value++; }; }, [load]);
   useEffect(() => {
     if (!supabase) return;
