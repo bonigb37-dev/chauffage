@@ -139,6 +139,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Die Bestätigungs-E-Mail konnte nicht versendet werden.' }, { status: 500 });
   }
 
+  if (!emailSent) {
+    return NextResponse.json({ success: false, emailSent: false, error: 'Die Zahlung ist bestätigt, aber die E-Mail konnte nicht versendet werden. Bitte prüfen Sie die E-Mail-Konfiguration und versuchen Sie es erneut.' }, { status: 502 });
+  }
+
   // 7. Enregistrement de l'envoi dans les métadonnées de commande
   try {
     const updatedCustomer = {

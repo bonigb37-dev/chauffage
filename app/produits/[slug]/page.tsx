@@ -4,7 +4,8 @@ import { translate, localizeNode } from '@/i18n/copy';
 import { localizedPath, type Locale } from '@/i18n/routing';
 import { getLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
-import Image from 'next/image';
+import ProductGallery from '@/components/ProductGallery';
+import ProductVolumeOptions from '@/components/ProductVolumeOptions';
 import Link from '@/i18n/navigation';
 import { headers } from 'next/headers';
 import { notFound, permanentRedirect } from 'next/navigation';
@@ -40,6 +41,9 @@ export default async function ProductDetailPage({ params }: Props) {
   const product = await findProduct(slug);
   if (!product) notFound();
   const canonicalSlug = productPathSegment(product);
+  const volumeVariants = product.volumeGroup
+    ? (await getServerCatalog()).filter(item => item.volumeGroup === product.volumeGroup).sort((a, b) => (a.volumeRm ?? 0) - (b.volumeRm ?? 0))
+    : [];
   if (slug !== canonicalSlug) permanentRedirect(localizedPath(`/produits/${canonicalSlug}`, brenLocale));
 
   const jsonLd = {
@@ -73,15 +77,14 @@ export default async function ProductDetailPage({ params }: Props) {
         </nav>
 
         <article className="grid gap-8 rounded-3xl border border-[#E6DCce] bg-white p-5 shadow-sm sm:p-8 lg:grid-cols-2 lg:gap-12">
-          <div className="relative min-h-[300px] overflow-hidden rounded-2xl bg-[#FAF6F0] sm:min-h-[480px]">
-            <Image src={product.image} alt={product.name} fill priority sizes="(max-width: 1024px) 100vw, 50vw" className="object-contain p-4" />
-          </div>
+          <ProductGallery key={product.id} name={translate(product.name, brenLocale)} image={product.image} gallery={product.gallery} descriptions={product.galleryDescriptions} />
           <div className="flex flex-col justify-center">
             <p className="text-sm font-bold uppercase tracking-widest text-[#009705]">{product.type}</p>
             <h1 className="mt-2 text-3xl font-black leading-tight text-[#1C1917] sm:text-4xl">{product.name}</h1>
 
             {product.articleNumber && <p className="mt-2 text-sm text-[#6B5E55]">N° d’article : {product.articleNumber}</p>}
             <p className="mt-5 leading-7 text-[#1C1917]">{product.description}</p>
+            {volumeVariants.length > 1 && <ProductVolumeOptions product={product} variants={volumeVariants} locale={brenLocale} />}
 
             <dl className="mt-6 grid gap-3 border-y border-[#E6DCce] py-5 sm:grid-cols-2">
               <div><dt className="text-xs font-bold uppercase tracking-wide text-[#6B5E55]">Conditionnement</dt><dd className="mt-1 font-semibold text-[#009705]">{product.quantity}</dd></div>

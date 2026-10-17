@@ -1,4 +1,5 @@
 import type { Product } from '@/lib/products';
+import { oakGallery, oakGalleryDescriptions } from '@/lib/oak-gallery';
 
 export const sperberProducts: Product[] = [
   {
@@ -109,8 +110,9 @@ export const sperberProducts: Product[] = [
     image: '/sperber/two-hardwood-pallets.jpg',
     gallery: [
       '/sperber/two-hardwood-pallets.jpg',
-      '/sperber/hardwood-pallet-25cm.webp'
+      ...oakGallery,
     ],
+    galleryDescriptions: oakGalleryDescriptions,
     articleNumber: 'BS-CHE-02RM',
     marketReferenceUrl: 'https://brennholzsperber.de/produkt/eiche-2-rm',
     priceAmount: 20230,

@@ -263,14 +263,14 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
           } else if (resData.alreadySent) {
             setNotice('Überweisung bestätigt. Die Zahlungsbestätigung wurde diesem Kunden bereits versandt.');
           } else {
-            setNotice('Überweisung bestätigt. Die Aktion wurde im Zahlungsverlauf protokolliert.');
+            setNotice('Überweisung bestätigt. Die E-Mail konnte nicht versendet werden. Bitte prüfen Sie die E-Mail-Konfiguration und versuchen Sie es erneut.');
           }
         } else {
           setNotice('Überweisung bestätigt. Die Aktion wurde im Zahlungsverlauf protokolliert.');
         }
       } catch (emailErr) {
         console.error('Fehler beim Auslösen der Zahlungsbestätigung per E-Mail:', emailErr);
-        setNotice('Überweisung bestätigt. Die Aktion wurde im Zahlungsverlauf protokolliert.');
+        setNotice('Überweisung bestätigt. Die E-Mail konnte nicht versendet werden. Bitte versuchen Sie es erneut.');
       }
     }
     setWorkingId('');

@@ -2,6 +2,7 @@ import { brennholzwerkProducts } from '@/lib/brennholzwerk-products';
 import { sperberProducts } from '@/lib/sperber-products';
 import { bauhausProducts } from '@/lib/bauhaus-products';
 import { bottcherProducts } from '@/lib/bottcher-products';
+import { hardwoodMixProducts } from '@/lib/hardwood-mix-products';
 export type Product = {
   id: number;
   name: string;
@@ -12,6 +13,7 @@ export type Product = {
   image: string;
   section?: string;
   gallery?: string[];
+  galleryDescriptions?: Record<string, { fr: string; de: string; en: string }>;
   articleNumber?: string;
   priceAmount?: number;
   stock?: number;
@@ -22,6 +24,8 @@ export type Product = {
   compareAtPriceAmount?: number;
   volumePriceAmount?: number;
   volumePriceQuantity?: number;
+  volumeGroup?: string;
+  volumeRm?: number;
 };
 
 export function productPathSegment(product?: Partial<Pick<Product, 'id' | 'name'>>) {
@@ -36,6 +40,7 @@ export function productPathSegment(product?: Partial<Pick<Product, 'id' | 'name'
 }
 
 const catalogItems: Product[] = [
+  ...hardwoodMixProducts,
   ...brennholzwerkProducts,
   ...sperberProducts,
   ...bauhausProducts,

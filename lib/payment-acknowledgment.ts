@@ -235,6 +235,12 @@ https://www.brennholz-direk.de
           console.log(`Payment acknowledgment sent via Resend API from ${fromCandidate} to ${customerEmail}`);
           return true;
         }
+        const failure = await res.json().catch(() => ({}));
+        console.warn('Resend payment acknowledgment rejected:', {
+          status: res.status,
+          name: failure.name,
+          message: failure.message,
+        });
       } catch (resendErr) {
         console.error('Resend payment acknowledgment error:', resendErr);
       }

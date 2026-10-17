@@ -12,6 +12,7 @@ export default function PaymentProofUpload({ reference, token, onSuccess }: { re
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const [fileName, setFileName] = useState('');
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -35,6 +36,7 @@ export default function PaymentProofUpload({ reference, token, onSuccess }: { re
       if (!response.ok) {
         setError(result.error ?? 'Der Upload ist fehlgeschlagen.');
       } else {
+        setEmailSent(result.emailSent === true);
         setSent(true);
         onSuccess?.();
       }
@@ -107,7 +109,9 @@ export default function PaymentProofUpload({ reference, token, onSuccess }: { re
             ✓ Zahlungsbeleg erfolgreich eingegangen
           </p>
           <p className="mt-0.5 text-[11px] text-emerald-700">
-            Eine Empfangsbestätigung mit Ihrer Bestellübersicht und dem gezahlten Betrag wurde per E-Mail versendet.
+            {emailSent
+              ? 'Eine Empfangsbestätigung mit Ihrer Bestellübersicht und dem gezahlten Betrag wurde per E-Mail versendet.'
+              : 'Ihr Zahlungsbeleg wurde gespeichert. Die Bestätigungs-E-Mail konnte nicht versendet werden. Bitte kontaktieren Sie uns bei Fragen.'}
           </p>
         </div>
       )}
