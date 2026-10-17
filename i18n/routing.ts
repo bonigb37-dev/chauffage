@@ -10,7 +10,7 @@ export function stripLocale(path: string) {
 export function localizedPath(path: string, locale: Locale) {
   if (!path.startsWith('/') || path.startsWith('//') || /^\/api(?:\/|$)/.test(path)) return path;
   void locale;
-  const clean = stripLocale(path);
+  const clean = stripLocale(path).replace(/^\/commande(?=\/|\?|#|$)/, '/kasse').replace(/^\/kasse\/succes(?=\/|\?|#|$)/, '/kasse/bestaetigung');
   return `/de${clean === '/' ? '' : clean}`;
 }
 export function detectLocale(preference: string | undefined, acceptLanguage: string | null): Locale {

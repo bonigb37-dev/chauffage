@@ -34,7 +34,7 @@ export default function AddressAutocomplete({ name, postalCodeName, cityName, in
         if (controller.signal.aborted) return;
         setSuggestions(data.suggestions ?? []);
         setActiveIndex(-1);
-        setStatus(data.suggestions?.length ? '' : 'Aucune adresse trouvée. Ajoutez la ville ou saisissez votre adresse manuellement.');
+        setStatus(data.suggestions?.length ? '' : 'Keine Adresse gefunden. Ergänzen Sie den Ort oder geben Sie Ihre Adresse manuell ein.');
       } catch {
         if (!controller.signal.aborted) { setSuggestions([]); setStatus(''); }
       } finally {
@@ -58,13 +58,13 @@ export default function AddressAutocomplete({ name, postalCodeName, cityName, in
     setSelectedStreet(suggestion.street);
     setSuggestions([]);
     setOpen(false);
-    setStatus(suggestion.hasHouseNumber ? 'Adresse sélectionnée. Vérifiez la ville et le code postal.' : 'Ajoutez votre numéro de maison et vérifiez la ville et le code postal.');
+    setStatus(suggestion.hasHouseNumber ? 'Adresse ausgewählt. Bitte prüfen Sie Ort und Postleitzahl.' : 'Bitte ergänzen Sie die Hausnummer und prüfen Sie Ort und Postleitzahl.');
     input.current?.focus();
   }
 
   return localizeNode(<div className="relative sm:col-span-2">
-    <label htmlFor={id} className="text-sm font-semibold text-gray-700">Rue et numéro *</label>
-    <input ref={input} id={id} name={name} required maxLength={180} autoComplete="off" value={query} placeholder="Commencez à saisir la rue et la ville" className={inputClass} role="combobox" aria-autocomplete="list" aria-expanded={open && suggestions.length > 0} aria-controls={`${id}-suggestions`} aria-describedby={`${id}-status`} aria-activedescendant={open && activeIndex >= 0 ? `${id}-option-${activeIndex}` : undefined}
+    <label htmlFor={id} className="text-sm font-semibold text-gray-700">Straße und Hausnummer *</label>
+    <input ref={input} id={id} name={name} required maxLength={180} autoComplete="off" value={query} placeholder="Straße und Ort eingeben" className={inputClass} role="combobox" aria-autocomplete="list" aria-expanded={open && suggestions.length > 0} aria-controls={`${id}-suggestions`} aria-describedby={`${id}-status`} aria-activedescendant={open && activeIndex >= 0 ? `${id}-option-${activeIndex}` : undefined}
       onChange={(event) => { setQuery(event.target.value); setSuggestions([]); setActiveIndex(-1); setOpen(true); setStatus(''); }}
       onFocus={() => { if (query !== selectedStreet) setOpen(true); }}
       onBlur={(event) => { if (!event.currentTarget.parentElement?.contains(event.relatedTarget)) setOpen(false); }}
@@ -75,11 +75,11 @@ export default function AddressAutocomplete({ name, postalCodeName, cityName, in
         if (event.key === 'Enter' && activeIndex >= 0) { event.preventDefault(); select(suggestions[activeIndex]); }
       }} />
     {open && suggestions.length > 0 && <div className="absolute z-30 mt-1 w-full overflow-hidden rounded-xl border border-stone-200 bg-white shadow-lg">
-      <ul id={`${id}-suggestions`} role="listbox" aria-label="Adresses en Allemagne" className="max-h-64 overflow-y-auto">
+      <ul id={`${id}-suggestions`} role="listbox" aria-label="Adressen in Deutschland" className="max-h-64 overflow-y-auto">
         {suggestions.map((suggestion, index) => <li key={`${suggestion.label}-${index}`} id={`${id}-option-${index}`} role="option" aria-selected={index === activeIndex} onMouseDown={(event) => event.preventDefault()} onClick={() => select(suggestion)} className={`cursor-pointer px-4 py-3 text-sm text-gray-800 hover:bg-orange-50 ${index === activeIndex ? 'bg-orange-50' : ''}`}>{suggestion.label}</li>)}
       </ul>
       <p className="border-t px-4 py-2 text-xs text-gray-500"><a href="https://www.geoapify.com/" target="_blank" rel="noopener noreferrer">Geoapify</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap</a></p>
     </div>}
-    <p id={`${id}-status`} role="status" className="mt-1 text-xs text-gray-500">{loading ? 'Recherche d’adresses…' : status || 'Choisissez une suggestion pour remplir la ville et le code postal.'}</p>
+    <p id={`${id}-status`} role="status" className="mt-1 text-xs text-gray-500">{loading ? 'Adressen werden gesucht…' : status || 'Wählen Sie einen Vorschlag, um Ort und Postleitzahl auszufüllen.'}</p>
   </div>, brenLocale);
 }

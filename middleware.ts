@@ -5,6 +5,11 @@ export function middleware(request: NextRequest) {
   const pageRequest = !incomingPath.startsWith('/api/') && !/\.[a-z0-9]+$/i.test(incomingPath);
   const prefix = incomingPath.split('/')[1];
   const locale = 'de';
+  if (pageRequest && /^\/(?:de\/)?commande(?:\/|$)/.test(incomingPath)) {
+    const destination = request.nextUrl.clone();
+    destination.pathname = localizedPath(stripLocale(incomingPath), 'de');
+    return NextResponse.redirect(destination, 308);
+  }
   if (pageRequest && !isLocale(prefix)) {
     const cleanPath = stripLocale(incomingPath);
     const host = request.headers.get('host') || '';
@@ -64,11 +69,11 @@ export function middleware(request: NextRequest) {
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   if (!development) response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-  if (/^\/(api|admin|super-admin|compte|commande)(\/|$)/.test(stripLocale(incomingPath))) {
+  if (/^\/(api|admin|super-admin|compte|commande|kasse)(\/|$)/.test(stripLocale(incomingPath))) {
     response.headers.set('Cache-Control', 'private, no-store');
   }
   return response;
 }
 
 export const config = { matcher: ['/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)'] };
-import { isLocale, stripLocale } from './i18n/routing';
+import { isLocale, stripLocale, localizedPath } from './i18n/routing';

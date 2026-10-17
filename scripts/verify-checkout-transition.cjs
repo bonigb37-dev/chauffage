@@ -19,10 +19,11 @@ async function scenario(blocked,rejected,baseline=false){
  '@/i18n/navigation':{__esModule:true,default:()=>null,useRouter:()=>({push:url=>navigation.push(url)})},
  '@/lib/pending-order':pending,
  '@/lib/vat':load('lib/vat.ts'),
+ '@/lib/bank-details':load('lib/bank-details.ts'),
  '@/components/IncludedVatSummary':{__esModule:true,default:()=>null},
  '@/lib/analytics':{emitAnalytics:()=>{}},
  '@/lib/supabase':{supabase:null},
- '@/components/CartProvider':{useCart:()=>({ready:true,items:[{productId:1,quantity:1}],products:[{id:1,name:'Test product',priceAmount:10000,price:'100 €',image:'/test.webp'}],clearCart:()=>clearCount++})},
+ '@/components/CartProvider':{useCart:()=>({bankDetails:'',ready:true,items:[{productId:1,quantity:1}],products:[{id:1,name:'Test product',priceAmount:10000,price:'100 €',image:'/test.webp'}],clearCart:()=>clearCount++})},
  '@/components/ActionLoadingProvider':{useActionLoading:()=>({triggerLoading:()=>{},stopLoading:()=>stopCount++})},
  'next/image':{__esModule:true,default:()=>null},
  };
@@ -36,7 +37,7 @@ async function scenario(blocked,rejected,baseline=false){
  const errors=states.filter(v=>typeof v==='string'&&v.length);
  if(baseline){assert.equal(navigation.length,0);assert.equal(errors.length,1);console.log('REPRODUCED: successful checkout followed by blocked storage is shown as an order error in the previous version.');return;}
  if(rejected){assert.equal(navigation.length,0);assert.equal(errors.length,1);assert.equal(clearCount,0);assert.equal(pending.readPendingOrder('TP-MOCK-ONLY'),null);}
- else{assert.equal(errors.length,0);assert.equal(navigation[0],'/de/commande/succes?reference=TP-MOCK-ONLY');assert.equal(clearCount,0,'Cart remains until confirmation');assert.equal(pending.readPendingOrder('TP-MOCK-ONLY').proofToken,'mock-proof');assert.deepEqual(pending.readPendingOrder('TP-MOCK-ONLY').vat,confirmedVat);assert.equal(pending.readPendingOrder('TP-MOCK-ONLY').delivery.feeCents,0);assert.equal(pending.readPendingOrder('OTHER'),null);const {default:Success}=load('components/CheckoutSuccessContent.tsx',imports);Success();Success();assert.equal(clearCount,1);assert(stopCount>=1,'Loading stops on confirmation');}
+ else{assert.equal(errors.length,0);assert.equal(navigation[0],'/de/kasse/bestaetigung?reference=TP-MOCK-ONLY');assert.equal(clearCount,0,'Cart remains until confirmation');assert.equal(pending.readPendingOrder('TP-MOCK-ONLY').proofToken,'mock-proof');assert.deepEqual(pending.readPendingOrder('TP-MOCK-ONLY').vat,confirmedVat);assert.equal(pending.readPendingOrder('TP-MOCK-ONLY').delivery.feeCents,0);assert.equal(pending.readPendingOrder('OTHER'),null);const {default:Success}=load('components/CheckoutSuccessContent.tsx',imports);Success();Success();assert.equal(clearCount,1);assert(stopCount>=1,'Loading stops on confirmation');}
  console.log('PASS '+(rejected?'rejected order retains cart and shows its error':blocked?'successful order with blocked storage reaches bank confirmation without error':'successful order reaches confirmation and clears cart once'));
  }finally{global.FormData=NativeFormData;global.fetch=nativeFetch;delete global.window;delete global.sessionStorage;}
 }
