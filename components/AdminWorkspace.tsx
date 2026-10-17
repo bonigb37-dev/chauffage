@@ -187,6 +187,28 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     setLoading(false);
   }, [superAdminOnly, showArchived, orderOffset]);
 
+  async function deleteArchivedOrder(id: number) {
+    if (!supabase || workingId || !showArchived) return;
+    const order = orders.find(row => row.id === id);
+    if (!order?.archived_at || !window.confirm(`Bestellung ${order.reference} endgültig löschen?\nDie Bestellung, ihre Positionen und Zahlungsbelege werden gelöscht. Dies kann nicht rückgängig gemacht werden.`)) return;
+    setWorkingId(`delete-${id}`); setError(''); setNotice('');
+    try {
+      const session = (await supabase.auth.getSession()).data.session;
+      if (!session) { setError('Bitte erneut anmelden.'); return; }
+      const response = await fetch('/api/admin/archived-orders', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ orderId: id, reference: order.reference }),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.deleted) { setError(result.error || 'Die Bestellung konnte nicht gelöscht werden.'); return; }
+      setOrders(rows => rows.filter(row => row.id !== id));
+      setNotice(result.warning || 'Archivierte Bestellung endgültig gelöscht.');
+      void loadData(user);
+    } catch { setError('Die Bestellung konnte nicht gelöscht werden. Bitte die Liste aktualisieren.'); }
+    finally { setWorkingId(''); }
+  }
+
   async function archiveOrder(id: number, archived: boolean) {
     if (!supabase || workingId) return;
     const copy = orderArchiveCopy[brenLocale];
@@ -722,7 +744,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
               <Link href="/admin" className="inline-flex rounded-xl border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold text-zinc-900 shadow-2xs hover:bg-stone-50 transition-all">
                 Shop-Bereich öffnen
               </Link>
-              <AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} ordersOnly />
+              <AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onDeleteArchived={deleteArchivedOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} ordersOnly />
               <SuperAdminPanel roles={roles} userId={user.id} currentRole={role} newRole={newRole} setNewRole={setNewRole} targetUserId={userId} setTargetUserId={setUserId} onSubmit={saveRole} onRemove={removeRole} saving={savingRole} workingId={workingId} />
               <AccountRegistrationPanel accounts={accounts} />
               <ActivityPanel activities={activities} />
@@ -730,7 +752,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
             </>
           ) : (
             <>
-              <AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} />
+              <AdminPanel contacts={contacts} orders={orders} workingId={workingId} onStatusChange={updateStatus} onConfirmTransfer={confirmTransfer} archiveReady={archiveReady} showArchived={showArchived} onArchive={archiveOrder} onDeleteArchived={deleteArchivedOrder} onArchiveView={(value) => { setShowArchived(value); setOrderOffset(0); }} orderOffset={orderOffset} onOrderPage={setOrderOffset} />
               {siteData.ready && !detailsLoading ? (
                 <ProductAdminPanel products={siteData.products} product={productForm} setProduct={setProductForm} editing={editingProduct} setEditing={setEditingProduct} saving={savingRole} onSave={saveProduct} onDelete={deleteProduct} onBankSave={saveBankDetails} bankForm={bankForm} setBankForm={setBankForm} />
               ) : (
@@ -754,7 +776,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   );
 }
 
-function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTransfer, archiveReady, showArchived, onArchive, onArchiveView, orderOffset, onOrderPage, ordersOnly = false }: { archiveReady: boolean; showArchived: boolean; onArchive: (id: number, archived: boolean) => void; onArchiveView: (archived: boolean) => void; orderOffset: number; onOrderPage: (offset: number) => void; ordersOnly?: boolean; contacts: ContactRow[]; orders: OrderRow[]; workingId: string; onStatusChange: (table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) => void; onConfirmTransfer: (id: number) => void }) {
+function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTransfer, archiveReady, showArchived, onArchive, onDeleteArchived, onArchiveView, orderOffset, onOrderPage, ordersOnly = false }: { archiveReady: boolean; showArchived: boolean; onArchive: (id: number, archived: boolean) => void; onDeleteArchived: (id: number) => void; onArchiveView: (archived: boolean) => void; orderOffset: number; onOrderPage: (offset: number) => void; ordersOnly?: boolean; contacts: ContactRow[]; orders: OrderRow[]; workingId: string; onStatusChange: (table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) => void; onConfirmTransfer: (id: number) => void }) {
   const brenLocale = useLocale() as Locale;
 
   return localizeNode(<>
@@ -898,7 +920,7 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <AdminPaymentProof reference={order.reference} />
                     <button
                       type="button"
@@ -909,6 +931,14 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
                       <Trash2 className="w-3.5 h-3.5" />
                       <span>{showArchived ? orderArchiveCopy[brenLocale].restore : orderArchiveCopy[brenLocale].remove}</span>
                     </button>
+                    {showArchived && (
+                      <button type="button" disabled={!!workingId || !archiveReady}
+                        onClick={() => onDeleteArchived(order.id)}
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-red-700 hover:bg-red-100 disabled:opacity-50">
+                        <Trash2 className="w-3.5 h-3.5" />
+                        {workingId === `delete-${order.id}` ? 'Wird gelöscht …' : 'Endgültig löschen'}
+                      </button>
+                    )}
                   </div>
                 </div>
               </article>
