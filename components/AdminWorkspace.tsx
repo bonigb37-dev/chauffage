@@ -20,6 +20,7 @@ import { supabase } from '@/lib/supabase';
 import { useCart } from '@/components/CartProvider';
 import type { Product } from '@/lib/products';
 import AdminPaymentProof from '@/components/AdminPaymentProof';
+import AdminProductLine from '@/components/AdminProductLine';
 import SupportMessenger from '@/components/SupportMessenger';
 import SupportNotifications from '@/components/SupportNotifications';
 import AnalyticsDashboard from '@/components/AnalyticsDashboard';
@@ -850,11 +851,10 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
                   <div className="bg-[#F8FAFC] p-4 rounded-xl border border-stone-100 flex flex-col justify-between">
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-wider text-stone-500 mb-2">Bestellte Artikel</p>
-                      <ul className="space-y-1 text-xs font-medium text-stone-800">
+                      <ul className="space-y-3 text-xs font-medium text-stone-800">
                         {items.map((item, index) => (
-                          <li key={`${order.id}-${index}`} className="flex justify-between gap-2">
-                            <span>{text(item.name)}</span>
-                            <span className="font-mono font-bold text-zinc-950">× {Number(item.quantity) || 0}</span>
+                          <li key={`${order.id}-${index}`} className="flex gap-2">
+                            <AdminProductLine line={item} />
                           </li>
                         ))}
                       </ul>

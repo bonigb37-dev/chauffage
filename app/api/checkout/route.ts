@@ -100,7 +100,7 @@ export async function POST(request: Request) {
 
   const overrideById = new Map((overrides ?? []).map((row) => [row.product_id, row] as const));
   const resolvedCatalog = mergeCatalog(overrides ?? []);
-  const orderLines: { product_id: number; name: string; quantity: number; unit_price_cents: number; vat_rate: 7 | 19 | null }[] = [];
+  const orderLines: { product_id: number; name: string; image: string; quantity: number; unit_price_cents: number; vat_rate: 7 | 19 | null }[] = [];
   let totalCents = 0;
   const vatLines: Parameters<typeof vatSummary>[0] = [];
   for (const [productId, quantity] of quantities) {
@@ -129,7 +129,7 @@ export async function POST(request: Request) {
     const product = resolvedCatalog.find(p => p.id === productId)!;
     vatLines.push({product,grossCents:unitPrice * quantity});
     const germanName = (de as Record<string, string>)[name] || name;
-    orderLines.push({ product_id: productId, name: germanName, quantity, unit_price_cents: unitPrice, vat_rate: vatRateForProduct(product) });
+    orderLines.push({ product_id: productId, name: germanName, image: product.image, quantity, unit_price_cents: unitPrice, vat_rate: vatRateForProduct(product) });
   }
 
   const subtotalCents = totalCents;

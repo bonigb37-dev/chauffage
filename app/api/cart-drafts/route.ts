@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     for (const line of input.items) {
       const p = products.find(p => p.id === line.productId);
       if (!p?.priceAmount || p.stock === 0 || (p.stock !== undefined && line.quantity > p.stock)) return response({ error: 'invalid_product' }, 400);
-      items.push({ productId: p.id, name: p.name, quantity: line.quantity, unitPrice: p.priceAmount });
+      items.push({ productId: p.id, name: p.name, image: p.image, quantity: line.quantity, unitPrice: p.priceAmount });
     }
     const previous = await readDraft<CartDraft>(db, `drafts/${id}.json`); const now = new Date().toISOString();
     const draft: CartDraft = { id, createdAt: previous?.createdAt ?? now, updatedAt: now, userId, email, items, totalCents: items.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0) };

@@ -3,7 +3,7 @@ import { createHash, createCipheriv, createDecipheriv, randomBytes } from 'node:
 import { DEFAULT_SUPABASE_URL, DEFAULT_SERVICE_ROLE_KEY } from '@/lib/supabase-defaults';
 export const draftBucket = 'private-cart-drafts';
 export const draftCookie = 'bren-cart-session';
-export type DraftLine = { productId: number; name: string; quantity: number; unitPrice: number };
+export type DraftLine = { productId: number; name: string; quantity: number; unitPrice: number; image?: string };
 export type CartDraft = { id: string; createdAt: string; updatedAt: string; userId: string | null; email: string | null; items: DraftLine[]; totalCents: number };
 export function draftDatabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
