@@ -13,9 +13,12 @@ import {
   ArrowRight,
   ChevronDown,
   CircleUserRound,
+  Eye,
+  EyeOff,
   Flame,
   Heart,
   LogOut,
+  Mail,
   Menu,
   Search,
   ShoppingBag,
@@ -53,6 +56,108 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProduitsOpen, setMobileProduitsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Instant Auth Modal states
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'signin' | 'signup'>('signin');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [authConfirmPassword, setAuthConfirmPassword] = useState('');
+  const [authFirstName, setAuthFirstName] = useState('');
+  const [authLastName, setAuthLastName] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [authNotice, setAuthNotice] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  function openAuthModal(mode: 'signin' | 'signup') {
+    setAuthModalMode(mode);
+    setAuthError('');
+    setAuthNotice('');
+    setAuthModalOpen(true);
+    setAccountOpen(false);
+    setMobileMenuOpen(false);
+  }
+
+  async function handleAuthSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!supabase || authLoading) return;
+    setAuthError('');
+    setAuthNotice('');
+
+    if (authModalMode === 'signup') {
+      if (!authEmail.trim() || !authPassword) {
+        setAuthError('Veuillez remplir tous les champs obligatoires.');
+        return;
+      }
+      if (authPassword !== authConfirmPassword) {
+        setAuthError('Les deux mots de passe ne correspondent pas.');
+        return;
+      }
+      if (authPassword.length < 8) {
+        setAuthError('Le mot de passe doit comporter au moins 8 caractères.');
+        return;
+      }
+      setAuthLoading(true);
+      try {
+        const fullName = `${authFirstName.trim()} ${authLastName.trim()}`.trim();
+        const { data, error } = await supabase.auth.signUp({
+          email: authEmail.trim(),
+          password: authPassword,
+          options: {
+            data: { first_name: authFirstName.trim(), last_name: authLastName.trim(), full_name: fullName },
+            emailRedirectTo: typeof window !== 'undefined' ? `${window.location.origin}/compte?mode=confirm` : undefined,
+          },
+        });
+        if (error) throw error;
+        if (data.session) {
+          setUser(data.session.user);
+          setAuthModalOpen(false);
+          router.refresh();
+        } else {
+          setAuthNotice('Inscription enregistrée ! Veuillez vérifier vos e-mails pour confirmer votre compte.');
+        }
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : 'Une erreur est survenue.';
+        if (msg.toLowerCase().includes('user already registered')) {
+          setAuthError('Un compte existe déjà avec cette adresse e-mail.');
+        } else {
+          setAuthError(msg);
+        }
+      } finally {
+        setAuthLoading(false);
+      }
+    } else {
+      if (!authEmail.trim() || !authPassword) {
+        setAuthError('Veuillez saisir votre e-mail et votre mot de passe.');
+        return;
+      }
+      setAuthLoading(true);
+      try {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: authEmail.trim(),
+          password: authPassword,
+        });
+        if (error) throw error;
+        if (!data.user.email_confirmed_at) {
+          setAuthError('Votre adresse e-mail n’est pas encore confirmée. Vérifiez vos e-mails.');
+          return;
+        }
+        setUser(data.user);
+        setAuthModalOpen(false);
+        router.refresh();
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : 'Identifiants incorrects.';
+        if (msg.toLowerCase().includes('invalid login credentials')) {
+          setAuthError('Adresse e-mail ou mot de passe incorrect.');
+        } else {
+          setAuthError(msg);
+        }
+      } finally {
+        setAuthLoading(false);
+      }
+    }
+  }
 
   // Refs for click outside
   const navRef = useRef<HTMLDivElement>(null);
@@ -376,7 +481,11 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => {
-                setAccountOpen(!accountOpen);
+                if (user) {
+                  setAccountOpen(!accountOpen);
+                } else {
+                  openAuthModal('signin');
+                }
                 setCartOpen(false);
                 setSearchOpen(false);
                 setMobileMenuOpen(false);
@@ -546,23 +655,21 @@ export default function Navbar() {
                   <p className="text-xs text-[#57534e] mt-0.5">Connectez-vous pour suivre vos commandes & devis</p>
                 </div>
 
-                <Link
-                  href="/compte?mode=signin"
-                  prefetch={true}
-                  onClick={() => setAccountOpen(false)}
+                <button
+                  type="button"
+                  onClick={() => openAuthModal('signin')}
                   className="w-full bg-[#a33d1e] hover:bg-[#883015] text-white font-bold py-2.5 px-4 rounded-xl text-center block text-sm shadow-md transition"
                 >
                   Se connecter
-                </Link>
+                </button>
 
-                <Link
-                  href="/compte?mode=signup"
-                  prefetch={true}
-                  onClick={() => setAccountOpen(false)}
+                <button
+                  type="button"
+                  onClick={() => openAuthModal('signup')}
                   className="w-full bg-[#f9f5ee] hover:bg-[#e8decb] text-[#1c1917] font-semibold py-2.5 px-4 rounded-xl text-center block text-sm transition"
                 >
                   Créer un compte
-                </Link>
+                </button>
               </div>
             )}
           </div>
@@ -796,25 +903,214 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  <Link
-                    href="/compte?mode=signin"
-                    prefetch={true}
-                    onClick={() => setMobileMenuOpen(false)}
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal('signin')}
                     className="w-full bg-[#A33D1E] hover:bg-[#883015] text-white font-bold py-3 px-4 rounded-xl text-center block text-sm shadow-md transition"
                   >
                     Se connecter
-                  </Link>
-                  <Link
-                    href="/compte?mode=signup"
-                    prefetch={true}
-                    onClick={() => setMobileMenuOpen(false)}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => openAuthModal('signup')}
                     className="w-full bg-[#F4EDE4] hover:bg-[#E6DCce] text-[#1C1917] font-semibold py-3 px-4 rounded-xl text-center block text-sm transition"
                   >
                     Créer un compte
-                  </Link>
+                  </button>
                 </>
               )}
             </div>
+          </div>
+        </div>
+      )}
+      {/* INSTANT AUTH MODAL (0ms response, zero page reload) */}
+      {authModalOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setAuthModalOpen(false);
+          }}
+        >
+          <div
+            className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-150"
+            role="dialog"
+            aria-modal="true"
+          >
+            {/* Header / Tabs */}
+            <div className="flex items-center justify-between border-b border-stone-200 px-6 pt-5 pb-3">
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => { setAuthModalMode('signin'); setAuthError(''); setAuthNotice(''); }}
+                  className={`pb-2 px-3 text-sm font-bold border-b-2 transition ${
+                    authModalMode === 'signin'
+                      ? 'border-[#a33d1e] text-[#a33d1e]'
+                      : 'border-transparent text-gray-500 hover:text-gray-900'
+                  }`}
+                >
+                  Se connecter
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setAuthModalMode('signup'); setAuthError(''); setAuthNotice(''); }}
+                  className={`pb-2 px-3 text-sm font-bold border-b-2 transition ${
+                    authModalMode === 'signup'
+                      ? 'border-[#a33d1e] text-[#a33d1e]'
+                      : 'border-transparent text-gray-500 hover:text-gray-900'
+                  }`}
+                >
+                  Créer un compte
+                </button>
+              </div>
+              <button
+                type="button"
+                onClick={() => setAuthModalOpen(false)}
+                className="p-1.5 rounded-full text-gray-400 hover:text-gray-700 hover:bg-stone-100 transition"
+                aria-label="Fermer"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <form onSubmit={handleAuthSubmit} className="p-6 space-y-4">
+              {authNotice && (
+                <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-800">
+                  {authNotice}
+                </div>
+              )}
+              {authError && (
+                <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700">
+                  {authError}
+                </div>
+              )}
+
+              {authModalMode === 'signup' && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">Prénom</label>
+                    <input
+                      type="text"
+                      required
+                      value={authFirstName}
+                      onChange={(e) => setAuthFirstName(e.target.value)}
+                      placeholder="Jean"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#a33d1e]/20 focus:border-[#a33d1e]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">Nom</label>
+                    <input
+                      type="text"
+                      required
+                      value={authLastName}
+                      onChange={(e) => setAuthLastName(e.target.value)}
+                      placeholder="Dupont"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#a33d1e]/20 focus:border-[#a33d1e]"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Adresse e-mail</label>
+                <div className="relative">
+                  <input
+                    type="email"
+                    required
+                    value={authEmail}
+                    onChange={(e) => setAuthEmail(e.target.value)}
+                    placeholder="nom@exemple.com"
+                    autoComplete="email"
+                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#a33d1e]/20 focus:border-[#a33d1e]"
+                  />
+                  <Mail size={17} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-bold text-gray-700">Mot de passe</label>
+                  {authModalMode === 'signin' && (
+                    <Link
+                      href="/compte?mode=forgot"
+                      onClick={() => setAuthModalOpen(false)}
+                      className="text-xs font-medium text-[#a33d1e] hover:underline"
+                    >
+                      Mot de passe oublié ?
+                    </Link>
+                  )}
+                </div>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={authPassword}
+                    onChange={(e) => setAuthPassword(e.target.value)}
+                    placeholder={authModalMode === 'signup' ? '8 caractères minimum' : '••••••••'}
+                    autoComplete={authModalMode === 'signup' ? 'new-password' : 'current-password'}
+                    className="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#a33d1e]/20 focus:border-[#a33d1e]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
+                    aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              {authModalMode === 'signup' && (
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Confirmer le mot de passe</label>
+                  <input
+                    type="password"
+                    required
+                    value={authConfirmPassword}
+                    onChange={(e) => setAuthConfirmPassword(e.target.value)}
+                    placeholder="••••••••"
+                    autoComplete="new-password"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm focus:outline-none focus:ring-2 focus:ring-[#a33d1e]/20 focus:border-[#a33d1e]"
+                  />
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={authLoading}
+                className="w-full mt-2 bg-[#a33d1e] hover:bg-[#883015] text-white font-bold py-3 px-4 rounded-xl text-center block text-sm shadow-md transition disabled:opacity-50"
+              >
+                {authLoading ? 'Traitement en cours…' : authModalMode === 'signup' ? 'Créer mon compte' : 'Se connecter'}
+              </button>
+
+              <div className="text-center pt-2">
+                {authModalMode === 'signin' ? (
+                  <p className="text-xs text-gray-500">
+                    Vous n&apos;avez pas de compte ?{' '}
+                    <button
+                      type="button"
+                      onClick={() => { setAuthModalMode('signup'); setAuthError(''); setAuthNotice(''); }}
+                      className="font-bold text-[#a33d1e] hover:underline"
+                    >
+                      Créer un compte
+                    </button>
+                  </p>
+                ) : (
+                  <p className="text-xs text-gray-500">
+                    Vous avez déjà un compte ?{' '}
+                    <button
+                      type="button"
+                      onClick={() => { setAuthModalMode('signin'); setAuthError(''); setAuthNotice(''); }}
+                      className="font-bold text-[#a33d1e] hover:underline"
+                    >
+                      Se connecter
+                    </button>
+                  </p>
+                )}
+              </div>
+            </form>
           </div>
         </div>
       )}
