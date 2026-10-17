@@ -371,6 +371,7 @@ export default function Navbar() {
 
             <Link
               href="/compte"
+              prefetch={true}
               className="relative w-11 h-11 flex items-center justify-center rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] active:bg-[#ECEEF0] transition"
               aria-label="Mon compte"
             >
@@ -538,6 +539,7 @@ export default function Navbar() {
 
                 <Link
                   href="/compte?mode=signin"
+                  prefetch={true}
                   onClick={() => setAccountOpen(false)}
                   className="w-full bg-[#a33d1e] hover:bg-[#883015] text-white font-bold py-2.5 px-4 rounded-xl text-center block text-sm shadow-md transition"
                 >
@@ -546,6 +548,7 @@ export default function Navbar() {
 
                 <Link
                   href="/compte?mode=signup"
+                  prefetch={true}
                   onClick={() => setAccountOpen(false)}
                   className="w-full bg-[#f9f5ee] hover:bg-[#e8decb] text-[#1c1917] font-semibold py-2.5 px-4 rounded-xl text-center block text-sm transition"
                 >

@@ -9,7 +9,7 @@ import { useLocale } from 'next-intl';
 
 import { orderStatusLabels, paymentStatusLabel } from '@/lib/order-status';
 import { getAdminRole } from '@/lib/admin-access';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import Link from '@/i18n/navigation';
 import { useRouter } from '@/i18n/navigation';
 import {
@@ -406,6 +406,7 @@ export default function AccountPageContent() {
   const [user, setUser] = useState<User | null>(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
+  const submitting = useRef(false);
   const [showPassword, setShowPassword] = useState(false);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
@@ -502,6 +503,7 @@ export default function AccountPageContent() {
   }, []);
 
   function switchMode(nextMode: Mode) {
+    if (submitting.current) return;
     setMode(nextMode);
     setNotice('');
     setError('');
@@ -563,6 +565,7 @@ export default function AccountPageContent() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (submitting.current || busy) return;
     setNotice('');
     setError('');
     if (!supabase) {
@@ -581,6 +584,7 @@ export default function AccountPageContent() {
       setError('Les deux mots de passe ne correspondent pas.');
       return;
     }
+    submitting.current = true;
     setBusy(true);
 
     try {
@@ -642,6 +646,7 @@ export default function AccountPageContent() {
       if (submitError && typeof submitError === 'object' && 'code' in submitError && submitError.code === 'email_not_confirmed') setNeedsConfirmationLink(true);
       setError(submitError instanceof Error ? submitError.message : 'Une erreur est survenue. Réessayez dans quelques instants.');
     } finally {
+      submitting.current = false;
       setBusy(false);
     }
   }
@@ -752,7 +757,7 @@ export default function AccountPageContent() {
               <LoaderCircle className="animate-spin text-orange-500" size={28} />
               <span className="text-sm font-medium text-slate-600">Chargement de votre espace...</span>
             </div>
-          ) : user && mode !== 'update' && !needsConfirmationLink ? (
+          ) : user && !busy && mode !== 'update' && !needsConfirmationLink ? (
             <div className="text-center space-y-5 py-2">
               <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-700 flex items-center justify-center mx-auto shadow-lg">
                 <CheckCircle2 size={32} />
@@ -966,7 +971,7 @@ export default function AccountPageContent() {
                 onSwitchToSignin={() => switchMode('signin')}
               />
 
-              <form className="space-y-4" onSubmit={handleSubmit}>
+              <form data-no-loading="true" aria-busy={busy} className="space-y-4" onSubmit={handleSubmit}>
                 {mode === 'signup' && (
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
@@ -1089,7 +1094,8 @@ export default function AccountPageContent() {
                 >
                   {busy ? (
                     <>
-                      <LoaderCircle className="animate-spin" size={18} /> Patientez...
+                      <LoaderCircle className="animate-spin" size={18} aria-hidden="true" />
+                      <span role="status" data-original-content>{mode === 'signup' ? 'Konto wird erstellt …' : mode === 'signin' ? 'Anmeldung läuft …' : 'Wird verarbeitet …'}</span>
                     </>
                   ) : (
                     <>
