@@ -186,9 +186,9 @@ async function dispatchEmail({
   return false;
 }
 
-// ÔöÇÔöÇ Step 1: Bestelleingangsbest├ñtigung (Accus├® de r├®ception de commande) ÔöÇÔöÇ
-// Envoy├® imm├®diatement ├á la validation de commande. Statut : ┬½ Paiement en attente ┬╗.
-// SANS facture PDF attach├®e (data.attachInvoice est false par d├®faut).
+// ── Step 1: Bestelleingangsbestätigung (Accusé de réception de commande) ──
+// Envoyé immédiatement à la validation de commande. Statut : « Paiement en attente ».
+// SANS facture PDF attachée (data.attachInvoice est false par défaut).
 export async function sendOrderConfirmationEmail(data: OrderEmailData): Promise<boolean> {
   const BANK_DETAILS = await getBankDetails();
   const customerEmail = data.customer?.email?.trim();
@@ -207,7 +207,7 @@ export async function sendOrderConfirmationEmail(data: OrderEmailData): Promise<
   const linesText = data.lines
     .map((l) => {
       const germanName = (de as Record<string, string>)[l.name] || l.name;
-      return `ÔÇó ${germanName} (${l.quantity}x) ÔÇö ${formatEuro(l.unit_price_cents * l.quantity)}`;
+      return `• ${germanName} (${l.quantity}x) — ${formatEuro(l.unit_price_cents * l.quantity)}`;
     })
     .join('\n');
 
@@ -217,7 +217,7 @@ export async function sendOrderConfirmationEmail(data: OrderEmailData): Promise<
         const germanName = (de as Record<string, string>)[l.name] || l.name;
         return `<tr>
           <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #1e293b;">
-            <strong>${escapeHtml(germanName)}</strong> ├ù ${l.quantity}
+            <strong>${escapeHtml(germanName)}</strong> × ${l.quantity}
           </td>
           <td align="right" style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #1e293b; font-weight: 600;">
             ${escapeHtml(formatEuro(l.unit_price_cents * l.quantity))}
@@ -227,19 +227,19 @@ export async function sendOrderConfirmationEmail(data: OrderEmailData): Promise<
     )
     .join('');
 
-  const subject = `Brennholz-direk ÔÇô Bestelleingangsbest├ñtigung (${data.reference}) : ${amountEuros}`;
+  const subject = `Brennholz-direk – Bestelleingangsbestätigung (${data.reference}) : ${amountEuros}`;
 
-  const textDe = `Brennholz-direk ÔÇö Bestelleingangsbest├ñtigung
+  const textDe = `Brennholz-direk — Bestelleingangsbestätigung
 
 Guten Tag ${customerName},
 
-vielen Dank f├╝r Ihre Bestellung bei Brennholz-direk! Wir best├ñtigen Ihnen hiermit den Eingang Ihrer Bestellung unter der Referenz ${data.reference}.
+vielen Dank für Ihre Bestellung bei Brennholz-direk! Wir bestätigen Ihnen hiermit den Eingang Ihrer Bestellung unter der Referenz ${data.reference}.
 
-BESTELL├£BERSICHT:
+BESTELLÜBERSICHT:
 ---------------------------------------------
-ÔÇó Bestellnummer: ${data.reference}
-ÔÇó Status: Zahlung ausstehend (Bank├╝berweisung)
-ÔÇó Gesamtbetrag (inkl. MwSt. & kostenloser Lieferung): ${amountEuros}
+• Bestellnummer: ${data.reference}
+• Status: Zahlung ausstehend (Banküberweisung)
+• Gesamtbetrag (inkl. MwSt. & kostenloser Lieferung): ${amountEuros}
 
 BESTELLTE ARTIKEL:
 ${linesText}
@@ -247,27 +247,27 @@ ${linesText}
 LIEFERADRESSE:
 ${addressText}
 
-ZAHLUNGSANWEISUNG (BANK├£BERWEISUNG):
+ZAHLUNGSANWEISUNG (BANKÜBERWEISUNG):
 ---------------------------------------------
-Bitte ├╝berweisen Sie den Gesamtbetrag von ${amountEuros} auf folgendes Bankkonto:
-ÔÇó Beg├╝nstigte: ${BANK_DETAILS.recipient}
-ÔÇó IBAN: ${BANK_DETAILS.iban}
-ÔÇó BIC: ${BANK_DETAILS.bic}
-ÔÇó Bank: ${BANK_DETAILS.bank}
-ÔÇó Verwendungszweck (zwingend erforderlich): ${data.reference}
+Bitte überweisen Sie den Gesamtbetrag von ${amountEuros} auf folgendes Bankkonto:
+• Begünstigte: ${BANK_DETAILS.recipient}
+• IBAN: ${BANK_DETAILS.iban}
+• BIC: ${BANK_DETAILS.bic}
+• Bank: ${BANK_DETAILS.bank}
+• Verwendungszweck (zwingend erforderlich): ${data.reference}
 
-N├äCHSTE SCHRITTE:
-1. F├╝hren Sie die ├£berweisung mit dem Verwendungszweck "${data.reference}" durch.
-2. Nach Abschluss der ├£berweisung k├Ânnen Sie Ihren ├£berweisungsbeleg im Shop oder in Ihrem Kundenbereich hochladen, um die Bearbeitung zu beschleunigen.
-3. Nach Eingang und Pr├╝fung Ihrer Zahlung erhalten Sie Ihre offizielle Rechnung als PDF per E-Mail und die Ware wird innerhalb von 2 bis 4 Werktagen geliefert.
+NÄCHSTE SCHRITTE:
+1. Führen Sie die Überweisung mit dem Verwendungszweck "${data.reference}" durch.
+2. Nach Abschluss der Überweisung können Sie Ihren Überweisungsbeleg im Shop oder in Ihrem Kundenbereich hochladen, um die Bearbeitung zu beschleunigen.
+3. Nach Eingang und Prüfung Ihrer Zahlung erhalten Sie Ihre offizielle Rechnung als PDF per E-Mail und die Ware wird innerhalb von 2 bis 4 Werktagen geliefert.
 
 Haben Sie Fragen zu Ihrer Bestellung?
-ÔÇó E-Mail: ${storeConfig.email}
-ÔÇó Telefon: ${storeConfig.phone}
-ÔÇó Lageradresse: ${storeConfig.warehouseAddress}
+• E-Mail: ${storeConfig.email}
+• Telefon: ${storeConfig.phone}
+• Lageradresse: ${storeConfig.warehouseAddress}
 
-Mit freundlichen Gr├╝├ƒen,
-Ihr Team von ${storeConfig.name} ÔÇô ${storeConfig.brandSubtitle}
+Mit freundlichen Grüßen,
+Ihr Team von ${storeConfig.name} – ${storeConfig.brandSubtitle}
 https://www.brennholz-direk.de
 `;
 
@@ -275,7 +275,7 @@ https://www.brennholz-direk.de
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>Bestelleingangsbest├ñtigung</title>
+  <title>Bestelleingangsbestätigung</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; padding: 32px 16px;">
@@ -289,7 +289,7 @@ https://www.brennholz-direk.de
                 ${escapeHtml(storeConfig.name)}
               </h1>
               <p style="color: #cbd5e1; margin: 4px 0 0 0; font-size: 13px; font-weight: 500;">
-                ${escapeHtml(storeConfig.brandSubtitle)} ┬À Brennholz, Pellets & Holzbriketts
+                ${escapeHtml(storeConfig.brandSubtitle)} · Brennholz, Pellets & Holzbriketts
               </p>
             </td>
           </tr>
@@ -298,16 +298,16 @@ https://www.brennholz-direk.de
           <tr>
             <td style="padding: 32px 32px 16px 32px; text-align: center;">
               <div style="display: inline-block; background-color: #eff6ff; border: 1px solid #bfdbfe; border-radius: 9999px; padding: 8px 20px; margin-bottom: 16px;">
-                <span style="color: #1e40af; font-size: 14px; font-weight: 700;">Ô£ô Bestellung erfolgreich eingegangen</span>
+                <span style="color: #1e40af; font-size: 14px; font-weight: 700;">✓ Bestellung erfolgreich eingegangen</span>
               </div>
               <h2 style="color: #0f172a; margin: 0 0 8px 0; font-size: 20px; font-weight: 700;">
-                Vielen Dank f├╝r Ihre Bestellung!
+                Vielen Dank für Ihre Bestellung!
               </h2>
               <p style="color: #64748b; font-size: 15px; line-height: 1.5; margin: 0;">
                 Guten Tag <strong>${escapeHtml(customerName)}</strong>, wir haben Ihre Bestellung <strong>${escapeHtml(data.reference)}</strong> dankend erhalten.
               </p>
               <p style="color: #9a3412; font-size: 13px; font-weight: 600; margin: 8px 0 0 0;">
-                Status: Zahlung ausstehend (Bank├╝berweisung)
+                Status: Zahlung ausstehend (Banküberweisung)
               </p>
             </td>
           </tr>
@@ -318,7 +318,7 @@ https://www.brennholz-direk.de
               <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #fffaf5; border: 1px solid #fed7aa; border-radius: 12px; padding: 20px;">
                 <tr>
                   <td align="left" style="font-size: 14px; color: #9a3412; font-weight: 600;">
-                    Zu ├╝berweisender Gesamtbetrag:
+                    Zu überweisender Gesamtbetrag:
                   </td>
                   <td align="right" style="font-size: 22px; color: #a33d1e; font-weight: 800;">
                     ${escapeHtml(amountEuros)}
@@ -333,14 +333,14 @@ https://www.brennholz-direk.de
             <td style="padding: 0 32px 24px 32px;">
               <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px;">
                 <h3 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 700; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px;">
-                  Bankverbindung f├╝r Ihre ├£berweisung:
+                  Bankverbindung für Ihre Überweisung:
                 </h3>
                 <p style="margin: 0 0 12px 0; font-size: 13px; color: #64748b; line-height: 1.4;">
-                  Bitte ├╝berweisen Sie den Betrag von <strong>${escapeHtml(amountEuros)}</strong> auf folgendes Konto:
+                  Bitte überweisen Sie den Betrag von <strong>${escapeHtml(amountEuros)}</strong> auf folgendes Konto:
                 </p>
                 <table width="100%" cellpadding="0" cellspacing="0" style="font-size: 14px;">
                   <tr>
-                    <td style="padding: 6px 0; color: #64748b; width: 140px;">Beg├╝nstigte:</td>
+                    <td style="padding: 6px 0; color: #64748b; width: 140px;">Begünstigte:</td>
                     <td style="padding: 6px 0; color: #0f172a; font-weight: 700;">${escapeHtml(BANK_DETAILS.recipient)}</td>
                   </tr>
                   <tr>
@@ -396,7 +396,7 @@ https://www.brennholz-direk.de
             <td style="padding: 0 32px 24px 32px;">
               <div style="background-color: #f1f5f9; border-radius: 12px; padding: 16px; font-size: 13px; color: #475569; line-height: 1.5;">
                 <strong style="color: #0f172a;">Hinweis zur Rechnung & Lieferung:</strong><br>
-                Sobald Ihre ├£berweisung eingegangen ist und gepr├╝ft wurde, erhalten Sie Ihre offizielle Rechnung als PDF per E-Mail und Ihre Ware wird f├╝r die Auslieferung bereitgestellt.
+                Sobald Ihre Überweisung eingegangen ist und geprüft wurde, erhalten Sie Ihre offizielle Rechnung als PDF per E-Mail und Ihre Ware wird für die Auslieferung bereitgestellt.
               </div>
             </td>
           </tr>
@@ -413,7 +413,7 @@ https://www.brennholz-direk.de
                 Lager: ${escapeHtml(storeConfig.warehouseAddress)}
               </p>
               <p style="margin: 0; font-size: 11px; color: #94a3b8;">
-                ┬® ${new Date().getFullYear()} ${escapeHtml(storeConfig.name)} ┬À Alle Rechte vorbehalten
+                © ${new Date().getFullYear()} ${escapeHtml(storeConfig.name)} · Alle Rechte vorbehalten
               </p>
             </td>
           </tr>
@@ -449,10 +449,10 @@ https://www.brennholz-direk.de
   });
 }
 
-// ÔöÇÔöÇ Step 3: Zahlungsbest├ñtigung & Rechnung per E-Mail ÔöÇÔöÇ
-// Envoy├® UNIQUEMENT apr├¿s v├®rification r├®elle de l'encaissement par l'administrateur.
-// Statut : ┬½ Paiement confirm├® ┬╗ (┬½ Zahlung best├ñtigt ┬╗).
-// AVEC facture PDF officielle g├®n├®r├®e et jointe.
+// ── Step 3: Zahlungsbestätigung & Rechnung per E-Mail ──
+// Envoyé UNIQUEMENT après vérification réelle de l'encaissement par l'administrateur.
+// Statut : « Paiement confirmé » (« Zahlung bestätigt »).
+// AVEC facture PDF officielle générée et jointe.
 export async function sendPaymentConfirmedEmail(data: OrderEmailData): Promise<boolean> {
   const customerEmail = data.customer?.email?.trim();
   if (!customerEmail || !customerEmail.includes('@')) {
@@ -470,7 +470,7 @@ export async function sendPaymentConfirmedEmail(data: OrderEmailData): Promise<b
   const linesText = data.lines
     .map((l) => {
       const germanName = (de as Record<string, string>)[l.name] || l.name;
-      return `ÔÇó ${germanName} (${l.quantity}x) ÔÇö ${formatEuro(l.unit_price_cents * l.quantity)}`;
+      return `• ${germanName} (${l.quantity}x) — ${formatEuro(l.unit_price_cents * l.quantity)}`;
     })
     .join('\n');
 
@@ -480,7 +480,7 @@ export async function sendPaymentConfirmedEmail(data: OrderEmailData): Promise<b
         const germanName = (de as Record<string, string>)[l.name] || l.name;
         return `<tr>
           <td style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #1e293b;">
-            <strong>${escapeHtml(germanName)}</strong> ├ù ${l.quantity}
+            <strong>${escapeHtml(germanName)}</strong> × ${l.quantity}
           </td>
           <td align="right" style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; color: #1e293b; font-weight: 600;">
             ${escapeHtml(formatEuro(l.unit_price_cents * l.quantity))}
@@ -490,37 +490,37 @@ export async function sendPaymentConfirmedEmail(data: OrderEmailData): Promise<b
     )
     .join('');
 
-  const subject = `Brennholz-direk ÔÇô Zahlungsbest├ñtigung & Rechnung (${data.reference}) : ${amountEuros}`;
+  const subject = `Brennholz-direk – Zahlungsbestätigung & Rechnung (${data.reference}) : ${amountEuros}`;
 
-  const textDe = `Brennholz-direk ÔÇö Zahlungsbest├ñtigung & Rechnung
+  const textDe = `Brennholz-direk — Zahlungsbestätigung & Rechnung
 
 Guten Tag ${customerName},
 
-wir best├ñtigen Ihnen hiermit den erfolgreichen Eingang Ihrer Zahlung in H├Âhe von ${amountEuros} f├╝r Ihre Bestellung ${data.reference}.
+wir bestätigen Ihnen hiermit den erfolgreichen Eingang Ihrer Zahlung in Höhe von ${amountEuros} für Ihre Bestellung ${data.reference}.
 
 Ihre offizielle Rechnung finden Sie als PDF-Dokument im Anhang dieser E-Mail.
 
-BESTELL├£BERSICHT:
+BESTELLÜBERSICHT:
 ---------------------------------------------
-ÔÇó Bestellnummer: ${data.reference}
-ÔÇó Status: Zahlung best├ñtigt & verbucht
-ÔÇó Bezahlter Betrag: ${amountEuros}
+• Bestellnummer: ${data.reference}
+• Status: Zahlung bestätigt & verbucht
+• Bezahlter Betrag: ${amountEuros}
 
 BESTELLTE ARTIKEL:
 ${linesText}
 
 LIEFERUNG:
-Ihre Ware wird nun von unserem Logistikzentrum f├╝r den Versand vorbereitet. Die Spedition wird sich telefonisch mit Ihnen in Verbindung setzen, um den genauen Liefertermin abzustimmen.
+Ihre Ware wird nun von unserem Logistikzentrum für den Versand vorbereitet. Die Spedition wird sich telefonisch mit Ihnen in Verbindung setzen, um den genauen Liefertermin abzustimmen.
 Lieferadresse:
 ${addressText}
 
 Haben Sie Fragen zu Ihrer Lieferung?
-ÔÇó E-Mail: ${storeConfig.email}
-ÔÇó Telefon: ${storeConfig.phone}
-ÔÇó Lageradresse: ${storeConfig.warehouseAddress}
+• E-Mail: ${storeConfig.email}
+• Telefon: ${storeConfig.phone}
+• Lageradresse: ${storeConfig.warehouseAddress}
 
-Mit freundlichen Gr├╝├ƒen,
-Ihr Team von ${storeConfig.name} ÔÇô ${storeConfig.brandSubtitle}
+Mit freundlichen Grüßen,
+Ihr Team von ${storeConfig.name} – ${storeConfig.brandSubtitle}
 https://www.brennholz-direk.de
 `;
 
@@ -528,7 +528,7 @@ https://www.brennholz-direk.de
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>Zahlungsbest├ñtigung & Rechnung</title>
+  <title>Zahlungsbestätigung & Rechnung</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f8fafc; padding: 32px 16px;">
@@ -542,7 +542,7 @@ https://www.brennholz-direk.de
                 ${escapeHtml(storeConfig.name)}
               </h1>
               <p style="color: #cbd5e1; margin: 4px 0 0 0; font-size: 13px; font-weight: 500;">
-                ${escapeHtml(storeConfig.brandSubtitle)} ┬À Brennholz, Pellets & Holzbriketts
+                ${escapeHtml(storeConfig.brandSubtitle)} · Brennholz, Pellets & Holzbriketts
               </p>
             </td>
           </tr>
@@ -551,13 +551,13 @@ https://www.brennholz-direk.de
           <tr>
             <td style="padding: 32px 32px 16px 32px; text-align: center;">
               <div style="display: inline-block; background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 9999px; padding: 8px 20px; margin-bottom: 16px;">
-                <span style="color: #065f46; font-size: 14px; font-weight: 700;">Ô£ô Zahlung best├ñtigt & verbucht</span>
+                <span style="color: #065f46; font-size: 14px; font-weight: 700;">✓ Zahlung bestätigt & verbucht</span>
               </div>
               <h2 style="color: #0f172a; margin: 0 0 8px 0; font-size: 20px; font-weight: 700;">
-                Zahlungseingang best├ñtigt
+                Zahlungseingang bestätigt
               </h2>
               <p style="color: #64748b; font-size: 15px; line-height: 1.5; margin: 0;">
-                Guten Tag <strong>${escapeHtml(customerName)}</strong>, wir haben Ihre Zahlung f├╝r die Bestellung <strong>${escapeHtml(data.reference)}</strong> erhalten und verbucht.
+                Guten Tag <strong>${escapeHtml(customerName)}</strong>, wir haben Ihre Zahlung für die Bestellung <strong>${escapeHtml(data.reference)}</strong> erhalten und verbucht.
               </p>
               <p style="color: #065f46; font-size: 13px; font-weight: 600; margin: 8px 0 0 0;">
                 Ihre offizielle Rechnung liegt dieser E-Mail als PDF bei.
@@ -571,7 +571,7 @@ https://www.brennholz-direk.de
               <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 20px;">
                 <tr>
                   <td align="left" style="font-size: 14px; color: #166534; font-weight: 600;">
-                    Best├ñtigter Zahlungsbetrag:
+                    Bestätigter Zahlungsbetrag:
                   </td>
                   <td align="right" style="font-size: 22px; color: #15803d; font-weight: 800;">
                     ${escapeHtml(amountEuros)}
@@ -601,7 +601,7 @@ https://www.brennholz-direk.de
                   Versand & Zustellung
                 </h3>
                 <p style="margin: 0 0 12px 0; font-size: 13px; color: #334155; line-height: 1.5;">
-                  Ihre Ware wird f├╝r den Transport vorbereitet. Die Spedition kontaktiert Sie zur telefonischen Avisierung des Liefertermins.
+                  Ihre Ware wird für den Transport vorbereitet. Die Spedition kontaktiert Sie zur telefonischen Avisierung des Liefertermins.
                 </p>
                 <p style="margin: 0; font-size: 13px; line-height: 1.6; color: #475569;">
                   <strong>Lieferadresse:</strong><br>
@@ -626,7 +626,7 @@ https://www.brennholz-direk.de
                 Lager: ${escapeHtml(storeConfig.warehouseAddress)}
               </p>
               <p style="margin: 0; font-size: 11px; color: #94a3b8;">
-                ┬® ${new Date().getFullYear()} ${escapeHtml(storeConfig.name)} ┬À Alle Rechte vorbehalten
+                © ${new Date().getFullYear()} ${escapeHtml(storeConfig.name)} · Alle Rechte vorbehalten
               </p>
             </td>
           </tr>

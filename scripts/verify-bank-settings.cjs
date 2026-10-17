@@ -76,10 +76,23 @@ async function main() {
     assert.equal((await server.getBankDetails()).recipient, name);
     assert.equal(await mail.sendOrderConfirmationEmail({ ...order, attachInvoice: true }), true);
     assert(sent.at(-1).text.includes(name)); assert(sent.at(-1).html.includes(bank));
+    assert(sent.at(-1).html.includes('Vielen Dank f\u00fcr Ihre Bestellung!'));
+    assert(sent.at(-1).html.includes('Beg\u00fcnstigte:'));
+    assert(sent.at(-1).text.includes('Bank\u00fcberweisung'));
+    for (const field of ['subject', 'text', 'html']) {
+      assert(!/[\u251c\u252c]|\u00d4[\u00c7\u00f6\u00a3]/.test(sent.at(-1)[field]), `Corrupted characters in ${field}`);
+      assert(sent.at(-1)[field].includes('\u20ac'), `Euro currency missing from ${field}`);
+      assert(!sent.at(-1)[field].includes('\u00a3'), `Unexpected pound sign in ${field}`);
+    }
     assert(sent.at(-1).text.includes(parseBankDetails(raw).iban));
     assert.equal(Buffer.from(sent.at(-1).attachments[0].content, 'base64').subarray(0, 5).toString(), '%PDF-');
     drawn.length = 0;
     assert.equal(await mail.sendPaymentConfirmedEmail(order), true);
+    assert(sent.at(-1).subject.includes('Zahlungsbest\u00e4tigung'));
+    for (const field of ['subject', 'text', 'html']) {
+      assert(!/[\u251c\u252c]|\u00d4[\u00c7\u00f6\u00a3]/.test(sent.at(-1)[field]));
+      assert(sent.at(-1)[field].includes('\u20ac'));
+    }
     assert(drawn.some(text => text.includes(bank)));
     assert.equal(Buffer.from(sent.at(-1).attachments[0].content, 'base64').subarray(0, 5).toString(), '%PDF-');
     for (const generate of [invoice.generateInvoicePdf, invoice.generatePaymentReceiptPdf]) {
