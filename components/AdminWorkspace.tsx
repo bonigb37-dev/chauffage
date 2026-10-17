@@ -187,23 +187,25 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
     setLoading(false);
   }, [superAdminOnly, showArchived, orderOffset]);
 
-  async function deleteArchivedOrder(id: number) {
+  async function deleteArchivedOrder(selection: number | number[]) {
     if (!supabase || workingId || !showArchived) return;
-    const order = orders.find(row => row.id === id);
-    if (!order?.archived_at || !window.confirm(`Bestellung ${order.reference} endgültig löschen?\nDie Bestellung, ihre Positionen und Zahlungsbelege werden gelöscht. Dies kann nicht rückgängig gemacht werden.`)) return;
-    setWorkingId(`delete-${id}`); setError(''); setNotice('');
+    const ids = new Set(Array.isArray(selection) ? selection : [selection]);
+    const selected = orders.filter(row => ids.has(row.id) && row.archived_at);
+    if (!selected.length || !window.confirm(`${selected.length === 1 ? `Bestellung ${selected[0].reference}` : `${selected.length} ausgewählte Bestellungen`} endgültig löschen?\nDie Bestellungen, ihre Positionen und Zahlungsbelege werden gelöscht. Dies kann nicht rückgängig gemacht werden.`)) return;
+    setWorkingId(selected.length === 1 ? `delete-${selected[0].id}` : 'delete-selected'); setError(''); setNotice('');
     try {
       const session = (await supabase.auth.getSession()).data.session;
       if (!session) { setError('Bitte erneut anmelden.'); return; }
       const response = await fetch('/api/admin/archived-orders', {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ orderId: id, reference: order.reference }),
+        body: JSON.stringify({ orderIds: selected.map(order => order.id) }),
       });
       const result = await response.json();
       if (!response.ok || !result.deleted) { setError(result.error || 'Die Bestellung konnte nicht gelöscht werden.'); return; }
-      setOrders(rows => rows.filter(row => row.id !== id));
-      setNotice(result.warning || 'Archivierte Bestellung endgültig gelöscht.');
+      const removed = new Set<number>(result.deletedIds);
+      setOrders(rows => rows.filter(row => !removed.has(row.id)));
+      setNotice(result.warning || `${removed.size} archivierte Bestellung(en) endgültig gelöscht.${removed.size < selected.length ? ' Andere Bestellungen wurden zwischenzeitlich geändert und nicht gelöscht.' : ''}`);
       void loadData(user);
     } catch { setError('Die Bestellung konnte nicht gelöscht werden. Bitte die Liste aktualisieren.'); }
     finally { setWorkingId(''); }
@@ -776,8 +778,13 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
   );
 }
 
-function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTransfer, archiveReady, showArchived, onArchive, onDeleteArchived, onArchiveView, orderOffset, onOrderPage, ordersOnly = false }: { archiveReady: boolean; showArchived: boolean; onArchive: (id: number, archived: boolean) => void; onDeleteArchived: (id: number) => void; onArchiveView: (archived: boolean) => void; orderOffset: number; onOrderPage: (offset: number) => void; ordersOnly?: boolean; contacts: ContactRow[]; orders: OrderRow[]; workingId: string; onStatusChange: (table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) => void; onConfirmTransfer: (id: number) => void }) {
+function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTransfer, archiveReady, showArchived, onArchive, onDeleteArchived, onArchiveView, orderOffset, onOrderPage, ordersOnly = false }: { archiveReady: boolean; showArchived: boolean; onArchive: (id: number, archived: boolean) => void; onDeleteArchived: (selection: number | number[]) => void; onArchiveView: (archived: boolean) => void; orderOffset: number; onOrderPage: (offset: number) => void; ordersOnly?: boolean; contacts: ContactRow[]; orders: OrderRow[]; workingId: string; onStatusChange: (table: 'contact_requests' | 'order_requests', id: number, status: RequestStatus) => void; onConfirmTransfer: (id: number) => void }) {
   const brenLocale = useLocale() as Locale;
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const selectableIds = showArchived ? orders.filter(order => order.archived_at).map(order => order.id) : [];
+  const selected = selectableIds.filter(id => selectedIds.includes(id));
+  const allSelected = selectableIds.length > 0 && selected.length === selectableIds.length;
+  useEffect(() => { setSelectedIds([]); }, [showArchived, orderOffset, orders]);
 
   return localizeNode(<>
     {!ordersOnly && (
@@ -825,6 +832,25 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
         </div>
       </div>
 
+      {showArchived && orders.length > 0 && (
+        <div className="mt-5 flex flex-wrap items-center gap-3 rounded-xl border border-stone-200 bg-stone-50 p-3">
+          <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 text-sm font-semibold text-zinc-900">
+            <input type="checkbox" checked={allSelected} disabled={!!workingId || !archiveReady || !selectableIds.length}
+              ref={element => { if (element) element.indeterminate = selected.length > 0 && !allSelected; }}
+              onChange={event => setSelectedIds(event.target.checked ? selectableIds : [])}
+              className="h-5 w-5 accent-red-700" />
+            Alle auf dieser Seite auswählen
+          </label>
+          <span role="status" className="text-xs text-stone-600">{selected.length} ausgewählt</span>
+          <button type="button" disabled={!!workingId || !archiveReady || !selected.length}
+            onClick={() => onDeleteArchived(selected)}
+            className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-2 text-sm font-bold text-red-700 hover:bg-red-100 disabled:opacity-50">
+            <Trash2 size={16} />
+            {workingId.startsWith('delete-') ? 'Wird gelöscht …' : 'Ausgewählte endgültig löschen'}
+          </button>
+        </div>
+      )}
+
       {orders.length === 0 ? (
         <p className="mt-6 text-sm font-medium text-stone-500 bg-stone-50 p-6 rounded-xl border border-stone-200/80 text-center">
           {orderArchiveCopy[brenLocale].empty}
@@ -840,7 +866,16 @@ function AdminPanel({ contacts, orders, workingId, onStatusChange, onConfirmTran
             return (
               <article key={order.id} className="rounded-2xl border border-stone-200/90 bg-white p-5 lg:p-6 shadow-2xs hover:border-stone-300 transition-all">
                 <div className="flex flex-wrap items-start justify-between gap-3 pb-4 border-b border-stone-100">
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
+                    {showArchived && (
+                      <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 text-xs font-semibold text-stone-700">
+                        <input type="checkbox" checked={selected.includes(order.id)} disabled={!!workingId || !archiveReady || !order.archived_at}
+                          aria-label={`Bestellung ${order.reference} auswählen`}
+                          onChange={event => setSelectedIds(current => event.target.checked ? [...current, order.id] : current.filter(id => id !== order.id))}
+                          className="h-5 w-5 accent-red-700" />
+                        Auswählen
+                      </label>
+                    )}
                     <span className="font-mono text-sm font-black text-zinc-950 bg-stone-100 px-3 py-1.5 rounded-xl border border-stone-200 shadow-2xs">
                       {order.reference}
                     </span>

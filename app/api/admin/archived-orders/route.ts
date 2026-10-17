@@ -21,29 +21,39 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: 'Zugriff verweigert.' }, { status: 403 });
     }
     let body;
-    try { body = await readLimitedJson(request, 2_000); }
+    try { body = await readLimitedJson(request, 4_000); }
     catch (error) {
       return NextResponse.json({ error: 'Ungültige Anfrage.' }, { status: error instanceof BodyLimitError ? 413 : 400 });
     }
-    if (!body || typeof body !== 'object' || !('orderId' in body) || !('reference' in body)
+    const bulk = body && typeof body === 'object' && 'orderIds' in body ? body.orderIds : undefined;
+    if (bulk !== undefined && (!Array.isArray(bulk) || bulk.length < 1 || bulk.length > 100
+      || bulk.some(id => typeof id !== 'number' || !Number.isSafeInteger(id) || id <= 0)
+      || new Set(bulk).size !== bulk.length)) {
+      return NextResponse.json({ error: 'Bitte 1 bis 100 unterschiedliche Bestellungen auswählen.' }, { status: 400 });
+    }
+    if (bulk === undefined && (!body || typeof body !== 'object' || !('orderId' in body) || !('reference' in body)
       || typeof body.orderId !== 'number' || !Number.isSafeInteger(body.orderId) || body.orderId <= 0
-      || typeof body.reference !== 'string' || !/^TP-[A-F0-9]{12}$/.test(body.reference)) {
+      || typeof body.reference !== 'string' || !/^TP-[A-F0-9]{12}$/.test(body.reference))) {
       return NextResponse.json({ error: 'Ungültige Bestellkennung.' }, { status: 400 });
     }
     // Keep the archive condition on the DELETE itself: a restored order must never be deleted.
-    const { data: removed, error } = await db.from('order_requests').delete()
-      .eq('id', body.orderId).eq('reference', body.reference).not('archived_at', 'is', null)
-      .select('id, reference').maybeSingle();
+    const query = db.from('order_requests').delete().not('archived_at', 'is', null);
+    const result = bulk !== undefined
+      ? await query.in('id', bulk as number[]).select('id, reference')
+      : await query.eq('id', (body as { orderId: number }).orderId)
+        .eq('reference', (body as { reference: string }).reference).select('id, reference').maybeSingle();
+    const { error } = result;
+    const removed = result.data ? (Array.isArray(result.data) ? result.data : [result.data]) : [];
     if (error) return NextResponse.json({ error: 'Die Bestellung konnte nicht gelöscht werden.' }, { status: 500 });
-    if (!removed) return NextResponse.json({ error: 'Archivierte Bestellung nicht gefunden. Bitte die Liste aktualisieren.' }, { status: 409 });
+    if (!removed.length) return NextResponse.json({ error: 'Archivierte Bestellung nicht gefunden. Bitte die Liste aktualisieren.' }, { status: 409 });
     // Related order lines and payment events are removed by database cascade.
     let proofFailed = false;
     try {
-      const proof = await db.storage.from('payment-proofs').remove([`${removed.reference}/proof`]);
+      const proof = await db.storage.from('payment-proofs').remove(removed.map(order => `${order.reference}/proof`));
       proofFailed = !!proof.error;
     } catch { proofFailed = true; }
-    return NextResponse.json({ deleted: true, warning: proofFailed
-      ? 'Bestellung gelöscht. Der Zahlungsbeleg konnte nicht entfernt werden. Bitte den Support kontaktieren.' : undefined });
+    return NextResponse.json({ deleted: true, deletedIds: removed.map(order => order.id), warning: proofFailed
+      ? 'Bestellungen gelöscht. Zahlungsbelege konnten nicht vollständig entfernt werden. Bitte den Support kontaktieren.' : undefined });
   } catch {
     return NextResponse.json({ error: 'Dienst vorübergehend nicht verfügbar.' }, { status: 503 });
   }
