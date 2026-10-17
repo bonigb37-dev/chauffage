@@ -4,6 +4,8 @@ import path from 'node:path';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import de from '@/translations/de.json';
 import { storeConfig } from './store-config';
+import { getBankDetails } from '@/lib/server-bank-details';
+import type { BankDetails } from '@/lib/bank-details';
 
 export interface InvoiceData {
   reference: string;
@@ -32,13 +34,6 @@ export interface InvoiceData {
   }[];
 }
 
-const BANK_DETAILS = {
-  recipient: 'Simone Römer',
-  iban: 'DE38 7602 6000 0039 4791 00',
-  ibanRaw: 'DE38760260000039479100',
-  bic: 'NORSDE71XXX',
-  bank: 'Sparkasse',
-};
 
 // Clean non-ASCII or problematic characters for PDF standard font
 function sanitize(text: string): string {
@@ -53,7 +48,8 @@ function sanitize(text: string): string {
     .replace(/[^\x20-\x7E\xA0-\xFF]/g, ' ');
 }
 
-export async function generateInvoicePdf(data: InvoiceData): Promise<Buffer> {
+export async function generateInvoicePdf(data: InvoiceData, bankDetails?: BankDetails): Promise<Buffer> {
+  const BANK_DETAILS = bankDetails ?? await getBankDetails();
   const doc = await PDFDocument.create();
   const page = doc.addPage([595.28, 841.89]); // A4 format
   const fontRegular = await doc.embedFont(StandardFonts.Helvetica);
@@ -407,6 +403,7 @@ export async function generateInvoicePdf(data: InvoiceData): Promise<Buffer> {
 // Contains order confirmation + items + totals, but NO bank transfer instructions.
 // ──────────────────────────────────────────────────────────────────────────────
 export async function generatePaymentReceiptPdf(data: InvoiceData): Promise<Buffer> {
+  const BANK_DETAILS = await getBankDetails();
   const doc = await PDFDocument.create();
   const page = doc.addPage([595.28, 841.89]); // A4
   const fontRegular = await doc.embedFont(StandardFonts.Helvetica);
@@ -606,9 +603,9 @@ export async function generatePaymentReceiptPdf(data: InvoiceData): Promise<Buff
   page.drawText('Amtsgericht Wetzlar', { x: col2X, y: fY - 25, size: 6.5, font: fontRegular, color: textMuted });
 
   page.drawText('Bankverbindung', { x: col3X, y: fY, size: 7, font: fontBold, color: textDark });
-  page.drawText('Bank: Sparkasse', { x: col3X, y: fY - 9, size: 6.5, font: fontRegular, color: textMuted });
-  page.drawText('IBAN: DE38 7602 6000 0039 4791 00', { x: col3X, y: fY - 17, size: 6.5, font: fontRegular, color: textMuted });
-  page.drawText('BIC: NORSDE71XXX', { x: col3X, y: fY - 25, size: 6.5, font: fontRegular, color: textMuted });
+  page.drawText(sanitize(`Bank: ${BANK_DETAILS.bank}`), { x: col3X, y: fY - 9, size: 6.5, font: fontRegular, color: textMuted });
+  page.drawText(sanitize(`IBAN: ${BANK_DETAILS.iban}`), { x: col3X, y: fY - 17, size: 6.5, font: fontRegular, color: textMuted });
+  page.drawText(sanitize(`BIC: ${BANK_DETAILS.bic}`), { x: col3X, y: fY - 25, size: 6.5, font: fontRegular, color: textMuted });
 
   page.drawText('Kundenservice & Web', { x: col4X, y: fY, size: 7, font: fontBold, color: textDark });
   page.drawText(sanitize(`Tel: ${storeConfig.phone}`), { x: col4X, y: fY - 9, size: 6.5, font: fontRegular, color: textMuted });

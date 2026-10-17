@@ -19,18 +19,13 @@ import {
   ChevronLeft,
 } from 'lucide-react';
 import { useCart } from '@/components/CartProvider';
+import { parseBankDetails } from '@/lib/bank-details';
 import IncludedVatSummary from '@/components/IncludedVatSummary';
 import { storeConfig } from '@/lib/store-config';
 import PaymentProofUpload from '@/components/PaymentProofUpload';
 import { readPendingOrder, markCartCleared, type PendingOrder } from '@/lib/pending-order';
 import { useActionLoading } from '@/components/ActionLoadingProvider';
 
-const BANK_DETAILS = {
-  recipient: 'Simone Römer',
-  iban: 'DE38760260000039479100',
-  bic: 'NORSDE71XXX',
-  bank: 'Sparkasse',
-};
 
 const STEPS = ['Bestellung', 'Zahlung', 'Bestätigung'];
 
@@ -42,7 +37,8 @@ export default function CheckoutSuccessContent() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [downloadingReceipt, setDownloadingReceipt] = useState(false);
   const [receiptError, setReceiptError] = useState<string | null>(null);
-  const { clearCart } = useCart();
+  const { clearCart, bankDetails } = useCart();
+  const BANK_DETAILS = parseBankDetails(bankDetails);
   const { stopLoading } = useActionLoading();
 
   useEffect(() => {
@@ -301,11 +297,12 @@ export default function CheckoutSuccessContent() {
                 </div>
 
                 <div className="mt-4 space-y-2">
+                  {!BANK_DETAILS && <p role="status" className="text-sm text-amber-800">Die Bankverbindung ist derzeit nicht verfügbar. Bitte kontaktieren Sie uns vor der Überweisung.</p>}
                   {[
-                    { label: 'Begünstigte', value: BANK_DETAILS.recipient, key: 'recipient', mono: false },
-                    { label: 'IBAN', value: BANK_DETAILS.iban, key: 'iban', mono: true },
-                    { label: 'BIC', value: BANK_DETAILS.bic, key: 'bic', mono: true },
-                    { label: 'Bank', value: BANK_DETAILS.bank, key: 'bank', mono: false },
+                    { label: 'Begünstigte', value: BANK_DETAILS?.recipient || 'Nicht verfügbar', key: 'recipient', mono: false },
+                    { label: 'IBAN', value: BANK_DETAILS?.iban || 'Nicht verfügbar', key: 'iban', mono: true },
+                    { label: 'BIC', value: BANK_DETAILS?.bic || 'Nicht angegeben', key: 'bic', mono: true },
+                    { label: 'Bank', value: BANK_DETAILS?.bank || 'Nicht angegeben', key: 'bank', mono: false },
                   ].map(({ label, value, key, mono }) => (
                     <div key={key} className="flex items-center justify-between rounded-xl bg-stone-50 px-3 py-2.5">
                       <div className="min-w-0 mr-2">
@@ -315,6 +312,7 @@ export default function CheckoutSuccessContent() {
                         </span>
                       </div>
                       <button
+                        disabled={!BANK_DETAILS}
                         onClick={() => copyToClipboard(value, key)}
                         className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-stone-200 bg-white text-stone-400 transition hover:bg-stone-100"
                       >

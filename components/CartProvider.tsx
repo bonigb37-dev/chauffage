@@ -40,20 +40,40 @@ export function CartProvider({ children, initialCatalog = initialProducts }: { c
   useEffect(() => {
     if (!supabase) return;
     let active = true;
-    void Promise.all([
-      supabase.from('product_overrides').select('product_id, data, is_deleted'),
-      supabase.from('site_settings').select('value').eq('key', 'bank_transfer').maybeSingle(),
-    ]).then(([productResult, settingsResult]) => {
+    void Promise.resolve(supabase.from('product_overrides').select('product_id, data, is_deleted')).then(productResult => {
       if (!active) return;
       if (!productResult.error && productResult.data) {
         setProducts(mergeCatalog(productResult.data));
       }
-      if (!settingsResult.error && settingsResult.data?.value && typeof settingsResult.data.value === 'object') {
-        setBankDetails(String((settingsResult.data.value as { details?: unknown }).details ?? ''));
-      }
       setCatalogReady(true);
     }).catch(() => setCatalogReady(true));
     return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    if (!supabase) return;
+    let active = true;
+    let revision = 0;
+    const refresh = async () => {
+      const current = ++revision;
+      try {
+        const { data, error } = await supabase!.from('site_settings').select('value').eq('key', 'bank_transfer').maybeSingle();
+        if (active && current === revision) setBankDetails(!error && typeof data?.value?.details === 'string' ? data.value.details : '');
+      } catch { if (active && current === revision) setBankDetails(''); }
+    };
+    const onVisible = () => { if (document.visibilityState === 'visible') void refresh(); };
+    void refresh();
+    const timer = window.setInterval(() => { if (document.visibilityState === 'visible') void refresh(); }, 30_000);
+    window.addEventListener('focus', refresh);
+    window.addEventListener('bren-bank-settings-updated', refresh);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      active = false;
+      window.clearInterval(timer);
+      window.removeEventListener('focus', refresh);
+      window.removeEventListener('bren-bank-settings-updated', refresh);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
   }, []);
 
   useEffect(() => {

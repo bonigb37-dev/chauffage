@@ -1,4 +1,5 @@
 'use client';
+import { parseBankDetails } from '@/lib/bank-details';
 import IncludedVatSummary from '@/components/IncludedVatSummary';
 import type { vatSummary } from '@/lib/vat';
 import CartDraftsPanel from '@/components/CartDraftsPanel';
@@ -320,6 +321,10 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
 
   async function saveBankDetails(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); if (!supabase || savingRole) return false;
+    if (!parseBankDetails(bankForm)) {
+      setError('Bitte geben Sie die Bankverbindung mit beschrifteten Zeilen ein: Empfänger: …, IBAN: …, BIC: …, Bank: …. Empfänger und eine vollständige IBAN sind erforderlich.');
+      return false;
+    }
     setSavingRole(true); setError(''); setNotice('');
     try {
       const { data, error: saveError } = await supabase.from('site_settings')
@@ -329,6 +334,7 @@ export default function AdminWorkspace({ superAdminOnly = false }: { superAdminO
         setError('Die Bankverbindung konnte nicht gespeichert werden.');
         return false;
       }
+      window.dispatchEvent(new Event('bren-bank-settings-updated'));
       return true;
     } catch {
       setError('Die Bankverbindung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut.');
@@ -1277,6 +1283,7 @@ function ProductAdminPanel({ products, product, setProduct, editing, setEditing,
           Bankdaten (IBAN, BIC) &amp; Anweisungen bei Zahlung
           <textarea rows={5} value={bankForm} disabled={saving} onChange={(e) => { setBankSaved(false); setBankForm(e.target.value); }} placeholder="Empfänger, IBAN, BIC und obligatorischer Verwendungszweck..." className={inputClass} />
         </label>
+        <p className="mt-2 text-xs leading-5 text-stone-500">Bitte jede Angabe mit Beschriftung eingeben: Empfänger: … / IBAN: … / BIC: … / Bank: … (jeweils eine Zeile). Neue E-Mails und PDF-Dokumente verwenden die gespeicherten Bankdaten. Bereits versandte Dokumente bleiben unverändert.</p>
         <div className="mt-4 flex items-center gap-4">
           <button type="submit" disabled={saving} className="rounded-xl bg-zinc-950 px-6 py-3 text-sm font-bold text-white shadow-xs hover:bg-zinc-800 disabled:opacity-50 transition-all">
             {saving ? 'Wird gespeichert...' : 'Bankdaten speichern'}

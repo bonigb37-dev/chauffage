@@ -4,6 +4,7 @@ import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import de from '@/translations/de.json';
 import { storeConfig } from '@/lib/store-config';
 import { generateInvoicePdf } from '@/lib/invoice-pdf';
+import { getBankDetails } from '@/lib/server-bank-details';
 
 export type OrderEmailData = {
   reference: string;
@@ -41,12 +42,6 @@ function escapeHtml(text: string): string {
     .replace(/'/g, '&#039;');
 }
 
-const BANK_DETAILS = {
-  recipient: 'Simone R├Âmer',
-  iban: 'DE38760260000039479100',
-  bic: 'NORSDE71XXX',
-  bank: 'Sparkasse',
-};
 
 async function dispatchEmail({
   to,
@@ -195,6 +190,7 @@ async function dispatchEmail({
 // Envoy├® imm├®diatement ├á la validation de commande. Statut : ┬½ Paiement en attente ┬╗.
 // SANS facture PDF attach├®e (data.attachInvoice est false par d├®faut).
 export async function sendOrderConfirmationEmail(data: OrderEmailData): Promise<boolean> {
+  const BANK_DETAILS = await getBankDetails();
   const customerEmail = data.customer?.email?.trim();
   if (!customerEmail || !customerEmail.includes('@')) {
     return false;
@@ -437,7 +433,7 @@ https://www.brennholz-direk.de
         shipping: data.shipping,
         totalCents: data.totalCents,
         lines: data.lines,
-      });
+      }, BANK_DETAILS);
     } catch (pdfErr) {
       console.error('Invoice PDF generation error for email:', pdfErr);
     }
