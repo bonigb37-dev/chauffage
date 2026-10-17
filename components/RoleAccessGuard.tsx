@@ -101,11 +101,12 @@ export default function RoleAccessGuard({ children }: { children: ReactNode }) {
     if (authLinkReady && verified && destination) router.replace(destination);
   }, [authLinkReady, verified, destination, router]);
 
-  // Public content must be rendered for visitors and crawlers before session checks finish.
-  // Account, checkout and administration retain the existing access checks.
+  // The sign-in/sign-up form is a public entry point. Do not block its rendering
+  // on session refresh or role lookup; private routes below still require verification.
   const requiresSessionCheck = isAdminPage || isSuperAdminPage || pathname === '/compte'
     || pathname === '/panier' || pathname === '/commande' || pathname.startsWith('/commande/');
   const content = <AccessContext.Provider value={{ user, role, verified: verified && !error }}>{children}</AccessContext.Provider>;
+  if (pathname === '/compte' && authLinkReady && !destination && !error) return content;
   if (!requiresSessionCheck && authLinkReady && !destination) return content;
 
   if (error) return localizeNode(<main className="min-h-[70vh] p-8 text-center">

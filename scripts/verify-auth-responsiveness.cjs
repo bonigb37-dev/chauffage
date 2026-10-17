@@ -24,14 +24,14 @@ async function scenario(mode, fail = false) {
   const Account = load('components/AccountPageContent.tsx', {
     react: { ...React, useEffect() {}, useState(initial) {
       const index = cursor++;
-      if (!(index in state)) state[index] = index === 0 ? mode : index === 2 ? true : initial;
+      if (!(index in state)) state[index] = index === 0 ? mode : initial;
       return [state[index], next => { state[index] = typeof next === 'function' ? next(state[index]) : next; }];
     }, useRef(initial) { return refs[refCursor++] ?? (refs[refCursor - 1] = { current: initial }); } },
     'next-intl': { useLocale: () => 'de' },
     '@/i18n/copy': { localizeNode: node => node },
     '@/i18n/navigation': { __esModule: true, default: 'a', useRouter: () => ({ replace: url => redirects.push(url) }) },
     '@/lib/supabase': { isPasswordRecoveryRedirect: false, supabase: { auth: { signInWithPassword: auth, signUp: auth } } },
-    '@/lib/admin-access': { getAdminRole: async () => null },
+    '@/lib/admin-access': { getAdminRole: () => new Promise(() => {}) },
     '@/lib/auth-link': { wasEmailConfirmed: () => false, confirmationMessage: '' },
     '@/components/CartProvider': { useCart: () => ({ items: [], products: [], itemCount: 0, ready: true }) },
     '@/lib/order-status': {}, '@/lib/store-config': { siteUrl: 'https://example.invalid' },
@@ -52,10 +52,18 @@ async function scenario(mode, fail = false) {
   finish(fail ? { error: new Error('mock network failure') } : mode === 'signin'
     ? { data: { user: { id: 'mock', email_confirmed_at: '2026-01-01' } }, error: null }
     : { data: { session: null }, error: null });
-  await Promise.all([first, second]);
+  let deadline;
+  try {
+    await Promise.race([Promise.all([first, second]), new Promise((_, reject) => {
+      deadline = setTimeout(() => reject(Error('Auth completion blocked on role lookup')), 300);
+    })]);
+  } finally { clearTimeout(deadline); }
   assert.equal(state[3], false);
   if (fail) assert.equal(state[6], 'mock network failure');
-  else if (mode === 'signin') assert.deepEqual(redirects, ['/compte']);
+  else if (mode === 'signin') {
+    assert.deepEqual(redirects, [], 'No redundant navigation or blocking role lookup after sign-in');
+    assert.equal(state[1].id, 'mock');
+  }
   else assert(state[5].includes('Inscription'));
 }
 async function main() {
@@ -63,6 +71,36 @@ async function main() {
   global.FormData = class { get(name) { return ({ email: 'mock@example.invalid', password: 'mock-password', confirmPassword: 'mock-password', firstName: 'Test', lastName: 'User' })[name] ?? ''; } };
   try { await scenario('signin'); await scenario('signup'); await scenario('signin', true); }
   finally { global.FormData = nativeFormData; }
+
+  // Entry forms render while session/role requests are pending. Private routes do not.
+  const placeholder = React.createElement('form', { id: 'public-auth-form' });
+  const guardCases = [
+    { path: '/compte', expected: true },
+    { path: '/compte', user: { id: 'pending-role' }, expected: true },
+    { path: '/admin', expected: false },
+    { path: '/super-admin', expected: false },
+    { path: '/panier', expected: false },
+    { path: '/commande', expected: false },
+    { path: '/compte', recovery: true, expected: false },
+    { path: '/compte', user: { id: 'admin' }, role: 'admin', expected: false },
+  ];
+  for (const test of guardCases) {
+    let index = 0;
+    const overrides = { 0: test.user ?? null, 1: Boolean(test.user),
+      2: test.role ? { userId: test.user.id, role: test.role } : null };
+    const Guard = load('components/RoleAccessGuard.tsx', {
+      react: { ...React, useEffect() {}, useState(initial) {
+        const i = index++; return [Object.hasOwn(overrides, i) ? overrides[i] : initial, () => {}];
+      } },
+      'next-intl': { useLocale: () => 'de' }, '@/i18n/copy': { localizeNode: node => node },
+      '@/i18n/navigation': { usePathname: () => test.path, useRouter: () => ({ replace() {} }) },
+      '@/lib/supabase': { supabase: { auth: {} }, isPasswordRecoveryRedirect: Boolean(test.recovery) },
+      '@/lib/auth-link': { incomingAuthLink: test.recovery ? { kind: 'recovery' } : null },
+      '@/lib/admin-access': {}, '@/components/AccessContext': { AccessContext: React.createContext({}) },
+    }).default;
+    const result = Guard({ children: placeholder });
+    assert.equal(nodes(result).some(node => node.props?.id === 'public-auth-form'), test.expected, test.path);
+  }
 
   const handlers = {}, updates = [], effects = [];
   const nativeDocument = global.document, nativeWindow = global.window;
@@ -81,5 +119,6 @@ async function main() {
     cleanup();
   } finally { global.document = nativeDocument; global.window = nativeWindow; }
   console.log('PASS: immediate auth feedback, duplicate-tap prevention, signup and signin completion, error recovery, and no artificial global overlay. No real auth requests.');
+  console.log('PASS: public auth forms are visible without waiting for session/roles; private routes, recovery and admin redirects remain guarded.');
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

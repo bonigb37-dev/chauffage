@@ -109,7 +109,7 @@ export default function Navbar() {
 
   // Click outside listener
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (navRef.current && !navRef.current.contains(event.target as Node)) {
         setMegaMenuOpen(false);
         setAccountOpen(false);
@@ -117,7 +117,11 @@ export default function Navbar() {
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
   }, []);
 
   // Hotkey listener (Cmd+K / Ctrl+K for search)
@@ -369,17 +373,22 @@ export default function Navbar() {
               )}
             </button>
 
-            <Link
-              href="/compte"
-              prefetch={true}
+            <button
+              type="button"
+              onClick={() => {
+                setAccountOpen(!accountOpen);
+                setCartOpen(false);
+                setSearchOpen(false);
+                setMobileMenuOpen(false);
+              }}
               className="relative w-11 h-11 flex items-center justify-center rounded-xl text-[#1f2937] hover:bg-[#F5F7F8] active:bg-[#ECEEF0] transition"
-              aria-label="Mon compte"
+              aria-label="Espace compte client"
             >
               <CircleUserRound size={22} />
               {user && (
                 <span className="absolute bottom-1.5 right-1.5 w-2 h-2 rounded-full bg-emerald-600 ring-2 ring-white" />
               )}
-            </Link>
+            </button>
 
             <button
               type="button"
@@ -760,6 +769,52 @@ export default function Navbar() {
                 Contact
               </Link>
             </nav>
+
+            <div className="pt-6 border-t border-[#E6DCce] space-y-2.5">
+              {user ? (
+                <>
+                  <Link
+                    href="/compte"
+                    prefetch={true}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full flex items-center justify-center gap-2 bg-[#F4EDE4] hover:bg-[#E6DCce] text-[#1C1917] font-bold py-3 px-4 rounded-xl text-center text-sm transition"
+                  >
+                    <User size={16} />
+                    <span>Mon compte</span>
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleSignOut();
+                    }}
+                    className="w-full flex items-center justify-center gap-2 text-red-600 hover:bg-red-50 font-medium py-2.5 px-4 rounded-xl text-center text-sm transition"
+                  >
+                    <LogOut size={16} />
+                    <span>Se déconnecter</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/compte?mode=signin"
+                    prefetch={true}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full bg-[#A33D1E] hover:bg-[#883015] text-white font-bold py-3 px-4 rounded-xl text-center block text-sm shadow-md transition"
+                  >
+                    Se connecter
+                  </Link>
+                  <Link
+                    href="/compte?mode=signup"
+                    prefetch={true}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full bg-[#F4EDE4] hover:bg-[#E6DCce] text-[#1C1917] font-semibold py-3 px-4 rounded-xl text-center block text-sm transition"
+                  >
+                    Créer un compte
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </div>
       )}

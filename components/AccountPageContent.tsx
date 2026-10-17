@@ -397,14 +397,14 @@ function BackgroundHearthLoop() {
 }
 
 
-export default function AccountPageContent() {
+export default function AccountPageContent({ initialMode = 'signin' }: { initialMode?: Mode } = {}) {
   const brenLocale = useLocale() as Locale;
 
   const { items: cartItems, products: cartProducts, itemCount, ready: cartReady } = useCart();
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>(isPasswordRecoveryRedirect ? 'update' : 'signin');
+  const [mode, setMode] = useState<Mode>(isPasswordRecoveryRedirect ? 'update' : initialMode);
   const [user, setUser] = useState<User | null>(null);
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(true);
   const [busy, setBusy] = useState(false);
   const submitting = useRef(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -612,15 +612,9 @@ export default function AccountPageContent() {
           setError('Votre adresse e-mail n’est pas encore confirmée. Ouvrez le lien reçu par e-mail ou demandez un nouveau lien.');
           return;
         }
-        let accountRole;
-        try { accountRole = await getAdminRole(supabase, data.user.id); } catch {
-          setError('Vous êtes connecté, mais votre rôle n’a pas pu être vérifié. Réessayez de vous connecter pour accéder à votre tableau de bord.');
-          return;
-        }
-        const destination = accountRole === 'owner' || accountRole === 'super_admin'
-          ? '/super-admin'
-          : accountRole === 'admin' ? '/admin' : '/compte';
-        router.replace(destination);
+        // Already on the account page: show the authenticated account immediately.
+        // RoleAccessGuard performs the admin redirect independently, without a second
+        // blocking role request or a redundant navigation back to this same page.
       } else if (mode === 'forgot') {
         const { error: authError } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: getAuthRedirectUrl('/compte?mode=recovery'),

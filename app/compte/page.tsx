@@ -2,7 +2,7 @@ import { localizeMetadata } from '@/lib/seo';
 
 import { localizeNode } from '@/i18n/copy';
 import type { Locale } from '@/i18n/routing';
-import { useLocale } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import AccountPageContent from '@/components/AccountPageContent';
 
 export async function generateMetadata() { return localizeMetadata(await ({
@@ -11,8 +11,12 @@ export async function generateMetadata() { return localizeMetadata(await ({
   description: 'Créez votre compte client Bren-nholz ou connectez-vous.',
 })); }
 
-export default function AccountPage() {
-  const brenLocale = useLocale() as Locale;
+export default async function AccountPage({ searchParams }: {
+  searchParams: Promise<{ mode?: string }>;
+}) {
+  const brenLocale = await getLocale() as Locale;
+  const { mode } = await searchParams;
+  const initialMode = mode === 'signup' ? 'signup' : mode === 'forgot' ? 'forgot' : mode === 'recovery' ? 'update' : 'signin';
 
-  return localizeNode(<AccountPageContent />, brenLocale);
+  return localizeNode(<AccountPageContent initialMode={initialMode} />, brenLocale);
 }
