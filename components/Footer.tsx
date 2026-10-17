@@ -9,10 +9,11 @@ import { usePathname } from '@/i18n/navigation';
 import { storeConfig } from '@/lib/store-config';
 import { supportCopy } from '@/lib/support-copy';
 import { cookieConsentCopy } from '@/lib/analytics-copy';
-import { ArrowRight, Flame, Mail, MapPin, Phone, Truck } from 'lucide-react';
+import { ArrowRight, Clock, Flame, Mail, MapPin, Phone, Truck } from 'lucide-react';
 
 export default function Footer() {
   const brenLocale = useLocale() as Locale;
+  const openingHours = { title: 'Öffnungszeiten', weekdays: 'Montag–Freitag', saturday: 'Samstag' };
 
   const pathname = usePathname();
   if (pathname === '/compte') return null;
@@ -46,6 +47,22 @@ export default function Footer() {
             <div className="flex items-start gap-3">
               <Truck size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-emerald-400" />
               <Link href="/frais-livraison" className="leading-6 underline">Livraison en Allemagne</Link>
+            </div>
+            <div data-original-content className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4">
+              <Clock size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-emerald-400" />
+              <div className="min-w-0 flex-1">
+                <p className="font-semibold text-white">{openingHours.title}</p>
+                <dl className="mt-3 space-y-2 leading-6">
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+                    <dt>{openingHours.weekdays}</dt>
+                    <dd className="whitespace-nowrap font-semibold tabular-nums text-white"><time dateTime="08:00">08:00</time>–<time dateTime="18:00">18:00</time></dd>
+                  </div>
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+                    <dt>{openingHours.saturday}</dt>
+                    <dd className="whitespace-nowrap font-semibold tabular-nums text-white"><time dateTime="09:00">09:00</time>–<time dateTime="16:00">16:00</time></dd>
+                  </div>
+                </dl>
+              </div>
             </div>
             <div className="border-t border-white/10 pt-5">
               <p className="leading-6">Une question sur un produit ou votre commande ?</p>
