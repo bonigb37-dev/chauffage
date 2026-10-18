@@ -18,7 +18,7 @@ import { getServerCatalog } from '@/lib/server-catalog';
 import DeliveryInformation from '@/components/DeliveryInformation';
 import { publicMetadata, siteUrl } from '@/lib/seo';
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ slug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 
 async function findProduct(slug: string) {
   const id = Number(slug.split('-', 1)[0]);
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return publicMetadata(`${translate(product.name, locale)} — Bren-nholz`, `${translate(product.description, locale)} ${translate('Conditionnement :', locale)} ${translate(product.quantity, locale)}.`, `/produits/${productPathSegment(product)}`);
 }
 
-export default async function ProductDetailPage({ params }: Props) {
+export default async function ProductDetailPage({ params, searchParams }: Props) {
   const brenLocale = await getLocale() as Locale;
 
   const nonce = (await headers()).get('x-nonce') ?? undefined;
@@ -44,7 +44,14 @@ export default async function ProductDetailPage({ params }: Props) {
   const volumeVariants = product.volumeGroup
     ? (await getServerCatalog()).filter(item => item.volumeGroup === product.volumeGroup).sort((a, b) => (a.volumeRm ?? 0) - (b.volumeRm ?? 0))
     : [];
-  if (slug !== canonicalSlug) permanentRedirect(localizedPath(`/produits/${canonicalSlug}`, brenLocale));
+  if (slug !== canonicalSlug) {
+    const query = new URLSearchParams();
+    for (const [key, value] of Object.entries(await searchParams)) {
+      for (const item of Array.isArray(value) ? value : value === undefined ? [] : [value]) query.append(key, item);
+    }
+    const suffix = query.size ? `?${query}` : '';
+    permanentRedirect(localizedPath(`/produits/${canonicalSlug}${suffix}`, brenLocale));
+  }
 
   const jsonLd = {
     '@context': 'https://schema.org',

@@ -3,7 +3,7 @@ import NextLink from 'next/link';
 import { usePathname as useNextPathname, useRouter as useNextRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { useMemo, type ComponentProps } from 'react';
-import { localizedPath, stripLocale, type Locale } from './routing';
+import { localizedPath, internalPath, type Locale } from './routing';
 
 export default function Link(props: ComponentProps<typeof NextLink>) {
   const locale = useLocale() as Locale;
@@ -12,7 +12,7 @@ export default function Link(props: ComponentProps<typeof NextLink>) {
   };
   return <NextLink {...props} href={href} />;
 }
-export function usePathname() { return stripLocale(useNextPathname()); }
+export function usePathname() { return internalPath(useNextPathname()); }
 export function useRouter() {
   const router = useNextRouter();
   const locale = useLocale() as Locale;

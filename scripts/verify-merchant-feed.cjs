@@ -45,7 +45,7 @@ for (const item of items.filter(item=>!['5','14','67'].includes(item.id))) {
  const product=products.find(p=>String(p.id)===item.id);
  assert.equal(item.image_link,new URL(product.gallery?.[0]??product.image,base).href);
 }
-for(const item of items){const p=products.find(p=>String(p.id)===item.id);assert.equal(item.title,de[p.name]);assert.equal(item.description,de[p.description]);assert.equal(item.price,(p.priceAmount/100).toFixed(2)+' EUR');assert.equal(item.availability,p.stock===0?'out_of_stock':'in_stock');assert(item.link.startsWith(base+'/de/produits/'));assert(item.image_link.startsWith('https://'));assert(!item.gtin&&!item.mpn&&!item.identifier_exists);assert.equal(item.shipping,'0.00 EUR');assert(!item.shipping_label);assert(item.title.length<=150&&item.description.length<=5000);}
+for(const item of items){const p=products.find(p=>String(p.id)===item.id);assert.equal(item.title,de[p.name]);assert.equal(item.description,de[p.description]);assert.equal(item.price,(p.priceAmount/100).toFixed(2)+' EUR');assert.equal(item.availability,p.stock===0?'out_of_stock':'in_stock');assert(item.link.startsWith(base+'/de/produkte/'));assert(item.image_link.startsWith('https://'));assert(!item.gtin&&!item.mpn&&!item.identifier_exists);assert.equal(item.shipping,'0.00 EUR');assert(!item.shipping_label);assert(item.title.length<=150&&item.description.length<=5000);}
 const changed=mergeCatalog([{product_id:2,data:{priceAmount:12345,stock:0},is_deleted:false},{product_id:3,data:{},is_deleted:true}]);
 const changedItems=parseXml(buildMerchantFeed(changed,base).xml);
 assert.equal(changedItems.find(item=>item.id==='2').price,'123.45 EUR');

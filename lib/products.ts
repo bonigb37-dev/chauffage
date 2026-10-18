@@ -3,6 +3,7 @@ import { sperberProducts } from '@/lib/sperber-products';
 import { bauhausProducts } from '@/lib/bauhaus-products';
 import { bottcherProducts } from '@/lib/bottcher-products';
 import { hardwoodMixProducts } from '@/lib/hardwood-mix-products';
+import de from '@/translations/de.json';
 export type Product = {
   id: number;
   name: string;
@@ -29,8 +30,10 @@ export type Product = {
 };
 
 export function productPathSegment(product?: Partial<Pick<Product, 'id' | 'name'>>) {
-  const nameStr = typeof product?.name === 'string' ? product.name : '';
+  const sourceName = typeof product?.name === 'string' ? product.name : '';
+  const nameStr = (de as Record<string, string>)[sourceName.replace(/\s+/g, ' ').trim()] ?? sourceName;
   const nameSlug = nameStr
+    .replaceAll('ß', 'ss')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()

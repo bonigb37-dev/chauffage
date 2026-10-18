@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const pageRequest = !incomingPath.startsWith('/api/') && !/\.[a-z0-9]+$/i.test(incomingPath);
   const prefix = incomingPath.split('/')[1];
   const locale = 'de';
-  if (pageRequest && /^\/(?:de\/)?commande(?:\/|$)/.test(incomingPath)) {
+  if (pageRequest && isLocale(prefix) && localizedPath(incomingPath, 'de') !== incomingPath) {
     const destination = request.nextUrl.clone();
     destination.pathname = localizedPath(stripLocale(incomingPath), 'de');
     return NextResponse.redirect(destination, 308);
@@ -15,7 +15,7 @@ export function middleware(request: NextRequest) {
     const host = request.headers.get('host') || '';
     const isProduction = process.env.NODE_ENV === 'production';
     const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1');
-    const destinationPath = `/de${cleanPath === '/' ? '' : cleanPath}`;
+    const destinationPath = localizedPath(cleanPath, 'de');
     
     // In production, force canonical www.brennholz-direk.de domain so user is never redirected to vercel.app
     const targetUrl = (isProduction && !isLocalhost)
@@ -55,13 +55,13 @@ export function middleware(request: NextRequest) {
   ].join('; ');
   const requestHeaders = new Headers(request.headers);
   // Routing hint only: never used to grant access or identify a user.
-  requestHeaders.set('x-bren-pathname', stripLocale(incomingPath));
+  requestHeaders.set('x-bren-pathname', internalPath(incomingPath));
   requestHeaders.set('x-bren-locale', locale);
   requestHeaders.set('x-nonce', nonce);
   // Next.js reads this request header to nonce its generated scripts.
   requestHeaders.set('Content-Security-Policy', policy);
   const target = request.nextUrl.clone();
-  target.pathname = stripLocale(incomingPath);
+  target.pathname = internalPath(incomingPath);
   const response = pageRequest ? NextResponse.rewrite(target, { request: { headers: requestHeaders } }) : NextResponse.next({ request: { headers: requestHeaders } });
   response.headers.set('Content-Security-Policy', policy);
   response.headers.set('X-Frame-Options', 'DENY');
@@ -69,11 +69,11 @@ export function middleware(request: NextRequest) {
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   if (!development) response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
-  if (/^\/(api|admin|super-admin|compte|commande|kasse)(\/|$)/.test(stripLocale(incomingPath))) {
+  if (/^\/(api|admin|super-admin|compte|commande|kasse)(\/|$)/.test(internalPath(incomingPath))) {
     response.headers.set('Cache-Control', 'private, no-store');
   }
   return response;
 }
 
 export const config = { matcher: ['/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)'] };
-import { isLocale, stripLocale, localizedPath } from './i18n/routing';
+import { isLocale, stripLocale, localizedPath, internalPath } from './i18n/routing';

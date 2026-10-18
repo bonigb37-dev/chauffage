@@ -7,7 +7,7 @@ export type AnalyticsEvent = { id: string; session_id: string; page_id: string; 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export function analyticsPath(input: string) {
   const path = input.split(/[?#]/)[0].replace(/^\/(de|fr|en)(?=\/|$)/, '') || '/';
-  if (!/^\/[a-z0-9/-]*$/i.test(path) || path.length > 220 || /^\/(admin|super-admin|api|compte|aide)(\/|$)/.test(path)) return null;
+  if (!/^\/[a-z0-9/-]*$/i.test(path) || path.length > 220 || /^\/(admin|super-admin|api|compte|konto|aide|hilfe)(\/|$)/.test(path)) return null;
   // Confirmation pages can contain order references; record only the generic route.
   return path;
 }

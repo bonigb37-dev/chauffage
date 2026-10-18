@@ -1,5 +1,6 @@
 import { productPathSegment, type Product } from '@/lib/products';
 import de from '@/translations/de.json';
+import { localizedPath } from '@/i18n/routing';
 
 const german: Record<string, string> = de;
 const namedBrands = ['EPH', 'TotalEnergies', 'HEIZFUXX', 'HELIOS', 'PROXIMA STAR', 'FireStixx', 'Giant Flames', 'ANTE', 'VERPELLET'];
@@ -50,7 +51,7 @@ export function buildMerchantFeed(products: Product[] = [], base: string = '') {
       field('id', String(product.id)),
       field('title', title),
       field('description', description),
-      field('link', `${base}/de/produits/${productPathSegment(product)}`),
+      field('link', `${base}${localizedPath(`/produits/${productPathSegment(product)}`, 'de')}`),
       field('image_link', image),
       ...otherImages.map(value => field('additional_image_link', value)),
       field('price', `${(Number(product.priceAmount) / 100).toFixed(2)} EUR`),
