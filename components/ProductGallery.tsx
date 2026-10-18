@@ -32,6 +32,8 @@ export default function ProductGallery({ name, image, gallery, descriptions }: {
     <button type="button" onClick={() => move(1)} aria-label={labels.next} className="grid h-11 w-11 place-items-center rounded-full border border-stone-300 bg-white text-stone-800 hover:bg-stone-100"><ChevronRight size={20} /></button>
   </div>;
 
+  if (!images.length) return <section aria-label={labels.gallery} className="grid aspect-[4/3] place-items-center rounded-2xl bg-[#FAF6F0] text-stone-500">Produktfoto folgt</section>;
+
   return <section aria-label={labels.gallery} className="min-w-0 self-start">
     <figure>
       <button type="button" aria-label={labels.zoom} onClick={() => { setZoomed(true); dialog.current?.showModal(); }} className="group relative block aspect-[4/3] w-full overflow-hidden rounded-2xl bg-[#FAF6F0] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#A33D1E]">

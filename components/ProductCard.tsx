@@ -71,7 +71,7 @@ export default function ProductCard({ p }: { p: Product }) {
       {/* Product Image Section */}
       <div className="relative h-48 sm:h-52 w-full overflow-hidden rounded-t-2xl border-b border-[#E2E8F0] bg-[#FAFBFC]">
         <button type="button" onClick={() => { setImageIndex(0); setZoomed(false); setOpen(true); }} className="absolute inset-0 block h-full w-full" aria-label={`Agrandir la photo : ${p.name}`}>
-          <Image src={p.image} alt={p.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" className="object-contain p-1 sm:p-2 transition-transform duration-500 group-hover:scale-105" />
+          {p.image ? <Image src={p.image} alt={p.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" className="object-contain p-1 sm:p-2 transition-transform duration-500 group-hover:scale-105" /> : <span className="absolute inset-0 grid place-items-center text-sm text-gray-500">Produktfoto folgt</span>}
           <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-1 text-[10px] font-bold text-gray-800 shadow-sm backdrop-blur-sm">
             <Expand size={12} /> Agrandir
           </span>
@@ -123,7 +123,7 @@ export default function ProductCard({ p }: { p: Product }) {
             </div>
             <div className="relative min-h-0 flex-1 overflow-auto bg-stone-100">
               <div className={`relative mx-auto h-full min-h-[220px] w-full transition-transform duration-300 sm:min-h-[360px] ${zoomed ? 'scale-150' : ''}`}>
-                <Image src={activeImage} alt={`${p.name} — photo ${imageIndex + 1}`} fill sizes="100vw" className="object-contain p-2 sm:p-4" />
+                {activeImage ? <Image src={activeImage} alt={`${p.name} — photo ${imageIndex + 1}`} fill sizes="100vw" className="object-contain p-2 sm:p-4" /> : <span className="absolute inset-0 grid place-items-center text-gray-500">Produktfoto folgt</span>}
               </div>
             </div>
             <div className="flex flex-col gap-2 border-t px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6"><p className="min-w-0 text-xs leading-5 text-gray-600">{p.description}</p></div>

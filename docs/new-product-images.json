@@ -1,0 +1,85 @@
+{
+  "status": "partially_assigned",
+  "note": "Confirmed images assigned; remaining unassigned images and missing BV await identification or upload.",
+  "images": [
+    {
+      "source": "brennholz.jpg",
+      "category": "brennholz",
+      "image": "/products/uploads/brennholz/holzkiste.jpg",
+      "productId": 9214
+    },
+    {
+      "source": "brennholz2.jpg",
+      "category": "brennholz",
+      "image": "/products/uploads/brennholz/holzscheite.jpg",
+      "productId": 9214
+    },
+    {
+      "source": "Brennholz3.webp",
+      "category": "brennholz",
+      "image": "/products/uploads/brennholz/holzkiste-aussen.webp",
+      "productId": 9214
+    },
+    {
+      "source": "1.jpg",
+      "category": "birkenholz",
+      "image": "/products/uploads/birkenholz/palette-netzsaecke.jpg",
+      "productId": null
+    },
+    {
+      "source": "2.jpg",
+      "category": "birkenholz",
+      "image": "/products/uploads/birkenholz/holzscheite-detail.jpg",
+      "productId": null
+    },
+    {
+      "source": "11.jpg",
+      "category": "ruf-holzbriketts",
+      "image": "/products/uploads/ruf-holzbriketts/palette.jpg",
+      "productId": null
+    },
+    {
+      "source": "12.jpg",
+      "category": "ruf-holzbriketts",
+      "image": "/products/uploads/ruf-holzbriketts/verbrennung.jpg",
+      "productId": null
+    },
+    {
+      "source": "01.jpg",
+      "category": "runde-holzbriketts",
+      "image": "/products/uploads/runde-holzbriketts/palette.jpg",
+      "productId": 9219
+    },
+    {
+      "source": "02.jpg",
+      "category": "runde-holzbriketts",
+      "image": "/products/uploads/runde-holzbriketts/brikett-detail.jpg",
+      "productId": null
+    },
+    {
+      "source": "03.jpg",
+      "category": "runde-holzbriketts",
+      "image": "/products/uploads/runde-holzbriketts/teilpalette.jpg",
+      "productId": null
+    },
+    {
+      "source": "A1.jpg",
+      "category": "eichenholz",
+      "image": "/products/uploads/eichenholz/palette-2-rm.jpg",
+      "productId": 9218
+    },
+    {
+      "source": "VV.jpg",
+      "category": "pini-kay",
+      "image": "/products/uploads/pini-kay/palette-480kg.jpg",
+      "productId": 9217
+    },
+    {
+      "source": "BV1.html",
+      "sourceAsset": "BV1_files/THUeRINGER-HD-Holzpellets-6mm-ENplusA1-65-x-15kg-Palette-4-550x550.jpg",
+      "category": "thueringer-hd",
+      "image": "/products/uploads/thueringer-hd/pellets-detail.jpg",
+      "productId": 9203
+    }
+  ]
+}

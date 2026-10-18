@@ -1,0 +1,580 @@
+{
+  "productCount": 71,
+  "products": [
+    {
+      "id": 9301,
+      "name": "Laubholz-Mix 1 RM",
+      "description": "1 Raummeter gemischtes Laubholz auf Palette. Wählen Sie das passende Volumen für Ihren Holzvorrat und planen Sie einen gut belüfteten Lagerplatz ein.",
+      "quantity": "1 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9302,
+      "name": "Laubholz-Mix 2 RM",
+      "description": "2 Raummeter gemischtes Laubholz auf Palette. Wählen Sie das passende Volumen für Ihren Holzvorrat und planen Sie einen gut belüfteten Lagerplatz ein.",
+      "quantity": "2 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9303,
+      "name": "Laubholz-Großmenge 8 RM",
+      "description": "8 Raummeter gemischtes Laubholz auf Palette. Wählen Sie das passende Volumen für Ihren Holzvorrat und planen Sie einen gut belüfteten Lagerplatz ein.",
+      "quantity": "8 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9304,
+      "name": "Laubholz-Großmenge 12 RM",
+      "description": "12 Raummeter gemischtes Laubholz auf Palette. Wählen Sie das passende Volumen für Ihren Holzvorrat und planen Sie einen gut belüfteten Lagerplatz ein.",
+      "quantity": "12 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9305,
+      "name": "Laubholz-Großmenge 20 RM",
+      "description": "20 Raummeter gemischtes Laubholz auf Palette. Wählen Sie das passende Volumen für Ihren Holzvorrat und planen Sie einen gut belüfteten Lagerplatz ein.",
+      "quantity": "20 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9306,
+      "name": "Laubholz Pro 45 RM",
+      "description": "45 Raummeter gemischtes Laubholz auf Palette. Wählen Sie das passende Volumen für Ihren Holzvorrat und planen Sie einen gut belüfteten Lagerplatz ein.",
+      "quantity": "45 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9307,
+      "name": "Laubholz-Großmenge 100 RM",
+      "description": "100 Raummeter gemischtes Laubholz auf Palette. Wählen Sie das passende Volumen für Ihren Holzvorrat und planen Sie einen gut belüfteten Lagerplatz ein.",
+      "quantity": "100 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 8305,
+      "name": "Buchenscheitholz, ofenfertig - 33 cm",
+      "description": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+      "quantity": "33 cm – PackFix – 1,5 SRM",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 8306,
+      "name": "Buchenscheitholz, ofenfertig - 50 cm",
+      "description": "Buchenscheitholz. Kammergetrocknet, etwa 20 % Restfeuchte, ofenfertig. PackFix mit 1,5 SRM auf Palette.",
+      "quantity": "50 cm – PackFix – 1,5 SRM",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 8313,
+      "name": "Buchenscheitholz Premium, vorgelagert - 33 cm",
+      "description": "Rindenarmes Premium-Buchenholz. Vorgelagert; vor der Nutzung noch etwa sechs Monate luftig trocknen lassen. PackFix mit 1,5 SRM auf Palette.",
+      "quantity": "33 cm – PackFix – 1,5 SRM",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 9101,
+      "name": "Buche 1 RM",
+      "description": "Das bewährte Gebinde für gleichmäßige, lang anhaltende Wärme. Kammergetrocknetes Buchenholz, ofenfertig auf Palette geschichtet.",
+      "quantity": "Palette · 1 RM",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 9102,
+      "name": "Buche 2 RM",
+      "description": "Zwei Raummeter mit Mengenpreis für einen größeren Vorrat. Erstklassiges Buchenbrennholz, ofenfertig und sauber auf stabiler Palette geschichtet.",
+      "quantity": "Palette · 2 RM",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 9103,
+      "name": "Winterpaket Komfort",
+      "description": "Ausgewogener Vorrat für regelmäßiges Heizen. Erstklassiges Hartholz für die kalte Jahreszeit, fertig getrocknet und sauber auf Paletten geliefert.",
+      "quantity": "Paket · 2 Paletten",
+      "type": "Brennholz",
+      "section": "Brennholz",
+      "badge": "Sparpaket"
+    },
+    {
+      "id": 9104,
+      "name": "Winterpaket Max",
+      "description": "Mehrpaletten-Paket für hohen Wärmebedarf. Optimal für die gesamte Wintersaison mit besonders attraktivem Mengenvorteil.",
+      "quantity": "Paket · 3 Paletten",
+      "type": "Brennholz",
+      "section": "Brennholz",
+      "badge": "Bestseller"
+    },
+    {
+      "id": 9105,
+      "name": "Eiche 1 RM",
+      "description": "Langsame Verbrennung für ausgedehnte Kaminabende. Hoher Brennwert und langanhaltende Glutentwicklung.",
+      "quantity": "Palette · 1 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9106,
+      "name": "Eiche 2 RM",
+      "description": "Dichter Vorrat mit direktem Preisvorteil. Trockenes Eichenbrennholz für effiziente, ruhige und langanhaltende Wärme.",
+      "quantity": "Palette · 2 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9107,
+      "name": "Eiche 0,5 RM",
+      "description": "Kleines, dichtes Gebinde für lang anhaltende Glut. Ideal für gelegentliches Heizen und kleinere Lagermöglichkeiten.",
+      "quantity": "Palette · 0,5 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9108,
+      "name": "Eiche 3 RM",
+      "description": "Drei Raummeter für hohen und planbaren Bedarf. Maximaler Vorrat an hochwertigem Eichenkaminholz mit spürbarem Mengenrabatt.",
+      "quantity": "Palette · 3 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9109,
+      "name": "JSM Brennholz Buche 25 cm, 1 RM",
+      "description": "100 % reines Buchen-Brennholz in ofenfertiger 25-cm-Scheitlänge. Kammergetrocknet mit einer Restfeuchte von unter 20 %, schimmel- und pilzfrei. Sauber in einer stabilen 1-RM-Holzbox auf Palette geschichtet. Hervorragender Heizwert und ruhiges, langanhaltendes Glutbett.",
+      "quantity": "Palette · 1 RM · 25 cm",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 9201,
+      "name": "RUF Buchenholzbriketts 960kg",
+      "description": "Holzbriketts: RUF Buchenholzbriketts 960kg. Holzart Buche, 10 kg. Ab 497,17 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 96 Pakete · 960 kg",
+      "type": "Holzbriketts",
+      "section": "Holzbriketts"
+    },
+    {
+      "id": 9202,
+      "name": "Saxoniapellets 6mm ENplusA1, 66 x 15kg Palette",
+      "description": "Holzpellets: Saxoniapellets 6mm ENplusA1, 66 x 15kg Palette. Holzart Nadelholz, Restfeuchte 9 %, maß (LxBxH) : 30x12x67. Ab 289,67 € inkl. MwSt.",
+      "quantity": "Palette · 66 Säcke · 990 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 9203,
+      "name": "THÜRINGER HD Holzpellets 6mm ENplusA1, 65 x 15kg Palette",
+      "description": "Holzpellets: THÜRINGER HD Holzpellets 6mm ENplusA1, 65 x 15kg Palette. Ab 248,17 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 65 Säcke · 975 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 9204,
+      "name": "HEIZFUXX Holzpellets Grey 6mm ENplusA1, 65 x 15kg Palette",
+      "description": "Holzpellets: HEIZFUXX Holzpellets Grey 6mm ENplusA1, 65 x 15kg Palette. Holzart Weichholz, Restfeuchte 10 %, 15 kg. Ab 165,17 € inkl. MwSt.",
+      "quantity": "Palette · 65 Säcke · 975 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 9205,
+      "name": "DRAGON Holzpellets 6mm ENplusA1, 65 x 15kg Palette",
+      "description": "Holzpellets: DRAGON Holzpellets 6mm ENplusA1, 65 x 15kg Palette. Restfeuchte 10 %. Ab 248,17 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 65 Säcke · 975 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 9206,
+      "name": "Brennholz Buche 28 cm 1 RM",
+      "description": "Brennholz: Brennholz Buche 28 cm 1 RM. Holzart Buche, Restfeuchte 12 %, 500 kg. Ab 165,17 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 1 RM",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 9207,
+      "name": "Rundholz Birke 28 cm im Sack",
+      "description": "Brennholz: Rundholz Birke 28 cm im Sack. Holzart Birke, Restfeuchte 15 %, 15 kg. Ab 165,17 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · Säcke mit trockenem Brennholz",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9208,
+      "name": "Brennholz Buche, Abschnitte 1 FM",
+      "description": "Brennholz: Brennholz Buche, Abschnitte 1 FM. Holzart Buche, Restfeuchte 10 %, 750 kg. Ab 206,67 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 1 FM",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 9209,
+      "name": "HEIZFUXX Holzpellets Red 6mm ENplusA1, 65 x 15kg Palette",
+      "description": "Holzpellets: HEIZFUXX Holzpellets Red 6mm ENplusA1, 65 x 15kg Palette. Restfeuchte 7 %, 15 kg. Ab 231,57 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 65 Säcke · 975 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 9210,
+      "name": "Brennholz Buche 28 cm 2 RM",
+      "description": "Brennholz: Brennholz Buche 28 cm 2 RM. Holzart Buche, Restfeuchte 12 %, 1000 kg. Ab 289,67 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 2 RM",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 9211,
+      "name": "EPH Holzpellets im Papiersack, ENplusA1, 65 x 15kg Palette",
+      "description": "Holzpellets: EPH Holzpellets im Papiersack, ENplusA1, 65 x 15kg Palette. Ab 190,07 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 65 Säcke · 975 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 9212,
+      "name": "REKORD Premium Holzpellets 6mm ENplusA1, 66 x 15kg Palette",
+      "description": "Holzpellets: REKORD Premium Holzpellets 6mm ENplusA1, 66 x 15kg Palette. Holzart Nadelholz, 15 kg pro Sack, 1000 kg. Ab 198,37 € inkl. MwSt.",
+      "quantity": "Palette · 66 Säcke · 990 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 9213,
+      "name": "Brennholz Birke 28 cm im Sack",
+      "description": "Brennholz: Brennholz Birke 28 cm im Sack. Holzart Birke, Restfeuchte 15 %, 500 kg. Ab 248,17 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · Säcke mit trockenem Brennholz",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9214,
+      "name": "Brennholz Birke 25 cm 1 RM",
+      "description": "Brennholz: Brennholz Birke 25 cm 1 RM. Holzart Birke, Restfeuchte 12 %, 450 kg. Ab 165,17 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 1 RM",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 9215,
+      "name": "HEIZFUXX Holzpellets Blue 6mm ENplusA1, 65 x 15kg Palette",
+      "description": "Holzpellets: HEIZFUXX Holzpellets Blue 6mm ENplusA1, 65 x 15kg Palette. Holzart Weichholz, Restfeuchte 10 %, 15 kg. Ab 214,97 € inkl. MwSt.",
+      "quantity": "Palette · 65 Säcke · 975 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 9216,
+      "name": "Brennholz Buche 25 cm 2 RM",
+      "description": "Brennholz: Brennholz Buche 25 cm 2 RM. Holzart Buche, Restfeuchte 12 %, 1000 kg. Ab 331,17 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 2 RM",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 9217,
+      "name": "PINI KAY Buchenholzbriketts Premium 480kg",
+      "description": "Holzbriketts: PINI KAY Buchenholzbriketts Premium 480kg. Holzart Buche, 10 kg. Ab 397,57 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 48 Pakete · 480 kg",
+      "type": "Holzbriketts",
+      "section": "Holzbriketts"
+    },
+    {
+      "id": 9218,
+      "name": "Brennholz Eiche 30-33 cm 2 RM",
+      "description": "Brennholz: Brennholz Eiche 30-33 cm 2 RM. Holzart Eiche, Restfeuchte 12 %, 990 kg. Ab 289,67 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 2 RM",
+      "type": "Brennholz",
+      "section": "Eichenholz"
+    },
+    {
+      "id": 9219,
+      "name": "NESTRO Hartholzbriketts Premium rund ohne Loch 480kg",
+      "description": "Holzbriketts: NESTRO Hartholzbriketts Premium rund ohne Loch 480kg. Holzart Eiche, 10 kg. Ab 331,17 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 48 Pakete · 480 kg",
+      "type": "Holzbriketts",
+      "section": "Holzbriketts"
+    },
+    {
+      "id": 9220,
+      "name": "Brennholz Buche 50 cm 2 RM",
+      "description": "Brennholz: Brennholz Buche 50 cm 2 RM. Holzart Buche, Restfeuchte 12 %, 1000 kg. Ab 289,67 € inkl. MwSt. Versand ab Langstedt.",
+      "quantity": "Palette · 2 RM",
+      "type": "Brennholz",
+      "section": "Buchenholz"
+    },
+    {
+      "id": 2,
+      "name": "EPH Premium Holzpellets DINplus/ENplus A1 – Palette",
+      "description": "Eine Palette mit 65 Papiersäcken: 975 kg EPH Premium Holzpellets mit DINplus- und ENplus-A1-Zertifizierung.",
+      "quantity": "65 Papiersäcke · 975 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken",
+      "badge": "Unser Spitzenprodukt"
+    },
+    {
+      "id": 25,
+      "name": "TotalEnergies Premium ENplus A1 Holzpellets",
+      "description": "TotalEnergies-Nadelholzpellets in 15-kg-Säcken. Palette für Öfen und Kessel, die für ENplus A1 geeignet sind.",
+      "quantity": "65 Säcke à 15 kg · 975 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 26,
+      "name": "HEIZFUXX Blue ENplus A1 Holzpellets",
+      "description": "ENplus-A1-zertifizierte Nadelholzpellets in 65 Säcken auf Palette.",
+      "quantity": "65 Säcke à 15 kg · 975 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 49,
+      "name": "FireStixx Premium Holzpellets DINplus / ENplus A1",
+      "description": "DINplus- und ENplus-A1-zertifizierte FireStixx Premium Pellets in 15-kg-Säcken auf Palette.",
+      "quantity": "66 Säcke à 15 kg · 990 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 28,
+      "name": "HELIOS Holzpellets DINplus / ENplus A1",
+      "description": "HELIOS-Pellets auf Palette, 100 % Nadelholz, für geeignete Öfen und Kessel.",
+      "quantity": "65 Säcke à 15 kg · 975 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 30,
+      "name": "PROXIMA STAR Premium Holzpellets",
+      "description": "PROXIMA STAR Nadelholzpellets auf Palette für geeignete Öfen, Kamineinsätze und Kessel.",
+      "quantity": "66 Säcke à 15 kg · 990 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 74,
+      "name": "ANTE Holzpellets DIN+ und EN+ – komplette Palette",
+      "description": "Komplette Palette hochwertiger ANTE Nadelholzpellets.",
+      "quantity": "Palette mit 66 Säcken · 990 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 75,
+      "name": "VERPELLET PELLETS Holzpellets – Palette",
+      "description": "Zertifizierte VERPELLET PELLETS auf Palette, 100 % Nadelholz.",
+      "quantity": "Palette · 66 Säcke",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 21,
+      "name": "ENplus A1 Holzpellets – Palette",
+      "description": "ENplus A1 Nadelholzpellets auf Palette für geeignete Geräte.",
+      "quantity": "66 Säcke à 15 kg · 990 kg",
+      "type": "Holzpellets",
+      "section": "Pelletmarken"
+    },
+    {
+      "id": 5,
+      "name": "Trockene Eichenscheite",
+      "description": "Gespaltene, getrocknete Eichenscheite, einsatzbereit für eine geeignete Feuerstelle.",
+      "quantity": "Palette · 1 Ster · 25 cm",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 7,
+      "name": "Trockene Birkenscheite",
+      "description": "Gespaltene und getrocknete Birkenscheite auf Palette.",
+      "quantity": "Palette · 1 Ster · 25 cm",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 69,
+      "name": "Trockenes Brennholz auf Palette – 25 cm",
+      "description": "Sorgfältig gestapelte Palette trockenes Brennholz in 25 cm Länge.",
+      "quantity": "Gestapelte Palette · 25 cm",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 48,
+      "name": "Trockenes Eichenholz – 33-cm-Scheite",
+      "description": "Gespaltene Eichenscheite in 33 cm Länge auf Netzpalette für Lagerung und Handhabung.",
+      "quantity": "Netzpalette · ca. 1,6 m³",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 36,
+      "name": "Entrindetes Buchenholz – Netzpalette",
+      "description": "Hochwertige, entrindete und gespaltene Buchenscheite auf Netzpalette. Brennfertiges Holz.",
+      "quantity": "33 cm · ca. 1,6 m³ · 500 kg",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 70,
+      "name": "Trockenes Brennholz auf Palette – 33 cm",
+      "description": "Gestapelte Palette trockenes Laubholz in 33-cm-Scheiten.",
+      "quantity": "Gestapelte Palette · 33 cm",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 58,
+      "name": "Kammergetrocknetes Eichenholz – Netze",
+      "description": "Gespaltene, kammergetrocknete Eichenscheite, sofort verwendbar. Die Netzverpackung erleichtert die Lagerung.",
+      "quantity": "88 Netze · 25-cm-Scheite · ca. 2 m³ gestapelt",
+      "type": "Brennholz",
+      "section": "Brennholz",
+      "badge": "−13 %"
+    },
+    {
+      "id": 19,
+      "name": "Pressholzscheite",
+      "description": "Verdichtete Holzscheite in einer praktischen Verpackungseinheit.",
+      "quantity": "10-kg-Paket",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 20,
+      "name": "Runde Pressholzscheite",
+      "description": "Rundes Pressholz zur Verwendung in einer geeigneten Feuerstelle.",
+      "quantity": "10-kg-Paket",
+      "type": "Brennholz",
+      "section": "Brennholz"
+    },
+    {
+      "id": 10,
+      "name": "Pini-Kay-Briketts (Herkunft Deutschland) – Palette",
+      "description": "Gleichmäßig brennende Pini-Kay-Briketts auf einer kompletten Palette. Nur in geeigneten Geräten verwenden.",
+      "quantity": "96 Säcke à 10 kg · 960 kg",
+      "type": "Holzbriketts",
+      "section": "Holzbriketts",
+      "badge": "Neu"
+    },
+    {
+      "id": 40,
+      "name": "Runde Buchenbriketts – Palette",
+      "description": "Runde Buchenbriketts in 10-kg-Paketen. Trocken lagern und Geräteeignung prüfen.",
+      "quantity": "96 Pakete à 10 kg · 960 kg",
+      "type": "Holzbriketts",
+      "section": "Holzbriketts"
+    },
+    {
+      "id": 51,
+      "name": "RUF-Briketts – Palette",
+      "description": "Rechteckige RUF-Holzbriketts in 96 Paketen à 10 kg, insgesamt 960 kg. Trocken lagern.",
+      "quantity": "96 Pakete à 10 kg · 960 kg",
+      "type": "Holzbriketts",
+      "section": "Holzbriketts",
+      "badge": "−2 %"
+    },
+    {
+      "id": 43,
+      "name": "Biomac Extra Briketts – lang anhaltende Glut",
+      "description": "Biomac-Nachtbriketts aus gewaschener und getrockneter Rinde. Sie sind für mehrere Stunden Gluterhalt konzipiert; beachten Sie die Gerätehinweise.",
+      "quantity": "100 Pakete à 10 kg · 1.000 kg",
+      "type": "Holzbriketts",
+      "section": "Holzbriketts"
+    },
+    {
+      "id": 60,
+      "name": "Giant Flames Briketts – Palette",
+      "description": "Giant Flames Holzbriketts in kleinen Einzelpaketen.",
+      "quantity": "190 Pakete à 4,8 kg · 912 kg",
+      "type": "Holzbriketts",
+      "section": "Holzbriketts",
+      "badge": "−6 %"
+    },
+    {
+      "id": 11,
+      "name": "RUF-Briketts – Paket",
+      "description": "RUF-Holzbriketts im 10-kg-Paket. Trocken lagern.",
+      "quantity": "10-kg-Paket",
+      "type": "Holzbriketts",
+      "section": "Holzbriketts"
+    },
+    {
+      "id": 13,
+      "name": "Trockenes Anzündholz",
+      "description": "Trockenes Anzündholz zur Vorbereitung Ihrer Feuerstelle.",
+      "quantity": "10-kg-Karton",
+      "type": "Anzündholz",
+      "section": "Anzündholz"
+    },
+    {
+      "id": 14,
+      "name": "Anzündholz im Sack",
+      "description": "Anzündholz im praktischen Sack. Trocken lagern.",
+      "quantity": "5-kg-Sack",
+      "type": "Anzündholz",
+      "section": "Anzündholz"
+    },
+    {
+      "id": 15,
+      "name": "Anzündholz im Netz",
+      "description": "Ein kompaktes Anzündholznetz für die Aufbewahrung in der Nähe Ihrer Feuerstelle.",
+      "quantity": "10-kg-Netz",
+      "type": "Anzündholz",
+      "section": "Anzündholz"
+    },
+    {
+      "id": 79,
+      "name": "Anzündholz im Netz",
+      "description": "Sehr dünnes, trockenes Anzündholz im Netz für leichtes Anzünden.",
+      "quantity": "Netz mit Weichholz",
+      "type": "Anzündholz",
+      "section": "Anzündholz"
+    },
+    {
+      "id": 16,
+      "name": "Holzwolle-Anzünder",
+      "description": "Holzwolle-Anzünder zum Entfachen Ihres Feuers.",
+      "quantity": "Beutel mit 32 Stück",
+      "type": "Anzündholz",
+      "section": "Anzündholz"
+    },
+    {
+      "id": 17,
+      "name": "Anzündwürfel",
+      "description": "Anzündwürfel zur trockenen Lagerung in der Nähe Ihrer Feuerstelle.",
+      "quantity": "Schachtel mit 64 Stück",
+      "type": "Anzündholz",
+      "section": "Anzündholz"
+    },
+    {
+      "id": 77,
+      "name": "Ökologische Holzwolle-Anzünder",
+      "description": "Ökologische Anzünder aus Holzwolle und natürlichem Wachs.",
+      "quantity": "Schachtel Holzwolle",
+      "type": "Anzündholz",
+      "section": "Anzündholz"
+    },
+    {
+      "id": 78,
+      "name": "Erdölfreie Anzünder",
+      "description": "Geruchsneutrale natürliche Anzünder ohne Erdölderivate.",
+      "quantity": "Schachtel Anzünder",
+      "type": "Anzündholz",
+      "section": "Anzündholz"
+    }
+  ]
+}

@@ -25,7 +25,7 @@ const products=mergeCatalog([]);
 assert(products.every(p => p.stock !== 0), "Current catalogue must be in stock");
 const original=buildMerchantFeed(products,base);
 const items=parseXml(original.xml);
-const noPrice = products.filter(p => !Number.isSafeInteger(p.priceAmount) || p.priceAmount <= 0);
+const noPrice = products.filter(p => !Number.isSafeInteger(p.priceAmount) || p.priceAmount <= 0 || !(p.gallery?.[0] ?? p.image));
 assert.deepEqual(original.omitted.map(p => p.id).sort((a,b)=>a-b), noPrice.map(p => p.id).sort((a,b)=>a-b));
 assert.equal(items.length,products.length-noPrice.length);
 assert.equal(new Set(items.map(item=>item.id)).size,items.length);
