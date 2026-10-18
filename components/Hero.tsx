@@ -29,8 +29,7 @@ export default function Hero() {
             <span className="text-[#a33d1e]">avec livraison en Allemagne.</span>
           </h1>
           <p className="mt-7 max-w-xl text-lg leading-8 text-[#57534e]">
-            Découvrez nos bûches, granulés de bois et briquettes, en sacs,
-            paquets ou palettes selon les références.
+            Bei Brennholz-direk finden Sie Brennholz, Holzpellets und Holzbriketts – je nach Produkt in Säcken, Paketen oder auf Paletten.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <Link
