@@ -23,7 +23,10 @@ export async function generateMetadata() { return localizeMetadata(await ({
   title: 'Bren-nholz — Granulés, bois de chauffage & briquettes',
   description: 'Découvrez nos granulés de bois, bûches, briquettes et produits d’allumage. Catalogue et commande en ligne.',
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || 'XOWkbHJv9AIriAc_YaLhmCIDkm2JvAm7qDk36RCUSPY',
+    google: [
+      'AOOe-3GSFcjvn7EgiJj3x8XyiXxvu_atMDM0jEqLeKI',
+      ...(process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ? [process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION] : ['XOWkbHJv9AIriAc_YaLhmCIDkm2JvAm7qDk36RCUSPY']),
+    ],
   },
 })); }
 
