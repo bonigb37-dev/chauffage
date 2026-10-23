@@ -83,13 +83,14 @@ export default function AnalyticsTracker() {
       page_location: location.origin + pathname, page_title: document.title,
     });
     const commercialConversion = (event: Event) => {
-      const detail = (event as CustomEvent<{ kind?: AnalyticsKind }>).detail;
+      const detail = (event as CustomEvent<{ kind?: AnalyticsKind; value?: number; transactionId?: string }>).detail;
       if ((detail?.kind !== 'quote_sent' && detail?.kind !== 'order_sent') || readConsent()?.mode !== consent?.mode) return;
       if (navigator.doNotTrack === '1' || (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl) return;
       googleWindow.gtag?.('event', 'conversion', {
         send_to: detail.kind === 'order_sent'
           ? 'AW-18507175727/rLf9CN75spsdEK-u9PhE'
           : 'AW-18507175727/uJ_kCIPdp5sdEK-u9PhE',
+        ...(detail.kind === 'order_sent' && typeof detail.value === 'number' ? { value: detail.value, currency: 'EUR', transaction_id: detail.transactionId } : {}),
       });
     };
     window.addEventListener('bren-analytics-action', commercialConversion);

@@ -83,8 +83,8 @@ export default function CheckoutPageContent() {
         return;
       }
       const reference = result.reference;
-      emitAnalytics('order_sent');
       const confirmedTotal = result.totalCents;
+      emitAnalytics('order_sent', '', { value: confirmedTotal / 100, transactionId: reference });
       savePendingOrder({
         reference,
         proofToken: result.proofToken,

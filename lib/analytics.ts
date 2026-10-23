@@ -25,6 +25,6 @@ export function validateAnalyticsEvents(input: unknown): AnalyticsEvent[] | null
   if (events.some(e => e.session_id !== events[0].session_id)) return null;
   return events;
 }
-export function emitAnalytics(kind: AnalyticsKind, section = '') {
-  if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('bren-analytics-action', { detail: { kind, section } }));
+export function emitAnalytics(kind: AnalyticsKind, section = '', data?: { value?: number; transactionId?: string }) {
+  if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('bren-analytics-action', { detail: { kind, section, ...data } }));
 }
